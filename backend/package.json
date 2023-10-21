@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "ShopFusion",
+  "main": "server_shopfusion.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server_shopfusion.js"
+  },
+  "author": "Mahi",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "from": "^0.1.7",
+    "import": "^0.0.6",
+    "mongoose": "^7.6.3"
+  }
+}
