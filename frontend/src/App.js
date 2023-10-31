@@ -270,6 +270,7 @@ function App() {
           </div>
         </div>
       </header>
+
       <div className="main-menu">
         <nav id="mobile-menu-2">
           <ul>
@@ -439,6 +440,7 @@ function App() {
           </ul>
         </nav>
       </div>
+
       <div className="offcanvas__area">
         <div className="offcanvas__wrapper">
           <div className="offcanvas__close">
