@@ -24,8 +24,11 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use("/files", express.static("uploads"));
 
-app.get("/", async (req, resq, next) => {
-  resq.send("Hello From Express default route");
+app.get("/", async (req, res, next) => {
+  res.send("Hello From Express default route");
+});
+app.get("/form", async (req, res, next) => {
+  res.render("dashboard");
 });
 
 //  Routes
