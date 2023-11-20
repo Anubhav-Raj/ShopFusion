@@ -36,6 +36,12 @@ app.get("/brandfrom", async (req, res, next) => {
 app.get("/addMobileProduct", async (req, res, next) => {
   res.render("addMobileProduct");
 });
+app.get("/signin", async (req, res, next) => {
+  res.render("signin");
+});
+app.get("/signup", async (req, res, next) => {
+  res.render("signup");
+});
 
 //  Routes
 const PORT = process.env.PORT || 5000;
