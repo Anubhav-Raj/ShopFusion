@@ -27,8 +27,14 @@ app.use("/files", express.static("uploads"));
 app.get("/", async (req, res, next) => {
   res.send("Hello From Express default route");
 });
-app.get("/form", async (req, res, next) => {
+app.get("/dashboard", async (req, res, next) => {
   res.render("dashboard");
+});
+app.get("/brandfrom", async (req, res, next) => {
+  res.render("brand_storePage");
+});
+app.get("/addMobileProduct", async (req, res, next) => {
+  res.render("addMobileProduct");
 });
 
 //  Routes
