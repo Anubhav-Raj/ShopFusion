@@ -2,6 +2,7 @@ const db = require("./db/db.js");
 db.connectDB();
 const express = require("express");
 const dotenv = require("dotenv");
+const userRouter = require("./routes/user.js");
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -24,9 +25,12 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use("/files", express.static("uploads"));
 
+// router
 app.get("/", async (req, res, next) => {
   res.send("Hello From Express default route");
 });
+
+app.use(userRouter);
 app.get("/dashboard", async (req, res, next) => {
   res.render("dashboard");
 });
@@ -35,12 +39,6 @@ app.get("/brandfrom", async (req, res, next) => {
 });
 app.get("/addMobileProduct", async (req, res, next) => {
   res.render("addMobileProduct");
-});
-app.get("/signin", async (req, res, next) => {
-  res.render("signin");
-});
-app.get("/signup", async (req, res, next) => {
-  res.render("signup");
 });
 
 //  Routes
