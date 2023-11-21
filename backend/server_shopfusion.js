@@ -2,7 +2,6 @@ require("./db/db.js");
 const express = require("express");
 const dotenv = require("dotenv");
 const userRouter = require("./routes/user.js");
-const flash = require("express-flash");
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
