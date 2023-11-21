@@ -1,15 +1,31 @@
-const db = require("./db/db.js");
-db.connectDB();
+require("./db/db.js");
 const express = require("express");
 const dotenv = require("dotenv");
 const userRouter = require("./routes/user.js");
+const flash = require("express-flash");
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
+const session = require("express-session");
+const MongoDBstore = require("connect-mongodb-session")(session);
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const User = require("./models/user");
+
 dotenv.config();
 
 const app = express();
+// sessions
+const oSessionStore = new MongoDBstore({
+  //calling constructor
+  uri: "mongodb://0.0.0.0:27017/shopfusion",
+  collection: "usersessions",
+});
+
 app.use(express.json());
 const corsOptions = {
   origin: "*",
@@ -24,6 +40,43 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use("/files", express.static("uploads"));
+app.use(
+  session({
+    secret: process.env.MONGO_SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(
+  session({
+    secret: "Guide and Tourist is awsome",
+    resave: false,
+    saveUninitialized: false,
+    store: oSessionStore,
+  })
+);
+
+app.use((req, res, next) => {
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
+    .then((user) => {
+      req.user = user;
+
+      next();
+    })
+    .catch((err) => console.log(err));
+});
+//local variable
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isAuthenticated;
+  next();
+});
 
 // router
 app.get("/", async (req, res, next) => {
@@ -46,6 +99,66 @@ app.get("/addMobileProduct", async (req, res, next) => {
 app.get("/addMobileProductList", async (req, res, next) => {
   res.render("mobile/mobileList");
 });
+
+// google continue
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.G_CLIENT_ID,
+      clientSecret: process.env.G_CLIENT_SECRET,
+      callbackURL: "/auth/google/callback",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      const user = await User.findOne({ email: profile.emails[0].value });
+
+      if (!user) {
+        const newUser = new User({
+          email: profile.emails[0].value,
+          name: profile.displayName,
+          profile: profile.photos[0].value,
+          verified: true,
+        });
+        await newUser.save();
+        return done(null, newUser);
+      }
+      return done(null, user);
+    }
+  )
+);
+
+passport.serializeUser((user, done) => done(null, user.id));
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
+
+const isAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/signin");
+};
+
+app.get("/profile", isAuthenticated, (req, res) =>
+  res.render("profile", { user: req.user })
+);
+
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/signin" }),
+  (req, res) => {
+    res.redirect("/profile");
+  }
+);
 
 //  Routes
 const PORT = process.env.PORT || 5000;

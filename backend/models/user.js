@@ -11,6 +11,14 @@ const userSchema = new mongoose.Schema({
   email: String,
   token: String,
   password: String,
+  profile: {
+    type: String,
+    default: "no",
+  },
+  isProfileComplete: {
+    type: Boolean,
+    default: false,
+  },
   verified: {
     type: Boolean,
     default: false,

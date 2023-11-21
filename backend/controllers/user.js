@@ -65,28 +65,33 @@ exports.getSignin = (req, res) => {
 exports.postSignin = async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne(email);
+  const user = await User.findOne({ email: email });
   if (!user) {
     return res.render("signin", {
       email: email,
       password: password,
-      message: "Something wen wrong!",
+      message: "Your account dont exist!",
     });
   }
-  if (bcrypt.compare(password, guide.password)) {
+  const isAuth = await bcrypt.compare(password, user.password);
+
+  if (!isAuth) {
     return res.render("signin", {
       email: "",
       password: "",
-      message: "Something wen wrong!",
+      message: "Something went wrong!",
     });
   }
   var userType = "user";
   if (email === "admin@shopfusion.com") {
     userType = "admin";
   }
-  res.render("dashboard", {
-    user: user,
-    userType: userType,
+  req.session.isAuthenticated = true;
+  req.session.user = user;
+  req.isAuthenticated = true;
+
+  return req.session.save((err) => {
+    res.redirect("/dashboard");
   });
 };
 
@@ -104,4 +109,8 @@ exports.verifyUsr = async (req, res) => {
   await user.save();
 
   res.redirect("/signin");
+};
+
+exports.getDashboard = async (req, res) => {
+  res.render("dashboard");
 };
