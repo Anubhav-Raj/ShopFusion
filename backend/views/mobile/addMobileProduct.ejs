@@ -1,10 +1,10 @@
-<%- include('./common/header.ejs') %>
+<%- include('../common/header.ejs') %>
 <link href="assets/plugins/bs-stepper/css/bs-stepper.css" rel="stylesheet" />
 
-<%- include('./common/title.ejs') %>
+<%- include('../common/title.ejs') %>
 
 <div class="wrapper">
-  <%-include('./common/sidebar .ejs') %> <%- include('./common/navbar.ejs') %>
+  <%-include('../common/sidebar .ejs') %> <%- include('../common/navbar.ejs') %>
 
   <!-- Main code start -->
   <div class="page-content-wrapper">
@@ -763,30 +763,9 @@
   </div>
 
   <!-- Main code end -->
-  <%- include('./common/bottom.ejs') %>
+  <%- include('../common/bottom.ejs') %>
 </div>
 <script>
-  function submitForm() {
-    // Get form data
-    console.log(":1");
-    // var formData = new FormData(document.getElementById("myForm"));
-
-    // // You can use fetch to send the data to your backend API
-    // fetch("your_backend_url", {
-    //   method: "POST",
-    //   body: formData,
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     // Handle the response from the backend
-    //     console.log("Success:", data);
-    //   })
-    //   .catch((error) => {
-    //     // Handle errors
-    //     console.error("Error:", error);
-    //   });
-  }
-
   (function () {
     "use strict";
 
@@ -965,38 +944,6 @@
       subjectsContainer.removeChild(subjects[subjects.length - 1]);
     }
   }
-
-  // function submitForm() {
-  //   const studentsContainer = document.getElementById("students-container");
-  //   const students = studentsContainer.getElementsByClassName("student-container");
-  //   const formData = [];
-
-  //   for (let i = 0; i < students.length; i++) {
-  //     const student = students[i];
-  //     const studentData = {
-  //       name: document.getElementById(`name${i + 1}`).value,
-  //       class: document.getElementById(`class${i + 1}`).value,
-  //       age: document.getElementById(`age${i + 1}`).value,
-  //       subjects: [],
-  //     };
-
-  //     const subjectsContainer =
-  //       student.getElementsByClassName("subject-container");
-  //     for (let j = 0; j < subjectsContainer.length; j++) {
-  //       const subject = subjectsContainer[j];
-  //       const subjectData = {
-  //         subject: subject.querySelector('input[placeholder="Subject"]').value,
-  //         marks: subject.querySelector('input[placeholder="Marks"]').value,
-  //       };
-  //       studentData.subjects.push(subjectData);
-  //     }
-
-  //     formData.push(studentData);
-  //   }
-
-  //   console.log(formData);
-  //   // You can now process or send the form data as needed.
-  // }
 </script>
 
 <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
@@ -1006,4 +953,4 @@
 <script src="assets/plugins/validation/validation-script.js"></script>
 <script src="assets/js/todo.js"></script>
 
-<%- include('./common/footer.ejs') %>
+<%- include('../common/footer.ejs') %>

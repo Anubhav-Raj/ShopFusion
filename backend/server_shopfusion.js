@@ -35,10 +35,16 @@ app.get("/dashboard", async (req, res, next) => {
   res.render("dashboard");
 });
 app.get("/brandfrom", async (req, res, next) => {
-  res.render("brand_storePage");
+  res.render("brand/brand_storePage");
+});
+app.get("/brandlist", async (req, res, next) => {
+  res.render("brand/brandList");
 });
 app.get("/addMobileProduct", async (req, res, next) => {
-  res.render("addMobileProduct");
+  res.render("mobile/addMobileProduct");
+});
+app.get("/addMobileProductList", async (req, res, next) => {
+  res.render("mobile/mobileList");
 });
 
 //  Routes
