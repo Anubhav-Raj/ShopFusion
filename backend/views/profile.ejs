@@ -42,7 +42,11 @@
                   <div
                     class="user-profile-avatar shadow position-absolute top-50 start-0 translate-middle-x"
                   >
+                    <%if(user.profile=="no"){ %>
                     <img src="assets/images/avatars/06.png" alt="..." />
+                    <% }else{ %>
+                    <img src="<%=user.profile%>" alt="..." />
+                    <% } %>
                   </div>
                 </div>
                 <div class="card-body">
@@ -50,7 +54,7 @@
                     class="mt-5 d-flex align-items-start justify-content-between"
                   >
                     <div class="">
-                      <h3 class="mb-2">Jhon Deo</h3>
+                      <h3 class="mb-2"><%=user.name %></h3>
                       <p class="mb-1">Engineer at BB Agency Industry</p>
                       <p>New York, United States</p>
                       <div class="">

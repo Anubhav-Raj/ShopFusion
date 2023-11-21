@@ -249,13 +249,18 @@
             data-bs-toggle="dropdown"
           >
             <div class="user-setting">
+              <% if(user.profile=="no"){ %>
               <img src="assets/images/avatars/06.png" class="user-img" alt="" />
+              <%}else{ %>
+              <img src="<%=user.profile %>" class="user-img" alt="" />
+              <% } %>
             </div>
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
               <a class="dropdown-item" href="javascript:;">
                 <div class="d-flex flex-row align-items-center gap-2">
+                  <% if(user.profile=="no"){ %>
                   <img
                     src="assets/images/avatars/06.png"
                     alt=""
@@ -263,8 +268,17 @@
                     width="54"
                     height="54"
                   />
+                  <%}else{ %>
+                  <img
+                    src="<%=user.profile %>"
+                    alt=""
+                    class="rounded-circle"
+                    width="54"
+                    height="54"
+                  />
+                  <% } %>
                   <div class="">
-                    <h6 class="mb-0 dropdown-user-name">Jhon Deo</h6>
+                    <h6 class="mb-0 dropdown-user-name"><%=user.name %></h6>
                     <small class="mb-0 dropdown-user-designation text-secondary"
                       >UI Developer</small
                     >

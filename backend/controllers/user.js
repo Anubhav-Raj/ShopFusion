@@ -73,6 +73,13 @@ exports.postSignin = async (req, res) => {
       message: "Your account dont exist!",
     });
   }
+  if (!user.password) {
+    return res.render("signin", {
+      email: email,
+      password: password,
+      message: "You logged with google!",
+    });
+  }
   const isAuth = await bcrypt.compare(password, user.password);
 
   if (!isAuth) {
