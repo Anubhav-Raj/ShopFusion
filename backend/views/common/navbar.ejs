@@ -249,10 +249,10 @@
             data-bs-toggle="dropdown"
           >
             <div class="user-setting">
-              <% if(user.profile=="no"){ %>
+              <% if(user && user.profile=="no"){ %>
               <img src="assets/images/avatars/06.png" class="user-img" alt="" />
               <%}else{ %>
-              <img src="<%=user.profile %>" class="user-img" alt="" />
+              <img src="<%= user && user.profile %>" class="user-img" alt="" />
               <% } %>
             </div>
           </a>
@@ -260,7 +260,7 @@
             <li>
               <a class="dropdown-item" href="javascript:;">
                 <div class="d-flex flex-row align-items-center gap-2">
-                  <% if(user.profile=="no"){ %>
+                  <% if( user && user.profile=="no"){ %>
                   <img
                     src="assets/images/avatars/06.png"
                     alt=""
@@ -270,7 +270,7 @@
                   />
                   <%}else{ %>
                   <img
-                    src="<%=user.profile %>"
+                    src="<%= user && user.profile %>"
                     alt=""
                     class="rounded-circle"
                     width="54"
@@ -278,7 +278,9 @@
                   />
                   <% } %>
                   <div class="">
-                    <h6 class="mb-0 dropdown-user-name"><%=user.name %></h6>
+                    <h6 class="mb-0 dropdown-user-name">
+                      <%= user && user.name %>
+                    </h6>
                     <small class="mb-0 dropdown-user-designation text-secondary"
                       >UI Developer</small
                     >

@@ -83,20 +83,24 @@ app.get("/", async (req, res, next) => {
 });
 
 app.use(userRouter);
+
 app.get("/dashboard", async (req, res, next) => {
-  res.render("dashboard");
+  res.render("dashboard", { user: req.user });
 });
 app.get("/brandfrom", async (req, res, next) => {
-  res.render("brand/brand_storePage");
+  res.render("brand/brand_storePage", { user: req.user });
 });
 app.get("/brandlist", async (req, res, next) => {
-  res.render("brand/brandList");
+  res.render("brand/brandList", { user: req.user });
 });
 app.get("/addMobileProduct", async (req, res, next) => {
-  res.render("mobile/addMobileProduct");
+  res.render("mobile/addMobileProduct", { user: req.user });
 });
 app.get("/addMobileProductList", async (req, res, next) => {
-  res.render("mobile/mobileList");
+  res.render("mobile/mobileList", { user: req.user });
+});
+app.get("/mobile-detail", async (req, res, next) => {
+  res.render("mobile/mobiledetailpage", { user: req.user });
 });
 
 // google continue
@@ -145,6 +149,9 @@ const isAuthenticated = (req, res, next) => {
 app.get("/profile", isAuthenticated, (req, res) =>
   res.render("profile", { user: req.user })
 );
+app.get("/editprofile", isAuthenticated, (req, res) =>
+  res.render("editprofile", { user: req.user })
+);
 
 app.get(
   "/auth/google",
@@ -155,6 +162,7 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/signin" }),
   (req, res) => {
+    req.session.user = req.user;
     res.redirect("/profile");
   }
 );

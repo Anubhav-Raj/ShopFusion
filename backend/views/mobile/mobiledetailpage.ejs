@@ -38,13 +38,11 @@
     <link href="assets/css/semi-dark.css" rel="stylesheet" />
     <link href="assets/css/header-colors.css" rel="stylesheet" />
 
-    <title>Fobia - Bootstrap5 Admin Template</title>
-  </head>
-  <body>
+    <%- include('../common/title.ejs') %>
     <!--start wrapper-->
     <div class="wrapper">
-      <%-include('../common/sidebar .ejs') %> <%-
-      include('../common/navbar.ejs') %>
+      <%-include('../common/sidebar .ejs') %>
+      <%-include('../common/navbar.ejs')%>
 
       <!-- start page content wrapper-->
       <div class="page-content-wrapper">
@@ -264,32 +262,37 @@
                         id="discription"
                         role="tabpanel"
                       >
-                        <p>
-                          Raw denim you probably haven't heard of them jean
-                          shorts Austin. Nesciunt tofu stumptown aliqua, retro
-                          synth master cleanse. Mustache cliche tempor,
-                          williamsburg carles vegan helvetica. Reprehenderit
-                          butcher retro keffiyeh dreamcatcher synth. Cosby
-                          sweater eu banh mi, qui irure terry richardson ex
-                          squid. Aliquip placeat salvia cillum iphone. Seitan
-                          aliquip quis cardigan american apparel, butcher
-                          voluptate nisi.
-                        </p>
-                        <ul>
-                          <li>Not just for commute</li>
-                          <li>Branded tongue and cuff</li>
-                          <li>Super fast and amazing</li>
-                          <li>Lorem sed do eiusmod tempor</li>
-                        </ul>
-                        <p class="mb-1">
-                          Cosby sweater eu banh mi, qui irure terry richardson
-                          ex squid. Aliquip placeat salvia cillum iphone.
-                        </p>
-                        <p class="mb-1">
-                          Seitan aliquip quis cardigan american apparel, butcher
-                          voluptate nisi.
-                        </p>
+                     
+                        
+                       <div class="card">
+                        <div class="col-12 col-lg-12 " style="display: flex;">
+                         <div class="card-body">
+                           <ul class="list-group">
+                             <li class="list-group-item">Cras justo odio</li>
+                             <li class="list-group-item">Dapibus ac facilisis in</li>
+                             <li class="list-group-item">Morbi leo risus</li>
+                             <li class="list-group-item">Porta ac consectetur ac</li>
+                             <li class="list-group-item">Vestibulum at eros</li>
+                           </ul>
+                         </div>
+                         <div class="card-body">
+                           <ul class="list-group">
+                             <li class="list-group-item">Cras justo odio</li>
+                             <li class="list-group-item">Dapibus ac facilisis in</li>
+                             <li class="list-group-item">Morbi leo risus</li>
+                             <li class="list-group-item">Porta ac consectetur ac</li>
+                             <li class="list-group-item">Vestibulum at eros</li>
+                           </ul>
+                         </div>
+                        </div>
+
+                        
+                       </div>
+                       
+                   
                       </div>
+
+                      
                       <div class="tab-pane fade" id="more-info" role="tabpanel">
                         <p>
                           Food truck fixie locavore, accusamus mcsweeney's marfa
