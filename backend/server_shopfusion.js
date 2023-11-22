@@ -103,6 +103,16 @@ app.get("/mobile-detail", async (req, res, next) => {
   res.render("mobile/mobiledetailpage", { user: req.user });
 });
 
+app.get("/addProduct", async (req, res, next) => {
+  res.render("product/addProduct", { user: req.user });
+});
+app.get("/addProductList", async (req, res, next) => {
+  res.render("product/addProductList", { user: req.user });
+});
+app.get("/product-detail", async (req, res, next) => {
+  res.render("product/productdetailsPage", { user: req.user });
+});
+
 // google continue
 passport.use(
   new GoogleStrategy(
