@@ -32,63 +32,66 @@
           
           </div>
           <!--end breadcrumb-->
-
+          <h5 class="mb-3">Complete Profile : <% if(user.isProfileComplete){ %> Completed <% }else{ %>Not Completed <% } %> </h5>
           <div class="row">
             <div class="col-lg-8 mx-auto">
               <div class="card radius-10">
                 <div class="card-body">
-                  <form>
+                  <form action="/editprofile" method="post" enctype="multipart/form-data">
                   <h5 class="mb-3">Edit Profile</h5>
                   <div class="mb-4 d-flex flex-column gap-3 align-items-center justify-content-center">
                     <div class="user-change-photo shadow">
-                      <img src="assets/images/avatars/06.png" alt="...">
+                      <% if(user.profile!=="no"){ %>
+                      <img src="<%=user.profile %>" alt="...">
+                      <% }else{ %>
+                        <img src="assets/images/avatars/06.png" alt="...">
+                        <% } %> 
                     </div>
-                    <button type="button" class="btn btn-outline-primary btn-sm radius-30 px-4"><ion-icon name="image-sharp"></ion-icon>Change Photo</button>
+                    <input type="file" class="btn btn-outline-primary btn-sm radius-30 px-4" name="profile" ><ion-icon name="profile"></ion-icon>Change Photo</input>
                   </div>
                   <h5 class="mb-0 mt-4">User Information</h5>
                   <hr>
                   <div class="row g-3">
                     
                      <div class="col-6">
-                       <label class="form-label">First Name</label>
-                       <input type="text" class="form-control" value="jhon">
+                       <label class="form-label" >Name</label>
+                       <input type="text" class="form-control" name="name" value="<%=user.name %>" >
                    </div>
-                   <div class="col-6">
+                   <!-- <div class="col-6">
                        <label class="form-label">Last Name</label>
                        <input type="text" class="form-control" value="">
-                   </div>
-                   <div class="col-6">
-                    <label class="form-label">Email address</label>
-                    <input type="email" class="form-control" value="xyz@example.com">
-                  </div>
+                   </div> -->
+               
                   <div class="col-6">
                     <label class="form-label">Phone No</label>
-                    <input type="phone" class="form-control" value="8877949888">
+                    <input type="phone" class="form-control" value="<%=user.phone %>" name="mobile">
                   </div>
                  </div>
     
                  <h5 class="mb-0 mt-4">Contact Information</h5>
                  <hr>
                  <div class="col-12"  style=" text-align: end;">                
-                  <button class="btn btn-primary" type="button" onclick="addForm()">Repeat Form</button>
-                  <button class="btn btn-danger"  type="button" onclick="removeForm()">Remove Form</button>
+                  <button class="btn btn-primary" type="button" onclick="addForm()">Add more address</button>
+                  <button class="btn btn-danger"  type="button" onclick="removeForm()">Remove added adress</button>
                  </div>
 
                    <div id="formContainer">
-
+                    <% if(user.address.length==0){ %>
+                       <h5 class="mb-0 mt-4">Multiple Address</h5>
+                    <hr>
                      <div class="row g-3 form-container">
                       <div class="col-12">
-                        <label class="form-label">Address</label>
-                        <input type="text" class="form-control" value="47-A, city name, United States">
+                        <label class="form-label">Near To</label>
+                        <input type="text" class="form-control" value="" name="near">
                        </div>
                        <div class="col-6">
                           <label class="form-label">City</label>
-                          <input type="text" class="form-control" value="@jhon">
-                       </div>
+                          <input type="text" class="form-control" value=" " name="city">
+                       </div> 
                        <div class="col-6">
                         <label class="form-label">State</label>
                        
-                        <input type="text"  class="form-control" id="stateSearch" list="stateList" oninput="filterStates()">
+                        <input type="text"  class="form-control" id="stateSearch" list="stateList" oninput="filterStates()" name="state">
                           <datalist id="stateList">
                               <option value="Andhra Pradesh">
                               <option value="Arunachal Pradesh">
@@ -122,18 +125,78 @@
                       </div>
                        <div class="col-6">
                         <label class="form-label">Country</label>
-                        <input type="text" class="form-control" value="xyz@example.com">
+                        <input type="text" class="form-control" value="" name="country">
                       </div>
                         <div class="col-6">
                           <label class="form-label">Pin Code</label>
-                          <input type="text" class="form-control" value="jhon">
+                          <input type="text" class="form-control" value="" name="pincode">
                       </div>
                       <hr>
                     </div>
+                  <%  } %>
+                  <% var i=1; %>
+                   <% user.address.forEach(address=>{ %>
+                     <h5 class="mb-0 mt-4"><%=i++ %> Address</h5>
+                    <hr>
+                     <div class="row g-3 form-container">
+                      <div class="col-12">
+                        <label class="form-label">Near To</label>
+                        <input type="text" class="form-control" value="<%=address.near %>" name="near">
+                       </div>
+                       <div class="col-6">
+                          <label class="form-label">City</label>
+                          <input type="text" class="form-control" value="<%=address.city %>" name="city">
+                       </div>
+                       <div class="col-6">
+                        <label class="form-label">State</label>
+                       
+                        <input type="text"  class="form-control" id="stateSearch" list="stateList" oninput="filterStates()" name="state" value="<%=address.state %>">
+                          <datalist id="stateList">
+                              <option value="Andhra Pradesh">
+                              <option value="Arunachal Pradesh">
+                              <option value="Assam">
+                              <option value="Bihar">
+                              <option value="Chhattisgarh">
+                              <option value="Goa">
+                              <option value="Gujarat">
+                              <option value="Haryana">
+                              <option value="Himachal Pradesh">
+                              <option value="Jharkhand">
+                              <option value="Karnataka">
+                              <option value="Kerala">
+                              <option value="Madhya Pradesh">
+                              <option value="Maharashtra">
+                              <option value="Manipur">
+                              <option value="Meghalaya">
+                              <option value="Mizoram">
+                              <option value="Nagaland">
+                              <option value="Odisha">
+                              <option value="Punjab">
+                              <option value="Rajasthan">
+                              <option value="Sikkim">
+                              <option value="Tamil Nadu">
+                              <option value="Telangana">
+                              <option value="Tripura">
+                              <option value="Uttar Pradesh">
+                              <option value="Uttarakhand">
+                              <option value="West Bengal">
+                          </datalist>
+                      </div>
+                       <div class="col-6">
+                        <label class="form-label">Country</label>
+                        <input type="text" class="form-control" value="<%=address.country %>" name="country">
+                      </div>
+                        <div class="col-6">
+                          <label class="form-label">Pin Code</label>
+                          <input type="text" class="form-control" value="<%=address.pincode %>" name="pincode">
+                      </div>
+                      <hr>
+                    </div>
+                  <% }) %>
                    </div>
 
                   <div class="text-start mt-3">
-                    <button type="button" class="btn btn-primary px-4">Save Changes</button>
+                    <button type="submit" class="btn btn-primary px-4">Save Changes</button>
                   </div>
                 </div>
                </form>

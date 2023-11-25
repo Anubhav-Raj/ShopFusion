@@ -37,10 +37,20 @@
               <div class="border p-3 rounded">
                 <h6 class="mb-0 text-uppercase">Brand/Store Add From</h6>
                 <hr />
-                <form class="row g-3">
+                <form
+                  class="row g-3"
+                  action="/brandstore"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
                   <div class="col-12">
                     <label class="form-label"> Name</label>
-                    <input type="text" required class="form-control" />
+                    <input
+                      type="text"
+                      required
+                      class="form-control"
+                      name="name"
+                    />
                   </div>
                   <div class="col-12">
                     <label class="form-label"> Logo</label>
@@ -49,17 +59,28 @@
                       required
                       type="file"
                       id="formFile"
+                      name="image"
                     />
                   </div>
                   <div class="col-12">
                     <label class="form-label"> Link</label>
-                    <input type="text" required class="form-control" />
+                    <input
+                      type="text"
+                      required
+                      class="form-control"
+                      name="link"
+                    />
                   </div>
                   <div class="col-md-12">
                     <label for="bsValidation9" class="form-label"
                       >Choose Option
                     </label>
-                    <select id="bsValidation9" class="form-select" required="">
+                    <select
+                      id="bsValidation9"
+                      class="form-select"
+                      required=""
+                      name="type"
+                    >
                       <option>Brand</option>
                       <option>Store</option>
                     </select>

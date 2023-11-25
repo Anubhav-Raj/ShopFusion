@@ -270,7 +270,7 @@
                   />
                   <%}else{ %>
                   <img
-                    src="<%= user && user.profile %>"
+                    src="<%=user.profile %>"
                     alt=""
                     class="rounded-circle"
                     width="54"
@@ -282,7 +282,7 @@
                       <%= user && user.name %>
                     </h6>
                     <small class="mb-0 dropdown-user-designation text-secondary"
-                      >UI Developer</small
+                      ><%=user&& user.userType %> hi</small
                     >
                   </div>
                 </div>

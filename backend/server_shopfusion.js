@@ -2,6 +2,7 @@ require("./db/db.js");
 const express = require("express");
 const dotenv = require("dotenv");
 const userRouter = require("./routes/user.js");
+const productRouter = require("./routes/product.js");
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -11,7 +12,6 @@ const MongoDBstore = require("connect-mongodb-session")(session);
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("./models/user");
 
@@ -38,7 +38,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 app.set("view engine", "ejs");
-app.use("/files", express.static("uploads"));
+app.use("/files", express.static("uploads/images"));
+app.use(
+  session({
+    secret: "Guide and Tourist is awsome",
+    resave: false,
+    saveUninitialized: false,
+    store: oSessionStore,
+  })
+);
 app.use(
   session({
     secret: process.env.MONGO_SESSION_SECRET,
@@ -49,15 +57,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use(
-  session({
-    secret: "Guide and Tourist is awsome",
-    resave: false,
-    saveUninitialized: false,
-    store: oSessionStore,
-  })
-);
 
 app.use((req, res, next) => {
   if (!req.session.user) {
@@ -83,34 +82,12 @@ app.get("/", async (req, res, next) => {
 });
 
 app.use(userRouter);
+app.use(productRouter);
 
-app.get("/dashboard", async (req, res, next) => {
-  res.render("dashboard", { user: req.user });
-});
-app.get("/brandfrom", async (req, res, next) => {
-  res.render("brand/brand_storePage", { user: req.user });
-});
-app.get("/brandlist", async (req, res, next) => {
-  res.render("brand/brandList", { user: req.user });
-});
-app.get("/addMobileProduct", async (req, res, next) => {
-  res.render("mobile/addMobileProduct", { user: req.user });
-});
 app.get("/addMobileProductList", async (req, res, next) => {
-  res.render("mobile/mobileList", { user: req.user });
-});
-app.get("/mobile-detail", async (req, res, next) => {
-  res.render("mobile/mobiledetailpage", { user: req.user });
-});
-
-app.get("/addProduct", async (req, res, next) => {
-  res.render("product/addProduct", { user: req.user });
-});
-app.get("/addProductList", async (req, res, next) => {
-  res.render("product/addProductList", { user: req.user });
-});
-app.get("/product-detail", async (req, res, next) => {
-  res.render("product/productdetailsPage", { user: req.user });
+  res.render("mobile/mobileList", {
+    user: req.user,
+  });
 });
 
 // google continue
@@ -149,20 +126,6 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-const isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect("/signin");
-};
-
-app.get("/profile", isAuthenticated, (req, res) =>
-  res.render("profile", { user: req.user })
-);
-app.get("/editprofile", isAuthenticated, (req, res) =>
-  res.render("editprofile", { user: req.user })
-);
-
 app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -172,8 +135,7 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/signin" }),
   (req, res) => {
-    req.session.user = req.user;
-    res.redirect("/profile");
+    res.redirect("/dashboard");
   }
 );
 

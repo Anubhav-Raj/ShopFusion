@@ -85,70 +85,29 @@
                      <tr>
                        <th>Brand</th>
                        <th>Logo</th>
-                       <th>Brand ID</th>
+                       <th>Brand Link</th>
                        <th>Type</th>
-                       <th>Product Qty</th>
-                       <th>Date</th>
                       
                      </tr>
                      </thead>
-                     <tbody><tr>
-                      <td>Sport Shoes</td>
-                      <td><img src="assets/images/products/01.png" class="product-img-2" alt="product img"></td>
-                      <td>#9405822</td>
-                      <td><span class="badge bg-light-success text-success w-100">Paid</span></td>
-                      <td>$1250.00</td>
-                      <td>03 Feb 2020</td>
-                     
+                     <tbody>
+                      <% if(brandList.length==0){%>
+                      <p>No Brand Found</p>
+                      <%}else{ %>
+                      <% brandList.forEach(function(brand){ %>
+                      <tr>
+                      <td><%=brand.name %> </td>
+                      <td><img src="<%=brand.img %>" class="product-img-2" alt="product img"></td>
+                      <td><%=brand.link %></td>
+                      <% if(brand.type=="Store"){ %>
+                      <td><span class="badge bg-light-success text-success w-50">Store</span></td>
+                      <% }else{ %>
+                        <td><span class="badge bg-light-success text-danger w-50">Brand</span></td>
+                        <% } %>
                      </tr>
-            
-                     <tr>
-                      <td>Man Headcap</td>
-                      <td><img src="assets/images/products/02.png" class="product-img-2" alt="product img"></td>
-                      <td>#8304620</td>
-                      <td><span class="badge bg-light-warning text-warning w-100">Pending</span></td>
-                      <td>$1500.00</td>
-                      <td>05 Feb 2020</td>
-                      
-                     </tr>
-            
-                     <tr>
-                      <td>Sunglass</td>
-                      <td><img src="assets/images/products/03.png" class="product-img-2" alt="product img"></td>
-                      <td>#4736890</td>
-                      <td><span class="badge bg-light-danger text-danger w-100">Failed</span></td>
-                      <td>$1400.00</td>
-                      <td>06 Feb 2020</td>
-                      
-                     </tr>
-            
-                     <tr>
-                      <td>Shirt Formal</td>
-                      <td><img src="assets/images/products/04.png" class="product-img-2" alt="product img"></td>
-                      <td>#8543765</td>
-                      <td><span class="badge bg-light-success text-success w-100">Paid</span></td>
-                      <td>$1200.00</td>
-                      <td>14 Feb 2020</td>
-                      
-                     </tr>
-                     <tr>
-                      <td>Black Coat Pant</td>
-                      <td><img src="assets/images/products/06.png" class="product-img-2" alt="product img"></td>
-                      <td>#9629240</td>
-                      <td><span class="badge bg-light-warning text-warning w-100">Pending</span></td>
-                      <td>$1500.00</td>
-                      <td>18 Feb 2020</td>
-                      
-                     </tr>
-                     <tr>
-                      <td>Heals</td>
-                      <td><img src="assets/images/products/05.png" class="product-img-2" alt="product img"></td>
-                      <td>#8506790</td>
-                      <td><span class="badge bg-light-danger text-danger w-100">Failed</span></td>
-                      <td>$1800.00</td>
-                      <td>21 Feb 2020</td>
-                     
-                     </tr>
+                     <%})%>
+                      <%}%>
+             
                       </tbody>
                     </table>
               </div>

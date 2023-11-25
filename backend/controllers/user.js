@@ -1,6 +1,8 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
+const fileDelete = require("../utils/files-delete");
+const fs = require("fs");
 
 const mailSender = require("../utils/mail-send");
 exports.getSignUp = (req, res) => {
@@ -62,10 +64,12 @@ exports.getSignin = (req, res) => {
     email: "",
   });
 };
+
 exports.postSignin = async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email: email });
+  var user = {};
+  user = await User.findOne({ email: email });
   if (!user) {
     return res.render("signin", {
       email: email,
@@ -89,10 +93,14 @@ exports.postSignin = async (req, res) => {
       message: "Something went wrong!",
     });
   }
-  var userType = "user";
-  if (email === "admin@shopfusion.com") {
-    userType = "admin";
+  if (!user.verified) {
+    return res.render("signin", {
+      email: "",
+      password: "",
+      message: "Verify your mail!",
+    });
   }
+
   req.session.isAuthenticated = true;
   req.session.user = user;
   req.isAuthenticated = true;
@@ -119,5 +127,65 @@ exports.verifyUsr = async (req, res) => {
 };
 
 exports.getDashboard = async (req, res) => {
-  res.render("dashboard");
+  if (!req.user.isProfileComplete) {
+    return res.redirect("/editprofile");
+  }
+  res.render("dashboard", {
+    user: req.user,
+  });
+};
+
+exports.getProfile = async (req, res) => {
+  res.render("profile", {
+    user: req.user,
+  });
+};
+
+exports.getEditProfile = async (req, res) => {
+  res.render("editprofile", {
+    user: req.user,
+  });
+};
+
+exports.postEditProfile = async (req, res) => {
+  const { name, mobile, near, city, state, country, pincode } = req.body;
+  const user = await User.findById(req.user._id);
+  var profile = user.profile;
+  if (req.file) {
+    var image_name = profile.split("/")[2];
+    const pathImg = "uploads/images/" + image_name;
+    if (profile && fs.existsSync(pathImg)) {
+      fileDelete.deleteFiles(pathImg);
+    }
+    profile = "/files/" + req.file.filename;
+  }
+
+  user.name = name;
+  user.mobile = mobile;
+  const address = [];
+  if (Array.isArray(near)) {
+    for (var i = 0; i < near.length; i++) {
+      address.push({
+        near: near[i],
+        city: city[i],
+        state: state[i],
+        country: country[i],
+        pincode: pincode[i],
+      });
+    }
+  } else {
+    address.push({
+      near: near,
+      city: city,
+      state: state,
+      country: country,
+      pincode: pincode,
+    });
+  }
+  user.address = address;
+  user.profile = profile;
+  user.isProfileComplete = true;
+  await user.save();
+  req.user = user;
+  res.redirect("/profile");
 };
