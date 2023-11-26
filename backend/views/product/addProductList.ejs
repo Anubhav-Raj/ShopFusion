@@ -39,6 +39,26 @@
     <link href="assets/css/semi-dark.css" rel="stylesheet" />
     <link href="assets/css/header-colors.css" rel="stylesheet" />
 
+
+    <style>
+      .action{
+         display: flex;
+          gap: 10px;
+          cursor: pointer;
+
+      }
+      .view{
+            padding: 10px;
+      }
+      .edit{
+        padding: 10px;
+
+      }
+        .delete{
+          padding: 10px;
+        }
+      
+     </style>
     <%- include('../common/title.ejs') %>
     <!--start wrapper-->
     <div class="wrapper">
@@ -90,6 +110,7 @@
                        <th>Amount</th>
                        <th>Date</th>
                        <th>Shipping</th>
+                       <th>Action</th>
                      </tr>
                      </thead>
                      <tbody><tr>
@@ -103,6 +124,7 @@
                         <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
                         </div>
                       </td>
+                    
                      </tr>
             
                      <tr>
@@ -112,9 +134,14 @@
                       <td><span class="badge bg-light-warning text-warning w-100">Pending</span></td>
                       <td>$1500.00</td>
                       <td>05 Feb 2020</td>
-                      <td><div class="progress" style="height: 5px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 60%"></div>
-                        </div></td>
+                      <td>
+                        <div class="action">
+
+                          <div class="view badge bg-light-success text-success w-100">View</div>
+                          <div class="edit badge bg-light-warning text-warning w-100"> Edit</div>
+                           <div class="delete badge bg-light-danger text-danger w-100">Delete</div>
+                        </div>
+                      </td>
                      </tr>
             
                      <tr>
@@ -124,8 +151,12 @@
                       <td><span class="badge bg-light-danger text-danger w-100">Failed</span></td>
                       <td>$1400.00</td>
                       <td>06 Feb 2020</td>
-                      <td><div class="progress" style="height: 5px;">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 70%"></div>
+                      <td>
+                        <div class="action">
+
+                          <div class="view badge bg-light-success text-success w-100">View</div>
+                          <div class="edit badge bg-light-warning text-warning w-100"> Edit</div>
+                           <div class="delete badge bg-light-danger text-danger w-100">Delete</div>
                         </div></td>
                      </tr>
             
@@ -136,9 +167,12 @@
                       <td><span class="badge bg-light-success text-success w-100">Paid</span></td>
                       <td>$1200.00</td>
                       <td>14 Feb 2020</td>
-                      <td><div class="progress" style="height: 5px;">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-                        </div></td>
+                      <td> <div class="action">
+
+                        <div class="view badge bg-light-success text-success w-100">View</div>
+                        <div class="edit badge bg-light-warning text-warning w-100"> Edit</div>
+                         <div class="delete badge bg-light-danger text-danger w-100">Delete</div>
+                      </div></td>
                      </tr>
                      <tr>
                       <td>Black Coat Pant</td>
@@ -147,9 +181,12 @@
                       <td><span class="badge bg-light-warning text-warning w-100">Pending</span></td>
                       <td>$1500.00</td>
                       <td>18 Feb 2020</td>
-                      <td><div class="progress" style="height: 5px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 60%"></div>
-                        </div></td>
+                      <td> <div class="action">
+
+                        <div class="view badge bg-light-success text-success w-100">View</div>
+                        <div class="edit badge bg-light-warning text-warning w-100"> Edit</div>
+                         <div class="delete badge bg-light-danger text-danger w-100">Delete</div>
+                      </div></td>
                      </tr>
                      <tr>
                       <td>Heals</td>
@@ -158,9 +195,12 @@
                       <td><span class="badge bg-light-danger text-danger w-100">Failed</span></td>
                       <td>$1800.00</td>
                       <td>21 Feb 2020</td>
-                      <td><div class="progress" style="height: 5px;">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 40%"></div>
-                        </div></td>
+                      <td> <div class="action">
+
+                        <div class="view badge bg-light-success text-success w-100">View</div>
+                        <div class="edit badge bg-light-warning text-warning w-100"> Edit</div>
+                         <div class="delete badge bg-light-danger text-danger w-100">Delete</div>
+                      </div></td>
                      </tr>
                       </tbody>
                     </table>
