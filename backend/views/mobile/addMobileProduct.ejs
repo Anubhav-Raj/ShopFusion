@@ -202,7 +202,7 @@
                         placeholder="Description."
                         name="description"
                         rows="3"
-                        required
+                        
                       ></textarea>
                     </div>
                     <div class="col-12 col-lg-6">
@@ -725,15 +725,10 @@
                   class="bs-stepper-pane"
                   aria-labelledby="stepper1trigger3"
                 >
+               
                   <div class="form-container">
                     <div style="text-align: end">
-                      <button
-                        onclick="addStudent()"
-                        type="button"
-                        class="btn btn-primary my-4"
-                      >
-                        Add Feature
-                      </button>
+                      <button onclick="addFeature()" type="button" class="btn btn-primary my-4">Add Feature</button>
                     </div>
                     <div id="students-container"></div>
                   </div>
@@ -748,7 +743,7 @@
                       </button>
                       <button
                         class="btn btn-success px-4"
-                        onclick="submitForm()"
+                        onclick="getStructuredData()"
                         type="submit"
                       >
                         Submit
@@ -821,10 +816,12 @@
   }
 
   // JavaScript
-  let studentCounter = 0;
+ let studentCounter = 0;
+ let pairCounts = [];
 
-  function addStudent() {
+  function addFeature() {
     studentCounter++;
+    pairCounts.push(1); 
     const studentsContainer = document.getElementById("students-container");
 
     const studentDiv = document.createElement("div");
@@ -852,7 +849,7 @@
                         />
                       </div>
                       <div style=" text-align: end;">
-                        <button  type="button" onclick="addSubject(${studentCounter})" class="btn " >Add Pair</button>
+                        <button  type="button" onclick="addPair(${studentCounter})" class="btn " >Add Pair</button>
                         </div>
 
                       <div  class="keyvalue-form" style="display: flex; justify-content: space-between">
@@ -862,6 +859,8 @@
                               <label for="Position1" class="form-label">Key</label>
                               <input type="text" id="key" class="form-control" name="key" placeholder="Position" />
                             </div>
+
+
 
 
                             <div class="col-12 col-lg-5">
@@ -882,10 +881,15 @@
                 
           </div>
          
-        <button   type="button" onclick="removeStudent(this.parentElement)" class="btn" style="position: absolute;
+        <button   type="button" onclick="removeFeature(this.parentElement)" class="btn" style="position: absolute;
     right: 0%;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
       
-        <div id="subjects-container${studentCounter}"></div>
+        <div id="subjects-container${studentCounter}">
+          <input type="text" id="feature" class="form-control"  name= "feature" value="${studentCounter}" placeholder="Position" hidden />
+          <input type="text"  id="pairCount${studentCounter}" name="featurevalue" value="0" class="form-control"  placeholder="Position" hidden />
+         
+        </div>
+        
          <hr>
         
   `;
@@ -893,12 +897,12 @@
     studentsContainer.appendChild(studentDiv);
   }
 
-  function removeStudent(studentElement) {
+  function removeFeature(studentElement) {
     const studentsContainer = document.getElementById("students-container");
     studentsContainer.removeChild(studentElement);
   }
 
-  function addSubject(studentId) {
+  function addPair(studentId) {
     const subjectsContainer = document.getElementById(
       `subjects-container${studentId}`
     );
@@ -925,7 +929,7 @@
       <div class="col-12 col-lg-1" style="margin-top: 40px">
         <label for="InputPassword" class="form-label"></label>
       
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" onclick="removeSubject(${studentId})"">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" onclick="removePair(${studentId})"">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
@@ -936,9 +940,13 @@
   `;
 
     subjectsContainer.appendChild(subjectDiv);
+    pairCounts[studentId - 1]++; // Arrays are zero-indexed
+
+  // You can now use pairCounts array to access the count for each feature
+  updatePairCount(studentId);
   }
 
-  function removeSubject(studentId) {
+  function removePair(studentId) {
     const subjectsContainer = document.getElementById(
       `subjects-container${studentId}`
     );
@@ -946,8 +954,28 @@
       subjectsContainer.getElementsByClassName("subject-container");
     if (subjects.length > 1) {
       subjectsContainer.removeChild(subjects[subjects.length - 1]);
+       // Update the pair count for the associated feature
+    pairCounts[studentId - 1]--; // Arrays are zero-indexed
+
+// You can now use pairCounts array to access the count for each feature
+updatePairCount(studentId);
     }
+  } 
+
+function updatePairCount(studentId) {
+  const count = pairCounts[studentId - 1];
+  const countInput = document.getElementById(`pairCount${studentId}`);
+ console.log(countInput.value);
+  if (countInput) {
+    countInput.value = count;
+  } else {
+    console.error(`Input with ID pairCount${studentId} not found.`);
   }
+}
+
+
+ 
+
 </script>
 
 <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
@@ -955,6 +983,6 @@
 <script src="assets/plugins/bs-stepper/js/main.js"></script>
 <script src="assets/plugins/validation/jquery.validate.min.js"></script>
 <script src="assets/plugins/validation/validation-script.js"></script>
-<script src="assets/js/todo.js"></script>
+
 
 <%- include('../common/footer.ejs') %>
