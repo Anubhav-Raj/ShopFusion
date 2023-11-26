@@ -821,7 +821,7 @@
 
   function addFeature() {
     studentCounter++;
-    pairCounts.push(1); 
+    pairCounts.push(0); 
     const studentsContainer = document.getElementById("students-container");
 
     const studentDiv = document.createElement("div");
@@ -852,42 +852,25 @@
                         <button  type="button" onclick="addPair(${studentCounter})" class="btn " >Add Pair</button>
                         </div>
 
-                      <div  class="keyvalue-form" style="display: flex; justify-content: space-between">
-
-
-                            <div class="col-12 col-lg-4">
-                              <label for="Position1" class="form-label">Key</label>
-                              <input type="text" id="key" class="form-control" name="key" placeholder="Position" />
-                            </div>
-
-
-
-
-                            <div class="col-12 col-lg-5">
-                              <label for="Experience2" class="form-label">Value</label>
-                              <textarea class="form-control"  id="value" name="value" rows="1" ></textarea>
-                            </div>
-
-
-                            <div class="col-12 col-lg-1" style="margin-top: 40px">
-                              <label for="InputPassword" class="form-label"></label>
-                              
-                            </div>
-
-                            </div>
+                   
                         
                         
                     </div>
                 
           </div>
          
-        <button   type="button" onclick="removeFeature(this.parentElement)" class="btn" style="position: absolute;
-    right: 0%;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+        
+        
+          <button type="button" onclick="removeFeature(this.parentElement)" class="btn" style="position: absolute; right: 0%; background-color: red; border-color: red;  color:white">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash">
+    <polyline points="3 6 5 6 21 6"></polyline>
+    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+  </svg>
+</button>
+
       
         <div id="subjects-container${studentCounter}">
-          <input type="text" id="feature" class="form-control"  name= "feature" value="${studentCounter}" placeholder="Position" hidden />
-          <input type="text"  id="pairCount${studentCounter}" name="featurevalue" value="0" class="form-control"  placeholder="Position" hidden />
-         
+       <input type="text"  id="pairCount${studentCounter}" name="featurevalue" value="0" class="form-control"  placeholder="Position" hidden />
         </div>
         
          <hr>
