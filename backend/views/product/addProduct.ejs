@@ -1,6 +1,11 @@
 <%- include('../common/header.ejs') %>
 <link href="assets/plugins/bs-stepper/css/bs-stepper.css" rel="stylesheet" />
-
+<style>
+  .hr {
+    margin: 4rem 0 !important;
+    opacity: 2.25 !important;
+  }
+</style>
 <%- include('../common/title.ejs') %>
 
 <div class="wrapper">
@@ -781,32 +786,23 @@
                           placeholder="Experience 1"
                         />
                       </div>
-                      <div style=" text-align: end;">
-                        <button  type="button" onclick="addPair(${studentCounter})" class="btn " >Add Pair</button>
+                        <div style=" text-align: end; padding:1%;">
+                        <button type="button"  onclick="addPair(${studentCounter})" class="btn btn-primary btn-ecomm">
+                          <i class="bx bx-plus-circle"></i>Add Pair</button>
                         </div>
-
-                   
-                        
-                        
                     </div>
-                
+         
           </div>
          
-        
-        
-          <button type="button" onclick="removeFeature(this.parentElement)" class="btn" style="position: absolute; right: 0%; background-color: red; border-color: red;  color:white">
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash">
-    <polyline points="3 6 5 6 21 6"></polyline>
-    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-  </svg>
-</button>
+          <button type="button" onclick="removeFeature(this.parentElement)" " class="btn btn-primary btn-ecomm" style="position: absolute; right: 0%;">
+            <i class="bx bx-x-circle"></i>Remove Feature</button>
 
       
         <div id="subjects-container${studentCounter}">
-       <input type="text"  id="pairCount${studentCounter}" name="featurevalue" value="0" class="form-control"  placeholder="Position" hidden />
+         <input type="text"  id="pairCount${studentCounter}" name="featurevalue" value="0" class="form-control"  placeholder="Position" hidden />
         </div>
         
-         <hr>
+         <hr class="hr">
         
   `;
 
