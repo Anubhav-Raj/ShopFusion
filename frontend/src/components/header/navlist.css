@@ -1,0 +1,345 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+    font-size: var(--font-size);
+    line-height: 1.5;
+    color: var(--color-text);
+    background: var(--bg-body);
+}
+
+body {
+    /* CSS Variables that may have been missed get put on body */
+    --top: 52px;
+    --top: 38px;
+    --s: 24px;
+    --s: 14px;
+    --img-size: 24px;
+    --img-size: 32px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+    font-size: var(--font-size);
+    line-height: 1.5;
+    color: var(--color-text);
+    background: var(--bg-body);
+    height: 100%;
+    overscroll-behavior-x: none;
+    scrollbar-gutter: stable;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+html {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+    font-size: var(--font-size);
+    line-height: 1.5;
+    color: var(--color-text);
+    background: var(--bg-body);
+    height: 100%;
+    overscroll-behavior-x: none;
+    scrollbar-gutter: stable;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+:root {
+    --bg-body: gainsboro;
+    --color-link: #007af5;
+    --color-link-hover: #0059b3;
+    --color-text: #333;
+    --main-width: 1220px;
+    --font-size: 14px;
+    --ph: 12px;
+    --nph: calc(-1 * var(--ph));
+    --phh: var(--ph);
+    --nphh: calc(-1 * var(--phh));
+}
+
+@media (min-width: 750px) {
+    :root {
+        --font-size: 15.45px;
+        --bg-body: #f1f3f6;
+        --ph: 16px;
+    }
+}
+
+.sm-desktop-nav {
+    background: #0c468d;
+    background: linear-gradient(120deg, #0a3a75 0%, #0c468d 25%, #0c468d 75%, #0a3a75 100%);
+    font-size: 14px;
+    font-weight: 500;
+    border-top: 1px solid #093367;
+    color: #b9d6f9;
+}
+
+ul {
+    list-style: none;
+}
+
+.sm-desktop-nav>ul {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: start;
+    grid-gap: 20px;
+    max-width: var(--main-width);
+    margin: 0 auto;
+    padding: 0 16px;
+    height: 40px;
+}
+
+.sm-desktop-nav>ul>li {
+    position: relative;
+    cursor: pointer;
+}
+
+.sm-desktop-nav>ul>li {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.sm-desktop-nav>ul>li:hover {
+    color: #fff;
+}
+
+.sm-desktop-nav>ul>li>a:hover,
+.sm-desktop-nav>ul>li:hover {
+    color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-link);
+    cursor: pointer;
+}
+
+.sm-desktop-nav>ul>li>a {
+    color: #b9d6f9;
+    padding: 0 8px;
+}
+
+.sm-desktop-nav>ul>li>a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+a:hover {
+    color: var(--color-link-hover);
+}
+
+.sm-desktop-nav>ul>li,
+.sm-desktop-nav>ul>li>a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.sm-desktop-nav>ul>li>a {
+    color: #b9d6f9;
+    padding: 0 8px;
+}
+
+.sm-dropdown {
+    --top: 52px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 100%;
+}
+
+.sm-desktop-nav .sm-dropdown {
+    --top: 38px;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
+.icon {
+    --s: 24px;
+    width: var(--s);
+    height: var(--s);
+    fill: currentColor;
+    position: relative;
+    box-sizing: content-box;
+    display: inline-block;
+    line-height: 1;
+}
+
+.sm-dropdown>.d {
+    --s: 14px;
+    opacity: .7;
+    margin-left: 3px;
+    transition: all .1s ease-out;
+}
+
+.sm-dropdown>.icon:first-child {
+    margin-right: 6px;
+}
+
+.sm-dropdown>.x {
+    display: none;
+    position: absolute;
+    top: var(--top);
+    z-index: 10;
+    right: 0;
+}
+
+.sm-dropdown>.x::before {
+    content: "";
+    display: block;
+    border: 10px solid transparent;
+    border-bottom: 10px solid white;
+    width: 0;
+    position: absolute;
+    top: -20px;
+    right: 38px;
+    z-index: 1;
+}
+
+.sm-menu {
+    --img-size: 24px;
+    display: grid;
+    background: white;
+    padding: 8px 0;
+    border-radius: 3px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    contain: content;
+    box-shadow: 0 5px 5px -3px #0003, 0 8px 10px 1px #00000024, 0 3px 14px 2px #0000001f;
+}
+
+.sm-desktop-nav .sm-menu {
+    --img-size: 32px;
+}
+
+.sm-desktop-nav .sm-dn-menu {
+    position: relative;
+    right: -25%;
+}
+
+.sm-menu>a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 16px;
+    position: relative;
+    text-decoration: none;
+    user-select: none;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--color-text);
+}
+
+.sm-menu>a:hover {
+    background: #ebebff;
+}
+
+.sm-menu>a.subHeading {
+    font-weight: 700;
+    font-size: 16px;
+    border-width: 1px 0;
+    margin-bottom: -4px;
+    flex-direction: row-reverse;
+}
+
+.sm-menu>a.subHeading:not(:first-child) {
+    margin-top: 4px;
+}
+
+.sm-menu-column {
+    grid-area: 1 / var(--n) / 1 / var(--n);
+    margin: -8px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sm-img {
+    max-width: 100%;
+    max-height: 100%;
+    font-size: 0;
+    object-fit: contain;
+}
+
+.sm-menu>a>img {
+    width: var(--img-size);
+    height: var(--img-size);
+    margin: 0 10px 0 -3px;
+    background: #888;
+    border-radius: 50%;
+    max-width: var(--img-size);
+    max-height: var(--img-size);
+}
+
+.sm-desktop-nav .sm-menu>a>img {
+    background: none;
+    border-radius: 0;
+}
+
+.sm-menu>a>.text {
+    color: var(--color-text);
+    flex: 1;
+    white-space: nowrap;
+}
+
+.sm-menu-column>.title {
+    padding: 9px 16px;
+    font-size: 16px;
+    background: aliceblue;
+}
+
+.sm-menu-column .sm-menu {
+    box-shadow: none;
+    border: none;
+    padding-top: 2px;
+}
+
+.sm-menu>a.bold {
+    font-weight: 700;
+}
+
+
+/* These were inline style tags. Uses id+class to override almost everything */
+#style-QTWrm.style-QTWrm {
+    --n: 1;
+}
+
+#style-NAiPx.style-NAiPx {
+    --n: 2;
+}
+
+#style-ql1Zd.style-ql1Zd {
+    --n: 3;
+}
+
+#style-DL8o5.style-DL8o5 {
+    --n: 1;
+}
+
+#style-LhzgU.style-LhzgU {
+    --n: 2;
+}
+
+#style-HIFoA.style-HIFoA {
+    --n: 1;
+}
+
+#style-9IJEl.style-9IJEl {
+    --n: 2;
+}
+
+
+
+@media (max-width: 1000px) {
+    .hide-on-small-screen {
+        display: none;
+    }
+}
