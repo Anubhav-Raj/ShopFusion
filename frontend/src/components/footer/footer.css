@@ -1,0 +1,199 @@
+body {  
+    font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol;
+    font-size:var(--font-size);
+    line-height:1.5;
+    color:var(--color-text);
+    background:var(--bg-body);
+  }  
+body { 
+/* CSS Variables that may have been missed get put on body */ 
+    --s:  24px;  
+    --s:  32px; 
+} 
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box;
+} 
+
+body { 
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol; 
+    font-size: var(--font-size); 
+    line-height: 1.5; 
+    color: var(--color-text); 
+    background: var(--bg-body); 
+    height: 100%; 
+    overscroll-behavior-x: none; 
+    scrollbar-gutter: stable; 
+    -webkit-text-size-adjust: none; 
+    text-size-adjust: none;
+} 
+
+html { 
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol; 
+    font-size: var(--font-size); 
+    line-height: 1.5; 
+    color: var(--color-text); 
+    background: var(--bg-body); 
+    height: 100%; 
+    overscroll-behavior-x: none; 
+    scrollbar-gutter: stable; 
+    -webkit-text-size-adjust: none; 
+    text-size-adjust: none;
+} 
+
+:root { 
+    --bg-body: gainsboro; 
+    --bg-header: hsl(213, 84%, 25%); 
+    --color-link: #007af5; 
+    --color-link-hover: #0059b3; 
+    --color-text: #333; 
+    --main-width: 1220px; 
+    --font-size: 14px; 
+    --ph: 12px; 
+    --nph: calc(-1 * var(--ph)); 
+    --phh: var(--ph); 
+    --nphh: calc(-1 * var(--phh)); 
+    --mv: 6px; 
+} 
+
+@media (min-width: 750px){ 
+  :root { 
+    --font-size: 15.45px; 
+    --bg-body: #f1f3f6; 
+    --ph: 16px; 
+    --mv: 16px;
+  } 
+}     
+
+footer { 
+    background: var(--bg-header); 
+    color: #fff; 
+    font-size: .9286rem;
+} 
+
+.sm-footer { 
+    max-width: var(--main-width); 
+    margin: 0 auto; 
+    padding: var(--mv) var(--ph);
+} 
+
+.sm-footer-top { 
+    display: flex; 
+    justify-content: space-between;
+} 
+
+.sm-footer-c { 
+    padding-top: 16px; 
+    display: flex; 
+    border-top: 1px solid hsl(213,84%,33%); 
+    margin-top: 16px;
+} 
+
+.sm-footer-top > div:first-child  { 
+    width: 210px;
+} 
+
+.sm-footer-nav { 
+    display: flex; 
+    justify-content: space-between;
+} 
+
+.sm-footer-nav { 
+    flex: 1; 
+    margin-left: 110px;
+} 
+
+a { 
+    text-decoration: none; 
+    color: var(--color-link); 
+    cursor: pointer;
+} 
+
+.sm-footer a  { 
+    color: #b9d6f9;
+} 
+
+.sm-footer .logo  { 
+    display: block; 
+    margin: calc(-1 * var(--mv)) 0 20px 0; 
+    width: 186px; 
+    height: 60px;
+} 
+
+a:hover { 
+    color: var(--color-link-hover);
+} 
+
+.sm-footer a:hover { 
+    color: #7abdff; 
+    text-decoration: underline;
+} 
+
+.sm-footer-social { 
+    display: grid; 
+    grid-template-columns: repeat(4,auto); 
+    justify-content: space-between; 
+    grid-gap: 20px 0;
+} 
+
+.sm-footer-nav > div  { 
+    display: grid; 
+    grid-auto-rows: min-content; 
+    grid-gap: 4px;
+} 
+
+.sm-footer-nav h3  { 
+    margin-bottom: 6px; 
+    font-size: 20px;
+} 
+
+.icon { 
+    width: 24px; 
+    height: 24px;
+} 
+
+.icon { 
+    --s: 24px; 
+    width: var(--s); 
+    height: var(--s); 
+    fill: currentColor; 
+    position: relative; 
+    box-sizing: content-box; 
+    display: inline-block; 
+    line-height: 1;
+} 
+
+.sm-footer-social svg  { 
+    --s: 32px;
+} 
+
+
+/* These were inline style tags. Uses id+class to override almost everything */
+#style-yRG5W.style-yRG5W {  
+   flex:1;  
+}  
+#style-McFoN.style-McFoN {  
+   margin:0 10px;  
+}  
+#style-V5Bd4.style-V5Bd4 {  
+   margin:0 10px;  
+}  
+
+@media (max-width: 900px) {
+    .hide-on-small-screen1 {
+        display: none;
+    }
+    .sm-footer .logo {
+        display: none;
+    }
+    .sm-footer-social {
+        display: flex;
+        justify-content: space-around;
+    }
+    .sm-footer-top > div:first-child {
+        /* width: 210px; */
+        width: 100%;
+    }
+}

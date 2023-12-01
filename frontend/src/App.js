@@ -1,11 +1,16 @@
 import React from "react";
 import Navebar from "./components/header/navebar";
-import Preloder from "./components/preloader/preloder";
+import Navlist from "./components/header/navlist";
+import Footer from "./components/footer/footer";
+import Home from "./pages/Home/Home";
+// import Preloder from "./components/preloader/preloder";
 function App() {
   return (
     <>
-      <Preloder />
-      {/* <Navebar /> */}
+      <Navebar />
+      <Navlist />
+      <Home />
+      <Footer />
     </>
   );
 }
