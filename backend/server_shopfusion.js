@@ -84,12 +84,6 @@ app.get("/", async (req, res, next) => {
 app.use(userRouter);
 app.use(productRouter);
 
-app.get("/addMobileProductList", async (req, res, next) => {
-  res.render("mobile/mobileList", {
-    user: req.user,
-  });
-});
-
 // google continue
 passport.use(
   new GoogleStrategy(

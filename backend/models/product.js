@@ -5,12 +5,11 @@ const mongoose = require("mongoose");
 const productSchema = mongoose.Schema(
   {
     name: String,
-    brands: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: "BrandStore",
-      },
-    ],
+    brands: {
+      type: mongoose.Types.ObjectId,
+      ref: "BrandStore",
+    },
+
     stores: [
       {
         type: mongoose.Types.ObjectId,

@@ -81,11 +81,164 @@ exports.getaddMobileProduct = async (req, res) => {
 };
 
 exports.postaddmobileproduct = async (req, res) => {
+  var images = [];
+  const {
+    stores,
+    key,
+    pair,
+    ScreenSize,
+    availability,
+    launchedwithin,
+    Display,
+    description,
+    featurevalue,
+    price,
+    link,
+    title,
+    Design,
+    ScreenResolution,
+    FrontCamera,
+    RearCamera,
+    CPU,
+    RAM,
+    BatterySize,
+    AndroidVersion,
+    InbuiltMemory,
+    AspectRatio,
+    RefreshRate,
+    CPUManufacturer,
+    GPUManufacturer,
+    brands,
+  } = req.body;
+
+  for (var i = 0; i < req.files.length; i++) {
+    images.push("files/" + req.files[i].filename);
+  }
+  var priceAt = [];
+
+  if (Array.isArray(stores)) {
+    for (var i = 0; i < stores.length; i++) {
+      priceAt.push({
+        stores: stores[i],
+        price: price[i],
+        link: link[i],
+      });
+    }
+  } else {
+    priceAt.push({
+      store: stores,
+      price: price,
+      link: link,
+    });
+  }
+
+  var features = [];
+  if (Array.isArray(title)) {
+    var k = 0;
+    for (var i = 0; i < title.length; i++) {
+      var keyPair = [];
+      if (Array.isArray(featurevalue)) {
+        for (var j = 0; j < Number(featurevalue[i]); j++) {
+          keyPair.push({
+            key: key[k],
+            pair: pair[k],
+          });
+          k++;
+        }
+      } else {
+        for (var j = 0; j < Number(featurevalue); j++) {
+          keyPair.push({
+            key: key[k],
+            pair: pair[k],
+          });
+          k++;
+        }
+      }
+      features.push({
+        title: title[i],
+        keyPair: keyPair,
+      });
+    }
+  } else {
+    var keyPair = [];
+    if (Number(featurevalue) > 2) {
+      for (var j = 0; j < Number(featurevalue); j++) {
+        keyPair.push({
+          key: key[j],
+          pair: pair[j],
+        });
+        k++;
+      }
+    } else {
+      keyPair.push({
+        key: key,
+        pair: pair,
+      });
+    }
+    features.push({
+      title: title,
+      keyPair: keyPair,
+    });
+  }
+
+  const p = new Product({
+    name: req.body.name,
+    images: images,
+    brands: brands,
+    priceAt: priceAt,
+    features: features,
+    availability: availability,
+    launchedwithin: launchedwithin,
+    description: description,
+    ScreenSize: ScreenSize,
+    Display: Display,
+    Design: Design,
+    ScreenResolution: ScreenResolution,
+    FrontCamera: FrontCamera,
+    RearCamera: RearCamera,
+    CPU: CPU,
+    RAM: RAM,
+    BatterySize: BatterySize,
+    AndroidVersion: AndroidVersion,
+    InbuiltMemory: InbuiltMemory,
+    AspectRatio: AspectRatio,
+    RefreshRate: RefreshRate,
+    CPUManufacturer: CPUManufacturer,
+    GPUManufacturer: GPUManufacturer,
+  });
+  await p.save();
+  return res.redirect("/addMobileProductList");
+};
+
+exports.getaddMobileProductList = async (req, res) => {
+  const products = await Product.find();
+
+  res.render("mobile/mobileList", {
+    user: req.user,
+    products: products,
+  });
+};
+
+exports.getAddProduct = async (req, res) => {
+  const bs = await BrandStore.find({ type: "Brand" });
+
+  res.render("product/addProduct", {
+    user: req.user,
+    brands: bs,
+  });
+};
+exports.postAddProduct = async (req, res) => {
   console.log(req.body);
 };
 
-exports.getAddProduct = async = (req, res) => {
-  res.render("product/addProduct", {
+exports.getProductDetails = async (req, res) => {
+  res.render("product/productdetailsPage", {
+    user: req.user,
+  });
+};
+
+exports.getaddProductList = async (req, res) => {
+  res.render("product/addProductList", {
     user: req.user,
   });
 };

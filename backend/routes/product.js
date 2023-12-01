@@ -31,7 +31,14 @@ router.post(
   upload.array("images", 10),
   productCon.postaddmobileproduct
 );
-
+router.get(
+  "/addMobileProductList",
+  isLoggedIn,
+  isAdmin,
+  productCon.getaddMobileProductList
+);
 router.get("/addproduct", isLoggedIn, productCon.getAddProduct);
+router.get("/product-details", isLoggedIn, productCon.getProductDetails);
+router.get("/addProductList", isLoggedIn, productCon.getaddProductList);
 
 module.exports = router;

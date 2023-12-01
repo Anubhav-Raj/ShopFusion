@@ -161,9 +161,10 @@
                         aria-label="Default select example"
                       >
                         <option selected>Choose Brand</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <% for(var i=0; i<brands.length; i++){ %>
+                        <option value="<%=brands[i]._id %>"><%=brands[i].name %></option>
+                        <% } %>
+                       
                       </select>
                     </div>
                     <div class="col-12 col-lg-6">
@@ -218,7 +219,7 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="Used Time"
+                        name="UsedTime"
                         aria-label="Default select example"
                       >
                         <option selected>Choose Used Time</option>
@@ -308,7 +309,7 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="Screen Size"
+                        name="ScreenSize"
                         aria-label="Default select example"
                       >
                         <option selected>Choose Screen Size</option>
@@ -383,7 +384,7 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="Screen Resolution"
+                        name="ScreenResolution"
                         aria-label="Default select example"
                       >
                         <option selected>Choose Screen Resolution</option>
@@ -408,7 +409,7 @@
                       >
                       <select
                         class="form-select"
-                        name="Front Camera"
+                        name="FrontCamera"
                         id="InputCountry"
                         aria-label="Default select example"
                       >
@@ -438,7 +439,7 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="Rear Camera"
+                        name="RearCamera"
                         aria-label="Default select example"
                       >
                         <option selected>Choose Rear Camera</option>
@@ -535,7 +536,7 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="Android Version"
+                        name="AndroidVersion"
                         aria-label="Default select example"
                       >
                         <option selected>Choose Android Version</option>
@@ -777,7 +778,7 @@
                           type="text"
                           class="form-control"
                           id="name${studentCounter}"
-                          name="tile"
+                          name="title"
                           placeholder="Experience 1"
                         />
                       </div>

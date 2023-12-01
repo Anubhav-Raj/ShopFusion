@@ -23,11 +23,6 @@ router.get("/logout", function (req, res, next) {
 router.get("/dashboard", isLoggedIn, userCon.getDashboard);
 router.get("/profile", isLoggedIn, userCon.getProfile);
 router.get("/editProfile", isLoggedIn, userCon.getEditProfile);
-router.post(
-  "/editprofile",
-  isLoggedIn,
-
-  userCon.postEditProfile
-);
+router.post("/editprofile", isLoggedIn, userCon.postEditProfile);
 
 module.exports = router;
