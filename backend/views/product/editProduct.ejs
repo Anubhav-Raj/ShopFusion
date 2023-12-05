@@ -1,0 +1,945 @@
+<%- include('../common/header.ejs') %>
+<link href="assets/plugins/bs-stepper/css/bs-stepper.css" rel="stylesheet" />
+<style>
+  .hr {
+    margin: 4rem 0 !important;
+    opacity: 2.25 !important;
+  }
+</style>
+<%- include('../common/title.ejs') %>
+
+<div class="wrapper">
+  <%-include('../common/sidebar .ejs') %> <%- include('../common/navbar.ejs') %>
+
+  <!-- Main code start -->
+  <div class="page-content-wrapper">
+    <div class="page-content">
+      <!--start breadcrumb-->
+      <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">Product</div>
+        <div class="ps-3">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 p-0 align-items-center">
+              <li class="breadcrumb-item">
+                <a href="javascript:;"
+                  ><ion-icon
+                    name="home-outline"
+                    role="img"
+                    class="md hydrated"
+                    aria-label="home outline"
+                  ></ion-icon
+                ></a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                Edit Product
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+      <!--end breadcrumb-->
+      <!--start stepper One-->
+      <div id="stepper1" class="bs-stepper">
+        <div
+          class="card"
+          class="card d-lg-flex flex-lg-row align-items-lg-center justify-content-lg-between"
+        >
+          <div class="card-header">
+            <div
+              role="tablist"
+              style="display: flex; justify-content: space-between"
+            >
+              <div class="step" data-target="#test-l-1">
+                <div
+                  class="step-trigger"
+                  role="tab"
+                  id="stepper1trigger1"
+                  aria-controls="test-l-1"
+                >
+                  <div class="bs-stepper-circle">
+                    <i class="bx bx-user fs-4"></i>
+                  </div>
+                  <div class="">
+                    <h5 class="mb-0 steper-title">Product Info</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="step" data-target="#test-l-2">
+                <div
+                  class="step-trigger"
+                  role="tab"
+                  id="stepper1trigger2"
+                  aria-controls="test-l-2"
+                >
+                  <div class="bs-stepper-circle">
+                    <i class="bx bx-file fs-4"></i>
+                  </div>
+                  <div class="">
+                    <h5 class="mb-0 steper-title">Product Feature</h5>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="step"
+                data-target="#test-l-3"
+                style="visibility: hidden"
+              >
+                <div
+                  class="step-trigger"
+                  role="tab"
+                  id="stepper1trigger3"
+                  aria-controls="test-l-3"
+                >
+                  <div class="bs-stepper-circle">
+                    <i class="bx bx-user fs-4"></i>
+                  </div>
+                  <div class="">
+                    <h5 class="mb-0 steper-title">Product Details</h5>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="step"
+                data-target="#test-l-4"
+                style="visibility: hidden"
+              >
+                <div
+                  class="step-trigger"
+                  role="tab"
+                  id="stepper1trigger4"
+                  aria-controls="test-l-4"
+                >
+                  <div class="bs-stepper-circle">
+                    <i class="bx bx-user fs-4"></i>
+                  </div>
+                  <div class="">
+                    <h5 class="mb-0 steper-title">Product Feature</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="bs-stepper-content">
+              <form id="myForm" method="post" action="/local">
+                <div
+                  id="test-l-1"
+                  role="tabpanel"
+                  class="bs-stepper-pane"
+                  aria-labelledby="stepper1trigger1"
+                >
+                  <div class="row g-3">
+                    <div class="col-12 col-lg-6">
+                      <label for="FisrtName" class="form-label"
+                        >Product Name</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="FisrtName"
+                        name="productname"
+                        placeholder="First Name"
+                      />
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                      <label for="PhoneNumber" class="form-label"
+                        >product Images</label
+                      >
+                      <input
+                        class="form-control"
+                        type="file"
+                        name="file"
+                        multiple
+                        id="formFile"
+                      />
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Product Brand</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Brand"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Brand</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputEmail2" class="form-label"
+                        >Product Price</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="InputEmail2"
+                        name="productprice"
+                        placeholder="Rs.400"
+                      />
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Sell Address</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Brand"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Sell Address</option>
+                        <option value="Address 1">Address 1</option>
+                        <option value="Address 1">Address 1</option>
+                        <option value="Address 1">Address 1</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Category</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Category"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Category</option>
+                        <option value="Laptop">Laptop</option>
+                        <option value="Camara">Camara</option>
+                        <option value="Television">Television</option>
+                        <option value="Car">Car</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Used Time</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Used Time"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Used Time</option>
+                        <option value="new">New</option>
+                        <option value="3 months">3 months</option>
+                        <option value="6 months">6 months</option>
+                        <option value="12 months">12 months</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="LastName" class="form-label">
+                        Product Description</label
+                      >
+                      <textarea
+                        class="form-control"
+                        id="bsValidation13"
+                        placeholder="Description."
+                        name="description"
+                        rows="3"
+                        required
+                      ></textarea>
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                      <button
+                        class="btn btn-primary px-4"
+                        type="button"
+                        onclick="stepper1.next()"
+                      >
+                        Next<i class="bx bx-right-arrow-alt ms-2"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!---end row-->
+                </div>
+
+                <div
+                  id="test-l-2"
+                  role="tabpanel"
+                  class="bs-stepper-pane"
+                  aria-labelledby="stepper1trigger2"
+                >
+                  <div class="form-container">
+                    <div style="text-align: end">
+                        <button onclick="addFeature()" type="button" class="btn btn-primary my-4">Add Feature</button>
+                      </div>
+
+                    
+
+                    <%   for( let i=0;i<5;i++){ %>
+                    <div id="students-container">
+                        <div id="test-l-4" role="tabpanel" lass="bs-stepper-pane" aria-labelledby="stepper1trigger4" >
+                            <div class=" cardrepart-from row g-3 ">
+        
+                              <div class="col-12 col-lg-12">
+                                <label for="Experience1" class="form-label"
+                                  >Title Name</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="name${studentCounter}"
+                                  name="tile"
+                                  placeholder="Experience 1"
+                                />
+                              </div>
+                              <%   for( let j=0;j<5;j++){ %>
+
+                              <div  class="keyvalue-form" style="display: flex; justify-content: space-between">
+
+                                <div class="col-12 col-lg-4">
+                                  <label for="Position1" class="form-label">Key</label>
+                                  <input type="text" id="key" class="form-control" name="key" placeholder="Position" />
+                                </div>
+                          
+                          
+                                <div class="col-12 col-lg-5">
+                                  <label for="Experience2" class="form-label">Value</label>
+                                  <textarea class="form-control"  id="value" name="value" rows="1" ></textarea>
+                                </div>
+                          
+                          
+                                <div class="col-12 col-lg-1" style="margin-top: 40px">
+                                  <label for="InputPassword" class="form-label"></label>
+                                
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                  </svg>
+                                </div>
+                          
+                            </div>
+                            <% } %>
+                                
+                            </div>
+                
+                        <hr class="hr">
+
+                       </div>
+                 </div>
+                  <% } %>
+
+                  <div class="col-12 mt-5">
+                    <div class="d-flex align-items-center gap-3">
+                      <button
+                        class="btn btn-primary px-4"
+                        type="button"
+                        onclick="stepper1.previous()"
+                      >
+                        <i class="bx bx-left-arrow-alt me-2"></i>Previous
+                      </button>
+                      <button
+                        class="btn btn-success px-4"
+                        onclick="submitForm()"
+                        type="submit"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  id="test-l-3"
+                  role="tabpanel"
+                  class="bs-stepper-pane"
+                  aria-labelledby="stepper1trigger3"
+                  style="display: none"
+                >
+                  <div class="row g-3">
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Screen Size</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Screen Size"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Screen Size</option>
+                        <option value="4 inch & Below">4 inch & Below</option>
+                        <option value="4 inch - 4.7 inch">
+                          4 inch - 4.7 inch
+                        </option>
+                        <option value="4.7 inch - 5 inch">
+                          4.7 inch - 5 inch
+                        </option>
+                        <option value="5 inch - 5.5 inch">
+                          5 inch - 5.5 inch
+                        </option>
+                        <option value="5.5 inch - 6 inch">
+                          5.5 inch - 6 inch
+                        </option>
+                        <option value="6 inch - 6.5 inch">
+                          6 inch - 6.5 inch
+                        </option>
+                        <option value="6.5 inch & Above">
+                          6.5 inch & Above
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Display</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Display"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Display</option>
+                        <option value="No Notch">No Notch</option>
+                        <option value="No Touch">No Touch</option>
+                        <option value="Notch">Notch</option>
+                        <option value="Touch Screen">Touch Screen</option>
+                        <option value="AMOLED">AMOLED</option>
+                        <option value="IPS LCD">IPS LCD</option>
+                        <option value="Super AMOLED">Super AMOLED</option>
+                        <option value="Dual Display">Dual Display</option>
+                        <option value="Foldable Display">
+                          Foldable Display
+                        </option>
+                        <option value="Infinity DisPlay">
+                          Infinity DisPlay
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Design</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        aria-label="Default select example"
+                        name="Design"
+                      >
+                        <option selected>Choose Design</option>
+                        <option value="Qwerty">Qwerty</option>
+                        <option value="Slim">Slim</option>
+                        <option value="Light Weight">Light Weight</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Screen Resolution</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Screen Resolution"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Screen Resolution</option>
+                        <option value="High PPI Display">
+                          High PPI Display
+                        </option>
+                        <option value="4096 x 2160 (4K)">
+                          4096 x 2160 (4K)
+                        </option>
+                        <option value="2048 x 1536 (2K)">
+                          2048 x 1536 (2K)
+                        </option>
+                        <option value="1920 x 1080 (Full HD)">
+                          1920 x 1080 (Full HD)
+                        </option>
+                        <option value="1280 x 720 (HD)">1280 x 720 (HD)</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Front Camera</label
+                      >
+                      <select
+                        class="form-select"
+                        name="Front Camera"
+                        id="InputCountry"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Front Camera</option>
+                        <option value="Front Camera">Front Camera</option>
+                        <option value="Dual Front Camera">
+                          Dual Front Camera
+                        </option>
+                        <option value="No Front Camera">No Front Camera</option>
+                        <option value="5 MP & Above">5 MP & Above</option>
+                        <option value="8 MP & Above">8 MP & Above</option>
+                        <option value="16 MP & Above">16 MP & Above</option>
+                        <option value="32 MP & Above">32 MP & Above</option>
+                        <option value="Front Camera Flash">
+                          Front Camera Flash
+                        </option>
+                        <option value="Front Camera Autofocus">
+                          Front Camera Autofocus
+                        </option>
+                        >
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Rear Camera</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Rear Camera"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Rear Camera</option>
+                        <option value="Rear Camera">Rear Camera</option>
+                        <option value="Dual Camera">Dual Camera</option>
+                        <option value="Triple Camera">Triple Camera</option>
+                        <option value="Quad Camera">Quad Camera</option>
+                        <option value="No Rear Camera">No Rear Camera</option>
+                        <option value="5 MP & Above">5 MP & Above</option>
+                        <option value="13 MP & Above">13 MP & Above</option>
+                        <option value="16 MP & Above">16 MP & Above</option>
+                        <option value="20 MP & Above">20 MP & Above</option>
+                        <option value="48 MP & Above">48 MP & Above</option>
+                        <option value="64 MP & Above">64 MP & Above</option>
+                        <option value="108 MP & Above">108 MP & Above</option>
+                        <option value="Autofocus">Autofocus</option>
+                        <option value="Flash">Flash</option>
+                        <option value="OIS">OIS</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label">CPU</label>
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="CPU"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose CPU</option>
+                        <option value="Quad Core">Quad Core</option>
+                        <option value="Octa Core">Octa Core</option>
+                        <option value="Deca Core">Deca Core</option>
+                        <option value="1.4 GHz & Above">1.4 GHz & Above</option>
+                        <option value="2.3 GHz & Above">2.3 GHz & Above</option>
+                        <option value="5 GHz & Above">5 GHz & Above</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label">RAM</label>
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="RAM"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose RAM</option>
+                        <option value="2 GB & Above">2 GB & Above</option>
+                        <option value="3 GB & Above">3 GB & Above</option>
+                        <option value="4 GB & Above">4 GB & Above</option>
+                        <option value="6 GB & Above">6 GB & Above</option>
+                        <option value="8 GB & Above">8 GB & Above</option>
+                        <option value="12 GB & Above">12 GB & Above</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Battery Size</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Battery Size`"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Battery Size</option>
+                        <option value="Removable Battery">
+                          Removable Battery
+                        </option>
+                        <option value="Fast Charging">Fast Charging</option>
+                        <option value="Long Battery Backup">
+                          Long Battery Backup
+                        </option>
+                        <option value="3000 mAh & Above">
+                          3000 mAh & Above
+                        </option>
+                        <option value="3500 mAh & Above">
+                          3500 mAh & Above
+                        </option>
+                        <option value="4000 mAh & Above">
+                          4000 mAh & Above
+                        </option>
+                        <option value="5000 mAh & Above">
+                          5000 mAh & Above
+                        </option>
+                        <option value="6000 mAh & Above">
+                          6000 mAh & Above
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Android Version</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Android Version"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Android Version</option>
+                        <option value="Android 11 & Above">
+                          Android 11 & Above
+                        </option>
+                        <option value="Android 12 & Above">
+                          Android 12 & Above
+                        </option>
+                        <option value="Android 13 & Above">
+                          Android 13 & Above
+                        </option>
+                        <option value="Android 14 & Above">
+                          Android 14 & Above
+                        </option>
+
+                        >
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Inbuilt Memory</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Inbuilt Memory"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Inbuilt Memory</option>
+                        <option value="32 GB & Above">32 GB & Above</option>
+                        <option value="64 GB & Above">64 GB & Above</option>
+                        <option value="128 GB & Above">128 GB & Above</option>
+                        <option value="256 GB & Above">256 GB & Above</option>
+                        <option value="512 GB & Above">512 GB & Above</option>
+
+                        >
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Aspect Ratio</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Aspect Ratio"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Aspect Ratio</option>
+                        <option value="16:9">16:9</option>
+                        <option value="18:9">18:9</option>
+                        <option value="19:9">19:9</option>
+                        <option value="20:9">20:9</option>
+
+                        >
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >Refresh Rate</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="Refresh Rate"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose Refresh Rate</option>
+                        <option value="90 HZ">90 Hz</option>
+                        <option value="120 HZ">120 Hz</option>
+                        <option value="144 HZ">144 Hz</option>
+
+                        >
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >CPU Manufacturer</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="CPU Manufacturer"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose CPU Manufacturer</option>
+                        <option value="Apple">Apple</option>
+                        <option value="HiSilicon">HiSilicon</option>
+                        <option value="MediaTek">MediaTek</option>
+                        <option value="Qualcomm">Qualcomm</option>
+                        <option value="Samsung">Samsung</option>
+                        <option value="Others">Others</option>
+
+                        >
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <label for="InputCountry" class="form-label"
+                        >GPU Manufacturer</label
+                      >
+                      <select
+                        class="form-select"
+                        id="InputCountry"
+                        name="GPU Manufacturer"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Choose CPU Manufacturer</option>
+                        <option value="Apple">Apple</option>
+                        <option value="HiSilicon">HiSilicon</option>
+                        <option value="MediaTek">MediaTek</option>
+                        <option value="Qualcomm">Qualcomm</option>
+                        <option value="Samsung">Samsung</option>
+                        <option value="Others">Others</option>
+
+                        >
+                      </select>
+                    </div>
+
+                    <div class="col-12">
+                      <div class="d-flex align-items-center gap-3">
+                        <button
+                          class="btn btn-outline-secondary px-4"
+                          onclick="stepper1.previous()"
+                          type="button"
+                        >
+                          <i class="bx bx-left-arrow-alt me-2"></i>Previous
+                        </button>
+                        <button
+                          class="btn btn-primary px-4"
+                          onclick="stepper1.next()"
+                          type="button"
+                        >
+                          Next<i class="bx bx-right-arrow-alt ms-2"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!---end row-->
+                </div>
+
+                <div
+                  id="test-l-4"
+                  role="tabpanel"
+                  class="bs-stepper-pane"
+                  aria-labelledby="stepper1trigger3"
+                  style="display: none"
+                ></div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--end stepper one-->
+    </div>
+  </div>
+
+  <!-- Main code end -->
+  <%- include('../common/bottom.ejs') %>
+</div>
+<script>
+  (function () {
+    "use strict";
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll(".needs-validation");
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      form.addEventListener(
+        "submit",
+        function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+
+          form.classList.add("was-validated");
+        },
+        false
+      );
+    });
+  })();
+
+  function replicateForm() {
+    // Get the form container
+    var formContainer = document.querySelector(".formContainer");
+
+    // Clone the form content
+    var clonedForm = formContainer.cloneNode(true);
+    // Iterate through the cloned form elements and set their values to an empty string
+    var formElements = clonedForm.querySelectorAll("input");
+    formElements.forEach(function (element) {
+      element.value = "";
+    });
+
+    // Append the cloned form to the container
+    formContainer.parentNode.appendChild(clonedForm);
+  }
+
+  function removeForm() {
+    // Get the form container
+    var formContainer = document.querySelector(".formContainer");
+
+    // Check if there is more than one form
+    if (formContainer.parentNode.children.length > 1) {
+      // Remove the last form
+      formContainer.parentNode.removeChild(formContainer.parentNode.lastChild);
+    }
+  }
+
+  // JavaScript
+  let studentCounter = 0;
+  let pairCounts = [];
+
+  function addFeature() {
+    studentCounter++;
+    pairCounts.push(0);
+    const studentsContainer = document.getElementById("students-container");
+
+    const studentDiv = document.createElement("div");
+    studentDiv.classList.add("student-container");
+    studentDiv.id = `student${studentCounter}`;
+
+    studentDiv.innerHTML = `
+
+    <div id="test-l-4" role="tabpanel" lass="bs-stepper-pane" aria-labelledby="stepper1trigger4" >
+                  
+              
+
+                    <div class=" cardrepart-from row g-3 ">
+
+                      <div class="col-12 col-lg-12">
+                        <label for="Experience1" class="form-label"
+                          >Title Name</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="name${studentCounter}"
+                          name="tile"
+                          placeholder="Experience 1"
+                        />
+                      </div>
+                        <div style=" text-align: end; padding:1%;">
+                        <button type="button"  onclick="addPair(${studentCounter})" class="btn btn-primary btn-ecomm">
+                          <i class="bx bx-plus-circle"></i>Add Pair</button>
+                        </div>
+                    </div>
+         
+          </div>
+         
+          <button type="button" onclick="removeFeature(this.parentElement)" " class="btn btn-primary btn-ecomm" style="position: absolute; right: 0%;">
+            <i class="bx bx-x-circle"></i>Remove Feature</button>
+
+      
+        <div id="subjects-container${studentCounter}">
+         <input type="text"  id="pairCount${studentCounter}" name="featurevalue" value="0" class="form-control"  placeholder="Position" hidden />
+        </div>
+        
+         <hr class="hr">
+        
+  `;
+
+    studentsContainer.appendChild(studentDiv);
+  }
+
+  function removeFeature(studentElement) {
+    const studentsContainer = document.getElementById("students-container");
+    studentsContainer.removeChild(studentElement);
+  }
+
+  function addPair(studentId) {
+    const subjectsContainer = document.getElementById(
+      `subjects-container${studentId}`
+    );
+    const subjectDiv = document.createElement("div");
+    subjectDiv.classList.add("subject-container");
+
+    subjectDiv.innerHTML = `
+
+    <div  class="keyvalue-form" style="display: flex; justify-content: space-between">
+
+
+      <div class="col-12 col-lg-4">
+        <label for="Position1" class="form-label">Key</label>
+        <input type="text" id="key" class="form-control" name="key" placeholder="Position" />
+      </div>
+
+
+      <div class="col-12 col-lg-5">
+        <label for="Experience2" class="form-label">Value</label>
+        <textarea class="form-control"  id="value" name="value" rows="1" ></textarea>
+      </div>
+
+
+      <div class="col-12 col-lg-1" style="margin-top: 40px">
+        <label for="InputPassword" class="form-label"></label>
+      
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" onclick="removePair(${studentId})"">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </div>
+
+      </div>
+  
+  `;
+
+    subjectsContainer.appendChild(subjectDiv);
+    pairCounts[studentId - 1]++; // Arrays are zero-indexed
+
+    // You can now use pairCounts array to access the count for each feature
+    updatePairCount(studentId);
+  }
+
+  function removePair(studentId) {
+    const subjectsContainer = document.getElementById(
+      `subjects-container${studentId}`
+    );
+    const subjects =
+      subjectsContainer.getElementsByClassName("subject-container");
+    if (subjects.length > 1) {
+      subjectsContainer.removeChild(subjects[subjects.length - 1]);
+      // Update the pair count for the associated feature
+      pairCounts[studentId - 1]--; // Arrays are zero-indexed
+
+      // You can now use pairCounts array to access the count for each feature
+      updatePairCount(studentId);
+    }
+  }
+
+  function updatePairCount(studentId) {
+    const count = pairCounts[studentId - 1];
+    const countInput = document.getElementById(`pairCount${studentId}`);
+    console.log(countInput.value);
+    if (countInput) {
+      countInput.value = count;
+    } else {
+      console.error(`Input with ID pairCount${studentId} not found.`);
+    }
+  }
+</script>
+
+<script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+<script src="assets/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+<script src="assets/plugins/bs-stepper/js/main.js"></script>
+<script src="assets/plugins/validation/jquery.validate.min.js"></script>
+<script src="assets/plugins/validation/validation-script.js"></script>
+
+
+<%- include('../common/footer.ejs') %>

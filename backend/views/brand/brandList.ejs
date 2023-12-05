@@ -38,6 +38,25 @@
     <link href="assets/css/dark-theme.css" rel="stylesheet" />
     <link href="assets/css/semi-dark.css" rel="stylesheet" />
     <link href="assets/css/header-colors.css" rel="stylesheet" />
+    <style>
+      .action{
+         display: flex;
+          gap: 10px;
+          cursor: pointer;
+
+      }
+      .view{
+            padding: 10px;
+      }
+      .edit{
+        padding: 10px;
+
+      }
+        .delete{
+          padding: 10px;
+        }
+      
+     </style>
 
     <%- include('../common/title.ejs') %>
     <!--start wrapper-->
@@ -87,6 +106,7 @@
                        <th>Logo</th>
                        <th>Brand Link</th>
                        <th>Type</th>
+                       <th>Action</th>
                       
                      </tr>
                      </thead>
@@ -104,7 +124,15 @@
                       <% }else{ %>
                         <td><span class="badge bg-light-success text-danger w-50">Brand</span></td>
                         <% } %>
+                        <td>
+                          <div class="action">
+    
+                            <div class="view badge bg-light-success text-success w-100">View</div>
+                            <div class="edit badge bg-light-warning text-warning w-100"> Edit</div>
+                             <div class="delete badge bg-light-danger text-danger w-100">Delete</div>
+                          </div></td>
                      </tr>
+                    
                      <%})%>
                       <%}%>
              
