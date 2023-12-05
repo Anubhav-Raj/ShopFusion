@@ -121,7 +121,7 @@
           </div>
           <div class="card-body">
             <div class="bs-stepper-content">
-              <form id="myForm" method="post" action="/local">
+              <form id="myForm" method="post" action="/addproduct" enctype="multipart/form-data">
                 <div
                   id="test-l-1"
                   role="tabpanel"
@@ -149,7 +149,7 @@
                       <input
                         class="form-control"
                         type="file"
-                        name="file"
+                        name="images"
                         multiple
                         id="formFile"
                       />
@@ -195,9 +195,9 @@
                         aria-label="Default select example"
                       >
                         <option selected>Choose Sell Address</option>
-                        <option value="Address 1">Address 1</option>
-                        <option value="Address 1">Address 1</option>
-                        <option value="Address 1">Address 1</option>
+                         <% for(var i=0; i<user.address.length; i++){ %>
+                        <option value="<%=user.address[i]._id %>"><%=user.address[i].near +", "+user.address[i].city+", "+user.address[i].state+", "+user.address[i].pincode %></option>
+                        <% } %>
                       </select>
                     </div>
                     <div class="col-12 col-lg-6">

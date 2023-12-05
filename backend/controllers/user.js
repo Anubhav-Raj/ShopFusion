@@ -149,8 +149,7 @@ exports.getEditProfile = async (req, res) => {
 
 exports.postEditProfile = async (req, res) => {
   const { name, mobile, near, city, state, country, pincode } = req.body;
-  console.log(req.body);
-  return;
+
   const user = await User.findById(req.user._id);
   var profile = user.profile;
   if (req.file) {

@@ -40,5 +40,11 @@ router.get(
 router.get("/addproduct", isLoggedIn, productCon.getAddProduct);
 router.get("/product-details", isLoggedIn, productCon.getProductDetails);
 router.get("/addProductList", isLoggedIn, productCon.getaddProductList);
+router.post(
+  "/addproduct",
+  isLoggedIn,
+  upload.array("images", 10),
+  productCon.postAddProduct
+);
 
 module.exports = router;

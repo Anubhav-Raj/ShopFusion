@@ -1,6 +1,7 @@
 const Category = require("../models/category");
 const Product = require("../models/product");
 const BrandStore = require("../models/brandstore");
+const fileDelete = require("../utils/files-delete");
 
 exports.getbrandform = async (req, res) => {
   res.render("brand/brand_storePage", {
@@ -241,4 +242,42 @@ exports.getaddProductList = async (req, res) => {
   res.render("product/addProductList", {
     user: req.user,
   });
+};
+
+exports.postDeleteStoreBrand = async (req, res) => {
+  const id = req.body.id;
+  await BrandStore.findByIdAndDelete(id);
+  return res.redirect("/brandlist");
+};
+
+exports.geteditStoreBrand = async (req, res) => {
+  const id = req.params.id;
+  const brand = await BrandStore.findById(id);
+  res.render("brand/editBrandStore", {
+    user: req.user,
+    brand: brand,
+  });
+};
+
+exports.posteditStoreBrand = async (req, res) => {
+  const id = req.params.id;
+  const { name, type, link } = req.body;
+  const sb = await BrandStore.findById(id);
+  var image = sb.img;
+  if (req.file) {
+    image = "/files/" + req.file.filename;
+    var image_name = profile.split("/")[2];
+    const pathImg = "uploads/images/" + image_name;
+    if (profile && fs.existsSync(pathImg)) {
+      fileDelete.deleteFiles(pathImg);
+    }
+  }
+  await BrandStore.findByIdAndUpdate(id, {
+    name: name,
+    img: image,
+    type: type,
+    link: link,
+  });
+
+  return res.redirect("/brandlist");
 };
