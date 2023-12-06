@@ -162,14 +162,13 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="Brand"
+                        name="brands"
                         aria-label="Default select example"
                       >
                         <option selected>Choose Brand</option>
                         <% for(var i=0; i<brands.length; i++){ %>
-                        <option value="<%=brands[i]._id %>"><%=brands[i].name %></option>
+                        <option value="<%=brands[i]._id %>"><%= brands[i].name %></option>
                         <% } %>
-                       
                       </select>
                     </div>
                     <div class="col-12 col-lg-6">
@@ -180,7 +179,7 @@
                         type="text"
                         class="form-control"
                         id="InputEmail2"
-                        name="productprice"
+                        name="price"
                         placeholder="Rs.400"
                       />
                     </div>
@@ -191,12 +190,12 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="Brand"
+                        name="address"
                         aria-label="Default select example"
                       >
                         <option selected>Choose Sell Address</option>
                          <% for(var i=0; i<user.address.length; i++){ %>
-                        <option value="<%=user.address[i]._id %>"><%=user.address[i].near +", "+user.address[i].city+", "+user.address[i].state+", "+user.address[i].pincode %></option>
+                        <option value="<%=user.address[i].near +", "+user.address[i].city+", "+user.address[i].state+", "+user.address[i].country+", "+user.address[i].pincode %>"><%=user.address[i].near +", "+user.address[i].city+", "+user.address[i].state+", "+user.address[i].country+", "+user.address[i].pincode %></option>
                         <% } %>
                       </select>
                     </div>
@@ -506,7 +505,7 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="Battery Size`"
+                        name="BatterySize"
                         aria-label="Default select example"
                       >
                         <option selected>Choose Battery Size</option>
@@ -568,7 +567,7 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="Inbuilt Memory"
+                        name="InbuiltMemory"
                         aria-label="Default select example"
                       >
                         <option selected>Choose Inbuilt Memory</option>
@@ -588,7 +587,7 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="Aspect Ratio"
+                        name="AspectRatio"
                         aria-label="Default select example"
                       >
                         <option selected>Choose Aspect Ratio</option>
@@ -607,7 +606,7 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="Refresh Rate"
+                        name="RefreshRate"
                         aria-label="Default select example"
                       >
                         <option selected>Choose Refresh Rate</option>
@@ -625,7 +624,7 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="CPU Manufacturer"
+                        name="CPUManufacturer"
                         aria-label="Default select example"
                       >
                         <option selected>Choose CPU Manufacturer</option>
@@ -646,7 +645,7 @@
                       <select
                         class="form-select"
                         id="InputCountry"
-                        name="GPU Manufacturer"
+                        name="GPUManufacturer"
                         aria-label="Default select example"
                       >
                         <option selected>Choose CPU Manufacturer</option>

@@ -105,103 +105,41 @@
                      <tr>
                        <th>Product</th>
                        <th>Photo</th>
-                       <th>Product ID</th>
-                       <th>Status</th>
+                       <th>Brand</th>
+                       
                        <th>Amount</th>
-                       <th>Date</th>
-                       <th>Shipping</th>
+                       <th>User</th>
+                       <th>User Email</th>
                        <th>Action</th>
                      </tr>
                      </thead>
-                     <tbody><tr>
-                      <td>Sport Shoes</td>
-                      <td><img src="assets/images/products/01.png" class="product-img-2" alt="product img"></td>
-                      <td>#9405822</td>
-                      <td><span class="badge bg-light-success text-success w-100">Paid</span></td>
-                      <td>$1250.00</td>
-                      <td>03 Feb 2020</td>
-                      <td><div class="progress" style="height: 5px;">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-                        </div>
-                      </td>
-                    
-                     </tr>
-            
-                     <tr>
-                      <td>Man Headcap</td>
-                      <td><img src="assets/images/products/02.png" class="product-img-2" alt="product img"></td>
-                      <td>#8304620</td>
-                      <td><span class="badge bg-light-warning text-warning w-100">Pending</span></td>
-                      <td>$1500.00</td>
-                      <td>05 Feb 2020</td>
-                      <td>
-                        <div class="action">
+                     <tbody>
 
-                          <div class="view badge bg-light-success text-success w-100">View</div>
-                          <div class="edit badge bg-light-warning text-warning w-100"> Edit</div>
-                           <div class="delete badge bg-light-danger text-danger w-100">Delete</div>
-                        </div>
+                      <% if(products.length>0){ %>
+                      <% products.forEach(function(product){ %>
+                      <tr>
+                      <td><%=product.name %></td>
+                      <td><img src="<%=product.images[0] %>" class="product-img-2" alt="product img"></td>
+                      <td><%=product.brands.name %></td>
+                       <td><%=product.price %></td>
+                      <td><%=product.user.name %></td>
+                      <td><%=product.user.email %></td>
+                      
+                      <td class="action">
+                        <a href="/editproduct/<%=product._id %>" class="view"><ion-icon name="eye-outline"></ion-icon></a>
+                        <a href="/editproduct/<%=product._id %>" class="edit"><ion-icon name="create-outline"></ion-icon></a>
+                        <form action="/deleteproduct" method="POST">
+                          <input type="hidden" name="id" value="<%=product._id %>">
+                        <button type="submit" class="delete"><ion-icon name="trash-outline"></ion-icon></button>
+                        </form>
                       </td>
                      </tr>
-            
-                     <tr>
-                      <td>Sunglass</td>
-                      <td><img src="assets/images/products/03.png" class="product-img-2" alt="product img"></td>
-                      <td>#4736890</td>
-                      <td><span class="badge bg-light-danger text-danger w-100">Failed</span></td>
-                      <td>$1400.00</td>
-                      <td>06 Feb 2020</td>
-                      <td>
-                        <div class="action">
-
-                          <div class="view badge bg-light-success text-success w-100">View</div>
-                          <div class="edit badge bg-light-warning text-warning w-100"> Edit</div>
-                           <div class="delete badge bg-light-danger text-danger w-100">Delete</div>
-                        </div></td>
-                     </tr>
-            
-                     <tr>
-                      <td>Shirt Formal</td>
-                      <td><img src="assets/images/products/04.png" class="product-img-2" alt="product img"></td>
-                      <td>#8543765</td>
-                      <td><span class="badge bg-light-success text-success w-100">Paid</span></td>
-                      <td>$1200.00</td>
-                      <td>14 Feb 2020</td>
-                      <td> <div class="action">
-
-                        <div class="view badge bg-light-success text-success w-100">View</div>
-                        <div class="edit badge bg-light-warning text-warning w-100"> Edit</div>
-                         <div class="delete badge bg-light-danger text-danger w-100">Delete</div>
-                      </div></td>
-                     </tr>
-                     <tr>
-                      <td>Black Coat Pant</td>
-                      <td><img src="assets/images/products/06.png" class="product-img-2" alt="product img"></td>
-                      <td>#9629240</td>
-                      <td><span class="badge bg-light-warning text-warning w-100">Pending</span></td>
-                      <td>$1500.00</td>
-                      <td>18 Feb 2020</td>
-                      <td> <div class="action">
-
-                        <div class="view badge bg-light-success text-success w-100">View</div>
-                        <div class="edit badge bg-light-warning text-warning w-100"> Edit</div>
-                         <div class="delete badge bg-light-danger text-danger w-100">Delete</div>
-                      </div></td>
-                     </tr>
-                     <tr>
-                      <td>Heals</td>
-                      <td><img src="assets/images/products/05.png" class="product-img-2" alt="product img"></td>
-                      <td>#8506790</td>
-                      <td><span class="badge bg-light-danger text-danger w-100">Failed</span></td>
-                      <td>$1800.00</td>
-                      <td>21 Feb 2020</td>
-                      <td> <div class="action">
-
-                        <div class="view badge bg-light-success text-success w-100">View</div>
-                        <div class="edit badge bg-light-warning text-warning w-100"> Edit</div>
-                         <div class="delete badge bg-light-danger text-danger w-100">Delete</div>
-                      </div></td>
-                     </tr>
+                      <% }) %>
+                      <% }else{ %>
+                        <tr>
+                          <td colspan="8" class="text-center">No Data Found</td>
+                        </tr>
+                      <% } %>
                       </tbody>
                     </table>
               </div>

@@ -59,11 +59,12 @@ const productSchema = mongoose.Schema(
         keyPair: [
           {
             key: String,
-            pair: String,
+            value: String,
           },
         ],
       },
     ],
+    price: String,
     SellAddress: [{ type: String }],
     Category: String,
     UsedTime: String,
@@ -72,11 +73,10 @@ const productSchema = mongoose.Schema(
         type: mongoose.Types.ObjectId,
       },
     ],
-    img: [
-      {
-        type: String,
-      },
-    ],
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,

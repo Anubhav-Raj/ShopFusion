@@ -15,6 +15,13 @@ router.post(
   productCon.postbrandfrom
 );
 router.get("/brandlist", isLoggedIn, productCon.getbrandlist);
+router.get("/editbrand/:id", isLoggedIn, productCon.geteditStoreBrand);
+router.post(
+  "/editbrand",
+  isLoggedIn,
+  upload.single("image"),
+  productCon.posteditStoreBrand
+);
 
 router.get(
   "/addmobileproduct",
@@ -46,5 +53,19 @@ router.post(
   upload.array("images", 10),
   productCon.postAddProduct
 );
+router.get("/editproduct/:id", isLoggedIn, productCon.geteditProduct);
+router.post(
+  "/editproduct",
+  isLoggedIn,
+  upload.array("images", 10),
+  productCon.posteditProduct
+);
+
+router.post("/deleteproduct", isLoggedIn, productCon.postDeleteProduct);
+
+router.get("/product/mobile", productCon.getMobileProductList);
+router.get("/product/:id", productCon.getProductById);
+router.get("/product/features/:category", productCon.getUniqueTitleCatogory);
+router.get("/products", productCon.getProducts);
 
 module.exports = router;
