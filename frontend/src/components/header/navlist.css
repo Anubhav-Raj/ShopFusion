@@ -154,10 +154,6 @@ a:hover {
     height: 100%;
 }
 
-.sm-desktop-nav .sm-dropdown {
-    --top: 38px;
-}
-
 .icon {
     width: 24px;
     height: 24px;
@@ -223,7 +219,6 @@ a:hover {
 
 .sm-desktop-nav .sm-dn-menu {
     position: relative;
-    right: -25%;
 }
 
 .sm-menu>a {
@@ -343,3 +338,25 @@ a:hover {
         display: none;
     }
 }
+
+.x {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .sm-dropdown:hover .x {
+    display: block;
+  }
+  
+  .x {
+    transition: opacity 0.3s ease;
+  }
+  
+  .x.show {
+    opacity: 1;
+  }
+  
