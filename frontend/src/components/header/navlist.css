@@ -87,7 +87,7 @@ ul {
     grid-auto-flow: column;
     justify-content: start;
     grid-gap: 20px;
-    max-width: var(--main-width);
+    /* max-width: var(--main-width); */
     margin: 0 auto;
     padding: 0 16px;
     height: 40px;
@@ -346,17 +346,117 @@ a:hover {
     min-width: 160px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
-  }
-  
-  .sm-dropdown:hover .x {
+}
+
+.sm-dropdown:hover .x {
     display: block;
-  }
-  
-  .x {
+}
+
+.x {
     transition: opacity 0.3s ease;
-  }
-  
-  .x.show {
+}
+
+.x.show {
     opacity: 1;
-  }
-  
+}
+
+/* Styling for the sidebar */
+.w3-sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 4;
+    top: 56px;
+    left: 0;
+    background-color: #f1f1f1;
+    overflow-x: hidden;
+    padding-top: 20px;
+    border-right: 1px solid #ccc;
+    transition: width 0.3s ease-in-out;
+    /* Smooth transition for width changes */
+}
+
+/* Styling for the close button */
+.w3-bar-item.w3-large {
+    display: block;
+    text-align: left;
+    position: absolute;
+    padding: 10px;
+    right: 11px;
+    top: 0;
+    font-size: xx-large;
+    cursor: pointer;
+    font-weight: bold;
+    /* color: green; */
+    /* --color-link-hover: black; */
+    color: gray;
+    transition: padding 0.3s ease-in-out;
+}
+
+.w3-bar-item.w3-large:hover {
+    color: black;
+}
+
+/* Styling for the links in the sidebar */
+.w3-bar-item.w3-button {
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s ease-in-out;
+    /* Smooth transition for background color changes */
+}
+
+/* Change background color on hover */
+.w3-bar-item.w3-button:hover {
+    background-color: #ddd;
+}
+
+/* Animation for opening the sidebar */
+@keyframes slideLeftOpen {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Animation for closing the sidebar */
+@keyframes slideLeftClose {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/* Apply animations based on the sidebar state */
+.w3-sidebar-open {
+    animation: slideLeftOpen 0.3s ease-in-out;
+}
+
+.w3-sidebar-closed {
+    animation: slideLeftClose 0.3s ease-in-out;
+}
+
+/* Animation for changing the padding of the close button */
+.w3-sidebar-open .w3-bar-item.w3-large {
+    padding-right: 10px;
+}
+
+/* Animation for changing the padding of the close button when closed */
+.w3-sidebar-closed .w3-bar-item.w3-large {
+    padding-right: 0;
+}
+ul.sidebar_flx {
+    display: block;
+    
+    /* height: 100px; */
+}
+li.slidebarrow {
+    font-size: 20px;
+    margin-bottom: 8px;
+}

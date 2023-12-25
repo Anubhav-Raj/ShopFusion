@@ -6,6 +6,7 @@ import Slider from "../../components/home_compnents/top_left_slider/slider"
 import Websites from "../../components/home_compnents/website_names/websites";
 import Catagries from "../../components/home_compnents/caetagries/catagries";
 function Home() {
+  
   return (
     <>
       <main className="pg-hom snipcss-WCyck">
