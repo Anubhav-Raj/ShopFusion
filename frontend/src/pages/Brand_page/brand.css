@@ -1,0 +1,552 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik:300,400,500,600,700,800,900,300i,400i,500i,600i,700i,800i,900i&display=swap'); 
+  body {  
+    font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+    font-size:var(--font-size);
+    font-weight:400;
+    color:var(--color-text);
+    line-height:1.5;
+    background:var(--bg-body);
+  }  
+body { 
+/* CSS Variables that may have been missed get put on body */ 
+    --aside-w:  320px;  
+    --per-row:  5;  
+    --per-row:  10;  
+} 
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box;
+} 
+
+* { 
+    box-sizing: border-box;
+} 
+
+body { 
+    font-family: "Rubik", sans-serif; 
+    font-size: 16px; 
+    font-weight: normal; 
+    color: #666; 
+    line-height: 26px;
+} 
+
+body { 
+    margin: 0; 
+    font-family: var(--bs-font-sans-serif); 
+    font-size: 1rem; 
+    font-weight: 400; 
+    line-height: 1.5; 
+    color: #212529; 
+    background-color: #fff; 
+    -webkit-text-size-adjust: 100%; 
+    -webkit-tap-highlight-color: transparent;
+} 
+
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol; 
+    font-size: var(--font-size); 
+    line-height: 1.5; 
+    color: var(--color-text); 
+    background: var(--bg-body);
+} 
+
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol; 
+    font-size: var(--font-size); 
+    line-height: 1.5; 
+    color: var(--color-text); 
+    background: var(--bg-body); 
+    width: 100%; 
+    overscroll-behavior-x: none; 
+    scrollbar-gutter: stable; 
+    text-size-adjust: none;
+} 
+
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol; 
+    font-size: var(--font-size); 
+    line-height: 1.5; 
+    color: var(--color-text); 
+    background: var(--bg-body); 
+    height: 100%; 
+    overscroll-behavior-x: none; 
+    scrollbar-gutter: stable; 
+    text-size-adjust: none;
+} 
+
+body { 
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol; 
+    font-size: var(--font-size); 
+    line-height: 1.5; 
+    color: var(--color-text); 
+    background: var(--bg-body);
+} 
+
+body { 
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol; 
+    font-size: var(--font-size); 
+    line-height: 1.5; 
+    color: var(--color-text); 
+    background: var(--bg-body); 
+    height: 100%; 
+    overscroll-behavior-x: none; 
+    scrollbar-gutter: stable; 
+    text-size-adjust: none;
+} 
+
+body { 
+    --aside-w: 320px; 
+    --ph: 8px; 
+    --phh: 12px; 
+    --mv: 8px; 
+    --aw: calc(1px * var(--w)); 
+    --per-row: 10; 
+    --item-width: calc(100% / var(--per-row)); 
+    --img-height: calc(250px / var(--per-row)); 
+    --img-height: calc(600px / var(--per-row)); 
+    --img-height: calc(532px / var(--per-row)); 
+    --img-height: calc(800px / var(--per-row)); 
+    --img-height: min(calc(900px / var(--per-row)), 200px); 
+    --icon: var(--icon-check); 
+    --icon: var(--icon-close-circle);
+} 
+
+html { 
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol; 
+    font-size: var(--font-size); 
+    line-height: 1.5; 
+    color: var(--color-text); 
+    background: var(--bg-body); 
+    height: 100%; 
+    overscroll-behavior-x: none; 
+    scrollbar-gutter: stable; 
+    text-size-adjust: none;
+} 
+
+html { 
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol; 
+    font-size: var(--font-size); 
+    line-height: 1.5; 
+    color: var(--color-text); 
+    background: var(--bg-body); 
+    height: 100%; 
+    overscroll-behavior-x: none; 
+    scrollbar-gutter: stable; 
+    text-size-adjust: none;
+} 
+
+:root { 
+    --bs-font-sans-serif: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"; 
+} 
+
+@media (prefers-reduced-motion: no-preference){ 
+  :root { 
+    scroll-behavior: smooth;
+  } 
+}     
+
+:root { 
+    --bg-body: gainsboro; 
+    --color-link: #007af5; 
+    --color-link-hover: #0059b3; 
+    --color-text: #333; 
+    --main-width: 1220px; 
+    --font-size: 14px; 
+    --ph: 12px; 
+    --nph: calc(-1 * var(--ph)); 
+    --phh: var(--ph); 
+    --nphh: calc(-1 * var(--phh));
+} 
+
+@media (min-width: 750px){ 
+  :root { 
+    --font-size: 15.45px; 
+    --bg-body: #f1f3f6; 
+    --ph: 16px;
+  } 
+}     
+
+:root { 
+    --bg-body: gainsboro; 
+    --color-link: #007af5; 
+    --color-link-hover: #0059b3; 
+    --color-text: #333; 
+    --main-width: 1220px; 
+    --font-size: 14px; 
+    --ph: 12px; 
+    --nph: calc(-1 * var(--ph)); 
+    --phh: var(--ph); 
+    --nphh: calc(-1 * var(--phh));
+} 
+
+:root { 
+    --bg-body: gainsboro; 
+    --color-link: #007af5; 
+    --color-link-hover: #0059b3; 
+    --color-text: #333; 
+    --main-width: 1220px; 
+    --font-size: 14px; 
+    --ph: 12px; 
+    --nph: calc(-1 * var(--ph)); 
+    --phh: var(--ph); 
+    --nphh: calc(-1 * var(--phh)); 
+    --mv: 6px;
+} 
+
+@media (min-width: 750px){ 
+  :root { 
+    --font-size: 15.45px; 
+    --bg-body: #f1f3f6; 
+    --ph: 16px; 
+    --mv: 16px;
+  } 
+}     
+
+:root { 
+    --bg-body: gainsboro; 
+    --color-link: #007af5; 
+    --color-link-hover: #0059b3; 
+    --color-text: #333; 
+    --main-width: 1220px; 
+    --font-size: 14px; 
+    --pv: 10px; 
+    --ph: 12px; 
+    --nph: calc(-1 * var(--ph)); 
+    --phh: var(--ph); 
+    --nphh: calc(-1 * var(--phh)); 
+    --mv: 6px;
+} 
+
+@media (min-width: 750px){ 
+  :root { 
+    --font-size: 15.45px; 
+    --bg-body: #f1f3f6; 
+    --pv: 12px; 
+    --ph: 16px; 
+    --mv: 16px;
+  } 
+}     
+
+:root { 
+    --icon-check: url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"%23333333\"><path d=\"M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z\"/></svg>"); 
+    --icon-close-circle: url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"%23DB3131\"><path d=\"M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z\"/></svg>"); 
+} 
+
+:root { 
+    --bg-body: gainsboro; 
+    --color-link: #007af5; 
+    --color-link-hover: #0059b3; 
+    --color-text: #333; 
+    --font-size: 14px; 
+    --ph: 12px; 
+    --nph: calc(-1 * var(--ph)); 
+    --phh: var(--ph); 
+    --nphh: calc(-1 * var(--phh));
+} 
+
+main { 
+    position: relative; 
+    flex: 1 1; 
+    display: flex; 
+    flex-direction: column; 
+    width: 100%; 
+    max-width: var(--main-width); 
+    margin: 0 auto;
+} 
+
+@media (min-width: 750px){ 
+  main { 
+    padding: var(--mv) 10px;
+  } 
+
+  .aside-9yp { 
+    --aside-w: 320px; 
+    display: grid; 
+    grid-template-columns: 1fr var(--aside-w); 
+    grid-gap: var(--mv);
+  } 
+
+  .aside-2j3 { 
+    grid-template-columns: var(--aside-w) 1fr; 
+    grid-template-areas: "aside rest";
+  } 
+}     
+
+a,.btn,button,span,p,i,input,select,textarea,li,img,svg path,:after,:before,.transition-3,h1,h2,h3,h4,h5,h6 { 
+    transition: all 0.3s ease-out 0s;
+} 
+
+*,:after,:before { 
+    box-sizing: border-box;
+} 
+
+:selection { 
+    background: #222; 
+    color: #ffffff; 
+    text-shadow: none;
+} 
+
+@media (min-width: 750px){ 
+  .aside-9yp > * { 
+    min-width: 0;
+  } 
+
+  .aside-2j3 > * { 
+    grid-area: rest;
+  } 
+}     
+
+.box-o3x { 
+    position: relative; 
+    border: 1px solid gainsboro; 
+    border-width: 1px 0; 
+    background: white; 
+    margin: var(--mv) 0;
+} 
+
+@media (min-width: 750px){ 
+  .box-o3x { 
+    border-width: 1px; 
+    border-radius: 4px; 
+    box-shadow: 1px 1px 2px -1px #ccc;
+  } 
+}     
+
+* > .box-o3x:first-child  { 
+    margin-top: 0;
+} 
+
+* > .box-o3x:last-child  { 
+    margin-bottom: 0;
+} 
+
+#sty-dlo.style-bd5 { 
+    background: aliceblue;
+} 
+
+.box-o3x > *  { 
+    z-index: 1;
+} 
+
+.header-219 { 
+    display: flex; 
+    align-items: center; 
+    padding: var(--pv) var(--phh);
+} 
+
+.sm-91v { 
+   
+    grid-gap: 8px 0;
+    padding: 8px 4px;
+    display: grid;
+    grid-template-areas:
+        ". . ."
+        ". . ."
+        ". . .";
+    width: 100%;
+    height: 100%;
+    justify-items: center;
+} 
+
+@media (min-width: 750px){ 
+  .sm-91v { 
+    --per-row: 10; 
+    grid-auto-columns: 1fr!important;
+  } 
+}     
+
+.sm-91v.scr-tgg { 
+    grid-template-columns: none; 
+    grid-auto-flow: column; 
+    grid-auto-columns: calc(91% / var(--per-row)); 
+    overflow: auto;
+} 
+
+.header-219 + .sm-91v  { 
+    padding-top: 2px;
+} 
+
+.title-ttc { 
+    flex: 1 1;
+    text-align: center;
+    font-size: 58px;
+} 
+
+.box-hf8 { 
+    font-size: .9286rem; 
+    text-align: right;
+} 
+
+a { 
+    text-decoration: none;
+} 
+
+a { 
+    transition: all 0.3s ease-out 0s;
+} 
+
+a { 
+    color: inherit; 
+    outline: none; 
+    border: none; 
+    background: transparent;
+} 
+
+a { 
+    color: #0d6efd; 
+    text-decoration: underline;
+} 
+
+a { 
+    text-decoration: none; 
+    color: var(--color-link); 
+    cursor: pointer;
+} 
+
+.sm-91v > a  { 
+    box-sizing: border-box; 
+    padding: 0 4px; 
+    text-align: center; 
+    font-size: .9286rem; 
+    overflow: hidden; 
+    color: var(--color-text); 
+    width: 100%; 
+    max-width: 160px; 
+    display: flex; 
+    flex-direction: column;
+} 
+
+@media (min-width: 750px){ 
+  .sm-91v > a  { 
+    font-size: 1.0358rem;
+  } 
+
+  .aside-9yp .sm-91v > a { 
+    font-size: .9286rem;
+  } 
+}     
+
+a:hover { 
+    color: inherit; 
+    text-decoration: none;
+} 
+
+a:hover { 
+    color: #0a58ca;
+} 
+
+a:hover { 
+    color: var(--color-link-hover);
+} 
+
+.sm-91v > a:hover { 
+    text-shadow: -.05ex 0 currentColor,.05ex 0 currentColor;
+} 
+
+h2 { 
+    font-family: "Rubik", sans-serif; 
+    color: #1f2024; 
+    margin-top: 0px; 
+    font-weight: 500; 
+    line-height: 1.2; 
+    transition: all 0.3s ease-out 0s;
+} 
+
+h2 { 
+    font-size: 36px;
+} 
+
+h2 { 
+    transition: all 0.3s ease-out 0s;
+} 
+
+h2 { 
+    margin-top: 0; 
+    margin-bottom: .5rem; 
+    font-weight: 500; 
+    line-height: 1.2;
+} 
+
+h2 { 
+    font-size: calc(1.325rem + .9vw);
+} 
+
+@media (min-width: 1200px){ 
+  h2 { 
+    font-size: 2rem;
+  } 
+}     
+
+.header-219 h2  { 
+    font-size: 2.2858rem;
+    font-weight: 600;
+    line-height: 2.3333;
+} 
+
+img { 
+    transition: all 0.3s ease-out 0s;
+} 
+
+img { 
+    vertical-align: middle;
+} 
+
+.sm-i8i { 
+    max-width: 100%; 
+    max-height: 100%; 
+    font-size: 0; 
+    object-fit: contain;
+} 
+
+.sm-91v > a > img  { 
+    width: 100%; 
+    height: auto; 
+    max-height: none; 
+    padding: 2px; 
+    box-sizing: border-box; 
+    border-radius: 4px;
+} 
+
+@media (min-width: 750px){ 
+  .sm-91v > a > img  { 
+    padding: 8px;
+  } 
+}     
+
+.sm-91v.rou-p1a > a > img  { 
+    border-radius: 50%;
+} 
+
+@media (min-width: 750px){ 
+  .aside-9yp .sm-91v > a > img { 
+    padding: 5px;
+  } 
+  
+}     
+
+.sm-91v > a:hover > img { 
+    transform: scale(1.08);
+} 
+
+span { 
+    transition: all 0.3s ease-out 0s;
+} 
+
+.sm-91v > a > span  { 
+    display: block; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    margin-top: 4px;
+} 
+
+
+@media screen and (max-width: 750px) {
+    .sm-91v.scr-tgg {
+        grid-template-columns: none;
+        grid-auto-flow: inherit;
+        grid-auto-columns: inherit;
+        overflow: auto;
+    }  
+}
