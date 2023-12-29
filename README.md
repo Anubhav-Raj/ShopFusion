@@ -1,5 +1,0 @@
-# ShopFusion
-
-```
-npm start
-```

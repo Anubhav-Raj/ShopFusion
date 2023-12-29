@@ -48,14 +48,20 @@
 
       }
       .view{
-            padding: 10px;
+            padding: 10px 0px 10px 0px;
       }
       .edit{
-        padding: 10px;
+        padding: 10px 4px 10px 4px;
+          color: #ffab4d;
 
       }
         .delete{
-          padding: 10px;
+          padding: 10px 4px 10px 4px;
+          outline: none;
+          background: transparent;
+          border: none;
+          color: red;
+
         }
       
      </style>
@@ -126,12 +132,15 @@
                       <td><%=product.user.email %></td>
                       
                       <td class="action">
-                        <a href="/editproduct/<%=product._id %>" class="view"><ion-icon name="eye-outline"></ion-icon></a>
-                        <a href="/editproduct/<%=product._id %>" class="edit"><ion-icon name="create-outline"></ion-icon></a>
-                        <form action="/deleteproduct" method="POST">
+                        <div class="view badge bg-light-success text-success w-100"> <a href="/editproduct/<%=product._id %>" ><ion-icon  class="view" name="eye-outline"></ion-icon> View</a>
+                        </div>
+                        <div class="edit badge bg-light-warning text-warning w-100"> <a href="/editproduct/<%=product._id %>"  ><ion-icon   class="edit" name="create-outline"></ion-icon></a>
+                          Edit</div>
+                         <div class="delete badge bg-light-danger text-danger w-100"><form action="/deleteproduct" method="POST">
                           <input type="hidden" name="id" value="<%=product._id %>">
-                        <button type="submit" class="delete"><ion-icon name="trash-outline"></ion-icon></button>
-                        </form>
+                        <button type="submit"  class="delete"><ion-icon  style="padding-right: 2px;" name="trash-outline"></ion-icon>Delete</button>
+                        </form></div>
+                        
                       </td>
                      </tr>
                       <% }) %>

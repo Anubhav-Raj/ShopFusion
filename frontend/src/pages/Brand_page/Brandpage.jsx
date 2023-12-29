@@ -1,7 +1,35 @@
-import React from "react";
+/* eslint-disable jsx-a11y/alt-text */
 import "./brand.css";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBrands } from "../../redux/brand.slice";
+import Loader from "../../components/loader";
 
 function Brandpage() {
+  const dispatch = useDispatch();
+  const brandsResponse = useSelector((state) => state.brands);
+  const status = brandsResponse.status;
+  const error = brandsResponse.error;
+  const brands = brandsResponse.brands;
+  console.log(status);
+  const baseURL =
+    process.env.NODE_ENV === "production"
+      ? "https://production-api.com"
+      : process.env.REACT_APP_API_BASE_URL || "http://localhost:4026";
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchBrands());
+    }
+  }, [status, dispatch]);
+
+  if (status === "loading") {
+    return <Loader />;
+  }
+
+  if (status === "failed") {
+    return <div>Error: {error}</div>;
+  }
   return (
     <>
       <main>
@@ -15,114 +43,19 @@ function Brandpage() {
                 <div className="box-hf8"></div>
               </div>
               <div className="sm-91v rou-p1a scr-tgg">
-                <a href="/mobiles/xiaomi-brand">
-                  <img
-                    width={50}
-                    height={50}
-                    className="sm-i8i"
-                    src="https://cdn1.smartprix.com/rx-iGbJv9eGO-w100-h100/GbJv9eGO.webp"
-                  />
-                  <span>Xiaomi</span>
-                </a>
-                <a href="/mobiles/samsung-brand">
-                  <img
-                    width={50}
-                    height={50}
-                    className="sm-i8i"
-                    src="https://cdn1.smartprix.com/rx-iMpmb153D-w100-h100/Mpmb153D.webp"
-                  />
-                  <span>Samsung</span>
-                </a>
-                <a href="/mobiles/vivo-brand">
-                  <img
-                    width={50}
-                    height={50}
-                    className="sm-i8i"
-                    src="https://cdn1.smartprix.com/rx-iYeBboDh6-w100-h100/YeBboDh6.webp"
-                  />
-                  <span>Vivo</span>
-                </a>
-                <a href="/mobiles/realme-brand">
-                  <img
-                    width={50}
-                    height={50}
-                    className="sm-i8i"
-                    src="https://cdn1.smartprix.com/rx-iHrOF1ejy-w100-h100/HrOF1ejy.webp"
-                  />
-                  <span>Realme</span>
-                </a>
-                <a href="/mobiles/oneplus-brand">
-                  <img
-                    width={50}
-                    height={50}
-                    className="sm-i8i"
-                    src="https://cdn1.smartprix.com/rx-i0H6IiRiJ-w100-h100/0H6IiRiJ.webp"
-                  />
-                  <span>OnePlus</span>
-                </a>
-                <a href="/mobiles/oneplus-brand">
-                  <img
-                    width={50}
-                    height={50}
-                    className="sm-i8i"
-                    src="https://cdn1.smartprix.com/rx-i0H6IiRiJ-w100-h100/0H6IiRiJ.webp"
-                  />
-                  <span>OnePlus</span>
-                </a>
-                <a href="/mobiles/oneplus-brand">
-                  <img
-                    width={50}
-                    height={50}
-                    className="sm-i8i"
-                    src="https://cdn1.smartprix.com/rx-i0H6IiRiJ-w100-h100/0H6IiRiJ.webp"
-                  />
-                  <span>OnePlus</span>
-                </a>
-                <a href="/mobiles/motorola-brand">
-                  <img
-                    width={50}
-                    height={50}
-                    className="sm-i8i"
-                    src="https://cdn1.smartprix.com/rx-ihZnoypHg-w100-h100/hZnoypHg.webp"
-                  />
-                  <span>Motorola</span>
-                </a>
-                <a href="/mobiles/oppo-brand">
-                  <img
-                    width={50}
-                    height={50}
-                    className="sm-i8i"
-                    src="https://cdn1.smartprix.com/rx-iXPLoWt2W-w100-h100/XPLoWt2W.webp"
-                  />
-                  <span>OPPO</span>
-                </a>
-                <a href="/mobiles/poco-brand">
-                  <img
-                    width={50}
-                    height={50}
-                    className="sm-i8i"
-                    src="https://cdn1.smartprix.com/rx-ikSD2W9Dr-w100-h100/kSD2W9Dr.webp"
-                  />
-                  <span>Poco</span>
-                </a>
-                <a href="/mobiles/iqoo-brand">
-                  <img
-                    width={50}
-                    height={50}
-                    className="sm-i8i"
-                    src="https://cdn1.smartprix.com/rx-iJmat40P9-w100-h100/Jmat40P9.webp"
-                  />
-                  <span>iQOO</span>
-                </a>
-                <a href="/mobiles/nokia-brand">
-                  <img
-                    width={50}
-                    height={50}
-                    className="sm-i8i"
-                    src="https://cdn1.smartprix.com/rx-iO4tRzBZT-w100-h100/O4tRzBZT.webp"
-                  />
-                  <span>Nokia</span>
-                </a>
+                {Array.isArray(brands.data) &&
+                  brands.data.map((brand, index) => (
+                    <a href={`/`} key={index}>
+                      <img
+                        width={50}
+                        height={50}
+                        className="sm-i8i"
+                        src={`${baseURL}${brand.img}`}
+                        alt={`${brand.name} Logo`}
+                      />
+                      <span>{brand.name}</span>
+                    </a>
+                  ))}
               </div>
             </div>
           </div>
