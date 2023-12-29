@@ -3,6 +3,7 @@ const Product = require("../models/product");
 const BrandStore = require("../models/brandstore");
 const fileDelete = require("../utils/files-delete");
 const fs = require("fs");
+const { type } = require("os");
 exports.getbrandform = async (req, res) => {
   res.render("brand/brand_storePage", {
     user: req.user,
@@ -566,5 +567,14 @@ exports.getProducts = async (req, res) => {
     iserror: false,
     message: "Success",
     data: products,
+  });
+};
+
+exports.getAllBrands = async (req, res) => {
+  const b = await BrandStore.find({ type: "Brand" });
+  res.status(200).send({
+    iserror: false,
+    message: "Success",
+    data: b,
   });
 };

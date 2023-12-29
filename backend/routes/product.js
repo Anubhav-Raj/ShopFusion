@@ -68,4 +68,5 @@ router.get("/product/:id", productCon.getProductById);
 router.get("/product/features/:category", productCon.getUniqueTitleCatogory);
 router.get("/products", productCon.getProducts);
 
+router.get("/brands", productCon.getAllBrands);
 module.exports = router;
