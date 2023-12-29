@@ -21,7 +21,7 @@ const app = express();
 // sessions
 const oSessionStore = new MongoDBstore({
   //calling constructor
-  uri: "mongodb://0.0.0.0:27017/shopfusion",
+  uri: process.env.MONGO_ONLINE + "shopfusion",
   collection: "usersessions",
 });
 

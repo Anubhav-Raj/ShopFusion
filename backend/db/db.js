@@ -28,9 +28,11 @@
 
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
+require("dotenv").config();
 
 mongoose
-  .connect("mongodb://0.0.0.0:27017/shopfusion", {
+  .connect(process.env.MONGO_ONLINE, {
+    dbName: "shopfusion",
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
