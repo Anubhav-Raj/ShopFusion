@@ -1,5 +1,6 @@
 import React from "react";
 import "./navlist.css";
+import { Link } from "react-router-dom";
 
 function navlist() {
   // Open the sidebar
@@ -44,28 +45,16 @@ function navlist() {
             </a>
           </li>
           <li>
-            <div className="sm-dropdown">
-              JOB SEEKERS
-              
-            </div>
+            <div className="sm-dropdown">JOB SEEKERS</div>
           </li>
           <li>
-            <div className="sm-dropdown">
-              RENTAL SERVICE PROVIDER
-              
-            </div>
+            <div className="sm-dropdown">RENTAL SERVICE PROVIDER</div>
           </li>
           <li>
-            <div className="sm-dropdown visible">
-              RENTAL SERVIECE SEEKERS
-              
-            </div>
+            <div className="sm-dropdown visible">RENTAL SERVIECE SEEKERS</div>
           </li>
           <li>
-            <div className="sm-dropdown">
-              OTHER SERVICE PROVIDER
-              
-            </div>
+            <div className="sm-dropdown">OTHER SERVICE PROVIDER</div>
           </li>
           <li>
             <a href="/deals" data-way="">
@@ -78,9 +67,7 @@ function navlist() {
             </a>
           </li>
           <li>
-            <a href="/amazon-hub" data-way="">
-              MOBILE
-            </a>
+            <Link to="/mobile">MOBILE</Link>
           </li>
         </ul>
       </nav>
@@ -91,7 +78,6 @@ function navlist() {
         id="mySidebar"
       >
         <div className=" background_col_f"></div>
-
 
         <ul className="sidebar_flx">
           <li className="slidebarrow">

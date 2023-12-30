@@ -1,20 +1,29 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navebar from "./components/header/navebar";
 import Navlist from "./components/header/navlist";
 import Footer from "./components/footer/footer";
-import Brandpage from "./pages/Brand_page/Brandpage";
-// import Home from "./pages/Home/Home";
-// import Mobile_home from "./pages/mobile_home/Mobile_home";
+import Loader from "./components/loader";
+// Use React.lazy for lazy loading
+const Brandpage = lazy(() => import("./pages/Brand_page/Brandpage"));
 
 function App() {
   return (
     <>
-      <Navebar />
-      <Navlist />
-      {/* <Home /> */}
-      <Brandpage/>
-      {/* <Mobile_home /> */}
-      <Footer />
+      <Router>
+        <Navebar />
+        <Navlist />
+
+        {/* Wrap your routes in Suspense */}
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            {/* Use the lazy-loaded components */}
+            <Route path="/mobile" element={<Brandpage />} />
+          </Routes>
+        </Suspense>
+
+        <Footer />
+      </Router>
     </>
   );
 }
