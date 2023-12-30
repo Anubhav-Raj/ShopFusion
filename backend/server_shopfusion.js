@@ -80,8 +80,12 @@ app.use((req, res, next) => {
 app.get("/", async (req, res, next) => {
   res.send("Hello From Express default route");
 });
-
+//  make simple post
+app.post("/", async (req, res, next) => {
+  res.send("Hello From Express default route" + req.body.name);
+});
 app.use(userRouter);
+0;
 app.use(productRouter);
 
 // google continue
