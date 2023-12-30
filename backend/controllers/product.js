@@ -11,21 +11,37 @@ exports.getbrandform = async (req, res) => {
 };
 
 exports.postbrandfrom = async (req, res) => {
-  const { name, type, link } = req.body;
-  var image = "";
-  if (req.file) {
-    image = "/files/" + req.file.filename;
-  }
-  const b = new BrandStore({
-    name: name,
-    img: image,
-    type: type,
-    link: link,
-    user: req.user._id,
-  });
-  await b.save();
+  try {
+    const { name, type, link } = req.body;
+    var image = "";
 
-  res.redirect("/brandlist");
+    if (req.file) {
+      image = "/files/" + req.file.filename;
+    } else {
+      console.log("no file");
+    }
+
+    const b = new BrandStore({
+      name: name,
+      img: image,
+      type: type,
+      link: link,
+      user: req.user._id,
+    });
+
+    await b.save();
+
+    res.redirect("/brandlist");
+  } catch (err) {
+    // Handle Multer file size error
+    if (err instanceof multer.MulterError && err.code === "LIMIT_FILE_SIZE") {
+      return res.status(400).send("File too large. Max size is 400KB.");
+    } else {
+      // Handle other errors
+      console.error(err);
+      return res.status(500).send("Internal Server Error");
+    }
+  }
 };
 
 exports.getbrandlist = async (req, res) => {

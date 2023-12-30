@@ -1,9 +1,7 @@
-//for uploading images
-
 const path = require("path");
 const multer = require("multer");
 
-//disk storage
+// Disk storage
 const storage = multer.diskStorage({
   destination: "./uploads/images/",
   filename: (req, file, cb) => {
@@ -14,22 +12,28 @@ const storage = multer.diskStorage({
   },
 });
 
-const filefilter = (req, file, cb) => {
+// File filter function with size limit
+const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "image/png" ||
     file.mimetype === "image/jpg" ||
     file.mimetype === "image/jpeg"
   ) {
+    if (file.size > 400 * 1024) {
+      // Size limit in bytes
+      return cb(new Error("Image size exceeds 400kb"), false);
+    }
     cb(null, true);
   } else {
     cb(null, false);
   }
 };
 
-//stored at localhost:4000/api/profile/${req.file.filename}
+// Multer instance with size limit
 const upload = multer({
   storage: storage,
-  fileFilter: filefilter,
+  fileFilter: fileFilter,
+  limits: { fileSize: 400 * 1024 }, // Additional limit for clarity
 });
 
 module.exports = upload;
