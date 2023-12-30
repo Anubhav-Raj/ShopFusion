@@ -29,10 +29,17 @@ exports.postbrandfrom = async (req, res) => {
 };
 
 exports.getbrandlist = async (req, res) => {
-  const lists = await BrandStore.find();
+  var allBrands = [];
+  const lists = await BrandStore.find().sort({ user: 1 });
+  allBrands = lists;
+  if (req.user.userType !== "admin") {
+    const userBrand = lists.filter((e) => e.user == req.user._id);
+    const notUserBrand = lists.filter((e) => e.user != req.user._id);
+    allBrands = [...userBrand, ...notUserBrand];
+  }
   res.render("brand/brandList", {
     user: req.user,
-    brandList: lists,
+    brandList: allBrands,
   });
 };
 
@@ -439,6 +446,12 @@ exports.postDeleteStoreBrand = async (req, res) => {
 exports.geteditStoreBrand = async (req, res) => {
   const id = req.params.id;
   const brand = await BrandStore.findById(id);
+  if (
+    req.user.userType !== "admin" &&
+    req.user._id.toString() !== brand.user.toString()
+  ) {
+    return res.redirect("/brandlist");
+  }
   res.render("brand/editbrand_stroe", {
     user: req.user,
     brand: brand,
@@ -446,17 +459,18 @@ exports.geteditStoreBrand = async (req, res) => {
 };
 
 exports.posteditStoreBrand = async (req, res) => {
-  const id = req.params.id;
+  const id = req.body.id;
   const { name, type, link } = req.body;
   const sb = await BrandStore.findById(id);
+
   var image = sb.img;
   if (req.file) {
-    image = "/files/" + req.file.filename;
-    var image_name = profile.split("/")[2];
+    var image_name = image.split("/")[2];
     const pathImg = "uploads/images/" + image_name;
-    if (profile && fs.existsSync(pathImg)) {
+    if (image && fs.existsSync(pathImg)) {
       fileDelete.deleteFiles(pathImg);
     }
+    image = "/files/" + req.file.filename;
   }
   await BrandStore.findByIdAndUpdate(id, {
     name: name,

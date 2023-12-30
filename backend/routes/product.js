@@ -22,6 +22,7 @@ router.post(
   upload.single("image"),
   productCon.posteditStoreBrand
 );
+router.post("/deletebrand", isLoggedIn, productCon.postDeleteStoreBrand);
 
 router.get(
   "/addmobileproduct",
