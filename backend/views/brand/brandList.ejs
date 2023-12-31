@@ -128,8 +128,13 @@
                           <div class="action">
     
                             <div class="view badge bg-light-success text-success w-100"><a href="/editbrand/<%=brand._id %>">View</a></div>
-                            <div class="edit badge bg-light-warning text-warning w-100"> Edit</div>
-                             <div class="delete badge bg-light-danger text-danger w-100">Delete</div>
+                            <% if(user.userType==="admin" || user._id.toString()===brand.user.toString()) {%>
+                            <div class="edit badge bg-light-warning text-warning w-100"> <a href="/editbrand/<%=brand._id %>">Edit</a></div>
+                              <form method="post" action="/deletebrand">
+                                <input type="hidden" name="id" value="<%=brand._id %>">
+                                <button type="submit" class="delete badge bg-light-danger text-danger w-100">Delete</button>
+                            </form>
+                             <%}%>
                           </div></td>
                      </tr>
                     

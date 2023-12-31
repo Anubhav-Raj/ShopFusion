@@ -39,7 +39,7 @@
                 <hr />
                 <form
                   class="row g-3"
-                  action="/brandstore/id"
+                  action="/editbrand"
                   method="post"
                   enctype="multipart/form-data"
                 >
@@ -47,6 +47,7 @@
                     <label class="form-label"> Name</label>
                     <input
                       type="text"
+                      value="<%=brand.name %>"
                       required
                       class="form-control"
                       name="name"
@@ -69,25 +70,31 @@
                       required
                       class="form-control"
                       name="link"
+                      value="<%=brand.link %>"
                     />
                   </div>
+                  <input type="hidden" name="id" value="<%=brand._id %>">
                   <div class="col-md-12">
                     <label for="bsValidation9" class="form-label"
                       >Choose Option
                     </label>
                     <select
-                      id="bsValidation9"
-                      class="form-select"
-                      required=""
-                      name="type"
-                    >
-                      <option>Brand</option>
-                      <option>Store</option>
-                    </select>
+                    id="bsValidation9"
+                    class="form-select"
+                    required=""
+                    name="type"
+                  >
+                    <% for (let type of ['Brand', 'Store']) { %>
+                      <option value="<%= type %>" <%- brand.type === type ? 'selected' : '' %>><%= type %></option>
+                    <% } %>
+                  </select>
+                  
                     <div class="invalid-feedback">
                       Please select a valid country.
                     </div>
                   </div>
+                  <!-- old image -->
+                  <img src="<%=brand.img %>">
 
                   <div class="col-12">
                     <div class="d-grid">
