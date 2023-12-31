@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBrands } from "../../redux/brand.slice";
 import Loader from "../../components/loader";
+import { Link } from "react-router-dom";
 
 function Brandpage() {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ function Brandpage() {
               <div className="sm-91v rou-p1a scr-tgg">
                 {Array.isArray(brands.data) &&
                   brands.data.map((brand, index) => (
-                    <a href={`/`} key={index}>
+                    <Link to="/brand" key={index}>
                       <img
                         width={50}
                         height={50}
@@ -54,7 +55,7 @@ function Brandpage() {
                         alt={`${brand.name} Logo`}
                       />
                       <span>{brand.name}</span>
-                    </a>
+                    </Link>
                   ))}
               </div>
             </div>

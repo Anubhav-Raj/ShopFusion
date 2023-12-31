@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../../pages/mobile_home/mobile_home.css"
+import "../../../pages/Mobile_home/mobile_home.css";
 
 function Mobile_list() {
   const [expanded, setExpanded] = useState(false);
@@ -477,8 +477,7 @@ function Mobile_list() {
               </div>
               <div className="tag-zmy">UPCOMING</div>
             </div>
-            
-            
+
             <div className="sm-hgy has-z31">
               <div className="sm-img-j65">
                 <img
