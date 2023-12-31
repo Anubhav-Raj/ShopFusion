@@ -156,6 +156,20 @@ a {
     text-transform: uppercase;
     color: #fff;
 }
+.sm-top-tabs>div {
+    display: flex;
+    overflow: auto;
+    flex-direction: row;
+}
+.sm-top-tabs>div>a {
+    padding: 8px 3.33vw;
+    line-height: 24px;
+    flex: 1;
+    min-width: max-content;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+}
 
 a:hover {
     color: var(--color-link-hover);

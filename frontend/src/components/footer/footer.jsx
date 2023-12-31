@@ -1,5 +1,6 @@
 import React from "react";
-import "./footer.css"
+import logo from "../../assets/zonehubcom-high-resolution-logo-white-transparent.png";
+import "./footer.css";
 function footer() {
   return (
     <>
@@ -9,9 +10,9 @@ function footer() {
             <div>
               <a className="logo hide-on-small-screen1" href="/" data-way="">
                 <img
-                  src="https://www.smartprix.com/img/sm_small.png"
-                  
-                  alt="Smartprix"
+                  src={logo}
+                  style={{ objectFit: "contain" }}
+                  alt="Zone Hub"
                   width={186}
                   height={60}
                 />

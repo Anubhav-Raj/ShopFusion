@@ -10,10 +10,10 @@ function Mobile_list() {
   return (
     <>
       <div>
-        <div className={`box-5s6 ${expanded ? "expanded" : ""}`} style={{}}>
+        <div className="box-5s6"  style={{}}>
           <h1>Mobile Phones</h1>
-          <div className={`sm-zml ${expanded ? "expanded" : ""}`}>
-            <div className="content-htw">
+          <div className="sm-zml">
+            <div className={`content-htw ${expanded ? "expanded" : ""}`}>
               <p>
                 This list contains 16626 Mobile Phones in India. This price list
                 was last updated on Dec 25, 2023.
@@ -100,8 +100,10 @@ function Mobile_list() {
                 </tbody>
               </table>
             </div>
-            <span className="droping_div" onClick={handleReadMoreClick}>
-              <a>Read More</a>
+            <span>
+              <a onClick={handleReadMoreClick}>
+                {expanded ? "Read Less" : "Read More"}
+              </a>
             </span>
           </div>
           <div className="sm-page-w7m">
@@ -553,7 +555,7 @@ function Mobile_list() {
             </div>
           </div>
         </sm-dap>
-        <div className="box-5s6" style={{}}>
+        {/* <div className="box-5s6" style={{}}>
           <div className="header-gle">
             <div className="title-y8c">
               <h2>Discuss</h2>
@@ -1767,7 +1769,7 @@ function Mobile_list() {
               <span>Upcoming Motorola Mobile Phones</span>
             </a>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
