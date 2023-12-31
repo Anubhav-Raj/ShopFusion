@@ -1,0 +1,228 @@
+
+body {
+    /* white-space: nowrap; */
+    font-size: 14px;
+    font-family: inherit;
+    line-height: 1em;
+    color: #0F1111;
+}
+
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+
+body {
+    font-size: 14px;
+    line-height: 20px;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100%;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+}
+
+body {
+    color: #0F1111;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+html {
+    height: 100%;
+    min-height: 100%;
+}
+
+.nav-4th {
+    background-image: url(https://m.media-amazon.com/images/G/31/gno/sprites/nav-sprite-global-1x-reorg-privacy._CB600086755_.png);
+    background-position: 0 1000px;
+    background-repeat: repeat-x;
+}
+
+.search-qp5 {
+    position: relative;
+    top: 5px;
+    float: left;
+    height: 40px;
+    margin: 0;
+    padding-left: 5px;
+    overflow: hidden;
+    border: 1px solid #cdcdcd;
+    -webkit-border-radius: 4px 0 0 4px;
+    -moz-border-radius: 4px 0 0 4px;
+    border-radius: 0\9;
+    background-position: 0 -532px;
+}
+
+.nav-4th {
+    background-image: url("https://m.media-amazon.com/images/G/31/gno/sprites/nav-sprite-global-2x-reorg-privacy._CB600086755_.png");
+    background-size: 350px;
+}
+
+.search-qp5 {
+    background-color: #e6e6e6;
+    background-image: none;
+    border-left: 1px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.search-qp5 {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    position: relative;
+    float: none;
+    width: 20%;
+    border-top-left-radius: 5px;
+    top: 0;
+    border-bottom-left-radius: 5px;
+    right: 0;
+    bottom: 0;
+    left: -8px;
+}
+
+#nav-search .search-qp5:hover {
+    background-position: 0 -582px;
+}
+
+#navbar.nav-bluebeacon #nav-search .search-qp5:hover {
+    background-color: #d4d4d4;
+    border-left-color: #d4d4d4;
+    border-top-color: #d4d4d4;
+    border-bottom-color: #d4d4d4;
+}
+
+.search-7iw {
+    width: 100%;
+    position: relative;
+    float: left;
+    cursor: default;
+    overflow: hidden;
+    top: 3px;
+}
+
+label {
+    display: block;
+    padding-left: 2px;
+    padding-bottom: 2px;
+    font-weight: 700;
+}
+
+select {
+    font-family: inherit;
+}
+
+select {
+    margin: 0;
+    font-size: 100%;
+    vertical-align: middle;
+}
+
+select {
+    -webkit-transition: all .1s linear;
+    transition: all .1s linear;
+    line-height: 19px;
+    color: #0F1111;
+}
+
+.dropdown-o34 {
+    position: absolute;
+    display: block;
+    top: -1px;
+    left: 0;
+    height: 35px;
+    width: auto;
+    font-family: inherit;
+    outline: 0;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    visibility: visible;
+    border: 0;
+    line-height: 35px;
+}
+
+.search-7iw .search-1a2 {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #555;
+    font-size: 12px;
+    line-height: 33px;
+    margin-right: 21px;
+    margin-left: 5px;
+    min-width: 19px;
+}
+
+#navbar.layout2.bold-focus-hover.nav-bluebeacon #nav-search .search-qp5:hover .search-1a2 {
+    color: #000;
+}
+
+i {
+    font-style: italic;
+}
+
+.icon-r78 {
+    background-repeat: no-repeat;
+}
+
+.icon-r78 {
+    background-image: url(https://m.media-amazon.com/images/G/31/gno/sprites/nav-sprite-global-1x-reorg-privacy._CB600086755_.png);
+    background-position: 0 1000px;
+    background-repeat: repeat-x;
+}
+
+.search-7iw .icon-r78 {
+    position: absolute;
+    top: 14px;
+    right: 8px;
+    border-style: solid;
+    _border-style: dashed;
+    border-width: 4px;
+    border-color: transparent;
+    border-top: 4px solid #666;
+    border-bottom-width: 0;
+    width: 0;
+    height: 0;
+    font-size: 0;
+    line-height: 0;
+}
+
+
+/* These were inline style tags. Uses id+class to override almost everything */
+#nav-h59.style-B2WMK {
+    width: auto;
+}
+
+#ocqto.style-EtX9w {
+    display: block;
+    top: 2.5px;
+}
