@@ -1,22 +1,24 @@
 /* eslint-disable jsx-a11y/alt-text */
 import "./brand.css";
-import React, { useEffect } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBrands } from "../../redux/brand.slice";
 import Loader from "../../components/loader";
 import { Link } from "react-router-dom";
-
+import React, { useEffect } from "react";
+import LazyLoad from "react-lazyload";
 function Brandpage() {
   const dispatch = useDispatch();
   const brandsResponse = useSelector((state) => state.brands);
   const status = brandsResponse.status;
   const error = brandsResponse.error;
   const brands = brandsResponse.brands;
-  console.log(status);
-  const baseURL =
-    process.env.NODE_ENV === "production"
+
+  const baseURL = React.useMemo(() => {
+    return process.env.NODE_ENV === "production"
       ? "https://production-api.com"
       : process.env.REACT_APP_API_BASE_URL || "http://localhost:4026";
+  }, []);
 
   useEffect(() => {
     if (status === "idle") {
@@ -31,6 +33,7 @@ function Brandpage() {
   if (status === "failed") {
     return <div>Error: {error}</div>;
   }
+  const brandsData = brands?.data || [];
   return (
     <>
       <main>
@@ -44,9 +47,9 @@ function Brandpage() {
                 <div className="box-hf8"></div>
               </div>
               <div className="sm-91v rou-p1a scr-tgg">
-                {Array.isArray(brands.data) &&
-                  brands.data.map((brand, index) => (
-                    <Link to="/brand" key={index}>
+                {Array.isArray(brandsData) &&
+                  brandsData.map((brand, index) => (
+                    <Link to={`/brand/${brand.name}`} key={brand.id}>
                       <img
                         width={50}
                         height={50}

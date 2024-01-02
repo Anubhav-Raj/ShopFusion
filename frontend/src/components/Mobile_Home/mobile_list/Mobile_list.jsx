@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import "../../../pages/Mobile_home/mobile_home.css";
+import { Link } from "react-router-dom";
 
 function Mobile_list() {
   const [expanded, setExpanded] = useState(false);
-
   const handleReadMoreClick = () => {
     setExpanded(!expanded);
   };
+  const names = ["James", "Paul", "John", "George", "Ringo"];
   return (
     <>
       <div>
-        <div className="box-5s6"  style={{}}>
+        <div className="box-5s6" style={{}}>
           <h1>Mobile Phones</h1>
           <div className="sm-zml">
             <div className={`content-htw ${expanded ? "expanded" : ""}`}>
@@ -237,6 +238,7 @@ function Mobile_list() {
               </a>
             </div>
           </div>
+
           <div className="box-5s6 style-fV4Hx" id="style-fV4Hx">
             <div className="header-gle">
               <div className="title-y8c">
@@ -306,6 +308,7 @@ function Mobile_list() {
             </div>
           </div>
         </div>
+
         <div className="box-5s6" style={{}}>
           <div className="pg-prf-27p">
             <div>
@@ -348,206 +351,83 @@ function Mobile_list() {
               </div>
             </div>
           </div>
-          <div className="sm-nr5 list-5d7 size-grb img-bny">
-            <div className="sm-hgy has-z31">
-              <div className="sm-img-j65">
-                <img
-                  className="sm-nf8"
-                  src="https://cdn1.smartprix.com/rx-iv7NVHK0A-w280-h280/xiaomi-redmi-note-13.webp"
-                />
-              </div>
-              <a
-                href="/mobiles/xiaomi-redmi-note-13-pro-max-5g-ppd1dcj37uyz"
-                className="nam-o8n clamp-1r9"
-              >
-                <h2>Xiaomi Redmi Note 13 Pro Max 5G</h2>
-              </a>
-              <span className="pri-jde">₹22,999</span>
-              <div className="rat-eh7">
-                <span className="sm-xgv style-2lEGV" id="style-2lEGV">
-                  <i></i>
-                </span>
-              </div>
-              <ul className="sm-7hl spe-j4c">
-                <li>Dual Sim, 3G, 4G, 5G, VoLTE, Wi-Fi, NFC, IR Blaster</li>
-                <li>Snapdragon 7 Gen1, Octa Core, 2.4 GHz Processor</li>
-                <li>12 GB RAM, 256 GB inbuilt</li>
-                <li>5200 mAh Battery with 120W Fast Charging</li>
-                <li>
-                  6.67 inches, 1220 x 2712 px, 144 Hz Display with Punch Hole
-                </li>
-                <li>
-                  200 MP + 13 MP + 8 MP Triple Rear &amp; 32 MP Front Camera
-                </li>
-                <li className="s-no-nds">Memory Card Not Supported</li>
-                <li>Android v13</li>
-              </ul>
-              <div className="tag-fq1">
-                <div className="sco-7o9 rank-2-3vo">
-                  <b>87</b>
-                  <small>Spec Score</small>
-                </div>
-              </div>
-              <div className="sm-product-5jw">
-                <button>
-                  <svg className="icon" viewBox="0 0 24 24">
-                    <path d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path>
-                  </svg>
-                  <small>Compare</small>
-                </button>
-                <button>
-                  <svg className="icon" viewBox="0 0 24 24">
-                    <path d="M12.1,18.55L12,18.65L11.89,18.55C7.14,14.24 4,11.39 4,8.5C4,6.5 5.5,5 7.5,5C9.04,5 10.54,6 11.07,7.36H12.93C13.46,6 14.96,5 16.5,5C18.5,5 20,6.5 20,8.5C20,11.39 16.86,14.24 12.1,18.55M16.5,3C14.76,3 13.09,3.81 12,5.08C10.91,3.81 9.24,3 7.5,3C4.42,3 2,5.41 2,8.5C2,12.27 5.4,15.36 10.55,20.03L12,21.35L13.45,20.03C18.6,15.36 22,12.27 22,8.5C22,5.41 19.58,3 16.5,3Z"></path>
-                  </svg>
-                  <small>Like</small>
-                </button>
-                <a
-                  className="sto-lp9"
-                  href="https://l.smartprix.com/l?url=https%3A%2F%2Fwww.amazon.in%2Fs%3Fk%3DXiaomi%2520Redmi%2520Note%252013%2520Pro%2520Max%25205G%26rh%3Dp_n_availability%253A1318485031"
-                >
-                  <img
-                    className="sm-nf8"
-                    src="https://cdn1.smartprix.com/rx-iR2NxBi82-w32-h32/amazon.webp"
-                  />
-                  <small>Search →</small>
-                </a>
-              </div>
-              <div className="tag-zmy">UPCOMING</div>
-            </div>
-            <div className="sm-hgy has-z31">
-              <div className="sm-img-j65">
-                <img
-                  className="sm-nf8"
-                  src="https://cdn1.smartprix.com/rx-incYGaGkq-w280-h280/xiaomi-redmi-note-13.webp"
-                />
-              </div>
-              <a
-                href="/mobiles/xiaomi-redmi-note-13-pro-plus-ppd17s27km27"
-                className="nam-o8n clamp-1r9"
-              >
-                <h2>Xiaomi Redmi Note 13 Pro Plus</h2>
-              </a>
-              <span className="pri-jde">₹28,990</span>
-              <div className="rat-eh7">
-                <span className="sm-xgv style-nWTEj" id="style-nWTEj">
-                  <i></i>
-                </span>
-              </div>
-              <ul className="sm-7hl spe-j4c">
-                <li>Dual Sim, 3G, 4G, 5G, VoLTE, Wi-Fi, NFC, IR Blaster</li>
-                <li>Dimensity 7200 Ultra, Octa Core, 2.8 GHz Processor</li>
-                <li>12 GB RAM, 256 GB inbuilt</li>
-                <li>5000 mAh Battery with 120W Fast Charging</li>
-                <li>
-                  6.67 inches, 1220 x 2712 px, 120 Hz Display with Punch Hole
-                </li>
-                <li>
-                  200 MP + 8 MP + 2 MP Triple Rear &amp; 16 MP Front Camera
-                </li>
-                <li className="s-no-nds">Memory Card Not Supported</li>
-                <li>Android v13</li>
-              </ul>
-              <div className="tag-fq1">
-                <div className="sco-7o9 rank-2-3vo">
-                  <b>87</b>
-                  <small>Spec Score</small>
-                </div>
-              </div>
-              <div className="sm-product-5jw">
-                <button>
-                  <svg className="icon" viewBox="0 0 24 24">
-                    <path d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path>
-                  </svg>
-                  <small>Compare</small>
-                </button>
-                <button>
-                  <svg className="icon" viewBox="0 0 24 24">
-                    <path d="M12.1,18.55L12,18.65L11.89,18.55C7.14,14.24 4,11.39 4,8.5C4,6.5 5.5,5 7.5,5C9.04,5 10.54,6 11.07,7.36H12.93C13.46,6 14.96,5 16.5,5C18.5,5 20,6.5 20,8.5C20,11.39 16.86,14.24 12.1,18.55M16.5,3C14.76,3 13.09,3.81 12,5.08C10.91,3.81 9.24,3 7.5,3C4.42,3 2,5.41 2,8.5C2,12.27 5.4,15.36 10.55,20.03L12,21.35L13.45,20.03C18.6,15.36 22,12.27 22,8.5C22,5.41 19.58,3 16.5,3Z"></path>
-                  </svg>
-                  <small>Like</small>
-                </button>
-                <a
-                  className="sto-lp9"
-                  href="https://l.smartprix.com/l?k=12eB0idvQ0dqPH1WI5H~s9zbhrhAgTYBOr3Uh7hBnYcusUa5ZcFa3YaFcAsnhNcFssucWtHGcFUs3ahrhhaFhrhrhhacBrWahrhrBi5GFoGOnoGhrFB5qkw0Sn6fPIlq"
-                >
-                  <img
-                    className="sm-nf8"
-                    src="https://cdn1.smartprix.com/rx-i1jV84HS1-w32-h32/flipkart.webp"
-                  />
-                  <small>Search →</small>
-                </a>
-              </div>
-              <div className="tag-zmy">UPCOMING</div>
-            </div>
 
-            <div className="sm-hgy has-z31">
-              <div className="sm-img-j65">
-                <img
-                  className="sm-nf8"
-                  src="https://cdn1.smartprix.com/rx-iGNQcfeDW-w280-h280/realme-gt-5-pro.webp"
-                />
-              </div>
-              <a
-                href="/mobiles/realme-gt-5-pro-ppd1bkqf6u4j"
-                className="nam-o8n clamp-1r9"
-              >
-                <h2>Realme GT 5 Pro</h2>
-              </a>
-              <span className="pri-jde">₹38,990</span>
-              <div className="rat-eh7">
-                <span className="sm-xgv style-WGlP6" id="style-WGlP6">
-                  <i></i>
-                </span>
-              </div>
-              <ul className="sm-7hl spe-j4c">
-                <li>Dual Sim, 3G, 4G, 5G, VoLTE, Wi-Fi, NFC, IR Blaster</li>
-                <li>Snapdragon 8 Gen3, Octa Core, 3.3 GHz Processor</li>
-                <li>12 GB RAM, 256 GB inbuilt</li>
-                <li>5400 mAh Battery with 100W Fast Charging</li>
-                <li>
-                  6.78 inches, 1264 x 2780 px, 144 Hz Display with Punch Hole
-                </li>
-                <li>
-                  50 MP + 50 MP + 8 MP Triple Rear &amp; 32 MP Front Camera
-                </li>
-                <li className="s-no-nds">Memory Card Not Supported</li>
-                <li>Android v14</li>
-              </ul>
-              <div className="tag-fq1">
-                <div className="sco-7o9 rank-2-3vo">
-                  <b>89</b>
-                  <small>Spec Score</small>
+          <div className="sm-nr5 list-5d7 size-grb img-bny">
+            {names.map((name, index) => (
+              <Link to={`/mobile/${index}`}>
+                <div className="sm-hgy has-z31">
+                  <div className="sm-img-j65">
+                    <img
+                      className="sm-nf8"
+                      src="https://cdn1.smartprix.com/rx-iv7NVHK0A-w280-h280/xiaomi-redmi-note-13.webp"
+                    />
+                  </div>
+                  <a
+                    href="/mobiles/xiaomi-redmi-note-13-pro-max-5g-ppd1dcj37uyz"
+                    className="nam-o8n clamp-1r9"
+                  >
+                    <h2>Xiaomi Redmi Note 13 Pro Max 5G</h2>
+                  </a>
+                  <span className="pri-jde">₹22,999</span>
+                  <div className="rat-eh7">
+                    <span className="sm-xgv style-2lEGV" id="style-2lEGV">
+                      <i></i>
+                    </span>
+                  </div>
+                  <ul className="sm-7hl spe-j4c">
+                    <li>Dual Sim, 3G, 4G, 5G, VoLTE, Wi-Fi, NFC, IR Blaster</li>
+                    <li>Snapdragon 7 Gen1, Octa Core, 2.4 GHz Processor</li>
+                    <li>12 GB RAM, 256 GB inbuilt</li>
+                    <li>5200 mAh Battery with 120W Fast Charging</li>
+                    <li>
+                      6.67 inches, 1220 x 2712 px, 144 Hz Display with Punch
+                      Hole
+                    </li>
+                    <li>
+                      200 MP + 13 MP + 8 MP Triple Rear &amp; 32 MP Front Camera
+                    </li>
+                    <li className="s-no-nds">Memory Card Not Supported</li>
+                    <li>Android v13</li>
+                  </ul>
+                  <div className="tag-fq1">
+                    <div className="sco-7o9 rank-2-3vo">
+                      <b>87</b>
+                      <small>Spec Score</small>
+                    </div>
+                  </div>
+                  <div className="sm-product-5jw">
+                    <button>
+                      <svg className="icon" viewBox="0 0 24 24">
+                        <path d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path>
+                      </svg>
+                      <small>Compare</small>
+                    </button>
+                    <button>
+                      <svg className="icon" viewBox="0 0 24 24">
+                        <path d="M12.1,18.55L12,18.65L11.89,18.55C7.14,14.24 4,11.39 4,8.5C4,6.5 5.5,5 7.5,5C9.04,5 10.54,6 11.07,7.36H12.93C13.46,6 14.96,5 16.5,5C18.5,5 20,6.5 20,8.5C20,11.39 16.86,14.24 12.1,18.55M16.5,3C14.76,3 13.09,3.81 12,5.08C10.91,3.81 9.24,3 7.5,3C4.42,3 2,5.41 2,8.5C2,12.27 5.4,15.36 10.55,20.03L12,21.35L13.45,20.03C18.6,15.36 22,12.27 22,8.5C22,5.41 19.58,3 16.5,3Z"></path>
+                      </svg>
+                      <small>Like</small>
+                    </button>
+                    <a
+                      className="sto-lp9"
+                      href="https://l.smartprix.com/l?url=https%3A%2F%2Fwww.amazon.in%2Fs%3Fk%3DXiaomi%2520Redmi%2520Note%252013%2520Pro%2520Max%25205G%26rh%3Dp_n_availability%253A1318485031"
+                    >
+                      <img
+                        className="sm-nf8"
+                        src="https://cdn1.smartprix.com/rx-iR2NxBi82-w32-h32/amazon.webp"
+                      />
+                      <small>Search →</small>
+                    </a>
+                  </div>
+                  <div className="tag-zmy">UPCOMING</div>
                 </div>
-              </div>
-              <div className="sm-product-5jw">
-                <button>
-                  <svg className="icon" viewBox="0 0 24 24">
-                    <path d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path>
-                  </svg>
-                  <small>Compare</small>
-                </button>
-                <button>
-                  <svg className="icon" viewBox="0 0 24 24">
-                    <path d="M12.1,18.55L12,18.65L11.89,18.55C7.14,14.24 4,11.39 4,8.5C4,6.5 5.5,5 7.5,5C9.04,5 10.54,6 11.07,7.36H12.93C13.46,6 14.96,5 16.5,5C18.5,5 20,6.5 20,8.5C20,11.39 16.86,14.24 12.1,18.55M16.5,3C14.76,3 13.09,3.81 12,5.08C10.91,3.81 9.24,3 7.5,3C4.42,3 2,5.41 2,8.5C2,12.27 5.4,15.36 10.55,20.03L12,21.35L13.45,20.03C18.6,15.36 22,12.27 22,8.5C22,5.41 19.58,3 16.5,3Z"></path>
-                  </svg>
-                  <small>Like</small>
-                </button>
-                <a
-                  className="sto-lp9"
-                  href="https://l.smartprix.com/l?url=https%3A%2F%2Fwww.amazon.in%2Fs%3Fk%3DRealme%2520GT%25205%2520Pro%26rh%3Dp_n_availability%253A1318485031"
-                >
-                  <img
-                    className="sm-nf8"
-                    src="https://cdn1.smartprix.com/rx-iR2NxBi82-w32-h32/amazon.webp"
-                  />
-                  <small>Search →</small>
-                </a>
-              </div>
-              <div className="tag-zmy">UPCOMING</div>
-            </div>
+              </Link>
+            ))}
           </div>
+
           <div className="sm-load-6e4">Load More</div>
         </div>
+
         <sm-dap className="p-34y t-mli style-ibg6j" id="style-ibg6j">
           <div>
             <div>
@@ -555,6 +435,7 @@ function Mobile_list() {
             </div>
           </div>
         </sm-dap>
+
         {/* <div className="box-5s6" style={{}}>
           <div className="header-gle">
             <div className="title-y8c">

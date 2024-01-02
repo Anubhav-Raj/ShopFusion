@@ -4,6 +4,7 @@ const BrandStore = require("../models/brandstore");
 const fileDelete = require("../utils/files-delete");
 const fs = require("fs");
 const { type } = require("os");
+const { log } = require("console");
 exports.getbrandform = async (req, res) => {
   res.render("brand/brand_storePage", {
     user: req.user,
@@ -233,6 +234,7 @@ exports.postaddmobileproduct = async (req, res) => {
     Category: "mobile",
     user: req.user._id,
   });
+  console.log(p);
   await p.save();
   return res.redirect("/addMobileProductList");
 };

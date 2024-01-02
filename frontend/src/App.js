@@ -4,13 +4,19 @@ import Navebar from "./components/header/navebar";
 import Navlist from "./components/header/navlist";
 import Footer from "./components/footer/footer";
 import Loader from "./components/loader";
-import Mobilebrand  from "./pages/Brand_page/Brandpage"
-import Home from "./pages/Home/Home"
-import Mobile_specify from "./pages/Mobile_specification/Mobile_specify";
+import Mobilebrand from "./pages/Brand_page/Brandpage";
+import Home from "./pages/Home/Home";
 
 // Use React.lazy for lazy loading
 const Brandpage = lazy(() => import("./pages/Brand_page/Brandpage"));
 const MobileHome = lazy(() => import("./pages/Mobile_home/Mobilehome"));
+const Mobiledetail = lazy(() =>
+  import("./pages/Mobile_specification/Mobile_specify.jsx")
+);
+
+const productdetailsPage = lazy(() =>
+  import("./pages/Mobile_specification/Mobile_specify")
+);
 
 function App() {
   return (
@@ -18,15 +24,13 @@ function App() {
       <Router>
         <Navebar />
         <Navlist />
-        {/* <Mobile_specify/> */}
-        {/* <Mobilebrand /> */}
-        {/* <Home /> */}
         {/* Wrap your routes in Suspense */}
         <Suspense fallback={<Loader />}>
           <Routes>
             {/* Use the lazy-loaded components */}
-            <Route path="/mobile" element={<Brandpage />} />
-            <Route path="/brand" element={<MobileHome />} />
+            <Route path="/brand" element={<Brandpage />} />
+            <Route path="/brand/:brandName" element={<MobileHome />} />
+            <Route path="/mobile/:mobiledetail" element={<Mobiledetail />} />
           </Routes>
         </Suspense>
 

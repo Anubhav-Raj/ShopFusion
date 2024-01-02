@@ -24,13 +24,13 @@ router.post(
 );
 router.post("/deletebrand", isLoggedIn, productCon.postDeleteStoreBrand);
 
-router.get(
-  "/addmobileproduct",
-  isLoggedIn,
-  isAdmin,
+// router.get(
+//   "/addmobileproduct",
+//   isLoggedIn,
+//   isAdmin,
 
-  productCon.getaddMobileProduct
-);
+//   productCon.getaddMobileProduct
+// );
 
 router.post(
   "/addmobileproduct",

@@ -1,8 +1,12 @@
-import React, { useState } from "react";
-
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 function Aside_fileter() {
+  const { brandName } = useParams();
+
   const [isStoresFilterVisible, setStoresFilterVisible] = useState(true);
   const [appliedFilters, setAppliedFilters] = useState([]);
+
   const brandList = [
     { name: "Xiaomi", count: 551 },
     { name: "Samsung", count: 804 },
@@ -61,6 +65,12 @@ function Aside_fileter() {
     // ... (other stores)
   ]);
 
+  useEffect(() => {
+    // Update appliedFilters state with brandName from the URL when the component mounts
+    if (brandName) {
+      setAppliedFilters([brandName]);
+    }
+  }, [brandName]);
   const toggleStoresFilterVisibility = () => {
     setStoresFilterVisible(!isStoresFilterVisible);
   };
@@ -91,34 +101,37 @@ function Aside_fileter() {
               </div>
             </div>
             {appliedFilters.length > 0 ? (
-            <div className="style-CTotA" id="style-CTotA">
-              <div id="style-cWM9l" className="style-cWM9l">
-                <span id="style-K4TTM" className="style-K4TTM">
-                  Applied Filters
-                </span>
-                <a
-                  id="style-MZoqA"
-                  className="style-MZoqA"
-                  onClick={() => setAppliedFilters([])}
-                >
-                  Clear All
-                </a>
-              </div>
-              <div className="filter-pof">
-                <div>
-                  <div className="hea-cn7">Brands</div>
-                  <div>{appliedFilters.join(" • ")}</div>
-                  <svg
-                    className="icon close"
-                    viewBox="0 0 24 24"
-                    onClick={() => setAppliedFilters([])} 
+              <div className="style-CTotA" id="style-CTotA">
+                <div id="style-cWM9l" className="style-cWM9l">
+                  <span id="style-K4TTM" className="style-K4TTM">
+                    Applied Filters
+                  </span>
+                  <a
+                    id="style-MZoqA"
+                    className="style-MZoqA"
+                    onClick={() => {
+                      setAppliedFilters([]);
+                      window.location.reload();
+                    }}
                   >
-                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path>
-                  </svg>
+                    Clear All
+                  </a>
+                </div>
+                <div className="filter-pof">
+                  <div>
+                    <div className="hea-cn7">Brands</div>
+                    <div>{appliedFilters.join(" • ")}</div>
+                    <svg
+                      className="icon close"
+                      viewBox="0 0 24 24"
+                      onClick={() => setAppliedFilters([])}
+                    >
+                      <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path>
+                    </svg>
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
+            ) : (
               <div className="filter-j2q">
                 Search for filters or apply some filters from below
               </div>
