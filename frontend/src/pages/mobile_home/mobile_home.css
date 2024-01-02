@@ -2398,3 +2398,51 @@ ul {
 .content-htw.expanded {
     max-height: none;
 }
+
+#style-CTotA.style-CTotA {  
+    margin: 0px 8px 8px;  
+ }  
+ #style-cWM9l.style-cWM9l {  
+    display: flex;  
+     align-items: center;  
+     margin-bottom: 8px;  
+     font-size: 13px;  
+     font-weight: bold;  
+ }  
+ #style-K4TTM.style-K4TTM {  
+    flex: 1 1 0%;  
+     color: rgb(113, 143, 61);  
+ }  
+ #style-MZoqA.style-MZoqA {  
+    font-size: 13px;  
+ }  
+
+
+
+.filter-pof > div  { 
+    position: relative; 
+    padding: 10px 12px; 
+    border-bottom: 1px solid #eaeaec;
+} 
+
+.filter-pof .hea-cn7  { 
+    font-weight: 700; 
+    color: #444; 
+    font-size: 13px; 
+    line-height: 1.5; 
+    margin-bottom: 4px;
+} 
+
+.filter-pof .close  { 
+    position: absolute; 
+    top: 0; 
+    right: 0; 
+    padding: 6px; 
+    cursor: pointer;
+} 
+
+.filter-pof { 
+    border-radius: 5px; 
+    background: #f5fffa; 
+    border: 1px dashed #bfcede;
+  } 

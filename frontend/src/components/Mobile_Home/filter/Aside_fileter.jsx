@@ -2,20 +2,80 @@ import React, { useState } from "react";
 
 function Aside_fileter() {
   const [isStoresFilterVisible, setStoresFilterVisible] = useState(true);
+  const [appliedFilters, setAppliedFilters] = useState([]);
+  const brandList = [
+    { name: "Xiaomi", count: 551 },
+    { name: "Samsung", count: 804 },
+    { name: "Vivo", count: 483 },
+    { name: "Realme", count: 376 },
+    { name: "OnePlus", count: 142 },
+    { name: "Motorola", count: 358 },
+    { name: "OPPO", count: 383 },
+    { name: "Poco", count: 108 },
+    { name: "iQOO", count: 129 },
+    { name: "Apple", count: 156 },
+    { name: "Infinix", count: 148 },
+    { name: "Nokia", count: 391 },
+    { name: "Tecno", count: 173 },
+    { name: "Lava", count: 458 },
+    { name: "Honor", count: 261 },
+    { name: "Nubia", count: 47 },
+    { name: "itel", count: 183 },
+    { name: "Google", count: 48 },
+    { name: "Huawei", count: 306 },
+    { name: "Redmagic", count: 29 },
+    { name: "Nothing", count: 11 },
+    { name: "Asus", count: 152 },
+    { name: "Meizu", count: 81 },
+    { name: "Sony", count: 170 },
+    { name: "Micromax", count: 656 },
+    { name: "Jio", count: 12 },
+    { name: "iKall", count: 307 },
+    { name: "Snexian", count: 114 },
+    { name: "LG", count: 306 },
+    { name: "Lenovo", count: 198 },
+    { name: "BlackZone", count: 124 },
+    { name: "Kechaoda", count: 113 },
+    { name: "ZTE", count: 180 },
+    { name: "HTC", count: 180 },
+    { name: "Duoqin", count: 2 },
+    { name: "Karbonn", count: 619 },
+    { name: "Gionee", count: 117 },
+    { name: "Blackberry", count: 58 },
+    { name: "Tesla", count: 1 },
+    { name: "Intex", count: 608 },
+    { name: "Spice", count: 376 },
+    { name: "Oukitel", count: 58 },
+    { name: "Lyf", count: 39 },
+    { name: "Ulefone", count: 64 },
+    { name: "Cellecor", count: 75 },
+    { name: "Doogee", count: 66 },
+    { name: "Blackview", count: 47 },
+    { name: "Solana", count: 1 },
+    { name: "TCL", count: 49 },
+    { name: "Benco", count: 13 },
+  ];
+  const [storeList, setStoreList] = useState([
+    { name: "Amazon", count: 1739 },
+    { name: "Croma", count: 139 },
+    // ... (other stores)
+  ]);
 
   const toggleStoresFilterVisibility = () => {
     setStoresFilterVisible(!isStoresFilterVisible);
   };
+
+  const handleFilter = (filterList, filter) => {
+    if (appliedFilters.includes(filter)) {
+      setAppliedFilters(appliedFilters.filter((item) => item !== filter));
+    } else {
+      setAppliedFilters([...appliedFilters, filter]);
+    }
+  };
+
   return (
     <>
       <aside>
-        <sm-dap className="p-34y t-mli box-5s6 style-nmTDg" id="style-nmTDg">
-          <div>
-            <div>
-              <div id="goo-7h6" className="style-MoBBr"></div>
-            </div>
-          </div>
-        </sm-dap>
         <div className="filter-mqh">
           <div id="style-IqD4n" className="style-IqD4n">
             <div className="hea-fve">
@@ -30,9 +90,39 @@ function Aside_fileter() {
                 />
               </div>
             </div>
-            <div className="filter-j2q">
-              Search for filters or apply some filters from below
+            {appliedFilters.length > 0 ? (
+            <div className="style-CTotA" id="style-CTotA">
+              <div id="style-cWM9l" className="style-cWM9l">
+                <span id="style-K4TTM" className="style-K4TTM">
+                  Applied Filters
+                </span>
+                <a
+                  id="style-MZoqA"
+                  className="style-MZoqA"
+                  onClick={() => setAppliedFilters([])}
+                >
+                  Clear All
+                </a>
+              </div>
+              <div className="filter-pof">
+                <div>
+                  <div className="hea-cn7">Brands</div>
+                  <div>{appliedFilters.join(" • ")}</div>
+                  <svg
+                    className="icon close"
+                    viewBox="0 0 24 24"
+                    onClick={() => setAppliedFilters([])} 
+                  >
+                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path>
+                  </svg>
+                </div>
+              </div>
             </div>
+          ) : (
+              <div className="filter-j2q">
+                Search for filters or apply some filters from below
+              </div>
+            )}
           </div>
           <div data-h="Price">
             <div className="hea-fve">
@@ -90,7 +180,7 @@ function Aside_fileter() {
             </div>
           </div>
           <div data-h="Brands">
-            <div className="hea-fve" >
+            <div className="hea-fve">
               <span>Brands</span>
               <svg className="icon" viewBox="0 0 24 24">
                 <path d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"></path>
@@ -107,256 +197,16 @@ function Aside_fileter() {
               </div>
             </div>
             <div className="filter-rd6">
-              <label>
-                <input type="checkbox" />
-                <span>Xiaomi</span>
-                <small>551</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Samsung</span>
-                <small>804</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Vivo</span>
-                <small>483</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Realme</span>
-                <small>376</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>OnePlus</span>
-                <small>142</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Motorola</span>
-                <small>358</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>OPPO</span>
-                <small>383</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Poco</span>
-                <small>108</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>iQOO</span>
-                <small>129</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Apple</span>
-                <small>156</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Infinix</span>
-                <small>148</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Nokia</span>
-                <small>391</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Tecno</span>
-                <small>173</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Lava</span>
-                <small>458</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Honor</span>
-                <small>261</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Nubia</span>
-                <small>47</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>itel</span>
-                <small>183</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Google</span>
-                <small>48</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Huawei</span>
-                <small>306</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Redmagic</span>
-                <small>29</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Nothing</span>
-                <small>11</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Asus</span>
-                <small>152</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Meizu</span>
-                <small>81</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Sony</span>
-                <small>170</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Micromax</span>
-                <small>656</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Jio</span>
-                <small>12</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>iKall</span>
-                <small>307</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Snexian</span>
-                <small>114</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>LG</span>
-                <small>306</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Lenovo</span>
-                <small>198</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>BlackZone</span>
-                <small>124</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Kechaoda</span>
-                <small>113</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>ZTE</span>
-                <small>180</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>HTC</span>
-                <small>180</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Duoqin</span>
-                <small>2</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Karbonn</span>
-                <small>619</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Gionee</span>
-                <small>117</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Blackberry</span>
-                <small>58</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Tesla</span>
-                <small>1</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Intex</span>
-                <small>608</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Spice</span>
-                <small>376</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Oukitel</span>
-                <small>58</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Lyf</span>
-                <small>39</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Ulefone</span>
-                <small>64</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Cellecor</span>
-                <small>75</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Doogee</span>
-                <small>66</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Blackview</span>
-                <small>47</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Solana</span>
-                <small>1</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>TCL</span>
-                <small>49</small>
-              </label>
-              <label>
-                <input type="checkbox" />
-                <span>Benco</span>
-                <small>13</small>
-              </label>
+              {brandList.map((brand, index) => (
+                <label key={index}>
+                  <input
+                    type="checkbox"
+                    onChange={() => handleFilter(brandList, brand.name)}
+                  />
+                  <span>{brand.name}</span>
+                  <small>{brand.count}</small>
+                </label>
+              ))}
             </div>
           </div>
           <div data-h="Stores">
@@ -368,26 +218,16 @@ function Aside_fileter() {
             </div>
             {isStoresFilterVisible && (
               <div className="filter-rd6">
-                <label>
-                  <input type="checkbox" />
-                  <span>Amazon</span>
-                  <small>1739</small>
-                </label>
-                <label>
-                  <input type="checkbox" />
-                  <span>Croma</span>
-                  <small>139</small>
-                </label>
-                <label>
-                  <input type="checkbox" />
-                  <span>Flipkart</span>
-                  <small>1188</small>
-                </label>
-                <label>
-                  <input type="checkbox" />
-                  <span>Samsung</span>
-                  <small>59</small>
-                </label>
+                {storeList.map((store, index) => (
+                  <label key={index}>
+                    <input
+                      type="checkbox"
+                      onChange={() => handleFilter(storeList, store.name)}
+                    />
+                    <span>{store.name}</span>
+                    <small>{store.count}</small>
+                  </label>
+                ))}
               </div>
             )}
           </div>

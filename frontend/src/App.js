@@ -18,7 +18,7 @@ function App() {
       <Router>
         <Navebar />
         <Navlist />
-        <Mobile_specify/>
+        {/* <Mobile_specify/> */}
         {/* <Mobilebrand /> */}
         {/* <Home /> */}
         {/* Wrap your routes in Suspense */}
