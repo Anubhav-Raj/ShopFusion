@@ -251,3 +251,145 @@ function Aside_fileter() {
 }
 
 export default Aside_fileter;
+
+// import React, { useState } from "react";
+
+// function AsideFilter() {
+//   const [isVisible, setIsVisible] = useState(true);
+//   const [selectedBrands, setSelectedBrands] = useState([]);
+//   const [selectedStores, setSelectedStores] = useState([]);
+//   const [brandList, setBrandList] = useState([
+//     { name: "Xiaomi", count: 551 },
+//     { name: "Samsung", count: 804 },
+//     // ... (other brands)
+//   ]);
+//   const [storeList, setStoreList] = useState([
+//     { name: "Amazon", count: 1739 },
+//     { name: "Croma", count: 139 },
+//     // ... (other stores)
+//   ]);
+
+//   const toggleFilterVisibility = () => {
+//     setIsVisible(!isVisible);
+//   };
+
+//   const handleBrandFilter = (brand) => {
+//     if (selectedBrands.includes(brand)) {
+//       setSelectedBrands(selectedBrands.filter((item) => item !== brand));
+//     } else {
+//       setSelectedBrands([...selectedBrands, brand]);
+//     }
+//   };
+
+//   const handleStoreFilter = (store) => {
+//     if (selectedStores.includes(store)) {
+//       setSelectedStores(selectedStores.filter((item) => item !== store));
+//     } else {
+//       setSelectedStores([...selectedStores, store]);
+//     }
+//   };
+
+//   return (
+//     <>
+//       <aside>
+//         <div
+//           className="filter-mqh"
+//           style={{ display: isVisible ? "block" : "none" }}
+//         >
+//           <div className="style-LrR57" id="style-LrR57">
+//             <div className="hea-fve">
+//               <span>Filters</span>
+//             </div>
+//           </div>
+//           <div className="search-z61 style-LrR57" id="style-LrR57">
+//             <div className="input-t5j label-qms">
+//               <input
+//                 placeholder="Search For Filters"
+//                 className="input-xbf emp-zii"
+//                 type="text"
+//               />
+//             </div>
+//             <div className="filter-pof">
+//               {selectedBrands.length > 0 && (
+//                 <div className="filter-pof">
+//                   <strong className="hea-cn7">Selected Brands:</strong>
+
+//                   <p>{selectedBrands.join(" • ")}</p>
+//                   <svg className="icon close" viewBox="0 0 24 24">
+//                     <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path>
+//                   </svg>
+//                 </div>
+//               )}
+//               {selectedStores.length > 0 && (
+//                 <div className="filter-pof">
+//                   <strong className="hea-cn7">Selected Stores:</strong>
+
+//                   <p>{selectedStores.join(" • ")}</p>
+//                   <svg className="icon close" viewBox="0 0 24 24">
+//                     <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path>
+//                   </svg>
+//                 </div>
+//               )}
+//             </div>
+//             {/* <div className="filter-j2q">
+//               Search for filters or apply some filters from below
+//             </div> */}
+//           </div>
+//           <div data-h="Brands">
+//             <div className="hea-fve">
+//               <span>Brands</span>
+//               <svg className="icon" viewBox="0 0 24 24">
+//                 <path d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"></path>
+//               </svg>
+//             </div>
+//             <div className="search-z61">
+//               <div className="input-t5j label-qms">
+//                 <input
+//                   placeholder="Search Brands"
+//                   className="input-xbf emp-zii"
+//                   type="text"
+//                 />
+//               </div>
+//             </div>
+//             <div className="filter-rd6">
+//               {brandList.map((brand, index) => (
+//                 <label key={index}>
+//                   <input
+//                     type="checkbox"
+//                     onChange={() => handleBrandFilter(brand.name)}
+//                   />
+//                   <span>{brand.name}</span>
+//                   <small>{brand.count}</small>
+//                 </label>
+//               ))}
+//             </div>
+//           </div>
+//           <div data-h="Stores">
+//             <div className="hea-fve" onClick={toggleFilterVisibility}>
+//               <span>Stores</span>
+//               <svg className="icon" viewBox="0 0 24 24">
+//                 <path d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"></path>
+//               </svg>
+//             </div>
+//             {isVisible && (
+//               <div className="filter-rd6">
+//                 {storeList.map((store, index) => (
+//                   <label key={index}>
+//                     <input
+//                       type="checkbox"
+//                       onChange={() => handleStoreFilter(store.name)}
+//                     />
+//                     <span>{store.name}</span>
+//                     <small>{store.count}</small>
+//                   </label>
+//                 ))}
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       </aside>
+//     </>
+//   );
+// }
+
+// export default AsideFilter;
