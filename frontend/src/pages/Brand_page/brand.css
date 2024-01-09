@@ -359,7 +359,7 @@ a,.btn,button,span,p,i,input,select,textarea,li,img,svg path,:after,:before,.tra
 
 .sm-91v.scr-tgg { 
     grid-template-columns: none; 
-    grid-auto-flow: column; 
+    grid-auto-flow: row; 
     grid-auto-columns: calc(91% / var(--per-row)); 
     overflow: auto;
 } 

@@ -6,6 +6,8 @@ import Footer from "./components/footer/footer";
 import Loader from "./components/loader";
 import Mobilebrand from "./pages/Brand_page/Brandpage";
 import Home from "./pages/Home/Home";
+import Compair from "./pages/compare_page/Compair.jsx";
+import Seller_page from "./pages/Seller/Seller_page.jsx";
 
 // Use React.lazy for lazy loading
 const Brandpage = lazy(() => import("./pages/Brand_page/Brandpage"));
@@ -24,7 +26,9 @@ function App() {
       <Router>
         <Navebar />
         <Navlist />
-        {/* Wrap your routes in Suspense */}
+        <Seller_page/>
+        {/* <Compair /> */}
+
         <Suspense fallback={<Loader />}>
           <Routes>
             {/* Use the lazy-loaded components */}

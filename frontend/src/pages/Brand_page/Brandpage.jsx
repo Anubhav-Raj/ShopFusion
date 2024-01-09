@@ -70,3 +70,5 @@ function Brandpage() {
 }
 
 export default Brandpage;
+
+
