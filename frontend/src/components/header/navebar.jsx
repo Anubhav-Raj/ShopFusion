@@ -1,10 +1,15 @@
-import React, { useEffect, useState,useRef  } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./navbar.css";
 import Dropdown from "./dropdown/Dropdown";
 import LanguageSelector from "./dropdown/Laung_selector";
-import logo from "../../assets/zonehubcom-high-resolution-logo-white-transparent.png"
+import logo from "../../assets/zonehubcom-high-resolution-logo-white-transparent.png";
 import Login from "../login/Login";
 import Signup from "../login/signup";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
+import toast from "react-hot-toast";
 
 function Navbar() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -55,6 +60,18 @@ function Navbar() {
   const handleCloseSignup = () => {
     setShowSignup(false);
   };
+
+  const dispatch = useDispatch();
+  const { user, loading } = useSelector((state) => state.user);
+  const logoutHandler = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Sign Out Successfully");
+    } catch (error) {
+      toast.error("Sign Out Fail");
+    }
+  };
+
   return (
     <>
       <header className="snipcss-ECSde">
@@ -67,12 +84,7 @@ function Navbar() {
               <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path>
             </svg>
             <a className="logo" href="/" data-way="">
-              <img
-                src={logo}
-                alt="ZoneHub.com"
-                width={286}
-                height={60}
-              />
+              <img src={logo} alt="ZoneHub.com" width={286} height={60} />
             </a>
             {windowWidth >= 750 && <Dropdown />}
 
@@ -97,30 +109,71 @@ function Navbar() {
           </div>
           <div className="sm-desktop-header-right">
             <div className="sm-dropdown sm-d-header-user">
-              <svg className="icon" viewBox="0 0 24 24">
-                <path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"></path>
-              </svg>
-              <span>Login</span>
-              <svg className="icon d" viewBox="0 0 24 24">
-                <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path>
-              </svg>
-              <div className="x">
-                <div className="sm-menu">
-                  <a onClick={handleLoginClick} ref={loginRef} role="button">
-                    <svg className="icon" viewBox="0 0 24 24">
-                      <path d="M14,12L10,8V11H2V13H10V16M20,18V6C20,4.89 19.1,4 18,4H6A2,2 0 0,0 4,6V9H6V6H18V18H6V15H4V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18Z"></path>
-                    </svg>
-                    <span className="text" >Login</span>
-                  </a>
-                  <a onClick={handleSignupClick} ref={signupRef} role="button">
-                    <svg className="icon" viewBox="0 0 24 24">
-                      <path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"></path>
-                    </svg>
-                    <span className="text">Signup</span>
-                  </a>
-                </div>
-              </div>
+              {user ? (
+                <>
+                  <svg className="icon" viewBox="0 0 24 24">
+                    <path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"></path>
+                  </svg>
+                  <span>{user.name}</span>
+                  <svg className="icon d" viewBox="0 0 24 24">
+                    <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path>
+                  </svg>
+                  <div className="x">
+                    <div className="sm-menu">
+                      <Link>
+                        <svg className="icon" viewBox="0 0 24 24">
+                          <path d="M14,12L10,8V11H2V13H10V16M20,18V6C20,4.89 19.1,4 18,4H6A2,2 0 0,0 4,6V9H6V6H18V18H6V15H4V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18Z"></path>
+                        </svg>
+                        <span className="text">Profie</span>
+                      </Link>
+                      <Link>
+                        <svg className="icon" viewBox="0 0 24 24">
+                          <path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"></path>
+                        </svg>
+                        <span className="text" onClick={logoutHandler}>
+                          logout
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <svg className="icon" viewBox="0 0 24 24">
+                    <path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"></path>
+                  </svg>
+                  <span>Login</span>
+                  <svg className="icon d" viewBox="0 0 24 24">
+                    <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path>
+                  </svg>
+                  <div className="x">
+                    <div className="sm-menu">
+                      <a
+                        onClick={handleLoginClick}
+                        ref={loginRef}
+                        role="button"
+                      >
+                        <svg className="icon" viewBox="0 0 24 24">
+                          <path d="M14,12L10,8V11H2V13H10V16M20,18V6C20,4.89 19.1,4 18,4H6A2,2 0 0,0 4,6V9H6V6H18V18H6V15H4V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18Z"></path>
+                        </svg>
+                        <span className="text">Login</span>
+                      </a>
+                      <a
+                        onClick={handleSignupClick}
+                        ref={signupRef}
+                        role="button"
+                      >
+                        <svg className="icon" viewBox="0 0 24 24">
+                          <path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"></path>
+                        </svg>
+                        <span className="text">Signup</span>
+                      </a>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
+
             <LanguageSelector />
             <div className="sm-dropdown sm-header-user">
               <div className="icon11" style={{ marginRight: "6px" }}>
@@ -129,13 +182,15 @@ function Navbar() {
 
               <span>Saved</span>
             </div>
-            <div className="sm-dropdown sm-header-user">
-              <div className="icon11" style={{ marginRight: "6px" }}>
-                &#9993;
-              </div>
+            {user ? (
+              <div className="sm-dropdown sm-header-user">
+                <div className="icon11" style={{ marginRight: "6px" }}>
+                  &#9993;
+                </div>
 
-              <span>My Posts</span>
-            </div>
+                <span>My Posts</span>
+              </div>
+            ) : null}
           </div>
         </div>
         <div className="sm-top-tabs only-mobile">
@@ -179,7 +234,7 @@ function Navbar() {
               MATRIMONY
             </a>
             <a href="/mobile" data-way="">
-             Mobile
+              Mobile
             </a>
           </div>
         </div>

@@ -1,7 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import "./login.css";
 import Signup from "./signup";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { auth } from "../../firebase.js";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { userExist, userNotExist } from "../../redux/user.slice";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getUser, useLoginMutation } from "../../redux/API/user.js";
 function Login() {
+  const dispatch = useDispatch();
+  const [login] = useLoginMutation();
+
+  const signInWithGoogle = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const { user } = await signInWithPopup(auth, provider);
+
+      const res = await login({
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+        role: "user",
+        _id: user.uid,
+      });
+
+      if ("data" in res) {
+        toast.success(res.data.message);
+        localStorage.setItem("token", res.data.token);
+        const data = await getUser(user.uid);
+        data.token = res.data.token;
+        dispatch(userExist(data));
+      } else {
+        toast.error(res.error.data.message);
+        dispatch(userNotExist());
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <>
       <div className="backdoptrying">
@@ -10,7 +48,9 @@ function Login() {
             <div>
               <div className="drawer-6c4">Login</div>
               <div className="sm-social-kpy">
-                <div className="goo-3ji">Login With Google</div>
+                <div className="goo-3ji" onClick={signInWithGoogle}>
+                  Login With Google
+                </div>
                 <div className="fbbri">Login With Facebook</div>
               </div>
               <div className="box-ntd size-6o5 pad-b31">

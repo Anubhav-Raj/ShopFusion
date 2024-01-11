@@ -1,6 +1,41 @@
 import React from "react";
-import "./signpu.css"
-function signup() {
+import "./signpu.css";
+import { useDispatch } from "react-redux";
+import { getUser, useLoginMutation } from "../../redux/API/user";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../../firebase";
+import { userExist, userNotExist } from "../../redux/user.slice";
+import toast from "react-hot-toast";
+function Signup() {
+  const dispatch = useDispatch();
+  const [login] = useLoginMutation();
+
+  const signInWithGoogle = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const { user } = await signInWithPopup(auth, provider);
+
+      const res = await login({
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+        role: "user",
+        _id: user.uid,
+      });
+
+      if ("data" in res) {
+        toast.success(res.data.message);
+        const data = await getUser(user.uid);
+        dispatch(userExist(data));
+      } else {
+        toast.error(res.error.data.message);
+        dispatch(userNotExist());
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <>
       <div className="backdoptrying">
@@ -9,7 +44,9 @@ function signup() {
             <div>
               <div className="drawer-mlx">Sign Up</div>
               <div className="sm-social-bjz">
-                <div className="goo-aod">Login With Google</div>
+                <div className="goo-aod" onClick={signInWithGoogle}>
+                  Login With Google
+                </div>
                 <div className="glpvf">Login With Facebook</div>
               </div>
               <div className="box-8ya size-78k pad-t5w">
@@ -70,4 +107,4 @@ function signup() {
   );
 }
 
-export default signup;
+export default Signup;
