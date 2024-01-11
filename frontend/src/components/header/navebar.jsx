@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import "./navbar.css";
 import Dropdown from "./dropdown/Dropdown";
 import LanguageSelector from "./dropdown/Laung_selector";
@@ -14,50 +14,32 @@ import toast from "react-hot-toast";
 function Navbar() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [showLogin, setShowLogin] = useState(false);
-  const [showSignup, setShowSignup] = useState(false); // State for sign-up
-  const loginRef = useRef(null);
-  const signupRef = useRef(null); // Ref for sign-up
+  const [showSignup, setShowSignup] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
 
-    const handleClickOutsideLogin = (event) => {
-      if (loginRef.current && !loginRef.current.contains(event.target)) {
-        setShowLogin(false);
-      }
-    };
-
-    const handleClickOutsideSignup = (event) => {
-      if (signupRef.current && !signupRef.current.contains(event.target)) {
-        setShowSignup(false);
-      }
-    };
-
     window.addEventListener("resize", handleResize);
-    document.addEventListener("click", handleClickOutsideLogin);
-    document.addEventListener("click", handleClickOutsideSignup);
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      document.removeEventListener("click", handleClickOutsideLogin);
-      document.removeEventListener("click", handleClickOutsideSignup);
     };
   }, []);
-  const handleLoginClick = () => {
+
+  const openLogin = () => {
     setShowLogin(true);
+    setShowSignup(false);
   };
 
-  const handleSignupClick = () => {
+  const openSignup = () => {
     setShowSignup(true);
-  };
-
-  const handleCloseLogin = () => {
     setShowLogin(false);
   };
 
-  const handleCloseSignup = () => {
+  const closeModals = () => {
+    setShowLogin(false);
     setShowSignup(false);
   };
 
@@ -148,21 +130,13 @@ function Navbar() {
                   </svg>
                   <div className="x">
                     <div className="sm-menu">
-                      <a
-                        onClick={handleLoginClick}
-                        ref={loginRef}
-                        role="button"
-                      >
+                      <a onClick={openLogin} role="button">
                         <svg className="icon" viewBox="0 0 24 24">
                           <path d="M14,12L10,8V11H2V13H10V16M20,18V6C20,4.89 19.1,4 18,4H6A2,2 0 0,0 4,6V9H6V6H18V18H6V15H4V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18Z"></path>
                         </svg>
                         <span className="text">Login</span>
                       </a>
-                      <a
-                        onClick={handleSignupClick}
-                        ref={signupRef}
-                        role="button"
-                      >
+                      <a onClick={openSignup} role="button">
                         <svg className="icon" viewBox="0 0 24 24">
                           <path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"></path>
                         </svg>
@@ -239,8 +213,8 @@ function Navbar() {
           </div>
         </div>
       </header>
-      {showLogin && <Login onClose={handleCloseLogin} />}
-      {showSignup && <Signup onClose={handleCloseSignup} />}
+      {showLogin && <Login onClose={closeModals} />}
+      {showSignup && <Signup onClose={closeModals} />}
     </>
   );
 }

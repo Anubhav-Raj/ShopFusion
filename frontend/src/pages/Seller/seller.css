@@ -389,7 +389,8 @@ h6 {
 
 .title-ttc {
     flex: 1 1;
-    text-align: center;
+    text-align: left;
+    margin-left: 14px;
     font-size: 58px;
 }
 
@@ -564,6 +565,24 @@ span {
     filter: drop-shadow(2px 4px 6px rgb(80, 79, 79));
     border: 1px solid rgb(65, 63, 63);
     border-radius: 14px;
+}
+.seller_main {
+    display: flex;
+    justify-content: center;
+    /* padding: 13px 13px 13px 13px; */
+}
+.rightdiv {
+    width: 65%;
+    background: #91b9b9;
+    /* padding-left: 22px; */
+    display: block;
+    border-radius: 10px;
+    margin: 10px 13px;
+}
+div#sty-dlo {
+    width: 100%;
+    margin: 10px;
+    border-radius: 10px;
 }
 
 @media (min-width: 750px) {

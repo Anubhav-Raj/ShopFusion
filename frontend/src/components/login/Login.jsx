@@ -1,16 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./login.css";
 import Signup from "./signup";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { auth } from "../../firebase.js";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userExist, userNotExist } from "../../redux/user.slice";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getUser, useLoginMutation } from "../../redux/API/user.js";
+
 function Login() {
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleCloseClick = () => {
+    setIsVisible(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      setIsVisible(true);
+    };
+  }, []);
 
   const signInWithGoogle = async () => {
     try {
@@ -35,18 +46,31 @@ function Login() {
         toast.error(res.error.data.message);
         dispatch(userNotExist());
       }
+
+      setIsVisible(false);
     } catch (error) {
       toast.error(error.message);
     }
   };
 
-  return (
+  return isVisible ? (
     <>
       <div className="backdoptrying">
         <div className="sm-wqf style-MAi93" id="style-MAi93">
           <div className="content-gtx">
             <div>
-              <div className="drawer-6c4">Login</div>
+              <div className="drawer-6c4">
+                Login
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={handleCloseClick}
+                >
+                  <span className="icon-cross"></span>
+                  <span className="visually-hidden">Close</span>
+                </button>
+              </div>
+
               <div className="sm-social-kpy">
                 <div className="goo-3ji" onClick={signInWithGoogle}>
                   Login With Google
@@ -102,7 +126,7 @@ function Login() {
         </div>
       </div>
     </>
-  );
+  ) : null;
 }
 
 export default Login;

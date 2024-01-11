@@ -1,5 +1,6 @@
 import React from "react";
 import "./seller.css";
+import Location_list from "../../components/Seller/location_list";
 
 function Seller_page() {
   const Peripherals = [
@@ -61,8 +62,9 @@ function Seller_page() {
 
   return (
     <>
-      <main>
+      <div className="seller_main"> 
         <div className="box-o3x style-bd5" id="sty-dlo">
+          <Location_list/>
           <div className="header-219">
             <div className="title-ttc">
               <h2>Electronics Peripherals</h2>
@@ -97,7 +99,11 @@ function Seller_page() {
             ))}
           </div>
         </div>
-      </main>
+        <div className="rightdiv">
+          
+          
+        </div>
+      </div>
     </>
   );
 }

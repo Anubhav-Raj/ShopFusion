@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./signpu.css";
 import { useDispatch } from "react-redux";
 import { getUser, useLoginMutation } from "../../redux/API/user";
@@ -9,6 +9,17 @@ import toast from "react-hot-toast";
 function Signup() {
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleCloseClick = () => {
+    setIsVisible(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      setIsVisible(true);
+    };
+  }, []);
 
   const signInWithGoogle = async () => {
     try {
@@ -36,13 +47,23 @@ function Signup() {
     }
   };
 
-  return (
+  return isVisible ? (
     <>
       <div className="backdoptrying">
         <div className="sm-e8y style-RaFYo" id="style-RaFYo">
           <div className="content-weg">
             <div>
-              <div className="drawer-mlx">Sign Up</div>
+              <div className="drawer-mlx">
+                Sign Up
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={handleCloseClick}
+                >
+                  <span className="icon-cross"></span>
+                  <span className="visually-hidden">Close</span>
+                </button>
+              </div>
               <div className="sm-social-bjz">
                 <div className="goo-aod" onClick={signInWithGoogle}>
                   Login With Google
@@ -104,7 +125,7 @@ function Signup() {
         </div>
       </div>
     </>
-  );
+  ) : null;
 }
 
 export default Signup;
