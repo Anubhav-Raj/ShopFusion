@@ -2,7 +2,11 @@ import React from "react";
 import "./signpu.css";
 import { useDispatch } from "react-redux";
 import { getUser, useLoginMutation } from "../../redux/API/user";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth } from "../../firebase";
 import { userExist, userNotExist } from "../../redux/user.slice";
 import toast from "react-hot-toast";
@@ -36,6 +40,53 @@ function Signup() {
     }
   };
 
+  const signUpWithEmailPassword = async (email, password, name) => {
+    try {
+      // Create a new user with email and password
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      // Additional logic after successful signup
+      const res = await login({
+        name: name,
+        email: user.email,
+        photo: user.photoURL,
+        role: "user",
+        _id: user.uid,
+      });
+
+      if ("data" in res) {
+        toast.success(res.data.message);
+        localStorage.setItem("token", res.data.token);
+        const data = await getUser(user.uid);
+        data.token = res.data.token;
+        dispatch(userExist(data));
+      } else {
+        toast.error(res.error.data.message);
+        dispatch(userNotExist());
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+
+    // Get form values
+    const name = event.target.elements.name.value;
+    const email = event.target.elements.email.value;
+    const password = event.target.elements.password.value;
+
+    // Validate form inputs (add your validation logic here)
+
+    // Call the signup function
+    signUpWithEmailPassword(email, password, name);
+  };
+
   return (
     <>
       <div className="backdoptrying">
@@ -55,7 +106,7 @@ function Signup() {
                     <h2>Sign Up Using Email</h2>
                   </div>
                 </div>
-                <form className="form-n23">
+                <form className="form-n23" onSubmit={handleFormSubmit}>
                   <div className="input-2d1 label-x5e">
                     <input
                       name="name"
@@ -70,7 +121,7 @@ function Signup() {
                       name="email"
                       placeholder="Email"
                       className="input-fgj"
-                      type="text"
+                      type="email"
                       id="ema-nop"
                     />
                   </div>

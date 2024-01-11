@@ -15,7 +15,6 @@ import Navlist from "./components/header/navlist";
 import Footer from "./components/footer/footer";
 import Loader from "./components/loader";
 import Home from "./pages/Home/Home";
-import Compair from "./pages/compare_page/Compair.jsx";
 
 // Use React.lazy for lazy loading
 const Brandpage = lazy(() => import("./pages/Brand_page/Brandpage"));
@@ -23,13 +22,11 @@ const MobileHome = lazy(() => import("./pages/Mobile_home/Mobilehome"));
 const Mobiledetail = lazy(() =>
   import("./pages/Mobile_specification/Mobile_specify.jsx")
 );
-const productdetailsPage = lazy(() =>
-  import("./pages/Mobile_specification/Mobile_specify")
-);
+
+const Compair = lazy(() => import("./pages/compare_page/Compair.jsx"));
 const SellerPage = lazy(() => import("./pages/Seller/Seller_page.jsx"));
 function App() {
   const dispatch = useDispatch();
-  const { user, loading } = useSelector((state) => state.user);
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       const token = localStorage.getItem("token");
@@ -58,10 +55,10 @@ function App() {
             {/* Use the lazy-loaded components */}
             <Route path="/" element={<SellerPage />} />
             <Route path="/brand" element={<Brandpage />} />
-
             {/* Use the lazy-loaded components */}
             <Route path="/brand/:brandName" element={<MobileHome />} />
             <Route path="/mobile/:mobiledetail" element={<Mobiledetail />} />
+            <Route path="/compair" element={<Compair />} />
           </Routes>
         </Suspense>
         <Toaster position="bottom-center" />
