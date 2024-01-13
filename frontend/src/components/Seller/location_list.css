@@ -1,7 +1,8 @@
 .location-list {
+    background: #91b9b9;
+    border-radius: 20px;
     list-style-type: none;
     padding-top: 10px;
-    /* background-color: black; */
     display: flex;
     justify-content: space-around;
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import "./seller.css";
 import Location_list from "../../components/Seller/location_list";
+import Dropdown_right from "../../components/Seller/Dropdown_right";
 
 function Seller_page() {
   const Peripherals = [
@@ -62,46 +63,51 @@ function Seller_page() {
 
   return (
     <>
-      <div className="seller_main"> 
+      <div className="seller_main">
         <div className="box-o3x style-bd5" id="sty-dlo">
-          <Location_list/>
-          <div className="header-219">
-            <div className="title-ttc">
-              <h2>Electronics Peripherals</h2>
+          <Location_list />
+          <div className="smalldivcompo">
+            <div className="header-219">
+              <div className="title-ttc">
+                <h2>Electronics Peripherals</h2>
+              </div>
+              <div className="box-hf8"></div>
             </div>
-            <div className="box-hf8"></div>
-          </div>
-          <div className="sm-911v rou-p1a scr-tgg">
-            {Peripherals.map((brand, index) => (
-              <BrandCard11 key={index} {...brand} />
-            ))}
-          </div>
-          <div className="header-219">
-            <div className="title-ttc">
-              <h2>Electronics Components</h2>
+            <div className="sm-911v rou-p1a scr-tgg">
+              {Peripherals.map((brand, index) => (
+                <BrandCard11 key={index} {...brand} />
+              ))}
             </div>
-            <div className="box-hf8"></div>
           </div>
-          <div className="sm-911v rou-p1a scr-tgg">
-            {Peripherals.map((brand, index) => (
-              <BrandCard11 key={index} {...brand} />
-            ))}
-          </div>
-          <div className="header-219">
-            <div className="title-ttc">
-              <h2>Electronics Accessories</h2>
+          <div className="smalldivcompo">
+            <div className="header-219">
+              <div className="title-ttc">
+                <h2>Electronics Components</h2>
+              </div>
+              <div className="box-hf8"></div>
             </div>
-            <div className="box-hf8"></div>
+            <div className="sm-911v rou-p1a scr-tgg">
+              {Peripherals.map((brand, index) => (
+                <BrandCard11 key={index} {...brand} />
+              ))}
+            </div>
           </div>
-          <div className="sm-911v rou-p1a scr-tgg">
-            {Peripherals.map((brand, index) => (
-              <BrandCard11 key={index} {...brand} />
-            ))}
+          <div className="smalldivcompo">
+            <div className="header-219">
+              <div className="title-ttc">
+                <h2>Electronics Accessories</h2>
+              </div>
+              <div className="box-hf8"></div>
+            </div>
+            <div className="sm-911v rou-p1a scr-tgg">
+              {Peripherals.map((brand, index) => (
+                <BrandCard11 key={index} {...brand} />
+              ))}
+            </div>
           </div>
         </div>
         <div className="rightdiv">
-          
-          
+                <Dropdown_right/>
         </div>
       </div>
     </>

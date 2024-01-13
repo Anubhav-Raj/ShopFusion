@@ -326,7 +326,7 @@ h6 {
     position: relative;
     border: 1px solid gainsboro;
     border-width: 1px 0;
-    background: white;
+    /* background: white; */
     margin: var(--mv) 0;
 }
 
@@ -341,7 +341,7 @@ h6 {
 }
 
 #sty-dlo.style-bd5 {
-    background: #91b9b9;
+    /* background: #91b9b9; */
 }
 
 .box-o3x>* {
@@ -569,12 +569,9 @@ span {
 .seller_main {
     display: flex;
     justify-content: center;
-    /* padding: 13px 13px 13px 13px; */
 }
 .rightdiv {
-    width: 65%;
-    background: #91b9b9;
-    /* padding-left: 22px; */
+    width: 100%;
     display: block;
     border-radius: 10px;
     margin: 10px 13px;
@@ -584,7 +581,12 @@ div#sty-dlo {
     margin: 10px;
     border-radius: 10px;
 }
-
+.smalldivcompo{
+   
+    margin: 26px 0px 0px ;
+    background-color: #91b9b9;
+    border-radius: 30px;
+}
 @media (min-width: 750px) {
     .sm-911v>a>img {
         padding: 8px;
