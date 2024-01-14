@@ -25,12 +25,12 @@ function navlist() {
             </button>
           </li> */}
           <li>
-            <a href="/mobiles" data-way="">
+            <a href="/" data-way="">
               HOME
             </a>
           </li>
           <li>
-            <a href="/tablets" data-way="">
+            <a href="/seller" >
               SELLERS
             </a>
           </li>
@@ -86,7 +86,7 @@ function navlist() {
             </button>
           </li>
           <li className="slidebarrow">
-            <a href="#" className="w3-bar-item w3-button">
+            <a href="seller" className="w3-bar-item w3-button">
               SELLER
             </a>
           </li>

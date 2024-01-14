@@ -25,6 +25,7 @@ const Mobiledetail = lazy(() =>
 
 const Compair = lazy(() => import("./pages/compare_page/Compair.jsx"));
 const SellerPage = lazy(() => import("./pages/Seller/Seller_page.jsx"));
+const Mypost = lazy(()=> import("./pages/mypost/My_post.jsx"));
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -53,7 +54,8 @@ function App() {
         <Suspense fallback={<Loader />}>
           <Routes>
             {/* Use the lazy-loaded components */}
-            <Route path="/" element={<SellerPage />} />
+            <Route path="/seller" element={<SellerPage />} />
+            <Route path="/" element={<Mypost/>} />
             <Route path="/brand" element={<Brandpage />} />
             {/* Use the lazy-loaded components */}
             <Route path="/brand/:brandName" element={<MobileHome />} />
