@@ -1,0 +1,32 @@
+.bgsetter {
+    background-color: rgb(56, 98, 136);
+}
+
+.sm-top-tabs>div::-webkit-scrollbar {
+    /* display: none; */
+    /* Set the width to 0 to hide the scrollbar */
+    height: 2px;
+    width: 2px;
+}
+
+.sm-top-tabs>div::-webkit-scrollbar-track {
+    /* display: none; */
+    /* Hide the scrollbar track */
+    height: 2px;
+    width: 2px;
+}
+
+.sm-top-tabs>div::-webkit-scrollbar-thumb {
+    /* display: block; */
+    /* Hide the scrollbar thumb */
+    height: 2px;
+    width: 2px;
+}
+
+.insetlines {
+    display: flex;
+    transition: scrollLeft 0.3s ease; 
+    overflow-x: auto;
+}
+
+/* Add any other styles you need for your component */

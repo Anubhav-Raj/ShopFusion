@@ -158,7 +158,10 @@ a {
 }
 .sm-top-tabs>div {
     display: flex;
-    overflow: auto;
+    width: 100%;
+    /* overflow: auto; */
+    overflow-x: auto;
+    overflow-y: clip;
     flex-direction: row;
 }
 .sm-top-tabs>div>a {

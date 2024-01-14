@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import toast from "react-hot-toast";
+import Mobile_headlist from "./Mobile_headlist";
 
 function Navbar() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -167,51 +168,7 @@ function Navbar() {
             ) : null}
           </div>
         </div>
-        <div className="sm-top-tabs only-mobile">
-          <a
-            href="/"
-            data-way=""
-            aria-label="Home"
-            id="style-aKTdT"
-            className="style-aKTdT"
-          >
-            <svg className="icon" viewBox="0 0 24 24" style={{ top: "-1px" }}>
-              <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"></path>
-            </svg>
-          </a>
-          <div>
-            <a href="/mobiles" data-way="">
-              Seller
-            </a>
-            <a href="/laptops" data-way="">
-              buyer
-            </a>
-            <a href="/tvs" data-way="" id="style-RSVdl" className="style-RSVdl">
-              employers
-            </a>
-            <a href="/deals" data-way="">
-              job seekers
-            </a>
-            <a href="/mobiles" data-way="">
-              rental service provider
-            </a>
-            <a href="/laptops" data-way="">
-              rental service seekers
-            </a>
-            <a href="/tvs" data-way="" id="style-RSVdl" className="style-RSVdl">
-              other service provider
-            </a>
-            <a href="/deals" data-way="">
-              other service seekers
-            </a>
-            <a href="/deals" data-way="">
-              MATRIMONY
-            </a>
-            <a href="/mobile" data-way="">
-              Mobile
-            </a>
-          </div>
-        </div>
+        <Mobile_headlist/>
       </header>
       {showLogin && <Login onClose={closeModals} />}
       {showSignup && <Signup onClose={closeModals} />}
