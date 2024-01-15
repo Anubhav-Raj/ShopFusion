@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./mypost.css";
 import MY_post_list from "../../components/mypost/MY_post_list"; // Make sure the path is correct
 import Dropdown1 from "../../components/mypost/dropdown";
+import Table_post from "../../components/mypost/Table_post";
 
 const My_post = () => {
   const tabItems = [
@@ -103,6 +104,7 @@ const My_post = () => {
           )}
         </div>
       </div>
+      <Table_post/>
     </>
   );
 };

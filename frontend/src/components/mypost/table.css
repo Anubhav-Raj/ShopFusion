@@ -1,0 +1,902 @@
+@font-face { 
+    font-family:'ProximaNova-Regular';
+    src:url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_0_0.eot");
+    src:url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.eot?#iefix") format("embedded-opentype"),url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.woff2") format("woff2"),url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.woff") format("woff"),url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.ttf") format("truetype"),url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.svg#wf") format("svg");
+  } 
+    body {  
+      font-size:14px;
+      font:inherit;
+      background:#fff;
+      font-family:sans-serif;
+      line-height:1;
+      color:#333;
+    }  
+  * { 
+      -webkit-box-sizing: border-box; 
+      -moz-box-sizing: border-box; 
+      box-sizing: border-box;
+  } 
+  
+  div { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  .row { 
+      margin-left: -15px; 
+      margin-right: -15px;
+  } 
+  
+  body { 
+      margin: 0;
+  } 
+  
+  body { 
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+      font-size: 14px; 
+      line-height: 1.42857; 
+      color: #333; 
+      background-color: #fff;
+  } 
+  
+  body { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  body { 
+      line-height: 1;
+  } 
+  
+  body { 
+      height: 100%; 
+      width: 100%; 
+      min-width: 320px;
+  } 
+  
+  body { 
+      position: relative; 
+      background: #f3f3f3; 
+      font-size: 12px; 
+      color: #333;
+  } 
+  
+  body { 
+      font-family: 'ProximaNova-Regular',Arial,Helvetica,sans-serif; 
+      font-size: 14px;
+  } 
+  
+  html { 
+      font-family: sans-serif; 
+      -ms-text-size-adjust: 100%; 
+      -webkit-text-size-adjust: 100%;
+  } 
+  
+  html { 
+      font-size: 10px; 
+      -webkit-tap-highlight-color: transparent;
+  } 
+  
+  html { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  html { 
+      height: 100%; 
+      width: 100%; 
+      min-width: 320px;
+  } 
+  
+  html { 
+      font-family: 'ProximaNova-Regular',Arial,Helvetica,sans-serif; 
+      font-size: 14px;
+  } 
+  
+  .container { 
+      margin-right: auto; 
+      margin-left: auto; 
+      padding-left: 15px; 
+      padding-right: 15px;
+  } 
+  
+  @media (min-width: 768px){ 
+    .container { 
+      width: 750px;
+    } 
+  }     
+  
+  @media (min-width: 992px){ 
+    .container { 
+      width: 970px;
+    } 
+  }     
+  
+  @media (min-width: 1200px){ 
+    .container { 
+      width: 100%;
+    } 
+  }     
+  
+  :before,:after { 
+      -webkit-box-sizing: border-box; 
+      -moz-box-sizing: border-box; 
+      box-sizing: border-box;
+  } 
+  
+  .container:before,.container:after { 
+      content: " "; 
+      display: table;
+  } 
+  
+  .container:after { 
+      clear: both;
+  } 
+  
+  .sel-wrap { 
+      margin-bottom: 25px;
+  } 
+  
+  .row:before,.row:after { 
+      content: " "; 
+      display: table;
+  } 
+  
+  .row:after { 
+      clear: both;
+  } 
+  
+  p { 
+      margin: 0 0 10px;
+  } 
+  
+  p { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  .convenienceFeeInfo { 
+      display: none; 
+      color: #666; 
+      margin-bottom: 5px;
+  } 
+  
+  .table-wrap { 
+      margin-bottom: 30px;
+  } 
+  
+  .hide { 
+      display: none !important;
+  } 
+  
+  .bg-bulk-ad { 
+      height: 200px; 
+      width: 100%; 
+      background: url(https://teja9.kuikr.com/escrow/assets/image/myOffers/bg_bulkpost_ad.jpg) no-repeat; 
+      background-size: contain;
+  } 
+  
+  .col-md-7 { 
+      position: relative; 
+      min-height: 1px; 
+      padding-left: 15px; 
+      padding-right: 15px;
+  } 
+  
+  @media (min-width: 992px){ 
+    .col-md-7 { 
+      float: left;
+    } 
+  
+    .col-md-7 { 
+      width: 58.33333%;
+    } 
+  }     
+  
+  .col-md-5 { 
+      position: relative; 
+      min-height: 1px; 
+      padding-left: 15px; 
+      padding-right: 15px;
+  } 
+  
+  @media (min-width: 992px){ 
+    .col-md-5 { 
+      float: left;
+    } 
+  
+    .col-md-5 { 
+      width: 41.66667%;
+    } 
+  }     
+  
+  input { 
+      color: inherit; 
+      font: inherit; 
+      margin: 0;
+  } 
+  
+  input { 
+      line-height: normal;
+  } 
+  
+  input { 
+      font-family: inherit; 
+      font-size: inherit; 
+      line-height: inherit;
+  } 
+  
+  .col-md-12 { 
+      position: relative; 
+      min-height: 1px; 
+      padding-left: 15px; 
+      padding-right: 15px;
+  } 
+  
+  @media (min-width: 992px){ 
+    .col-md-12 { 
+      float: left;
+    } 
+  
+    .col-md-12 { 
+      width: 100%;
+    } 
+  }     
+  
+  strong { 
+      font-weight: bold;
+  } 
+  
+  strong { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  a { 
+      background-color: transparent;
+  } 
+  
+  a { 
+      color: #337ab7; 
+      text-decoration: none;
+  } 
+  
+  a { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  a { 
+      text-decoration: none;
+  } 
+  
+  a { 
+      text-decoration: none; 
+      color: #0083ca; 
+      outline: 0;
+  } 
+  
+  .convenienceFeeInfo a  { 
+      font-size: 12px;
+  } 
+  
+  a:active,a:hover { 
+      outline: 0;
+  } 
+  
+  a:hover { 
+      color: #23527c; 
+      text-decoration: underline;
+  } 
+  
+  a,a:active,a:hover { 
+      text-decoration: none;
+  } 
+  
+  a:hover { 
+      color: #0083ca;
+  } 
+  
+  .table-scroll { 
+      display: block; 
+      margin-bottom: 10px;
+  } 
+  
+  .form-grp { 
+      position: relative;
+  } 
+  
+  .sel-wrap .form-grp  { 
+      width: 185px; 
+      float: left; 
+      margin-right: 30px;
+  } 
+  
+  .result-summary { 
+      display: none; 
+      margin: 0 auto; 
+      width: 520px;
+  } 
+  
+  span { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  table { 
+      border-collapse: collapse; 
+      border-spacing: 0;
+  } 
+  
+  table { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  table { 
+      border: 1px solid #e4e4e4; 
+      border-collapse: separate; 
+      width: 100%; 
+      text-align: left;
+  } 
+  
+  .form-grp .form-input  { 
+      width: 100%; 
+      max-width: 200px; 
+      padding: 10px 20px 10px 0; 
+      outline: none; 
+      border: none; 
+      background: transparent;
+  } 
+  
+  .sel-wrap .form-grp .form-input  { 
+      border-bottom: 1px solid #ccc; 
+      cursor: pointer;
+  } 
+  
+  label { 
+      display: inline-block; 
+      max-width: 100%; 
+      margin-bottom: 5px; 
+      font-weight: bold;
+  } 
+  
+  label { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  .form-grp .inp-label  { 
+      position: absolute; 
+      left: 0; 
+      top: 7px; 
+      width: 100%; 
+      pointer-events: none; 
+      -webkit-transition: all 0.2s ease; 
+      -moz-transition: all 0.2s ease; 
+      -o-transition: all 0.2s ease; 
+      transition: all 0.2s ease;
+  } 
+  
+  .form-grp .err-msg  { 
+      color: #d65555; 
+      font-size: 12px; 
+      position: absolute; 
+      margin-top: 2px; 
+      display: block;
+  } 
+  
+  h6 { 
+      font-family: inherit; 
+      font-weight: 500; 
+      line-height: 1.1; 
+      color: inherit;
+  } 
+  
+  h6 { 
+      margin-top: 10px; 
+      margin-bottom: 10px;
+  } 
+  
+  h6 { 
+      font-size: 12px;
+  } 
+  
+  h6 { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  .result-summary h6  { 
+      color: #666; 
+      font-size: 13px; 
+      display: inline-block; 
+      width: 110px; 
+      float: left; 
+      margin-top: 12px; 
+      line-height: 15px;
+  } 
+  
+  ul { 
+      margin-top: 0; 
+      margin-bottom: 10px;
+  } 
+  
+  ul { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  ul { 
+      list-style: none;
+  } 
+  
+  .result-summary ul  { 
+      display: inline-block; 
+      border: 1px solid #e4e4e4; 
+      background: #fff; 
+      width: 400px; 
+      float: left;
+  } 
+  
+  thead { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  thead { 
+      background: #797979;
+  } 
+  
+  tbody { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  tfoot { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  .form-grp .form-input.active ~ .inp-label  { 
+      top: -5px; 
+      font-size: 12px; 
+      color: #008bcf;
+  } 
+  
+  i { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  .pull-right { 
+      float: right !important;
+  } 
+  
+  .form-grp .sel-arrow-down  { 
+      width: 10px; 
+      height: 5px; 
+      background: url(https://teja9.kuikr.com/escrow/assets/image/myOffers/dashboard_sprite.png) no-repeat -43px -198px; 
+      position: absolute; 
+      right: 3px; 
+      top: 15px; 
+      pointer-events: none;
+  } 
+  
+  .customSelectDD { 
+      display: none; 
+      position: absolute; 
+      top: 25px; 
+      right: 0; 
+      left: 0; 
+      z-index: 999; 
+      margin: 0; 
+      padding: 0; 
+      list-style: none; 
+      background-color: #fff; 
+      color: #333; 
+      border: 1px solid #d8d8d8; 
+      border-top: none; 
+      border-radius: 3px; 
+      max-height: 200px; 
+      overflow-y: auto;
+  } 
+  
+  .hideCustomselect { 
+      display: none !important;
+  } 
+  
+  tr { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  tbody tr:nth-child(2n + 1)  { 
+      background: #fff;
+  } 
+  
+  .optionLists { 
+      list-style: none; 
+      margin: 0; 
+      padding: 0;
+  } 
+  
+  .customSelectDD ul  { 
+      margin: 0; 
+      padding: 0;
+  } 
+  
+  th { 
+      padding: 0;
+  } 
+  
+  th { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  thead th  { 
+      padding: 10px 8px; 
+      border-right: 1px solid #fff; 
+      color: #fff; 
+      vertical-align: middle;
+  } 
+  
+  thead th:last-child  { 
+      border-right: 0px;
+  } 
+  
+  td { 
+      padding: 0;
+  } 
+  
+  td { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  tbody td  { 
+      padding: 8px 0 12px; 
+      border-right: 1px solid #e4e4e4; 
+      position: relative; 
+      line-height: 14px; 
+      vertical-align: middle; 
+      text-align: center;
+  } 
+  
+  tbody td.td-action  { 
+      min-width: 90px;
+  } 
+  
+  tbody td:last-child  { 
+      border-right: 0px;
+  } 
+  
+  li { 
+      margin: 0; 
+      padding: 0; 
+      border: 0; 
+      font-size: 100%; 
+      font: inherit; 
+      vertical-align: baseline;
+  } 
+  
+  .customSelectDD li  { 
+      margin: 0; 
+      padding: 0; 
+      border-bottom: none; 
+      -webkit-transition: all 0.01s ease-in; 
+      -moz-transition: all 0.01s ease-in; 
+      -o-transition: all 0.01s ease-in; 
+      transition: all 0.01s ease-in; 
+      font-size: 12px; 
+      border-top: 1px solid #f4f4f4;
+  } 
+  
+  .customSelectDD .selected  { 
+      background-color: #ccc;
+  } 
+  
+  .customSelectDD .active  { 
+      background-color: #008bcf;
+  } 
+  
+  .camera-icon { 
+      background: url(https://teja9.kuikr.com/escrow/assets/image/myOffers/dashboard_sprite.png) no-repeat -8px -162px; 
+      width: 25px; 
+      height: 21px; 
+      display: block; 
+      cursor: pointer; 
+      margin: auto;
+  } 
+  
+  .table-wrap .form-grp  { 
+      padding: 0 8px;
+  } 
+  
+  .action-icon { 
+      width: 24px; 
+      height: 24px; 
+      background: url(https://teja9.kuikr.com/escrow/assets/image/myOffers/dashboard_sprite.png) no-repeat -64px -192px; 
+      display: inline-block; 
+      opacity: 0; 
+      margin-top: 5px;
+  } 
+  
+  .action-icon.copyRow { 
+      opacity: 1; 
+      background-position: -154px -192px;
+  } 
+  
+  .failureErrMsg { 
+      height: 28px; 
+      line-height: 28px; 
+      background: #e70007; 
+      padding: 0 10px; 
+      color: #fff; 
+      display: none; 
+      white-space: nowrap; 
+      z-index: 9; 
+      margin-top: 8px; 
+      position: absolute; 
+      right: 0;
+  } 
+  
+  .failureErrMsg:before { 
+      content: ''; 
+      border-bottom: 6px solid #e70007; 
+      border-left: 6px solid transparent; 
+      border-right: 6px solid transparent; 
+      position: absolute; 
+      top: -6px; 
+      right: 20px;
+  } 
+  
+  .customSelectDD a  { 
+      display: block; 
+      margin: 0; 
+      padding: 8px 5px; 
+      text-decoration: none; 
+      color: #333; 
+      text-indent: 0;
+  } 
+  
+  .customSelectDD .active a  { 
+      color: #fff;
+  } 
+  
+  .photo-count { 
+      font-size: 10px; 
+      text-decoration: none; 
+      background: #2ebb2e; 
+      color: #fff; 
+      border-radius: 100%; 
+      padding: 2px 5px; 
+      position: relative; 
+      top: -6px; 
+      right: -12px;
+  } 
+  
+  .zero-photo .photo-count  { 
+      background: #ff0000;
+  } 
+  
+  .table-wrap .form-grp .form-input  { 
+      border-bottom: 1px solid transparent; 
+      color: #666; 
+      padding: 10px 20px 6px 0;
+  } 
+  
+  .table-wrap .form-grp .err-msg  { 
+      height: 28px; 
+      line-height: 28px; 
+      background: #e70007; 
+      padding: 0 10px; 
+      color: #fff; 
+      display: none; 
+      white-space: nowrap; 
+      z-index: 9; 
+      margin-top: 8px;
+  } 
+  
+  .table-wrap .form-grp .err-msg::before { 
+      content: ''; 
+      border-bottom: 6px solid #e70007; 
+      border-left: 6px solid transparent; 
+      border-right: 6px solid transparent; 
+      position: absolute; 
+      top: -6px;
+  } 
+  
+  input[type="checkbox"] { 
+      box-sizing: border-box; 
+      padding: 0;
+  } 
+  
+  input[type="checkbox"] { 
+      margin: 4px 0 0; 
+      margin-top: 1px \9; 
+      line-height: normal;
+  } 
+  
+  .form-grp input[type="checkbox"]  { 
+      position: absolute; 
+      left: -9999px;
+  } 
+  
+  .form-grp input[type="checkbox"] + label  { 
+      width: 13px; 
+      height: 13px; 
+      background: url(https://teja9.kuikr.com/escrow/assets/image/myOffers/dashboard_sprite.png) no-repeat -146px -52px; 
+      cursor: pointer; 
+      margin-top: 5px;
+  } 
+  
+  .form-grp input[type="checkbox"]:checked + label  { 
+      background-position: -166px -52px;
+  } 
+  
+  .table-wrap .form-grp .sel-arrow-down  { 
+      right: 8px;
+  } 
+  
+  .table-wrap .form-grp .customSelectDD  { 
+      width: 173px; 
+      top: 35px; 
+      text-align: left;
+  } 
+  
+  
+  /* These were inline style tags. Uses id+class to override almost everything */
+  #style-RkAan.style-RkAan {  
+     display: none;  
+  }  
+  #style-H8Ugn.style-H8Ugn {  
+     display:none;  
+  }  
+  #style-STC3W.style-STC3W {  
+     color:red;  
+  }  
+  
+
+  .snipcss-eBKL4 {
+    margin: 51px 15px 0px;
+}
+
+
+
+
+
+/* Apply styles to the container */
+.row.snipcss-JxGSH {
+    margin: 20px; /* Adjust the margin as needed */
+  }
+  
+  .container {
+    max-width: 1200px; /* Adjust the maximum width as needed */
+    margin: 0 auto; /* Center the container */
+  }
+  
+  /* Style the button wrap */
+  .btn-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Style the "Add more" button */
+  .btn.addrows {
+    background-color: #3498db; /* Set your desired background color */
+    color: #fff; /* Set your desired text color */
+    padding: 10px 20px; /* Adjust padding as needed */
+    text-decoration: none;
+    border-radius: 5px; /* Add border-radius for rounded corners */
+  }
+  
+  /* Style the right wrap */
+  .rightWrap {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Style the primary button */
+  .btn.btn-primary {
+    background-color: #2ecc71; /* Set your desired background color */
+    color: #fff; /* Set your desired text color */
+    padding: 10px 20px; /* Adjust padding as needed */
+    text-decoration: none;
+    border: none;
+    border-radius: 5px; /* Add border-radius for rounded corners */
+    margin-left: 10px; /* Adjust the margin as needed */
+  }
+  
+  /* Style the "Buy premium pack" link */
+  .btn.btn-primary.mkCta {
+    background-color: #e74c3c; /* Set your desired background color */
+    color: #fff; /* Set your desired text color */
+    padding: 10px 20px; /* Adjust padding as needed */
+    text-decoration: none;
+    border: none;
+    border-radius: 5px; /* Add border-radius for rounded corners */
+    margin-left: 10px; /* Adjust the margin as needed */
+  }
+  
+  /* Hide the "Buy premium pack" link initially */
+  .btn.btn-primary.mkCta.hide {
+    display: none;
+  }
+  
+  /* Add additional styles as needed */
+  
