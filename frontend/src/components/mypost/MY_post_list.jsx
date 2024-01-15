@@ -46,7 +46,7 @@ function MY_post_list({ tabItems }) {
 
   return (
     <div className="sm-top-tabs">
-      <button onClick={handleScrollLeft}><h2>&#60;</h2></button>
+      <button onClick={handleScrollLeft}><h2 className="h2mypost">&#60;</h2></button>
       <div className="insetlines" ref={tabListRef} onWheel={handleWheelScroll}>
         {tabItems.map((tab, index) => (
           <a
@@ -61,7 +61,7 @@ function MY_post_list({ tabItems }) {
           </a>
         ))}
       </div>
-      <button onClick={handleScrollRight}><h2>&#62;</h2></button>
+      <button onClick={handleScrollRight}><h2 className="h2mypost">&#62;</h2></button>
     </div>
   );
 }

@@ -1,5 +1,7 @@
 .bgsetter {
-    background-color: rgb(56, 98, 136);
+    background-color: rgb(78, 82, 86);
+    display: flex;
+    padding: 0px 86px 0px 130px;
 }
 
 .sm-top-tabs>div::-webkit-scrollbar {
@@ -25,8 +27,123 @@
 
 .insetlines {
     display: flex;
-    transition: scrollLeft 0.3s ease; 
+    transition: scrollLeft 0.3s ease;
     overflow-x: auto;
 }
 
 /* Add any other styles you need for your component */
+
+p.myposte_1st {
+    display: flex;
+    width: 10%;
+    color: white;
+    padding: 0px;
+    margin: 0px 28px 0px 0px;
+}
+
+.h2mypost {
+    color: #c4c4c4;
+    margin: 0;
+    font-size: 42px;
+}
+
+.h2mypost:hover {
+    color: #f7f6f6;
+}
+
+.dropdown {
+    color: white;
+    background: #a4a3a3;
+    width: auto;
+    border-radius: 13px;
+    position: relative;
+    left: -13px;
+}
+
+.dropdown-toggle {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+
+
+
+/* Common styles for all screen sizes */
+.bgsetter {
+    background-color: rgb(78, 82, 86);
+    display: flex;
+    padding: 0px 5%; /* Adjust padding for smaller screens */
+}
+
+.sm-top-tabs>div::-webkit-scrollbar {
+    height: 2px;
+    width: 2px;
+}
+
+.sm-top-tabs>div::-webkit-scrollbar-track {
+    height: 2px;
+    width: 2px;
+}
+
+.sm-top-tabs>div::-webkit-scrollbar-thumb {
+    height: 2px;
+    width: 2px;
+}
+
+.insetlines {
+    display: flex;
+    transition: scrollLeft 0.3s ease;
+    overflow-x: auto;
+}
+
+/* Responsive styles for small screens */
+@media screen and (max-width: 600px) {
+    .bgsetter {
+        padding: 0px 10px; /* Adjust padding for small screens */
+    }
+
+    p.myposte_1st {
+        width: 20%; /* Adjust width for small screens */
+        margin: 0px 10px 0px 0px;
+    }
+
+    .h2mypost {
+        font-size: 28px; /* Adjust font size for small screens */
+    }
+
+    .dropdown {
+        width: 20%; /* Adjust width for small screens */
+        left: -5px; /* Adjust position for small screens */
+    }
+}
+
+/* Responsive styles for medium screens */
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+    /* Add styles for medium screens here */
+}
+
+/* Responsive styles for large screens */
+@media screen and (min-width: 1025px) {
+    /* Add styles for large screens here */
+}

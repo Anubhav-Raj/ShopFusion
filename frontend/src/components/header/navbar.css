@@ -107,6 +107,9 @@ header {
 .sm-top-tabs {
     display: flex;
     height: 40px;
+    width: 85%;
+    align-items: center;
+    justify-content: center;
 }
 
 .sm-search-bar {
@@ -480,4 +483,10 @@ a:hover {
 }
 .icon11{
     font-size: 22px;
+}
+
+@media (max-width: 750px) {
+    .sm-top-tabs {
+        width: 100%; /* Adjust width to 100% for screens less than 750px */
+    }
 }
