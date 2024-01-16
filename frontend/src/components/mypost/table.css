@@ -185,12 +185,7 @@
       display: none !important;
   } 
   
-  .bg-bulk-ad { 
-      height: 200px; 
-      width: 100%; 
-      background: url(https://teja9.kuikr.com/escrow/assets/image/myOffers/bg_bulkpost_ad.jpg) no-repeat; 
-      background-size: contain;
-  } 
+
   
   .col-md-7 { 
       position: relative; 
@@ -324,6 +319,7 @@
   .table-scroll { 
       display: block; 
       margin-bottom: 10px;
+      overflow-y: auto;
   } 
   
   .form-grp { 
@@ -368,7 +364,7 @@
   table { 
       border: 1px solid #e4e4e4; 
       border-collapse: separate; 
-      width: 100%; 
+      width: 290%; 
       text-align: left;
   } 
   
@@ -607,6 +603,7 @@
       padding: 10px 8px; 
       border-right: 1px solid #fff; 
       color: #fff; 
+      text-align: center;
       vertical-align: middle;
   } 
   
@@ -675,6 +672,13 @@
   
   .camera-icon { 
       background: url(https://teja9.kuikr.com/escrow/assets/image/myOffers/dashboard_sprite.png) no-repeat -8px -162px; 
+      width: 25px; 
+      height: 21px; 
+      display: block; 
+      cursor: pointer; 
+      margin: auto;
+  } 
+  .Edit-icon >img{ 
       width: 25px; 
       height: 21px; 
       display: block; 
@@ -752,12 +756,11 @@
   .zero-photo .photo-count  { 
       background: #ff0000;
   } 
-  
-  .table-wrap .form-grp .form-input  { 
-      border-bottom: 1px solid transparent; 
-      color: #666; 
-      padding: 10px 20px 6px 0;
-  } 
+  .table-wrap .form-grp .form-input {
+    border-bottom: 1px solid #00000029;
+    color: #666;
+    padding: 10px 20px 6px 0;
+}
   
   .table-wrap .form-grp .err-msg  { 
       height: 28px; 
@@ -899,4 +902,40 @@
   }
   
   /* Add additional styles as needed */
+  .form-grp input[type="checkbox"] {
+    /* Your styling here */
+    /* For example: */
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    /* Add other styles as needed */
+  }
+  .table-scroll {
+    display: block;
+    margin-bottom: 10px;
+    overflow: scroll;
+    overflow-x:none;
+    scrollbar-width: 10px; /* For Firefox */
+    scrollbar-color: #ccc #f5f5f5; /* For Firefox */
+  
+    /* For WebKit (Chrome, Safari) */
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background-color: #f5f5f5;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: #ccc;
+      border-radius: 4px;
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #999;
+      height: 4px;
+      width: 4px;
+    }
+  }
   
