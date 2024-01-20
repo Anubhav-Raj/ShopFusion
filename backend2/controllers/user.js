@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require("uuid");
 
 exports.signup = async (req, res) => {
   try {
-    const { name, email, photo, role } = req.body;
+    const { name, email, photo, role, password } = req.body;
 
     let user = await User.findOne({ email });
 
