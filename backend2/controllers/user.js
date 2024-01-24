@@ -7,9 +7,9 @@ const { v4: uuidv4 } = require("uuid");
 exports.signup = async (req, res) => {
   try {
     const { name, email, photo, role, password } = req.body;
-
+    console.log(password);
     let user = await User.findOne({ email });
-
+    //console.log(user);
     if (user) {
       // Generate JWT token
       const token = jwt.sign({ id: user._id }, process.env.SECRET, {
@@ -25,23 +25,38 @@ exports.signup = async (req, res) => {
       let hashedPass = "";
       let verified = true;
       let token1 = "";
-      if (password !== "") {
+      if (password !== "none") {
         hashedPass = await bcrypt.hash(password, 12);
         verified = false;
         token1 = uuidv4();
       }
+      console.log("aejfnsj");
 
       const newUser = new User({
-        name,
-        email,
-        photo,
-        role,
+        name: name,
+        email: email,
+        photo: photo,
+        role: role,
         password: hashedPass,
         isVerified: verified,
         token: token1,
       });
-      const savedUser = await newUser.save();
-      if (password !== "") {
+      // await newUser.save();
+      // console.log(newUser);
+
+      try {
+        await newUser.save();
+        console.log("User saved successfully");
+      } catch (error) {
+        console.error("Error saving user:", error);
+        // Handle the error appropriately, e.g., send an error response to the client
+        res.status(500).json({
+          error: error.message,
+          message: "Error saving user",
+        });
+        return; // Make sure to exit the function if there's an error
+      }
+      if (password !== "none") {
         const uri = `${process.env.BACKEND_URL}/api/user/verifyUser/${newUser._id}/${token1}`;
 
         const bodypart = ` <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">

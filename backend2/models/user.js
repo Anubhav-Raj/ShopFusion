@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 // Define the user schema
 const userSchema = new mongoose.Schema({
-  _id: {
-    type: String,
-    required: [true, "Please enter ID"],
-  },
   name: {
     type: String,
   },

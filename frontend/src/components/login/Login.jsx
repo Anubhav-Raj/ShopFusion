@@ -5,7 +5,11 @@ import { auth } from "../../firebase.js";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { userExist, userNotExist } from "../../redux/user.slice";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { getUser, useLoginMutation } from "../../redux/API/user.js";
 
 function Login() {
@@ -27,13 +31,44 @@ function Login() {
     try {
       const provider = new GoogleAuthProvider();
       const { user } = await signInWithPopup(auth, provider);
+      const res = await login({
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+        password: "none",
+        role: "user",
+      });
+      if ("data" in res) {
+        toast.success(res.data.message);
+        localStorage.setItem("token", res.data.token);
+        const data = await getUser(user.uid);
+        data.token = res.data.token;
+        dispatch(userExist(data));
+      } else {
+        toast.error(res.error.data.message);
+        dispatch(userNotExist());
+      }
+
+      setIsVisible(false);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleEmailLogin = async (event) => {
+    event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+
+    try {
+      // Sign in with email and password
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
 
       const res = await login({
         name: user.displayName,
         email: user.email,
         photo: user.photoURL,
         role: "user",
-        _id: user.uid,
       });
 
       if ("data" in res) {
@@ -75,7 +110,6 @@ function Login() {
                 <div className="goo-3ji" onClick={signInWithGoogle}>
                   Login With Google
                 </div>
-                <div className="fbbri">Login With Facebook</div>
               </div>
               <div className="box-ntd size-6o5 pad-b31">
                 <div className="header-vc8">
@@ -83,10 +117,10 @@ function Login() {
                     <h2>Login Using Email</h2>
                   </div>
                 </div>
-                <form className="form-hjp">
+                <form className="form-hjp" onSubmit={handleEmailLogin}>
                   <div className="input-d7q label-kan">
                     <input
-                      name="username"
+                      name="email"
                       placeholder="Email"
                       className="input-13o"
                       type="text"

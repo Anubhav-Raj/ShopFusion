@@ -25,7 +25,10 @@ const Mobiledetail = lazy(() =>
 
 const Compair = lazy(() => import("./pages/compare_page/Compair.jsx"));
 const SellerPage = lazy(() => import("./pages/Seller/Seller_page.jsx"));
-const Mypost = lazy(()=> import("./pages/mypost/My_post.jsx"));
+const Mypost = lazy(() => import("./pages/mypost/My_post.jsx"));
+
+const AddMobile = lazy(() => import("./pages/mypost/Mobile/AddMobile.jsx"));
+const AddaddressPage = lazy(() => import("./pages/profile/profile.jsx"));
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -55,12 +58,14 @@ function App() {
           <Routes>
             {/* Use the lazy-loaded components */}
             <Route path="/seller" element={<SellerPage />} />
-            <Route path="/" element={<Mypost/>} />
+            <Route path="/post" element={<Mypost />} />
             <Route path="/brand" element={<Brandpage />} />
             {/* Use the lazy-loaded components */}
             <Route path="/brand/:brandName" element={<MobileHome />} />
             <Route path="/mobile/:mobiledetail" element={<Mobiledetail />} />
             <Route path="/compair" element={<Compair />} />
+            <Route path="/addmobile" element={<AddMobile />} />
+            <Route path="/profile" element={<AddaddressPage />} />
           </Routes>
         </Suspense>
         <Toaster position="bottom-center" />
@@ -72,3 +77,5 @@ function App() {
 }
 
 export default App;
+
+//--legacy-peer-deps

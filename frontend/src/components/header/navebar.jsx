@@ -48,6 +48,7 @@ function Navbar() {
   const { user, loading } = useSelector((state) => state.user);
   const logoutHandler = async () => {
     try {
+      localStorage.removeItem("token");
       await signOut(auth);
       toast.success("Sign Out Successfully");
     } catch (error) {
@@ -158,17 +159,19 @@ function Navbar() {
               <span>Saved</span>
             </div>
             {user ? (
-              <div className="sm-dropdown sm-header-user">
-                <div className="icon11" style={{ marginRight: "6px" }}>
-                  &#9993;
-                </div>
+              <Link to={`/post`}>
+                <div className="sm-dropdown sm-header-user">
+                  <div className="icon11" style={{ marginRight: "6px" }}>
+                    &#9993;
+                  </div>
 
-                <span>My Posts</span>
-              </div>
+                  <span>My Posts</span>
+                </div>
+              </Link>
             ) : null}
           </div>
         </div>
-        <Mobile_headlist/>
+        <Mobile_headlist />
       </header>
       {showLogin && <Login onClose={closeModals} />}
       {showSignup && <Signup onClose={closeModals} />}

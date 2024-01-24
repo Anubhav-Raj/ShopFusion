@@ -4,70 +4,16 @@ import Trashicon from "./trash-can.png";
 import Editicon from "./edit.png";
 import CustomCheckbox from "./Costum_checkbox";
 import Onoffbutton from "./Onoffbutton";
+import AddMobile from "../../pages/mypost/Mobile/AddMobile";
 
 function Table_post() {
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      status: "active",
-      sellerType: "consumer",
-      sellerName: "",
-      gstId: "",
-      itemBrandName: "",
-      itemModelName: "",
-      color: "",
-      adTitle: "",
-      adDescription: "",
-      condition: "new",
-      yearOfPurchase: "",
-      availableQuantity: "",
-      minimumOrderQuantity: "",
-      price: "",
-      paymentMethod: "cash",
-      serviceMode: "pickup",
-      phoneNumber: "",
-      showPhoneNumber: false,
-      emailId: "",
-      showEmail: false,
-      address: "",
-      // ... add more properties for each column
-    },
-  ]);
-
-  const handleAddRow = () => {
-    const newRow = {
-      id: rows.length + 1,
-      status: "active",
-      sellerType: "consumer",
-      sellerName: "",
-      gstId: "",
-      itemBrandName: "",
-      itemModelName: "",
-      color: "",
-      adTitle: "",
-      adDescription: "",
-      condition: "new",
-      yearOfPurchase: "",
-      availableQuantity: "",
-      minimumOrderQuantity: "",
-      price: "",
-      paymentMethod: "cash",
-      serviceMode: "pickup",
-      phoneNumber: "",
-      showPhoneNumber: false,
-      emailId: "",
-      showEmail: false,
-      address: "",
-      // ... add more properties for each column
-    };
-
-    setRows((prevRows) => [...prevRows, newRow]);
-  };
+  const [rows, setRows] = useState([]);
 
   return (
     <>
       <div className="snipcss-eBKL4">
         <div className="table-wrap attrTable">
+          <AddMobile />
           <div className="table-scroll">
             <table>
               <thead>
@@ -123,192 +69,78 @@ function Table_post() {
                         <img src={Trashicon} alt="Trash Icon" />
                       </span>
                     </td>
-                    <td>
-                      <select value={row.status}>
-                        <option value="active">PUBLIC</option>
-                        <option value="inactive">PRIVATE</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select value={row.sellerType}>
-                        <option value="consumer">Consumer</option>
-                        <option value="retailer">Retailer</option>
-                      </select>
-                    </td>
+                    <td>{row.status}</td>
+                    <td>{row.sellerType}</td>
                     <td>
                       <div className="form-grp">
-                        <input
-                          type="text"
-                          className="form-input"
-                          placeholder="Enter Name"
-                          value={row.sellerName}
-                        />
+                        {row.sellerName}
                         <span className="err-msg"></span>
                       </div>
                     </td>
                     <td>
                       <div className="form-grp">
-                        <input
-                          type="text"
-                          className="form-input"
-                          placeholder="GST Number"
-                          value={row.gstId}
-                        />
+                        {row.gstId}
                         <span className="err-msg"></span>
                       </div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <input
-                          type="text"
-                          className="form-input"
-                          placeholder="Item Brand Name"
-                          value={row.itemBrandName}
-                        />
-                      </div>
+                      <div className="form-grp">{row.itemBrandName}</div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <input
-                          type="text"
-                          className="form-input"
-                          placeholder="Item Model Name"
-                          value={row.itemModelName}
-                        />
-                      </div>
+                      <div className="form-grp">{row.itemModelName}</div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <input
-                          type="text"
-                          className="form-input"
-                          placeholder="Color"
-                          value={row.color}
-                        />
-                      </div>
+                      <div className="form-grp">{row.color}</div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <input
-                          type="text"
-                          className="form-input"
-                          placeholder="Ad Title"
-                          value={row.adTitle}
-                        />
-                      </div>
+                      <div className="form-grp">{row.adTitle}</div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <textarea
-                          className="form-input"
-                          placeholder="Ad Description"
-                          value={row.adDescription}
-                        ></textarea>
-                      </div>
+                      <div className="form-grp">{row.adDescription}</div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <select value={row.condition}>
-                          <option value="new">New</option>
-                          <option value="used">Used</option>
-                        </select>
-                      </div>
+                      <div className="form-grp">{row.condition}</div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <input
-                          type="text"
-                          className="form-input"
-                          placeholder="Year Of Purchase"
-                          value={row.yearOfPurchase}
-                        />
-                      </div>
+                      <div className="form-grp">{row.yearOfPurchase}</div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <input
-                          type="number"
-                          className="form-input"
-                          placeholder="Available Quantity"
-                          value={row.availableQuantity}
-                        />
-                      </div>
+                      <div className="form-grp">{row.availableQuantity}</div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <input
-                          type="number"
-                          className="form-input"
-                          placeholder="Minimum Order Quantity"
-                          value={row.minimumOrderQuantity}
-                        />
-                      </div>
+                      <div className="form-grp">{row.minimumOrderQuantity}</div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <input
-                          type="text"
-                          className="form-input"
-                          placeholder="Price"
-                          value={row.price}
-                        />
-                      </div>
+                      <div className="form-grp">{row.price}</div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <select value={row.paymentMethod}>
-                          <option value="cash">Cash</option>
-                          <option value="credit">Credit Card</option>
-                        </select>
-                      </div>
+                      <div className="form-grp">{row.paymentMethod}</div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <select value={row.serviceMode}>
-                          <option value="pickup">Pickup</option>
-                          <option value="delivery">Delivery</option>
-                        </select>
-                      </div>
+                      <div className="form-grp">{row.serviceMode}</div>
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <input
-                          type="tel"
-                          className="form-input"
-                          placeholder="Phone no."
-                          value={row.phoneNumber}
-                        />
-                      </div>
+                      <div className="form-grp">{row.phoneNumber}</div>
                     </td>
                     <td>
                       <Onoffbutton checked={row.showPhoneNumber} />
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <input
-                          type="email"
-                          className="form-input"
-                          placeholder="Email Id"
-                          value={row.emailId}
-                        />
-                      </div>
+                      <div className="form-grp">{row.emailId}</div>
                     </td>
                     <td>
                       <Onoffbutton checked={row.showEmail} />
                     </td>
                     <td>
-                      <div className="form-grp">
-                        <textarea
-                          className="form-input"
-                          placeholder="Address"
-                          value={row.address}
-                        ></textarea>
-                      </div>
+                      <div className="form-grp">{row.address}</div>
                     </td>
                     <td>
                       <div className="form-grp">
                         <div className="form-grp">
-                          <label className="camera-icon" htmlFor="cameraInput"></label>
+                          <label
+                            className="camera-icon"
+                            htmlFor="cameraInput"
+                          ></label>
                           <input
                             id="cameraInput"
                             type="file"
@@ -347,8 +179,8 @@ function Table_post() {
         <div className="row snipcss-JxGSH">
           <div className="container">
             <div className="btn-wrap">
-              <a href="javascript:;" className="btn btn-primary " onClick={handleAddRow}>
-                + Add Row
+              <a href="javascript:;" className="btn btn-primary ">
+                + Add More
               </a>
               <a href="javascript:;" className="btn addrows">
                 Publish Posts In Private(Free)

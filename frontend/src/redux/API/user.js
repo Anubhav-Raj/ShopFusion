@@ -3,7 +3,7 @@ import axios from "axios";
 // require("dotenv").config();
 
 // Get the API base URL from the environment variable
-const baseUrl = "http://localhost:5000/";
+const baseUrl = "http://localhost:5000/api/user/";
 export const userAPI = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
@@ -13,7 +13,7 @@ export const userAPI = createApi({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (user) => ({
-        url: "new",
+        url: "signup",
         method: "POST",
         body: user,
       }),
@@ -29,7 +29,7 @@ export const getUser = async (id) => {
       console.error("Token not available");
       return null;
     }
-    const response = await axios.get(`http://localhost:5000/users/${id}`, {
+    const response = await axios.post(`${baseUrl}/userbyid`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

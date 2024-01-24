@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./signpu.css";
 import { useDispatch } from "react-redux";
 import { getUser, useLoginMutation } from "../../redux/API/user";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth } from "../../firebase";
 import { userExist, userNotExist } from "../../redux/user.slice";
 import toast from "react-hot-toast";
@@ -20,22 +24,58 @@ function Signup() {
       setIsVisible(true);
     };
   }, []);
-
   const signInWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
       const { user } = await signInWithPopup(auth, provider);
-
+      console.log("user", user);
       const res = await login({
         name: user.displayName,
         email: user.email,
         photo: user.photoURL,
         role: "user",
-        _id: user.uid,
       });
-
+      console.log("res", res);
       if ("data" in res) {
         toast.success(res.data.message);
+        localStorage.setItem("token", res.data.token);
+        const data = await getUser(user.email);
+        data.token = res.data.token;
+        dispatch(userExist(data));
+      } else {
+        toast.error(res.error.data.message);
+        dispatch(userNotExist());
+      }
+
+      setIsVisible(false);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  const handleEmailSignup = async (event) => {
+    event.preventDefault();
+    const name = event.target.name.value;
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+
+    try {
+      // Create a new user with email and password
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      const res = await login({
+        name: name,
+        email: email,
+        photo: user.photoURL || "",
+        password: password,
+        role: "user",
+      });
+      if ("data" in res) {
+        toast.success(res.data.message);
+        localStorage.setItem("token", res.data.token);
         const data = await getUser(user.uid);
         dispatch(userExist(data));
       } else {
@@ -46,7 +86,6 @@ function Signup() {
       toast.error(error.message);
     }
   };
-
   return isVisible ? (
     <>
       <div className="backdoptrying">
@@ -68,7 +107,6 @@ function Signup() {
                 <div className="goo-aod" onClick={signInWithGoogle}>
                   Login With Google
                 </div>
-                <div className="glpvf">Login With Facebook</div>
               </div>
               <div className="box-8ya size-78k pad-t5w">
                 <div className="header-omj">
@@ -76,7 +114,7 @@ function Signup() {
                     <h2>Sign Up Using Email</h2>
                   </div>
                 </div>
-                <form className="form-n23">
+                <form className="form-n23" onSubmit={handleEmailSignup}>
                   <div className="input-2d1 label-x5e">
                     <input
                       name="name"
