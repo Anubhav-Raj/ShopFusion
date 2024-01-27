@@ -2,6 +2,7 @@ import React from "react";
 import "./seller.css";
 import Location_list from "../../components/Seller/location_list";
 import Dropdown_right from "../../components/Seller/Dropdown_right";
+import Seller_right from "../../components/Seller/seller_right/Seller_right";
 
 function Seller_page() {
   const Peripherals = [
@@ -108,6 +109,8 @@ function Seller_page() {
         </div>
         <div className="rightdiv">
                 <Dropdown_right/>
+                <Seller_right/>
+                
         </div>
       </div>
     </>

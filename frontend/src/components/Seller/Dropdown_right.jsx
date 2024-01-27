@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./dropdown.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import Filtericon from "./icons8-filter-50.png" 
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
 function Dropdownlist1({ setSelectedCount }) {
   const handleCheckboxChange = (event) => {
@@ -56,7 +57,8 @@ function Dropdownlist1({ setSelectedCount }) {
 function FilterButton({ selectedCount }) {
   return (
     <button className="filter-pill">
-      <FontAwesomeIcon icon={faFilter} />
+      {/* <FontAwesomeIcon icon={faFilter} /> */}
+      <img className="imgdd" src={Filtericon} alt="Filter Icon" />
       <div className="filter-label"> &nbsp; &nbsp;Filter</div>
       <div className="selected-count">({selectedCount})</div>
       <div className="arrow-icon">
