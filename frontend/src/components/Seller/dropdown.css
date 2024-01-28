@@ -141,3 +141,33 @@ ul.dropdown-r42>li>h4 {
 .imgdd{
     width: 20px;
 }
+
+#selectAllContainer {
+    display: flex;
+    background: #5e9c9c;
+    align-items: center;
+    padding: 3px;
+    color: black;
+    font-size: 15px;
+    font-size: unset;
+    justify-content: space-around;
+}
+  
+  #selectAllCheckbox {
+    margin-right: 5px; /* Add some spacing between the checkbox and text */
+  }
+  
+  #clearAllButton {
+    margin-left: 10px; /* Add spacing to the left of the "Clear All" button */
+    padding: 5px 10px; /* Add padding to the button for better appearance */
+    cursor: pointer;
+    background-color: #f44336; /* Red color for the button background */
+    color: #fff; /* White color for the button text */
+    border: none;
+    border-radius: 3px;
+  }
+  
+  #clearAllButton:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+  }
+  

@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import "./dropdown.css";
-import Filtericon from "./icons8-filter-50.png" 
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import Filtericon from "./icons8-filter-50.png";
 
 function Dropdownlist1({ setSelectedCount }) {
   const handleCheckboxChange = (event) => {
-    // Update the selected count when a checkbox is changed
     const isChecked = event.target.checked;
-    setSelectedCount((prevCount) => (isChecked ? prevCount + 1 : prevCount - 1));
+    setSelectedCount((prevCount) =>
+      isChecked ? prevCount + 1 : prevCount - 1
+    );
   };
 
   const categories = [
@@ -31,6 +30,12 @@ function Dropdownlist1({ setSelectedCount }) {
 
   return (
     <ul className="dropdown-r42">
+      <div id="selectAllContainer">
+        
+        <span id="selectAll"><input type="checkbox" id="selectAllCheckbox" />Select All</span>
+        <button id="clearAllButton">Clear All</button>
+      </div>
+
       {categories.map((category, index) => (
         <li key={index}>
           <h4>&#10148; {category.title}</h4>
