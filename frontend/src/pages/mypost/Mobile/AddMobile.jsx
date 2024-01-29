@@ -1,9 +1,21 @@
 import React, { useState } from "react";
-import { Input, Select } from "../../../components/Input";
 import "./addMobile.css";
-import { AutoComplete, Button, Modal, Upload, message } from "antd";
+import {
+  AutoComplete,
+  Button,
+  InputNumber,
+  Modal,
+  Input,
+  Upload,
+  message,
+  Select,
+} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  mobileAPI,
+  useCreateMobileMutation,
+} from "../../../redux/API/products/mobile";
 
 const { Option } = AutoComplete;
 
@@ -16,7 +28,53 @@ const getBase64 = (file) =>
   });
 
 const AddMobile = () => {
-  const options = [
+  const [sellerType, setSellerType] = useState("");
+  const [sellerName, setSellerName] = useState("");
+  const [gstNumber, setGstNumber] = useState("");
+  const [color, setColor] = useState("");
+  const [selectBrand, setSelectBrand] = useState("");
+  const [selectModel, setSelectModel] = useState("");
+  const [mobileName, setMobileName] = useState("");
+  const [condition, setCondition] = useState("");
+  const [yearOfPurchase, setYearOfPurchase] = useState("");
+  const [availableQuantity, setAvailableQuantity] = useState("");
+  const [minimumOrder, setMinimumOrder] = useState("");
+  const [price, setPrice] = useState("");
+  const [paymentMode, setPaymentMode] = useState("");
+  const [serviceMode, setServiceMode] = useState("");
+  const [enterAddress, setEnterAddress] = useState("");
+  const [googleDriveLink, setGoogleDriveLink] = useState("");
+  const [mobileDescription, setMobileDescription] = useState("");
+  const [uploadPhotos, setUploadPhotos] = useState([]);
+  const [uploadVideo, setUploadVideo] = useState(null);
+  const [uploadFile, setUploadFile] = useState(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [fileList, setFileList] = useState([]);
+  // Error state variables
+  const [sellerTypeError, setSellerTypeError] = useState("");
+  const [sellerNameError, setSellerNameError] = useState("");
+  const [gstNumberError, setGstNumberError] = useState("");
+  const [colorError, setColorError] = useState("");
+  const [selectBrandError, setSelectBrandError] = useState("");
+  const [selectModelError, setSelectModelError] = useState("");
+  const [mobileNameError, setMobileNameError] = useState("");
+  const [conditionError, setConditionError] = useState("");
+  const [yearOfPurchaseError, setYearOfPurchaseError] = useState("");
+  const [availableQuantityError, setAvailableQuantityError] = useState("");
+  const [minimumOrderError, setMinimumOrderError] = useState("");
+  const [priceError, setPriceError] = useState("");
+  const [paymentModeError, setPaymentModeError] = useState("");
+  const [serviceModeError, setServiceModeError] = useState("");
+  const [enterAddressError, setEnterAddressError] = useState("");
+  const [googleDriveLinkError, setGoogleDriveLinkError] = useState("");
+  const [mobileDescriptionError, setMobileDescriptionError] = useState("");
+  const [uploadPhotosError, setUploadPhotosError] = useState("");
+  const [uploadVideoError, setUploadVideoError] = useState("");
+  const [uploadFileError, setUploadFileError] = useState("");
+
+  const sellerTypeOption = [
     { value: "Consumer", label: "Consumer" },
     { value: "Retailer", label: "Retailer" },
     { value: "Wholeseller", label: "Wholeseller" },
@@ -25,10 +83,19 @@ const AddMobile = () => {
     { value: "Exporter", label: "Exporter" },
     { value: "Manufacture", label: "Manufacture" },
   ];
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
-  const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([]);
+  const conditionOption = [
+    { value: "Used", label: "Used" },
+    { value: "Refurbished", label: "Refurbished" },
+    { value: "Brand New", label: "Brand New" },
+  ];
+  const paymentModeOption = [
+    { value: "Online", lable: "Online" },
+    { value: "Case on Delivery", label: "Delivery" },
+  ];
+  const serviceModeOption = [
+    { value: "Online", label: "Online" },
+    { value: "Offline", label: "Offline" },
+  ];
 
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
@@ -42,7 +109,8 @@ const AddMobile = () => {
     );
   };
 
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+  const handleChange = ({ fileList: newFileList }) =>
+    setUploadPhotos(newFileList);
 
   const uploadButton = (
     <button
@@ -63,29 +131,274 @@ const AddMobile = () => {
     </button>
   );
 
-  const props = {
-    name: "file",
-    action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-    headers: {
-      authorization: "authorization-text",
-    },
+  const videoprops = {
+    name: "video", // Make sure the name matches the key in formData
+    //action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188", // <-- Backend endpoint for video upload
+    // headers: {
+    //   authorization: "authorization-text",
+    // },
     onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
+      // if (info.file.status !== "uploading") {
+      //   console.log(info.file, info.fileList);
+      // }
+      // if (info.file.status === "done") {
+      //   message.success(`${info.file.name} video uploaded successfully`);
+      // } else if (info.file.status === "error") {
+      //   message.error(`${info.file.name} video upload failed.`);
+      // }
+
+      // Extract video file from fileList and set it in the state or formData
+      //const videoFile = info.fileList[0]?.originFileObj;
+      if (info) {
+        setUploadVideo(info); // Assuming you have a state for video in your component
       }
     },
+  };
+  const fileprops = {
+    name: "file", // Make sure the name matches the key in formData
+    //action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",  // <-- Backend endpoint for file upload
+    // headers: {
+    //   authorization: "authorization-text",
+    // },
+    onChange(info) {
+      // if (info.file.status !== "uploading") {
+      //   console.log(info.file, info.fileList);
+      // }
+      // if (info.file.status === "done") {
+      //   message.success(`${info.file.name} file uploaded successfully`);
+      // } else if (info.file.status === "error") {
+      //   message.error(`${info.file.name} file upload failed.`);
+      // }
+
+      // Extract file from fileList and set it in the state or formData
+      //const uploadedFile = info.fileList[0]?.originFileObj;
+
+      if (info) {
+        setUploadFile(info); // Assuming you have a state for file in your component
+      }
+    },
+  };
+
+  const [createMobileMutation] = useCreateMobileMutation();
+
+  const resetForm = () => {
+    // Reset all form fields
+    setSellerType("");
+    setSellerName("");
+    setGstNumber("");
+    setColor("");
+    setSelectBrand("");
+    setSelectModel("");
+    setMobileName("");
+    setCondition("");
+    setYearOfPurchase("");
+    setAvailableQuantity("");
+    setMinimumOrder("");
+    setPrice("");
+    setPaymentMode("");
+    setServiceMode("");
+    setEnterAddress("");
+    setGoogleDriveLink("");
+    setMobileDescription("");
+    setUploadPhotos([]);
+    setUploadVideo(null);
+    setUploadFile(null);
+
+    // Reset all error messages
+    setSellerTypeError("");
+    setSellerNameError("");
+    setGstNumberError("");
+    setColorError("");
+    setSelectBrandError("");
+    setSelectModelError("");
+    setMobileNameError("");
+    setConditionError("");
+    setYearOfPurchaseError("");
+    setAvailableQuantityError("");
+    setMinimumOrderError("");
+    setPriceError("");
+    setPaymentModeError("");
+    setServiceModeError("");
+    setEnterAddressError("");
+    setGoogleDriveLinkError("");
+    setMobileDescriptionError("");
+    setUploadPhotosError("");
+    setUploadVideoError("");
+    setUploadFileError("");
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Reset error messages
+    setSellerTypeError("");
+    setSellerNameError("");
+    setGstNumberError("");
+    setColorError("");
+    setSelectBrandError("");
+    setSelectModelError("");
+    setMobileNameError("");
+    setConditionError("");
+    setYearOfPurchaseError("");
+    setAvailableQuantityError("");
+    setMinimumOrderError("");
+    setPriceError("");
+    setPaymentModeError("");
+    setServiceModeError("");
+    setEnterAddressError("");
+    setGoogleDriveLinkError("");
+    setMobileDescriptionError("");
+    setUploadPhotosError("");
+    setUploadVideoError("");
+    setUploadFileError("");
+    try {
+      let isValid = true;
+
+      // Validation for sellerType
+      if (!sellerType) {
+        setSellerTypeError("Seller type is required");
+        isValid = false;
+      }
+
+      // Validation for sellerName
+      if (!sellerName) {
+        setSellerNameError("Seller name is required");
+        isValid = false;
+      }
+
+      // Validation for color
+      if (!color) {
+        setColorError("Color is required");
+        isValid = false;
+      }
+
+      // Validation for selectBrand
+      if (!selectBrand) {
+        setSelectBrandError("Brand selection is required");
+        isValid = false;
+      }
+
+      // Validation for selectModel
+      if (!selectModel) {
+        setSelectModelError("Model selection is required");
+        isValid = false;
+      }
+
+      // Validation for mobileName
+      if (!mobileName) {
+        setMobileNameError("Mobile name is required");
+        isValid = false;
+      }
+
+      // Validation for condition
+      if (!condition) {
+        setConditionError("Condition is required");
+        isValid = false;
+      }
+
+      // Validation for yearOfPurchase
+      if (!yearOfPurchase) {
+        setYearOfPurchaseError("Year of purchase is required");
+        isValid = false;
+      }
+
+      // Validation for availableQuantity
+      if (!availableQuantity) {
+        setAvailableQuantityError("Available quantity is required");
+        isValid = false;
+      }
+
+      // Validation for minimumOrder
+      if (!minimumOrder) {
+        setMinimumOrderError("Minimum order is required");
+        isValid = false;
+      }
+
+      // Validation for price
+      if (!price) {
+        setPriceError("Price is required");
+        isValid = false;
+      }
+
+      // Validation for paymentMode
+      if (!paymentMode) {
+        setPaymentModeError("Payment mode is required");
+        isValid = false;
+      }
+
+      // Validation for serviceMode
+      if (!serviceMode) {
+        setServiceModeError("Service mode is required");
+        isValid = false;
+      }
+
+      // Validation for enterAddress
+      if (!enterAddress) {
+        setEnterAddressError("Enter address is required");
+        isValid = false;
+      }
+
+      // Validation for uploadPhotos
+      if (!uploadPhotos || uploadPhotos.length === 0) {
+        setUploadPhotosError("Upload at least one photo");
+        isValid = false;
+      }
+
+      // If validation fails, return early
+      if (!isValid) {
+        return;
+      }
+
+      // Extract data from the form state
+      const formData = {
+        sellerType,
+        sellerName,
+        gstNumber,
+        color,
+        selectBrand,
+        selectModel,
+        mobileName,
+        condition,
+        yearOfPurchase,
+        availableQuantity,
+        minimumOrder,
+        price,
+        paymentMode,
+        serviceMode,
+        enterAddress,
+        googleDriveLink,
+        mobileDescription,
+        uploadPhotos,
+        uploadVideo,
+        uploadFile,
+      };
+
+      Object.entries(formData).forEach(([key, value]) => {
+        console.log(`${key}: ${value}`);
+      });
+      // Trigger the createMobile mutation
+      // Trigger the createMobile mutation
+      const result = await createMobileMutation(formData);
+
+      // Handle the success response
+      console.log("Mobile created successfully:", result);
+      message.success("Mobile created successfully");
+
+      // Reset the form after successful submission
+      resetForm();
+      // Reset the form or navigate to another page
+      // ...
+    } catch (error) {
+      // Handle the error
+      console.error("Error creating mobile:", error);
+      message.error("Error creating mobile");
+    }
   };
 
   return (
     <div className="formbold-main-wrapper">
       <div className="formbold-form-wrapper">
         <h4>Add Mobile</h4>
-        <form action="https://formbold.com/s/FORM_ID" method="POST">
+        <form onSubmit={handleSubmit}>
+          {/* First row */}
           <div className="formbold-input-flex">
             <div>
               <label htmlFor="sellertype" className="formbold-form-label">
@@ -94,15 +407,20 @@ const AddMobile = () => {
               <AutoComplete
                 style={{ width: 300, height: 50 }}
                 placeholder="Choose Seller name"
-                options={options}
+                options={sellerTypeOption}
                 filterOption={true}
                 onSelect={(val) => {
-                  console.log(val);
+                  setSellerType(val);
+                  setSellerTypeError("");
                 }}
                 onSearch={(val) => {
                   console.log(val);
                 }}
               />
+              {/* Display error message */}
+              {sellerTypeError && (
+                <div className="error-message">{sellerTypeError}</div>
+              )}
             </div>
             <div>
               <label htmlFor="SellerName" className="formbold-form-label">
@@ -111,15 +429,18 @@ const AddMobile = () => {
               <AutoComplete
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter sallername"
-                options={options}
+                options={sellerTypeOption}
                 filterOption={true}
                 onSelect={(val) => {
-                  console.log(val);
+                  setSellerName(val);
                 }}
                 onSearch={(val) => {
-                  console.log(val);
+                  setSellerName(val);
                 }}
               />
+              {sellerNameError && (
+                <div className="error-message">{sellerNameError}</div>
+              )}
             </div>
             <div>
               <label htmlFor="SellerName" className="formbold-form-label">
@@ -128,13 +449,13 @@ const AddMobile = () => {
               <AutoComplete
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter GST Number"
-                options={options}
+                options={sellerTypeOption}
                 filterOption={true}
                 onSelect={(val) => {
-                  console.log(val);
+                  setGstNumber(val);
                 }}
                 onSearch={(val) => {
-                  console.log(val);
+                  setGstNumber(val);
                 }}
               />
             </div>
@@ -145,15 +466,16 @@ const AddMobile = () => {
               <AutoComplete
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter Color Name"
-                options={options}
+                options={sellerTypeOption}
                 filterOption={true}
                 onSelect={(val) => {
-                  console.log(val);
+                  setColor(val);
                 }}
                 onSearch={(val) => {
-                  console.log(val);
+                  setColor(val);
                 }}
               />
+              {colorError && <div className="error-message">{colorError}</div>}
             </div>
           </div>
           {/* Second row */}
@@ -165,15 +487,18 @@ const AddMobile = () => {
               <AutoComplete
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter Brand"
-                options={options}
+                options={sellerTypeOption}
                 filterOption={true}
                 onSelect={(val) => {
-                  console.log(val);
+                  setSelectBrand(val);
                 }}
                 onSearch={(val) => {
-                  console.log(val);
+                  setSelectBrand(val);
                 }}
               />
+              {selectBrandError && (
+                <div className="error-message">{selectBrandError}</div>
+              )}
             </div>
             <div>
               <label htmlFor="SellerName" className="formbold-form-label">
@@ -182,32 +507,34 @@ const AddMobile = () => {
               <AutoComplete
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter Model Name"
-                options={options}
+                options={sellerTypeOption}
                 filterOption={true}
                 onSelect={(val) => {
-                  console.log(val);
+                  setSelectModel(val);
                 }}
                 onSearch={(val) => {
-                  console.log(val);
+                  setSelectModel(val);
                 }}
               />
+              {selectModelError && (
+                <div className="error-message">{selectModelError}</div>
+              )}
             </div>
             <div>
               <label htmlFor="Color" className="formbold-form-label">
                 Enter Mobile Name
               </label>
               <AutoComplete
-                style={{ width: 300, height: 50 }}
                 placeholder="Enter Mobile Name"
-                options={options}
-                filterOption={true}
-                onSelect={(val) => {
-                  console.log(val);
+                style={{
+                  height: 50,
+                  width: "100%",
                 }}
-                onSearch={(val) => {
-                  console.log(val);
-                }}
+                onChange={(value) => setMobileName(value)}
               />
+              {mobileNameError && (
+                <div className="error-message">{mobileNameError}</div>
+              )}
             </div>
 
             <div>
@@ -219,17 +546,19 @@ const AddMobile = () => {
                 Condition
               </label>
               <Select
-                defaultValue="lucy"
                 placeholder="Select Condition"
                 style={{
-                  width: 120,
+                  height: 50,
+                  width: "100%",
                 }}
-                //onChange={handleChange}
-                options={options}
+                onChange={(value) => setCondition(value)}
+                options={conditionOption}
               />
+              {conditionError && (
+                <div className="error-message">{conditionError}</div>
+              )}
             </div>
           </div>
-
           {/* third Row  */}
           <div className="formbold-input-flex">
             <div>
@@ -239,115 +568,134 @@ const AddMobile = () => {
               >
                 Year of Purchase
               </label>
-              <AutoComplete
-                style={{ width: 300, height: 50 }}
+
+              <Input
                 placeholder="Year of Purchase"
-                options={options}
-                filterOption={true}
-                onSelect={(val) => {
-                  console.log(val);
+                style={{
+                  height: 50,
                 }}
-                onSearch={(val) => {
-                  console.log(val);
-                }}
+                onChange={(e) => setYearOfPurchase(e.target.value)}
               />
+              {yearOfPurchaseError && (
+                <div className="error-message">{yearOfPurchaseError}</div>
+              )}
             </div>
             <div>
               <label
                 htmlFor="Available Quanitity"
                 className="formbold-form-label"
-                style={{ margin: 0 }}
+                style={{ marginBottom: "10px" }}
               >
                 Available Quanitity
               </label>
-              <Input placeholder="Available Quanitity" type="Number" />
+              <Input
+                style={{
+                  height: 50,
+                }}
+                placeholder="Available Quantity"
+                onChange={(e) => setAvailableQuantity(e.target.value)}
+              />
+              {availableQuantityError && (
+                <div className="error-message">{availableQuantityError}</div>
+              )}
             </div>
+
             <div>
               <label
                 htmlFor="Minimum Order"
                 className="formbold-form-label"
-                style={{ margin: 0 }}
+                style={{ marginBottom: "10px" }}
               >
                 Minimum Order
               </label>
-              <Input placeholder="Minimum Order" type="Number" />
+              <Input
+                style={{
+                  height: 50,
+                }}
+                placeholder="Minimum Order"
+                type="Number"
+                onChange={(e) => setMinimumOrder(e.target.value)}
+              />
             </div>
             <div>
               <label
                 htmlFor="Price"
                 className="formbold-form-label"
-                style={{ margin: 0 }}
+                style={{ marginBottom: "10px" }}
               >
                 Price
               </label>
-              <Input placeholder="Price" type="Number" />
+              <Input
+                style={{
+                  height: 50,
+                }}
+                placeholder="Price"
+                onChange={(e) => setPrice(e.target.value)}
+                type="Number"
+              />
+              {priceError && <div className="error-message">{priceError}</div>}
             </div>
           </div>
-
           {/* forth Row */}
           <div className="formbold-input-flex">
             <div>
               <label
                 htmlFor="Payment Mode"
                 className="formbold-form-label"
-                style={{ margin: 0 }}
+                style={{ marginBottom: "10px" }}
               >
                 Payment Mode
               </label>
               <Select
                 placeholder="Payment Mode"
                 style={{
-                  width: 120,
+                  height: 50,
+                  width: "100%",
                 }}
-                //onChange={handleChange}
-                options={options}
+                onChange={(value) => setPaymentMode(value)}
+                options={paymentModeOption}
               />
+              {paymentModeError && (
+                <div className="error-message">{paymentModeError}</div>
+              )}
             </div>
+
             <div>
-              <label htmlFor="Service Mode" className="formbold-form-label">
+              <label
+                htmlFor="Service Mode"
+                style={{ marginBottom: "10px" }}
+                className="formbold-form-label"
+              >
                 Service Mode
               </label>
               <Select
                 placeholder="Service Mode"
                 style={{
-                  width: 120,
+                  height: 50,
+                  width: "100%",
                 }}
-                //onChange={handleChange}
-                options={options}
+                onChange={(value) => setServiceMode(value)}
+                options={serviceModeOption}
               />
+              {serviceModeError && (
+                <div className="error-message">{serviceModeError}</div>
+              )}
             </div>
             <div>
-              <label htmlFor="Enter Email" className="formbold-form-label">
-                Enter Email
+              <label
+                htmlFor="Google Drive Link"
+                className="formbold-form-label"
+                style={{ marginBottom: "10px" }}
+              >
+                Google Drive Link
               </label>
-              <AutoComplete
-                style={{ width: 300, height: 50 }}
-                placeholder="Enter Email"
-                options={options}
-                filterOption={true}
-                onSelect={(val) => {
-                  console.log(val);
+              <Input
+                style={{
+                  height: 50,
                 }}
-                onSearch={(val) => {
-                  console.log(val);
-                }}
-              />
-            </div>
-            <div>
-              <label htmlFor=" Enter Address " className="formbold-form-label">
-                Enter Address
-              </label>
-              <AutoComplete
-                style={{ width: 300, height: 50 }}
-                placeholder="Enter Address"
-                options={options}
-                filterOption={true}
-                onSelect={(val) => {
-                  console.log(val);
-                }}
-                onSearch={(val) => {
-                  console.log(val);
-                }}
+                onChange={(e) => setGoogleDriveLink(e.target.value)}
+                placeholder="Google Drive Link"
+                type="text"
               />
             </div>
           </div>
@@ -355,36 +703,58 @@ const AddMobile = () => {
           <div className="formbold-input-flex">
             <div>
               <label
-                htmlFor="Google Drive Link"
+                htmlFor="Enter Address "
                 className="formbold-form-label"
-                style={{ margin: 0 }}
+                style={{ marginBottom: "10px" }}
               >
-                Google Drive Link
+                Enter Address
               </label>
-              <Input placeholder="Google Drive Link" type="text" />
+              <Select
+                placeholder="Enter Address "
+                style={{
+                  height: 50,
+                  width: "100%",
+                }}
+                onChange={(value) => setEnterAddress(value)}
+                options={sellerTypeOption}
+              />
+              {enterAddressError && (
+                <div className="error-message">{enterAddressError}</div>
+              )}
             </div>
-            <div>
+            <div
+              style={{
+                width: "100%",
+              }}
+            >
               <label
                 htmlFor="Mobile Description"
                 className="formbold-form-label"
               >
                 Mobile Description
               </label>
-              <TextArea placeholder="Mobile Description" rows={4} />
+              <TextArea
+                onChange={(e) => setMobileDescription(e.target.value)}
+                placeholder="Mobile Description"
+                rows={4}
+              />
             </div>
           </div>
-
+          {/*Sixth Row */}
           <div className="formbold-form-file-flex">
             <label htmlFor=" Upload Photos" className="formbold-form-label">
               Upload Photos
             </label>
+            {uploadPhotosError && (
+              <div className="error-message">{uploadPhotosError}</div>
+            )}
             <Upload
-              action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
               listType="picture-card"
-              fileList={fileList}
+              fileList={uploadPhotos}
               onPreview={handlePreview}
               onChange={handleChange}
               multiple
+              accept=".jpeg,.png,.jpg"
             >
               {fileList.length >= 8 ? null : uploadButton}
             </Upload>
@@ -403,12 +773,25 @@ const AddMobile = () => {
               />
             </Modal>
           </div>
-
+          {/*Seventh Row */}
           <div className="formbold-form-file-flex">
             <label htmlFor=" Upload Video" className="formbold-form-label">
               Upload Video
             </label>
-            <Upload {...props}>
+            <Upload name="video" {...videoprops} accept="video/*">
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
+          </div>
+          {/*Eight Row */}
+          <div
+            style={{ marginTop: "10px" }}
+            className="formbold-form-file-flex"
+          >
+            <label htmlFor=" Upload Files" className="formbold-form-label">
+              Upload Files
+            </label>
+
+            <Upload name="file" {...fileprops} accept=".pdf,.doc,.docx">
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           </div>

@@ -8,5 +8,5 @@ router.post("/login", userCon.login);
 router.post("/userbyid", protect, userCon.getUserById);
 
 router.get("/verifyUser/:id/:token", userCon.verifyUser);
-
+router.post("/createMobile", userCon.createMobile);
 module.exports = router;

@@ -133,3 +133,6 @@ select.formbold-form-input,
 .formbold-w-45 {
   width: 45%;
 }
+.error-message {
+  color: red;
+}

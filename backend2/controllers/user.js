@@ -99,6 +99,7 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
+  console.log(email);
   try {
     const user = await User.findOne({ email });
     if (!user) {
@@ -178,4 +179,10 @@ exports.getUserById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+exports.createMobile = (req, res) => {
+  console.log(req.body);
+  console.log(req.files);
+  res.send({ name: "anubhav" });
 };

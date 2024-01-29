@@ -239,22 +239,6 @@ const AddaddressPage = () => {
                       <>
                         {menu}
                         <Divider style={{ margin: "8px 0" }} />
-                        <Space style={{ padding: "0 8px 4px" }}>
-                          <Input
-                            placeholder="Please enter item"
-                            ref={inputRef}
-                            value={name}
-                            onChange={onNameChange}
-                            onKeyDown={(e) => e.stopPropagation()}
-                          />
-                          <Button
-                            type="text"
-                            icon={<PlusOutlined />}
-                            onClick={addItem}
-                          >
-                            Add item
-                          </Button>
-                        </Space>
                       </>
                     )}
                     options={items.map((item) => ({
@@ -269,76 +253,20 @@ const AddaddressPage = () => {
                   <label htmlFor="District" className="formbold-form-label">
                     District
                   </label>
-                  <Select
-                    style={{
-                      width: 300,
-                      height: 50,
-                    }}
-                    placeholder="choose District"
-                    dropdownRender={(menu) => (
-                      <>
-                        {menu}
-                        <Divider style={{ margin: "8px 0" }} />
-                        <Space style={{ padding: "0 8px 4px" }}>
-                          <Input
-                            placeholder="Please enter item"
-                            ref={inputRef}
-                            value={name}
-                            onChange={onNameChange}
-                            onKeyDown={(e) => e.stopPropagation()}
-                          />
-                          <Button
-                            type="text"
-                            icon={<PlusOutlined />}
-                            onClick={addItem}
-                          >
-                            Add item
-                          </Button>
-                        </Space>
-                      </>
-                    )}
-                    options={items.map((item) => ({
-                      label: item,
-                      value: item,
-                    }))}
+                  <Input
+                    style={{ height: 50 }}
+                    placeholder="Enter District "
+                    type="text"
                   />
                 </div>
                 <div>
                   <label htmlFor="Sub District" className="formbold-form-label">
                     Sub District
                   </label>
-                  <Select
-                    style={{
-                      width: 300,
-                      height: 50,
-                    }}
-                    placeholder=" Choose Sub District"
-                    dropdownRender={(menu) => (
-                      <>
-                        {menu}
-                        <Divider style={{ margin: "8px 0" }} />
-                        <Space style={{ padding: "0 8px 4px" }}>
-                          <Input
-                            placeholder="Please enter item"
-                            ref={inputRef}
-                            value={name}
-                            onChange={onNameChange}
-                            onKeyDown={(e) => e.stopPropagation()}
-                          />
-                          <Button
-                            type="text"
-                            icon={<PlusOutlined />}
-                            onClick={addItem}
-                          >
-                            Add item
-                          </Button>
-                        </Space>
-                      </>
-                    )}
-                    options={items.map((item) => ({
-                      label: item,
-                      value: item,
-                    }))}
+                  <Input
+                    style={{ height: 50 }}
+                    placeholder="Enter Sub District "
+                    type="text"
                   />
                 </div>
                 <div>
@@ -414,7 +342,7 @@ const AddaddressPage = () => {
           >
             <h3>Manage Addresses</h3>
             <button
-              //   onClick={() => setShowForm(true)}
+              //    onClick={() => setShowForm(true)}
               onClick={() => setShowForm((prevState) => !prevState)}
               className="formbold-btn"
               style={{ width: "15%" }}
