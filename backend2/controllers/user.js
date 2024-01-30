@@ -3,6 +3,7 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const mailSender = require("../utils/mail-send");
 const { v4: uuidv4 } = require("uuid");
+const axios = require("axios");
 
 exports.signup = async (req, res) => {
   try {
@@ -181,10 +182,32 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-exports.createMobile = (req, res) => {
+exports.createMobile = async (req, res) => {
   console.log(req.body);
-  console.log(req.files);
-  res.send({ name: "anubhav" });
+  const { recaptchaToken } = req.body;
+  let success = true;
+  const SECRET_KEY_v3 = "6LfplmApAAAAAIoOHdbF-BquBwgjBFakSq5bxPFg";
+  const recaptchaResponse = await axios.post(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${SECRET_KEY_v3}&response=${recaptchaToken}`
+  );
+
+  console.log(recaptchaResponse.data);
+  if (
+    !recaptchaResponse.data.success ||
+    recaptchaResponse.data.score < 0.5 ||
+    recaptchaResponse.data.action !== "login"
+  ) {
+    success = false;
+  }
+
+  // Authenticate with email and password
+
+  return {
+    valid: success,
+  };
+  // console.log(req.body);
+  // console.log(req.files);
+  // res.send({ name: "anubhav" });
 };
 exports.addaddress = (req, res) => {
   console.log(req.body);

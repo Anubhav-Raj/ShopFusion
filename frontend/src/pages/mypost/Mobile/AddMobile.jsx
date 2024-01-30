@@ -23,6 +23,7 @@ import {
   paymentModeOptions,
   serviceModeOptions,
 } from "./MobileFormState";
+import useRecaptchaV3 from "../../../Hooks/reCaptchaV3/index.js";
 const { Option } = AutoComplete;
 
 const getBase64 = (file) =>
@@ -34,6 +35,9 @@ const getBase64 = (file) =>
   });
 
 const AddMobile = () => {
+  const executeRecaptcha = useRecaptchaV3(
+    "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
+  );
   const {
     sellerType,
     setSellerType,
@@ -256,6 +260,7 @@ const AddMobile = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const recaptchaToken = await executeRecaptcha("addmobile");
     // Reset error messages
     setSellerTypeError("");
     setSellerNameError("");
@@ -397,6 +402,7 @@ const AddMobile = () => {
         uploadPhotos,
         uploadVideo,
         uploadFile,
+        recaptchaToken,
       };
 
       Object.entries(formData).forEach(([key, value]) => {

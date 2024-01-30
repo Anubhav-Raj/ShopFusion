@@ -13,9 +13,13 @@ import {
 import axios from "axios";
 import { PlusOutlined } from "@ant-design/icons";
 import { useAddAddressMutation } from "../../redux/API/products/profile";
+import useRecaptchaV3 from "../../Hooks/reCaptchaV3";
 const { Option } = AutoComplete;
 let addstate = 0;
 const AddaddressPage = () => {
+  const executeRecaptcha = useRecaptchaV3(
+    "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
+  );
   const [showfrom, setShowForm] = useState(false);
   const [countryState, setCountryState] = useState({
     loading: false,
@@ -36,6 +40,8 @@ const AddaddressPage = () => {
   const [areaStreetVillage, setAreaStreetVillage] = useState("");
   const [flatHouseNo, setFlatHouseNo] = useState("");
   const [pincode, setPincode] = useState("");
+  const [gstNumber, setGstNumber] = useState("");
+  const [email, setemail] = useState("");
 
   const [validationErrors, setValidationErrors] = useState({
     userName: false,
@@ -48,6 +54,8 @@ const AddaddressPage = () => {
     areaStreetVillage: false,
     flatHouseNo: false,
     pincode: false,
+    gstNumber: false,
+    email: false,
   });
 
   const options = [
@@ -136,7 +144,7 @@ const AddaddressPage = () => {
   const [AddAddressMutation] = useAddAddressMutation();
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const recaptchaToken = await executeRecaptcha("addmobile");
     // Reset validation errors
     setValidationErrors({
       userName: false,
@@ -149,6 +157,8 @@ const AddaddressPage = () => {
       areaStreetVillage: false,
       flatHouseNo: false,
       pincode: false,
+      gstNumber: false,
+      email: false,
     });
 
     // Field validation
@@ -162,7 +172,9 @@ const AddaddressPage = () => {
       !landmark ||
       !areaStreetVillage ||
       !flatHouseNo ||
-      !pincode
+      !pincode ||
+      !gstNumber ||
+      !email
     ) {
       message.error("Please fill in all required fields");
 
@@ -179,6 +191,8 @@ const AddaddressPage = () => {
         areaStreetVillage: !areaStreetVillage,
         flatHouseNo: !flatHouseNo,
         pincode: !pincode,
+        gstNumber: !gstNumber,
+        email: !email,
       }));
 
       return;
@@ -197,6 +211,9 @@ const AddaddressPage = () => {
         areaStreetVillage,
         flatHouseNo,
         pincode,
+        gstNumber,
+        email,
+        recaptchaToken,
       };
 
       const result = await AddAddressMutation(formData);
@@ -216,6 +233,8 @@ const AddaddressPage = () => {
       setAreaStreetVillage("");
       setFlatHouseNo("");
       setPincode("");
+      setGstNumber("");
+      setemail("");
 
       // Reset the form state or close the form here if needed
       setShowForm(false);
@@ -276,11 +295,36 @@ const AddaddressPage = () => {
                 </div>
 
                 <div>
+                  <label htmlFor="sellertype" className="formbold-form-label">
+                    Email
+                  </label>
+                  <Input
+                    style={{ height: 50 }}
+                    placeholder="Enter E-Mail "
+                    type="email"
+                    onChange={(e) => setemail(e.target.value)}
+                    className={validationErrors.userName ? "error" : ""}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="gstnumber" className="formbold-form-label">
+                    GST Number
+                  </label>
+                  <Input
+                    style={{ height: 50 }}
+                    placeholder="Enter GST Number"
+                    type="text"
+                    onChange={(e) => setGstNumber(e.target.value)}
+                    className={validationErrors.userName ? "error" : ""}
+                  />
+                </div>
+
+                <div>
                   <label htmlFor="SellerName" className="formbold-form-label">
                     Select County
                   </label>
                   <AutoComplete
-                    style={{ width: 300, height: 50 }}
+                    style={{ width: "100%", height: 50 }}
                     placeholder="Select County"
                     options={countylist}
                     filterOption={true}
@@ -291,7 +335,8 @@ const AddaddressPage = () => {
                     className={validationErrors.selectedCountry ? "error" : ""}
                   />
                 </div>
-
+              </div>
+              <div className="formbold-input-flex">
                 <div>
                   <label htmlFor="phone number" className="formbold-form-label">
                     Phone number
@@ -345,7 +390,7 @@ const AddaddressPage = () => {
                   </label>
                   <Select
                     style={{
-                      width: 300,
+                      width: "100%",
                       height: 50,
                     }}
                     placeholder="Select Scate"
@@ -363,8 +408,7 @@ const AddaddressPage = () => {
                     className={validationErrors.selectedState ? "error" : ""}
                   />
                 </div>
-              </div>
-              <div className="formbold-input-flex">
+
                 <div>
                   <label htmlFor="District" className="formbold-form-label">
                     District
@@ -389,6 +433,9 @@ const AddaddressPage = () => {
                     className={validationErrors.subDistrict ? "error" : ""}
                   />
                 </div>
+              </div>
+
+              <div className="formbold-input-flex">
                 <div>
                   <label htmlFor="landmark" className="formbold-form-label">
                     Landmark
@@ -418,9 +465,6 @@ const AddaddressPage = () => {
                     }
                   />
                 </div>
-              </div>
-
-              <div className="formbold-input-flex">
                 <div>
                   <label
                     htmlFor="Flat/House No/Building/Company/Apartment"
