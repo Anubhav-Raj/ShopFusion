@@ -186,3 +186,8 @@ exports.createMobile = (req, res) => {
   console.log(req.files);
   res.send({ name: "anubhav" });
 };
+exports.addaddress = (req, res) => {
+  console.log(req.body);
+  console.log(req.files);
+  res.send({ name: "address" });
+};

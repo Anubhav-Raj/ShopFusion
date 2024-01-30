@@ -8,13 +8,17 @@ export const mobileAPI = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
   }),
+  tagTypes: ["mobilepost"],
   endpoints: (builder) => ({
+    providesTags: ["mobilepost"],
+
     createMobile: builder.mutation({
       query: (mobile) => ({
         url: "createMobile",
         method: "POST",
         body: mobile,
       }),
+      invalidatesTags: ["mobilepost"],
     }),
     getProductById: builder.query({
       query: (productId) => `product/${productId}`,

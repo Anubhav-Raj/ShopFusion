@@ -8,13 +8,47 @@ import {
   Divider,
   Space,
   Descriptions,
+  message,
 } from "antd";
 import axios from "axios";
 import { PlusOutlined } from "@ant-design/icons";
+import { useAddAddressMutation } from "../../redux/API/products/profile";
 const { Option } = AutoComplete;
 let addstate = 0;
 const AddaddressPage = () => {
   const [showfrom, setShowForm] = useState(false);
+  const [countryState, setCountryState] = useState({
+    loading: false,
+    countries: [],
+    errorMessage: "",
+  });
+  const [countylist, setCountyList] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [allstate, setAllState] = useState([]);
+  const [items, setItems] = useState([]);
+  const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [district, setDistrict] = useState("");
+  const [subDistrict, setSubDistrict] = useState("");
+  const [landmark, setLandmark] = useState("");
+  const [areaStreetVillage, setAreaStreetVillage] = useState("");
+  const [flatHouseNo, setFlatHouseNo] = useState("");
+  const [pincode, setPincode] = useState("");
+
+  const [validationErrors, setValidationErrors] = useState({
+    userName: false,
+    selectedCountry: false,
+    phoneNumber: false,
+    selectedState: false,
+    district: false,
+    subDistrict: false,
+    landmark: false,
+    areaStreetVillage: false,
+    flatHouseNo: false,
+    pincode: false,
+  });
 
   const options = [
     { value: "Consumer", label: "Consumer" },
@@ -25,13 +59,6 @@ const AddaddressPage = () => {
     { value: "Exporter", label: "Exporter" },
     { value: "Manufacture", label: "Manufacture" },
   ];
-
-  const [countryState, setCountryState] = useState({
-    loading: false,
-    countries: [],
-    errorMessage: "",
-  });
-  const [countylist, setCountyList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,8 +96,6 @@ const AddaddressPage = () => {
   }, []);
   const { loading, errorMessage, countries } = countryState;
 
-  const [selectedCountry, setSelectedCountry] = useState();
-
   //   find selected country data
   //search selected country
   const searchSelectedCountry = countries.find((obj) => {
@@ -80,7 +105,6 @@ const AddaddressPage = () => {
     return false;
   });
 
-  const [allstate, setAllState] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -94,7 +118,6 @@ const AddaddressPage = () => {
         const allstate = states.map((item) => item.name);
         setAllState(allstate);
         setItems(allstate);
-        console.log("all state", response);
       } catch (error) {
         console.log("error", error);
       }
@@ -104,20 +127,103 @@ const AddaddressPage = () => {
   }, [selectedCountry]);
 
   //     for  state
-  const [items, setItems] = useState([]);
-  const [name, setName] = useState("");
+
   const inputRef = useRef(null);
   const onNameChange = (event) => {
     setName(event.target.value);
   };
 
-  const addItem = (e) => {
+  const [AddAddressMutation] = useAddAddressMutation();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setItems([...items, name || `New item ${addstate++}`]);
-    setName("");
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 0);
+
+    // Reset validation errors
+    setValidationErrors({
+      userName: false,
+      selectedCountry: false,
+      phoneNumber: false,
+      selectedState: false,
+      district: false,
+      subDistrict: false,
+      landmark: false,
+      areaStreetVillage: false,
+      flatHouseNo: false,
+      pincode: false,
+    });
+
+    // Field validation
+    if (
+      !userName ||
+      !selectedCountry ||
+      !phoneNumber ||
+      !selectedState ||
+      !district ||
+      !subDistrict ||
+      !landmark ||
+      !areaStreetVillage ||
+      !flatHouseNo ||
+      !pincode
+    ) {
+      message.error("Please fill in all required fields");
+
+      // Highlight the fields with errors
+      setValidationErrors((prevErrors) => ({
+        ...prevErrors,
+        userName: !userName,
+        selectedCountry: !selectedCountry,
+        phoneNumber: !phoneNumber,
+        selectedState: !selectedState,
+        district: !district,
+        subDistrict: !subDistrict,
+        landmark: !landmark,
+        areaStreetVillage: !areaStreetVillage,
+        flatHouseNo: !flatHouseNo,
+        pincode: !pincode,
+      }));
+
+      return;
+    }
+
+    try {
+      // Your existing API call or any other action here
+      const formData = {
+        userName,
+        selectedCountry,
+        phoneNumber,
+        selectedState,
+        district,
+        subDistrict,
+        landmark,
+        areaStreetVillage,
+        flatHouseNo,
+        pincode,
+      };
+
+      const result = await AddAddressMutation(formData);
+
+      // Handle the success response
+      console.log("Address added successfully:", result);
+      message.success("Address added successfully");
+
+      // Reset all fields
+      setUserName("");
+      setSelectedCountry("");
+      setPhoneNumber("");
+      setSelectedState("");
+      setDistrict("");
+      setSubDistrict("");
+      setLandmark("");
+      setAreaStreetVillage("");
+      setFlatHouseNo("");
+      setPincode("");
+
+      // Reset the form state or close the form here if needed
+      setShowForm(false);
+    } catch (error) {
+      // Handle errors
+      console.error("Error adding address:", error);
+      message.error("Error adding address. Please try again.");
+    }
   };
   const item = [
     {
@@ -147,13 +253,14 @@ const AddaddressPage = () => {
         "No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China",
     },
   ];
+
   return (
     <>
       {showfrom ? (
         <div className="formbold-main-wrapper">
           <div className="formbold-form-wrapper">
             <h4>Add Address</h4>
-            <form action="https://formbold.com/s/FORM_ID" method="POST">
+            <form onSubmit={handleSubmit}>
               <div className="formbold-input-flex">
                 <div>
                   <label htmlFor="sellertype" className="formbold-form-label">
@@ -163,6 +270,8 @@ const AddaddressPage = () => {
                     style={{ height: 50 }}
                     placeholder="Enter user name "
                     type="text"
+                    onChange={(e) => setUserName(e.target.value)}
+                    className={validationErrors.userName ? "error" : ""}
                   />
                 </div>
 
@@ -179,6 +288,7 @@ const AddaddressPage = () => {
                       setSelectedCountry(val);
                       console.log(val);
                     }}
+                    className={validationErrors.selectedCountry ? "error" : ""}
                   />
                 </div>
 
@@ -214,6 +324,8 @@ const AddaddressPage = () => {
                         style={{ height: 50 }}
                         placeholder="Enter Phone No."
                         type="Phone"
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        className={validationErrors.phoneNumber ? "error" : ""}
                       />
                     </div>
                   ) : (
@@ -221,6 +333,8 @@ const AddaddressPage = () => {
                       style={{ height: 50 }}
                       placeholder="Enter Phone No."
                       type="Phone"
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      className={validationErrors.phoneNumber ? "error" : ""}
                     />
                   )}
                 </div>
@@ -234,7 +348,7 @@ const AddaddressPage = () => {
                       width: 300,
                       height: 50,
                     }}
-                    placeholder="custom dropdown render"
+                    placeholder="Select Scate"
                     dropdownRender={(menu) => (
                       <>
                         {menu}
@@ -245,6 +359,8 @@ const AddaddressPage = () => {
                       label: item,
                       value: item,
                     }))}
+                    onChange={(value) => setSelectedState(value)}
+                    className={validationErrors.selectedState ? "error" : ""}
                   />
                 </div>
               </div>
@@ -257,6 +373,8 @@ const AddaddressPage = () => {
                     style={{ height: 50 }}
                     placeholder="Enter District "
                     type="text"
+                    onChange={(e) => setDistrict(e.target.value)}
+                    className={validationErrors.district ? "error" : ""}
                   />
                 </div>
                 <div>
@@ -267,6 +385,8 @@ const AddaddressPage = () => {
                     style={{ height: 50 }}
                     placeholder="Enter Sub District "
                     type="text"
+                    onChange={(e) => setSubDistrict(e.target.value)}
+                    className={validationErrors.subDistrict ? "error" : ""}
                   />
                 </div>
                 <div>
@@ -277,6 +397,8 @@ const AddaddressPage = () => {
                     style={{ height: 50 }}
                     placeholder="Enter Landmark "
                     type="text"
+                    onChange={(e) => setLandmark(e.target.value)}
+                    className={validationErrors.landmark ? "error" : ""}
                   />
                 </div>
                 <div>
@@ -290,6 +412,10 @@ const AddaddressPage = () => {
                     style={{ height: 50 }}
                     placeholder="Enter Area/Street/Village "
                     type="text"
+                    onChange={(e) => setAreaStreetVillage(e.target.value)}
+                    className={
+                      validationErrors.areaStreetVillage ? "error" : ""
+                    }
                   />
                 </div>
               </div>
@@ -306,6 +432,8 @@ const AddaddressPage = () => {
                     style={{ height: 50 }}
                     placeholder="Enter Flat/House No/Building/Company/Apartment"
                     type="text"
+                    onChange={(e) => setFlatHouseNo(e.target.value)}
+                    className={validationErrors.flatHouseNo ? "error" : ""}
                   />
                 </div>
                 <div>
@@ -316,14 +444,24 @@ const AddaddressPage = () => {
                     style={{ height: 50 }}
                     placeholder="Enter Pin Code"
                     type="text"
+                    onChange={(e) => setPincode(e.target.value)}
+                    className={validationErrors.pincode ? "error" : ""}
                   />
                 </div>
               </div>
               <div
                 style={{ display: "flex", justifyContent: "end", gap: "10px" }}
               >
-                <button className="formbold-btn">Submit</button>
-                <button className="formbold-btn">Cancle </button>
+                <button type="submit" className="formbold-btn">
+                  Submit
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowForm(false)}
+                  className="formbold-btn"
+                >
+                  Cancel
+                </button>
               </div>
             </form>
           </div>
@@ -342,7 +480,6 @@ const AddaddressPage = () => {
           >
             <h3>Manage Addresses</h3>
             <button
-              //    onClick={() => setShowForm(true)}
               onClick={() => setShowForm((prevState) => !prevState)}
               className="formbold-btn"
               style={{ width: "15%" }}
@@ -350,7 +487,9 @@ const AddaddressPage = () => {
               ADD NEW ADDRESS
             </button>
           </div>
+
           <div style={{ border: "2px solid #F1F3F6", marginTop: "20px" }}>
+            {/* Replace the hard-coded Descriptions data with your actual data */}
             <Descriptions
               style={{
                 padding: "5px",

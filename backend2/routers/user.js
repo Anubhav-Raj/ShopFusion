@@ -9,4 +9,6 @@ router.post("/userbyid", protect, userCon.getUserById);
 
 router.get("/verifyUser/:id/:token", userCon.verifyUser);
 router.post("/createMobile", userCon.createMobile);
+router.post("/addaddress", userCon.addaddress);
+
 module.exports = router;
