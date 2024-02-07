@@ -3,8 +3,6 @@ const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
 
 exports.protect = asyncHandler(async (request, response, next) => {
-  // console.log(request.header.authorization);
-
   let token;
   if (
     request.headers.authorization &&
@@ -13,7 +11,7 @@ exports.protect = asyncHandler(async (request, response, next) => {
     try {
       token = request.headers.authorization.split(" ")[1];
       const decode = jwt.verify(token, process.env.SECRET);
-      // console.log(decode);
+      //console.log(decode);
       request.user = await User.findById(decode.id).select("-passeord");
       next();
     } catch (error) {

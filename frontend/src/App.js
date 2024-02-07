@@ -69,7 +69,6 @@ function App() {
           </Routes>
         </Suspense>
         <Toaster position="bottom-center" />
-
         <Footer />
       </Router>
     </>

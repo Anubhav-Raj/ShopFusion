@@ -38,6 +38,7 @@ function Login() {
         password: "none",
         role: "user",
       });
+      console.log(res);
       if ("data" in res) {
         toast.success(res.data.message);
         localStorage.setItem("token", res.data.token);
@@ -61,25 +62,20 @@ function Login() {
     const password = event.target.password.value;
 
     try {
-      // Sign in with email and password
-      const { user } = await signInWithEmailAndPassword(auth, email, password);
-
       const res = await login({
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-        role: "user",
+        email: email,
+        password: password,
       });
 
       if ("data" in res) {
         toast.success(res.data.message);
-        localStorage.setItem("token", res.data.token);
-        const data = await getUser(user.uid);
-        data.token = res.data.token;
-        dispatch(userExist(data));
+        // localStorage.setItem("token", res.data.token);
+        // const data = await getUser(user.uid);
+        // data.token = res.data.token;
+        // dispatch(userExist(data));
       } else {
         toast.error(res.error.data.message);
-        dispatch(userNotExist());
+        // dispatch(userNotExist());
       }
 
       setIsVisible(false);

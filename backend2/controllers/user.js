@@ -7,10 +7,9 @@ const axios = require("axios");
 
 exports.signup = async (req, res) => {
   try {
-    const { name, email, photo, role, password } = req.body;
-    console.log(password);
+    const { name, email, password } = req.body;
+    return console.log(name, email, password);
     let user = await User.findOne({ email });
-    //console.log(user);
     if (user) {
       // Generate JWT token
       const token = jwt.sign({ id: user._id }, process.env.SECRET, {
@@ -31,7 +30,7 @@ exports.signup = async (req, res) => {
         verified = false;
         token1 = uuidv4();
       }
-      console.log("aejfnsj");
+      // console.log("aejfnsj");
 
       const newUser = new User({
         name: name,
@@ -100,7 +99,7 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(email);
+  return console.log(email, password);
   try {
     const user = await User.findOne({ email });
     if (!user) {
@@ -191,7 +190,6 @@ exports.createMobile = async (req, res) => {
     `https://www.google.com/recaptcha/api/siteverify?secret=${SECRET_KEY_v3}&response=${recaptchaToken}`
   );
 
-  console.log(recaptchaResponse.data);
   if (
     !recaptchaResponse.data.success ||
     recaptchaResponse.data.score < 0.5 ||

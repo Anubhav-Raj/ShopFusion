@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./signpu.css";
 import { useDispatch } from "react-redux";
-import { getUser, useLoginMutation } from "../../redux/API/user";
+import {
+  getUser,
+  useLoginMutation,
+  useSignupMutation,
+} from "../../redux/API/user";
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -12,7 +16,7 @@ import { userExist, userNotExist } from "../../redux/user.slice";
 import toast from "react-hot-toast";
 function Signup() {
   const dispatch = useDispatch();
-  const [login] = useLoginMutation();
+  const [signup] = useSignupMutation();
   const [isVisible, setIsVisible] = useState(true);
 
   const handleCloseClick = () => {
@@ -24,34 +28,7 @@ function Signup() {
       setIsVisible(true);
     };
   }, []);
-  const signInWithGoogle = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      const { user } = await signInWithPopup(auth, provider);
-      console.log("user", user);
-      const res = await login({
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-        role: "user",
-      });
-      console.log("res", res);
-      if ("data" in res) {
-        toast.success(res.data.message);
-        localStorage.setItem("token", res.data.token);
-        const data = await getUser(user.email);
-        data.token = res.data.token;
-        dispatch(userExist(data));
-      } else {
-        toast.error(res.error.data.message);
-        dispatch(userNotExist());
-      }
 
-      setIsVisible(false);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
   const handleEmailSignup = async (event) => {
     event.preventDefault();
     const name = event.target.name.value;
@@ -60,27 +37,17 @@ function Signup() {
 
     try {
       // Create a new user with email and password
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
 
-      const res = await login({
+      const res = await signup({
         name: name,
         email: email,
-        photo: user.photoURL || "",
         password: password,
-        role: "user",
       });
       if ("data" in res) {
         toast.success(res.data.message);
         localStorage.setItem("token", res.data.token);
-        const data = await getUser(user.uid);
-        dispatch(userExist(data));
       } else {
         toast.error(res.error.data.message);
-        dispatch(userNotExist());
       }
     } catch (error) {
       toast.error(error.message);
@@ -104,9 +71,7 @@ function Signup() {
                 </button>
               </div>
               <div className="sm-social-bjz">
-                <div className="goo-aod" onClick={signInWithGoogle}>
-                  Login With Google
-                </div>
+                <div className="goo-aod">Login With Google</div>
               </div>
               <div className="box-8ya size-78k pad-t5w">
                 <div className="header-omj">
