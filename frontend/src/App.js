@@ -18,7 +18,7 @@ import Home from "./pages/Home/Home";
 
 // Use React.lazy for lazy loading
 const Brandpage = lazy(() => import("./pages/Brand_page/Brandpage"));
-const MobileHome = lazy(() => import("./pages/Mobile_home/Mobilehome"));
+const MobileHome = lazy(() => import("./pages/mobile_home/Mobilehome"));
 const Mobiledetail = lazy(() =>
   import("./pages/Mobile_specification/Mobile_specify.jsx")
 );
