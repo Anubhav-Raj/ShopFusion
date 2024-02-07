@@ -65,6 +65,7 @@ function Login() {
       const res = await login({
         email: email,
         password: password,
+        method: "byEmail",
       });
 
       if ("data" in res) {

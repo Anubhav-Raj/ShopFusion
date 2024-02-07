@@ -7,8 +7,8 @@ const axios = require("axios");
 
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    return console.log(name, email, password);
+    const { name, email, password, method } = req.body;
+    return console.log(name, email, password, method);
     let user = await User.findOne({ email });
     if (user) {
       // Generate JWT token
@@ -98,8 +98,8 @@ exports.signup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
-  return console.log(email, password);
+  const { email, password, method } = req.body;
+  return console.log(email, password, method);
   try {
     const user = await User.findOne({ email });
     if (!user) {

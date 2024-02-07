@@ -42,6 +42,7 @@ function Signup() {
         name: name,
         email: email,
         password: password,
+        method: "byEmail",
       });
       if ("data" in res) {
         toast.success(res.data.message);
