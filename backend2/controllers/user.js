@@ -4,62 +4,43 @@ const bcrypt = require("bcrypt");
 const mailSender = require("../utils/mail-send");
 const { v4: uuidv4 } = require("uuid");
 const axios = require("axios");
+const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password, method } = req.body;
-    return console.log(name, email, password, method);
-    let user = await User.findOne({ email });
+    const { name, email, password } = req.body;
+    // return console.log(name, email, password);
+    let user = await User.findOne({ email: email });
     if (user) {
-      // Generate JWT token
-      const token = jwt.sign({ id: user._id }, process.env.SECRET, {
-        expiresIn: "1h",
+      return res.status(500).json({
+        isError: true,
+        message: "Email already exist!",
       });
+    }
 
-      res.status(200).json({
-        success: true,
-        message: `Welcome, ${user.name}`,
-        token,
-      });
-    } else {
-      let hashedPass = "";
-      let verified = true;
-      let token1 = "";
-      if (password !== "none") {
-        hashedPass = await bcrypt.hash(password, 12);
-        verified = false;
-        token1 = uuidv4();
-      }
-      // console.log("aejfnsj");
+    let hashedPass = "";
+    let token1 = "";
 
-      const newUser = new User({
-        name: name,
-        email: email,
-        photo: photo,
-        role: role,
-        password: hashedPass,
-        isVerified: verified,
-        token: token1,
-      });
-      // await newUser.save();
-      // console.log(newUser);
+    hashedPass = await bcrypt.hash(password, 12);
 
-      try {
-        await newUser.save();
-        console.log("User saved successfully");
-      } catch (error) {
-        console.error("Error saving user:", error);
-        // Handle the error appropriately, e.g., send an error response to the client
-        res.status(500).json({
-          error: error.message,
-          message: "Error saving user",
-        });
-        return; // Make sure to exit the function if there's an error
-      }
-      if (password !== "none") {
-        const uri = `${process.env.BACKEND_URL}/api/user/verifyUser/${newUser._id}/${token1}`;
+    token1 = uuidv4();
 
-        const bodypart = ` <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">
+    // console.log("aejfnsj");
+
+    const newUser = new User({
+      name: name,
+      email: email,
+
+      password: hashedPass,
+      isVerified: false,
+      token: token1,
+    });
+    // await newUser.save();
+    // console.log(newUser);
+    const savedUser = await newUser.save();
+    const uri = `${process.env.BACKEND_URL}/api/user/verifyUser/${newUser._id}/${token1}`;
+
+    const bodypart = ` <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">
             <tr>
               <td style="background-color: #fff; padding: 20px; text-align: center;">
                 <h1 style="color: #7c3aed;">Hello ${newUser.name}</h1>
@@ -71,37 +52,36 @@ exports.signup = async (req, res) => {
             </body>
           </html>`;
 
-        const callFun = await mailSender(
-          user.email,
-          "Verify your email",
-          bodypart
-        );
-      }
+    const callFun = await mailSender(
+      newUser.email,
+      "Verify your email",
+      bodypart
+    );
 
-      // Generate JWT token for the new user
-      const token = jwt.sign({ id: newUser._id }, process.env.SECRET, {
-        expiresIn: "1h",
-      });
+    // Generate JWT token for the new user
+    const token = jwt.sign({ id: newUser._id }, process.env.SECRET, {
+      expiresIn: "1h",
+    });
 
-      res.json({
-        savedUser,
-        message: "Signup Sucessfully",
-        token, // Include the generated token in the response
-      });
-    }
+    res.json({
+      savedUser,
+      message: "Signup Sucessfully",
+      token, // Include the generated token in the response
+    });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       error: error.message,
-      message: "Login Faild",
+      message: "Login Faildssa",
     });
   }
 };
 
 exports.login = async (req, res) => {
-  const { email, password, method } = req.body;
-  return console.log(email, password, method);
+  const { email, password } = req.body;
+  // return console.log(email, password);
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email });
     if (!user) {
       return res.status(500).json({
         isError: true,
@@ -111,17 +91,15 @@ exports.login = async (req, res) => {
 
     const isAuth = await bcrypt.compare(password, user.password);
     if (!isAuth) {
-      return res.render("signin", {
-        email: "",
-        password: "",
-        message: "Something went wrong!",
+      return res.status(500).json({
+        isError: true,
+        message: "Wrong password!",
       });
     }
     if (!user.isVerified) {
-      return res.render("signin", {
-        email: "",
-        password: "",
-        message: "Verify your mail!",
+      return res.status(500).json({
+        isError: true,
+        message: "Verify your email!",
       });
     }
     const token = jwt.sign({ id: user._id }, process.env.SECRET, {

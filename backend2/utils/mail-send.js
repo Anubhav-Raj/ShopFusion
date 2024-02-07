@@ -16,9 +16,12 @@ const mailSender = async (email, title, body) => {
       subject: `${title}`,
       html: `${body}`,
     });
+
+    console.log("Email sent successfully!");
+    console.log(info); // Log the info object for more details
     return info;
   } catch (error) {
-    console.log(error.message);
+    console.log("Error sending email:", error.message);
   }
 };
 

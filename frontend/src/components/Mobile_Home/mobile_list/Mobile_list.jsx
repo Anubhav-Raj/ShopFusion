@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../../pages/Mobile_home/mobile_home.css";
+import "../../../pages/mobile_home/mobile_home.css";
 import { Link } from "react-router-dom";
 
 function Mobile_list() {
