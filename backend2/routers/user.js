@@ -14,9 +14,9 @@ router.get("/verifyUser/:id/:token", userCon.verifyUser);
 router.post(
   "/createMobile",
   more_upload.fields([
-    { name: "uploadPhotos" },
-    { name: "uploadVideo" },
-    { name: "uploadFile" },
+    { name: "uploadPhotos", maxCount: 8 }, // Allow up to 8 images
+    { name: "uploadVideo", maxCount: 1 }, // Allow only 1 video
+    { name: "uploadFile", maxCount: 1 }, // Allow only 1 file
   ]),
   userCon.createMobile
 );

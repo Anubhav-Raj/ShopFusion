@@ -383,6 +383,52 @@ const AddaddressPage = () => {
                     />
                   )}
                 </div>
+                <div>
+                  <label htmlFor="phone number" className="formbold-form-label">
+                    Phone number
+                  </label>
+                  {searchSelectedCountry ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                      className="flex items-end border-b-2 border-gray-500 pb-2"
+                    >
+                      <img
+                        style={{ width: "11%" }}
+                        src={
+                          searchSelectedCountry &&
+                          searchSelectedCountry.flags.png
+                        }
+                        alt=""
+                      />
+                      <div>
+                        {searchSelectedCountry &&
+                          searchSelectedCountry.idd.root}
+                        {searchSelectedCountry &&
+                          searchSelectedCountry.idd.suffixes}
+                      </div>
+                      <Input
+                        style={{ height: 50 }}
+                        placeholder="Enter Phone No."
+                        type="Phone"
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        className={validationErrors.phoneNumber ? "error" : ""}
+                      />
+                    </div>
+                  ) : (
+                    <Input
+                      style={{ height: 50 }}
+                      placeholder="Enter Phone No."
+                      type="Phone"
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      className={validationErrors.phoneNumber ? "error" : ""}
+                    />
+                  )}
+                </div>
 
                 <div>
                   <label htmlFor="State" className="formbold-form-label">

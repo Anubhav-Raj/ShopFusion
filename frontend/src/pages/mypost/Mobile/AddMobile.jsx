@@ -406,7 +406,7 @@ const AddMobile = () => {
 
       // If validation fails, return early
       if (!isValid) {
-        return;
+        //return;
       }
 
       // Extract data from the form state
@@ -434,9 +434,9 @@ const AddMobile = () => {
         recaptchaToken,
       };
 
-      Object.entries(formData).forEach(([key, value]) => {
-        console.log(`${key}: ${value}`);
-      });
+      // Object.entries(formData).forEach(([key, value]) => {
+      //   console.log(`${key}: ${value}`);
+      // });
       // Trigger the createMobile mutation
       const result = await createMobileMutation(formData);
 
@@ -455,6 +455,7 @@ const AddMobile = () => {
     }
   };
 
+  console.log(uploadPhotos);
   return (
     <div className="formbold-main-wrapper">
       <div className="formbold-form-wrapper">
@@ -816,6 +817,7 @@ const AddMobile = () => {
               onPreview={handlePreview}
               onChange={handleChange}
               multiple
+              name="uploadPhotos"
               accept=".jpeg,.png,.jpg"
             >
               {fileList.length >= 8 ? null : uploadButton}
