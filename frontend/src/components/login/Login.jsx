@@ -10,12 +10,19 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { getUser, useLoginMutation } from "../../redux/API/user.js";
+import {
+  getUser,
+  useLoginMutation,
+  useUserByIDMutation,
+} from "../../redux/API/user.js";
+import { setUser } from "../../redux/API/user_slice/user.slice.js";
+import { loginSuccess } from "../../redux/API/user_slice/login.slice.js";
 
 function Login() {
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
   const [isVisible, setIsVisible] = useState(true);
+  const [userByID] = useUserByIDMutation();
 
   const handleCloseClick = () => {
     setIsVisible(false);
@@ -67,16 +74,13 @@ function Login() {
         password: password,
         method: "byEmail",
       });
-
+      console.log(res);
       if ("data" in res) {
+        localStorage.setItem("ZoneHub", res.data.token);
+        dispatch(loginSuccess(res.data));
         toast.success(res.data.message);
-        // localStorage.setItem("token", res.data.token);
-        // const data = await getUser(user.uid);
-        // data.token = res.data.token;
-        // dispatch(userExist(data));
       } else {
         toast.error(res.error.data.message);
-        // dispatch(userNotExist());
       }
 
       setIsVisible(false);

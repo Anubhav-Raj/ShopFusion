@@ -79,7 +79,7 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  // return console.log(email, password);
+  //console.log(email, password);
   try {
     const user = await User.findOne({ email: email });
     if (!user) {
@@ -108,6 +108,7 @@ exports.login = async (req, res) => {
     res.status(200).json({
       isError: false,
       message: `Welcome, ${user.name}`,
+      name: user.name,
       token,
     });
   } catch (error) {

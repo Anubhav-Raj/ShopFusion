@@ -12,6 +12,8 @@ import { auth } from "../../firebase";
 import toast from "react-hot-toast";
 import Mobile_headlist from "./Mobile_headlist";
 
+import { loginData, logout } from "../../redux/API/user_slice/login.slice";
+
 function Navbar() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [showLogin, setShowLogin] = useState(false);
@@ -43,19 +45,22 @@ function Navbar() {
     setShowLogin(false);
     setShowSignup(false);
   };
-
   const dispatch = useDispatch();
-  const { user, loading } = useSelector((state) => state.user);
-  const logoutHandler = async () => {
+  const user = useSelector(loginData);
+
+  // Dispatch action to update user state (clear token)
+  const logoutHandler = () => {
     try {
-      localStorage.removeItem("token");
-      await signOut(auth);
+      // Remove token from local storage
+      localStorage.removeItem("ZoneHub");
+      dispatch(logout());
+      // Display success message
       toast.success("Sign Out Successfully");
     } catch (error) {
+      // Display error message if sign out fails
       toast.error("Sign Out Fail");
     }
   };
-
   return (
     <>
       <header className="snipcss-ECSde">

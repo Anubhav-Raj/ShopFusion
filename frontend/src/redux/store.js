@@ -6,6 +6,9 @@ import { userReducer } from "./user.slice";
 import { userAPI } from "./API/user";
 import { mobileAPI } from "./API/products/mobile";
 import { AddressAPI } from "./API/products/profile";
+import userinfo from "./API/user_slice/user.slice";
+import loginReducer from "./API/user_slice/login.slice";
+
 const store = configureStore({
   reducer: {
     [userAPI.reducerPath]: userAPI.reducer,
@@ -14,6 +17,8 @@ const store = configureStore({
     [userReducer.name]: userReducer.reducer,
     brands: brandReducer,
     products: productReducer,
+    userInfo: userinfo,
+    login: loginReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

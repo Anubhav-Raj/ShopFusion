@@ -46,7 +46,7 @@ function Signup() {
       });
       if ("data" in res) {
         toast.success(res.data.message);
-        localStorage.setItem("token", res.data.token);
+        // localStorage.setItem("ZoneHub", res.data.token);
       } else {
         toast.error(res.error.data.message);
       }

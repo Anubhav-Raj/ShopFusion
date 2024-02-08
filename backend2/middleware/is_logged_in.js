@@ -7,21 +7,19 @@ exports.protect = asyncHandler(async (request, response, next) => {
   if (
     request.headers.authorization &&
     request.headers.authorization.startsWith("Bearer")
-  )
+  ) {
     try {
       token = request.headers.authorization.split(" ")[1];
       const decode = jwt.verify(token, process.env.SECRET);
-      //console.log(decode);
-      request.user = await User.findById(decode.id).select("-passeord");
+      request.user = await User.findById(decode.id).select("-password");
       next();
     } catch (error) {
       console.error(error);
-      response.status(401);
-      throw new Error("Not Authrozied,Token Faild");
+      response.status(401).json({ message: "Not Authorized, Token Failed" });
     }
+  }
 
   if (!token) {
-    response.status(401);
-    throw new Error("Not Authorized , not token");
+    response.status(401).json({ message: "Not Authorized, No Token Provided" });
   }
 });
