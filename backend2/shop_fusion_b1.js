@@ -16,6 +16,8 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use("/files", express.static("uploads/images"));
+app.use("/uploads", express.static("uploads"));
+
 // Define routes
 
 app.use("/api/user", userRouters);
