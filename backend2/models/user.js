@@ -23,6 +23,12 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  otpemail: {
+    type: String,
+  },
+  otpnumeber: {
+    type: String,
+  },
   token: {
     type: String,
   },

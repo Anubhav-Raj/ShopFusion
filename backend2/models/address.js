@@ -7,7 +7,7 @@ const addressSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    username: String,
+    userName: String,
     selectedCountry: String,
     phoneNumber: String,
     selectedState: String,
@@ -34,7 +34,4 @@ const addressSchema = new mongoose.Schema(
 );
 
 // Create the User model
-const User = mongoose.model("Address", addressSchema);
-
-// Export the User model
-module.exports = User;
+module.exports = mongoose.model("Address", addressSchema);

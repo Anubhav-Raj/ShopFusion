@@ -162,7 +162,7 @@ exports.getUserById = async (req, res) => {
 };
 
 exports.createMobile = async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   const { recaptchaToken } = req.body;
   let success = true;
   const SECRET_KEY_v3 = "6LfplmApAAAAAIoOHdbF-BquBwgjBFakSq5bxPFg";
@@ -260,10 +260,10 @@ exports.resetPassword = async (req, res) => {
 };
 
 exports.addaddress = async (req, res) => {
-  return console.log(req.body);
   try {
     const {
       selectedCountry,
+      userName,
       phoneNumber,
       selectedState,
       district,
@@ -277,7 +277,7 @@ exports.addaddress = async (req, res) => {
     } = req.body;
     const newAddress = new Address({
       user: req.user._id,
-      username: String,
+      userName: userName,
       selectedCountry: selectedCountry,
       phoneNumber: phoneNumber,
       selectedState: selectedState,
@@ -291,8 +291,67 @@ exports.addaddress = async (req, res) => {
       email: email,
     });
     await newAddress.save();
+
     res.json({
       message: "Address added successfully!",
+      isError: false,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: error.message,
+      message: "Verify Faild",
+    });
+  }
+};
+
+//otp verfication  with email
+
+exports.sendEmailOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const user = await User.findById(req.user._id);
+    user.otpemail = otp;
+    await user.save();
+    const bodypart = ` <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">
+
+            <tr>
+              <td style="background-color: #fff; padding: 20px; text-align: center;">
+                <h1 style="color: #7c3aed;">Hello</h1>
+                <h3>Your OTP is ${otp}</h3>
+              </td>
+            </tr>
+          </table>
+            </body>
+          </html>`;
+    const callFun = await mailSender(email, "OTP for verification", bodypart);
+    res.json({
+      message: "Email sent successfully!",
+      isError: false,
+      otp,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+      message: "Verify Faild",
+    });
+  }
+};
+
+exports.verifyEmailOtp = async (req, res) => {
+  try {
+    const { otp } = req.body;
+    const user = await User.findById(req.user._id);
+    if (user.otpemail !== otp) {
+      return res.status(404).send({
+        token: "Invalid OTP!",
+      });
+    }
+    user.otpemail = "";
+    await user.save();
+    res.json({
+      message: "Email verified successfully!",
       isError: false,
     });
   } catch (error) {

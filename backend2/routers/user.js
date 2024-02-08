@@ -14,12 +14,14 @@ router.get("/verifyUser/:id/:token", userCon.verifyUser);
 router.post(
   "/createMobile",
   more_upload.fields([
-    { name: "uploadPhotos", maxCount: 8 }, // Allow up to 8 images
-    { name: "uploadVideo", maxCount: 1 }, // Allow only 1 video
-    { name: "uploadFile", maxCount: 1 }, // Allow only 1 file
+    { name: "uploadPhotos" },
+    { name: "uploadVideo" },
+    { name: "uploadFile" },
   ]),
   userCon.createMobile
 );
-router.post("/addaddress", userCon.addaddress);
+router.post("/addaddress", protect, userCon.addaddress);
 
+router.post("/sendemailotp", userCon.sendEmailOtp);
+router.post("/verifyemailotp", userCon.verifyEmailOtp);
 module.exports = router;
