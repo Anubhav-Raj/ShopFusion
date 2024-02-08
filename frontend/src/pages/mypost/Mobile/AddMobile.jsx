@@ -258,6 +258,30 @@ const AddMobile = () => {
     setUploadVideoError("");
     setUploadFileError("");
   };
+  const beforeUpload = (files) => {
+    let isValid = true;
+
+    files.forEach((file) => {
+      const isJpgOrPng =
+        file.type === "image/jpeg" || file.type === "image/png";
+      const isLt400K = file.size / 1024 < 400;
+
+      if (!isJpgOrPng) {
+        setUploadPhotosError("You can only upload JPG/PNG files!");
+        isValid = false;
+      } else if (!isLt400K) {
+        setUploadPhotosError("Image must be smaller than 400KB!");
+        isValid = false;
+      }
+    });
+
+    if (isValid) {
+      setUploadPhotosError(""); // Clear the error message if all files pass the validation
+    }
+
+    return isValid;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const recaptchaToken = await executeRecaptcha("addmobile");
@@ -372,6 +396,11 @@ const AddMobile = () => {
       // Validation for uploadPhotos
       if (!uploadPhotos || uploadPhotos.length === 0) {
         setUploadPhotosError("Upload at least one photo");
+
+        isValid = false;
+      }
+
+      if (!beforeUpload(uploadPhotos)) {
         isValid = false;
       }
 
@@ -408,7 +437,6 @@ const AddMobile = () => {
       Object.entries(formData).forEach(([key, value]) => {
         console.log(`${key}: ${value}`);
       });
-      // Trigger the createMobile mutation
       // Trigger the createMobile mutation
       const result = await createMobileMutation(formData);
 
