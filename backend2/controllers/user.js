@@ -312,6 +312,33 @@ exports.addaddress = async (req, res) => {
   }
 };
 
+exports.isNumberUnique = async (req, res) => {
+  try {
+    const { phoneNumber } = req.body;
+    // in phone or alt phone number
+    const address = await Address.findOne({
+      $or: [
+        { "phoneNumber.phoneNumber": phoneNumber },
+        { "altNumber.altNumber": phoneNumber },
+      ],
+    });
+    if (address) {
+      return res.status(404).send({
+        isError: true,
+      });
+    }
+    res.json({
+      isError: false,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+      isError: true,
+      message: "Verify Faild",
+    });
+  }
+};
+
 //otp verfication  with email
 
 exports.sendEmailOtp = async (req, res) => {

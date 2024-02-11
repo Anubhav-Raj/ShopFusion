@@ -21,7 +21,7 @@ router.post(
   userCon.createMobile
 );
 router.post("/addaddress", protect, userCon.addaddress);
-
+router.post("/isnumberunique", userCon.isNumberUnique);
 router.post("/sendemailotp", userCon.sendEmailOtp);
 router.post("/verifyemailotp", userCon.verifyEmailOtp);
 module.exports = router;
