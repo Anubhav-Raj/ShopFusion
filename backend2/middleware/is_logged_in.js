@@ -11,7 +11,9 @@ exports.protect = asyncHandler(async (request, response, next) => {
     try {
       token = request.headers.authorization.split(" ")[1];
       const decode = jwt.verify(token, process.env.SECRET);
-      request.user = await User.findById(decode.id).select("-password");
+      request.user = await User.findById(decode.id)
+        .select("-password")
+        .populate("addresses");
       next();
     } catch (error) {
       console.error(error);
