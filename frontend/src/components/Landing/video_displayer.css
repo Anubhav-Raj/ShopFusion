@@ -1,0 +1,419 @@
+/* Default styles */
+
+/* Font Awesome */
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('https://static.exportersindia.com/fonts/fontawesome-webfont.woff2') format('woff2'),
+        url('https://static.exportersindia.com/fonts/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
+        url('https://static.exportersindia.com/fonts/fontawesome-webfont.woff') format('woff'),
+        url('https://static.exportersindia.com/fonts/fontawesome-webfont.ttf') format('truetype'),
+        url('https://static.exportersindia.com/fonts/fontawesome-webfont.svg#fontawesomeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700,800,300i,400i,500i,600i,700i,800i&display=swap');
+
+/* Body */
+body {
+    list-style: none;
+    background: #fff;
+    color: #333;
+    font: 12px/1.5em Segoe UI, system-ui, -apple-system, Arial, sans-serif;
+}
+
+/* Padding */
+.p20px {
+    padding: 20px;
+}
+
+.pt10px {
+    padding-top: 10px;
+}
+
+/* Border Radius */
+.br2px {
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+/* Background Color */
+.bgfff {
+    background-color: #fff;
+}
+
+/* Font Family */
+.ffos {
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* Font Size */
+.xxxlarge {
+    font-size: 1.4em;
+}
+
+/* Font Weight */
+.fw6 {
+    font-weight: 600;
+}
+
+/* Color */
+.blue {
+    color: #03c;
+}
+
+/* Text Shadow */
+.blue {
+    text-shadow: 1px 1px rgba(255, 255, 255, .75);
+}
+
+/* Margin */
+.mb10px {
+    margin-bottom: 10px;
+}
+
+/* Flexbox for Video Section */
+.rvg-sec {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+/* Larger Videos */
+.rvg-sec .rvg-large {
+    display: flex;
+    width: 60%;
+    margin-left: 27px;
+    box-sizing: border-box;
+    flex-direction: column;
+}
+
+/* Smaller Videos */
+.bx-wrapper {
+    display: flex;
+    width: 35%;
+    position: relative;
+    justify-content: center;
+}
+
+/* Video Container */
+.rvg-large .video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+/* Video Text */
+.rvg-large .video-txt {
+    font-size: 20px;
+    color: #3d3d3d;
+    font-weight: 500;
+    margin-top: 16px;
+}
+
+/* Box Controls */
+.bx-controls {
+    margin: 18px 0;
+}
+
+/* Slider Controls */
+.rvg-sec .bx-controls {
+    margin: 0;
+}
+
+/* Iframe */
+iframe {
+    background: transparent;
+    border: 0;
+}
+
+/* Video Iframe */
+.rvg-large .video-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* List of Videos */
+.rvg-sec .rvg-list {
+    width: 400px;
+    overflow: hidden;
+}
+
+/* Individual Video Item */
+.rvg-list .rvg-iteam {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+/* Active Video */
+.rvg-list .rvg-iteam.active_video {
+    color: #002184;
+}
+
+/* Previous Arrow */
+.bx-wrapper .bx-prev {
+    left: -30px;
+    background: url(https://static.exportersindia.com/images/arrow_left.png) no-repeat 0 0;
+}
+
+/* Slider Direction Controls */
+.bx-wrapper .bx-controls-direction a {
+    position: absolute;
+    top: 50%;
+    margin-top: -16px;
+    outline: 0;
+    width: 26px;
+    height: 39px;
+    text-indent: -9999px;
+    z-index: 3;
+}
+
+/* Slider Direction Control Styling */
+.rvg-sec .bx-wrapper .bx-controls-direction a {
+    background: #fff;
+    border-radius: 50%;
+    text-indent: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: #999;
+    height: 40px;
+    width: 40px;
+    left: calc(50% - 20px);
+    right: auto;
+    z-index: 1;
+}
+
+/* Disabled State for Slider Controls */
+.bx-wrapper .bx-controls-direction a.disabled {
+    display: none;
+}
+
+/* Previous Arrow Positioning */
+.rvg-sec .bx-wrapper .bx-controls-direction a.bx-prev {
+    top: -15px;
+    bottom: auto;
+    transform: rotate(-90deg);
+}
+
+/* Hover State for Links */
+a:active,
+a:hover {
+    outline: 0;
+}
+
+/* Hover State for Links Color */
+a:hover {
+    color: #06c;
+}
+
+/* Hover State for Slider Controls */
+.rvg-sec .bx-wrapper .bx-controls-direction a:hover {
+    color: #333;
+}
+
+/* Next Arrow */
+.bx-wrapper .bx-next {
+    right: -30px;
+    background: url(https://static.exportersindia.com/images/arrow_right.png) no-repeat 0 0;
+}
+
+/* Slider Next Arrow Position */
+.rvg-sec .bx-wrapper .bx-controls-direction a.bx-next {
+    bottom: -35px;
+    top: auto;
+    transform: rotate(-90deg);
+}
+
+/* Thumbnail Styling */
+.rvg-list .rvg-iteam .video-thumb {
+    height: 117px;
+    width: 285px;
+    position: relative;
+    border: 1px solid #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+/* Thumbnail Hover Effect */
+.rvg-list .rvg-iteam:hover .video-thumb {
+    border: 1px solid #ccc;
+}
+
+/* Video Text Styling */
+.rvg-list .rvg-iteam .video-txt {
+    width: calc(100% - 90px);
+    box-sizing: border-box;
+    padding: 0 0 0 10px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+/* Font Awesome Icons */
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Right Angle Icon */
+.fa-angle-right:before {
+    content: "\f105";
+}
+
+/* Left Angle Icon */
+.fa-angle-left:before {
+    content: "\f104";
+}
+
+/* Image Styling */
+.bx-wrapper img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Thumbnail Image Styling */
+.rvg-list .rvg-iteam .video-thumb img {
+    height: 100%;
+    width: 100%;
+}
+
+/* Play Icon Styling */
+.video-thumb .icon-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 25px;
+    color: rgba(0, 0, 0, .7);
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+/* Play Icon Hover Color */
+.rvg-list .rvg-iteam:hover .video-thumb .icon-play {
+    color: rgba(255, 0, 0, 1);
+}
+
+/* YouTube Play Icon */
+.fa-youtube-play:before {
+    content: "\f16a";
+}
+
+/* Active Video YouTube Icon */
+.rvg-list .rvg-iteam.active_video .fa.fa-youtube-play::before {
+    content: "\f0c9";
+    font-size: 20px;
+    color: #fff;
+}
+
+/* Scrollable Container */
+div#style-B4io3 {
+    height: 500px;
+    background: whitesmoke;
+    width: 445px;
+    padding: 10px;
+    border-radius: 10px;
+    overflow-y: scroll;
+}
+
+/* Scrollbar Styles */
+#style-B4io3 {
+    --sb-track-color: #d5d5d5;
+    --sb-thumb-color: #696969;
+    --sb-size: 8px;
+}
+
+#style-B4io3::-webkit-scrollbar {
+    width: var(--sb-size);
+}
+
+#style-B4io3::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 10px;
+}
+
+#style-B4io3::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 10px;
+    border: 1px solid #4a4a4a;
+}
+
+/* Media Queries for responsiveness */
+@media only screen and (max-width: 1002px) {
+    .rvg-sec {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-around;
+        flex-direction: column;
+    }
+
+    .rvg-sec .rvg-large {
+        display: flex;
+        width: 100%;
+        margin-left: 0px;
+        box-sizing: border-box;
+        flex-direction: column;
+    }
+
+    .rvg-large .video-txt {
+        display: none;
+    }
+
+    .bx-wrapper {
+        display: flex;
+        width: 100%;
+    }
+
+    .rvg-sec .rvg-list {
+        display: flex;
+        width: 100%;
+        overflow: scroll;
+    }
+
+    div#style-B4io3 {
+        display: flex;
+        height: fit-content;
+        background: none;
+        width: 100%;
+        padding: 0;
+        border-radius: 0;
+        overflow-y: visible;
+    }
+
+    .p20px {
+        padding: 7px;
+    }
+
+    .rvg-list .rvg-iteam .video-txt {
+        display: none;
+    }
+
+    .rvg-list .rvg-iteam .video-thumb {
+        height: 85px;
+        width: 145px;
+    }
+}

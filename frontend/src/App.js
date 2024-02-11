@@ -20,7 +20,10 @@ import { loginData, loginSuccess } from "./redux/API/user_slice/login.slice.js";
 
 // Use React.lazy for lazy loading
 const Brandpage = lazy(() => import("./pages/Brand_page/Brandpage"));
-const MobileHome = lazy(() => import("./pages/mobile_home/Mobilehome"));
+//landng page  -----------------------------------------------------------------
+const LandingPage = lazy(() => import("./pages/Landing_page/Home.jsx"));
+//------------------------------------------------------------------------------
+const MobileHome = lazy(() => import("./pages/mobile_home/Mobilehome.jsx"));
 const Mobiledetail = lazy(() =>
   import("./pages/Mobile_specification/Mobile_specify.jsx")
 );
@@ -58,6 +61,7 @@ function App() {
       <Router>
         <Navebar />
         <Navlist />
+        <LandingPage/>
         <Suspense fallback={<Loader />}>
           <Routes>
             <Route path="/seller" element={<SellerPage />} />
