@@ -274,12 +274,13 @@ exports.addaddress = async (req, res) => {
       pincode,
       gstNumber,
       email,
+      altNumber,
     } = req.body;
     const newAddress = new Address({
       user: req.user._id,
       userName: userName,
       selectedCountry: selectedCountry,
-      phoneNumber: phoneNumber,
+      phoneNumber: { phoneNumber: phoneNumber },
       selectedState: selectedState,
       district: district,
       subDistrict: subDistrict,
@@ -288,19 +289,25 @@ exports.addaddress = async (req, res) => {
       flatHouseNo: flatHouseNo,
       pincode: pincode,
       gstNumber: gstNumber,
-      email: email,
+      altNumber: { altNumber: altNumber },
+      email: { email: email },
     });
     await newAddress.save();
+    const user = await User.findById(req.user._id).select("-password");
+    user.addresses.push(newAddress._id);
+    await user.save();
 
     res.json({
       message: "Address added successfully!",
       isError: false,
+      user: user,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       error: error.message,
       message: "Verify Faild",
+      isError: true,
     });
   }
 };

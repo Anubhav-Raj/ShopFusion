@@ -9,7 +9,20 @@ const addressSchema = new mongoose.Schema(
     },
     userName: String,
     selectedCountry: String,
-    phoneNumber: String,
+    phoneNumber: {
+      phoneNumber: String,
+      isVerified: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    altNumber: {
+      altNumber: String,
+      isVerified: {
+        type: Boolean,
+        default: false,
+      },
+    },
     selectedState: String,
     district: String,
     subDistrict: String,
@@ -18,7 +31,13 @@ const addressSchema = new mongoose.Schema(
     flatHouseNo: String,
     pincode: String,
     gstNumber: String,
-    email: String,
+    email: {
+      email: String,
+      isVerified: {
+        type: Boolean,
+        default: false,
+      },
+    },
     isDefault: {
       type: Boolean,
       default: false,

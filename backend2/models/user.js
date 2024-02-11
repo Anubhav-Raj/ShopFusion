@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema({
   token: {
     type: String,
   },
+  addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Address" }],
 });
 
 // Create the User model
