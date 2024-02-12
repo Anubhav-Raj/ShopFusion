@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import axios from "axios";
 
-const baseUrl = "http://localhost:5000/api/user/";
+const baseUrl = "http://localhost:5000/api/product/";
 const token = localStorage.getItem("ZoneHub");
 
 export const mobileAPI = createApi({

@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./addMobile.css";
 import {
   AutoComplete,
   Button,
-  InputNumber,
   Modal,
   Input,
   Upload,
@@ -12,10 +11,7 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
-import {
-  mobileAPI,
-  useCreateMobileMutation,
-} from "../../../redux/API/products/mobile";
+import { useCreateMobileMutation } from "../../../redux/API/products/mobile";
 import {
   useMobileFormState,
   sellerTypeOptions,
@@ -24,6 +20,12 @@ import {
   serviceModeOptions,
 } from "./MobileFormState";
 import useRecaptchaV3 from "../../../Hooks/reCaptchaV3/index.js";
+import { useUserByIDMutation } from "../../../redux/API/user.js";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectUserData,
+  setUser,
+} from "../../../redux/API/user_slice/user.slice.js";
 const { Option } = AutoComplete;
 
 const getBase64 = (file) =>
@@ -35,6 +37,38 @@ const getBase64 = (file) =>
   });
 
 const AddMobile = () => {
+  const [userByID] = useUserByIDMutation();
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("ZoneHub");
+  const userData = useSelector(selectUserData);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (!token) {
+          console.error("Token not available");
+          return;
+        }
+        const { data } = await userByID();
+        dispatch(setUser(data.user));
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const addressoption =
+    userData &&
+    userData.addresses.map((element) => {
+      const newPropsObj = {
+        value: element._id,
+        label: `${element.userName}, \n${element.flatHouseNo} ${element.areaStreetVillage}`,
+      };
+
+      return { ...element, ...newPropsObj };
+    });
+  console.log(addressoption);
   const executeRecaptcha = useRecaptchaV3(
     "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
   );
@@ -164,47 +198,16 @@ const AddMobile = () => {
   );
 
   const videoprops = {
-    name: "video", // Make sure the name matches the key in formData
-    //action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188", // <-- Backend endpoint for video upload
-    // headers: {
-    //   authorization: "authorization-text",
-    // },
+    name: "video",
     onChange(info) {
-      // if (info.file.status !== "uploading") {
-      //   console.log(info.file, info.fileList);
-      // }
-      // if (info.file.status === "done") {
-      //   message.success(`${info.file.name} video uploaded successfully`);
-      // } else if (info.file.status === "error") {
-      //   message.error(`${info.file.name} video upload failed.`);
-      // }
-
-      // Extract video file from fileList and set it in the state or formData
-      //const videoFile = info.fileList[0]?.originFileObj;
       if (info) {
-        setUploadVideo(info); // Assuming you have a state for video in your component
+        setUploadVideo(info);
       }
     },
   };
   const fileprops = {
     name: "file", // Make sure the name matches the key in formData
-    //action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",  // <-- Backend endpoint for file upload
-    // headers: {
-    //   authorization: "authorization-text",
-    // },
     onChange(info) {
-      // if (info.file.status !== "uploading") {
-      //   console.log(info.file, info.fileList);
-      // }
-      // if (info.file.status === "done") {
-      //   message.success(`${info.file.name} file uploaded successfully`);
-      // } else if (info.file.status === "error") {
-      //   message.error(`${info.file.name} file upload failed.`);
-      // }
-
-      // Extract file from fileList and set it in the state or formData
-      //const uploadedFile = info.fileList[0]?.originFileObj;
-
       if (info) {
         setUploadFile(info); // Assuming you have a state for file in your component
       }
@@ -523,22 +526,25 @@ const AddMobile = () => {
               />
             </div>
             <div>
-              <label htmlFor="Color" className="formbold-form-label">
-                Color
+              <label
+                htmlFor="Enter Address "
+                className="formbold-form-label"
+                style={{ marginBottom: "10px" }}
+              >
+                Enter Address
               </label>
-              <AutoComplete
-                style={{ width: 300, height: 50 }}
-                placeholder="Enter Color Name"
-                options={sellerTypeOptions}
-                filterOption={true}
-                onSelect={(val) => {
-                  setColor(val);
+              <Select
+                placeholder="Enter Address "
+                style={{
+                  height: 50,
+                  width: "100%",
                 }}
-                onSearch={(val) => {
-                  setColor(val);
-                }}
+                onChange={(value) => setEnterAddress(value)}
+                options={addressoption}
               />
-              {colorError && <div className="error-message">{colorError}</div>}
+              {enterAddressError && (
+                <div className="error-message">{enterAddressError}</div>
+              )}
             </div>
           </div>
           {/* Second row */}
@@ -765,25 +771,22 @@ const AddMobile = () => {
           {/*Fifth Row */}
           <div className="formbold-input-flex">
             <div>
-              <label
-                htmlFor="Enter Address "
-                className="formbold-form-label"
-                style={{ marginBottom: "10px" }}
-              >
-                Enter Address
+              <label htmlFor="Color" className="formbold-form-label">
+                Color
               </label>
-              <Select
-                placeholder="Enter Address "
-                style={{
-                  height: 50,
-                  width: "100%",
-                }}
-                onChange={(value) => setEnterAddress(value)}
+              <AutoComplete
+                style={{ width: 300, height: 50 }}
+                placeholder="Enter Color Name"
                 options={sellerTypeOptions}
+                filterOption={true}
+                onSelect={(val) => {
+                  setColor(val);
+                }}
+                onSearch={(val) => {
+                  setColor(val);
+                }}
               />
-              {enterAddressError && (
-                <div className="error-message">{enterAddressError}</div>
-              )}
+              {colorError && <div className="error-message">{colorError}</div>}
             </div>
             <div
               style={{
