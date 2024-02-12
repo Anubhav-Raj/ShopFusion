@@ -19,6 +19,7 @@ import {
   conditionOptions,
   paymentModeOptions,
   serviceModeOptions,
+  colores,
 } from "./MobileFormState";
 import useRecaptchaV3 from "../../../Hooks/reCaptchaV3/index.js";
 import { useUserByIDMutation } from "../../../redux/API/user.js";
@@ -770,7 +771,7 @@ const AddMobile = () => {
               <AutoComplete
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter Color Name"
-                options={sellerTypeOptions}
+                options={colores}
                 filterOption={true}
                 onSelect={(val) => {
                   setColor(val);
