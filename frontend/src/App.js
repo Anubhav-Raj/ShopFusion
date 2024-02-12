@@ -61,10 +61,11 @@ function App() {
       <Router>
         <Navebar />
         <Navlist />
-        {/* <LandingPage/> */}
+
         <Suspense fallback={<Loader />}>
           <Routes>
             <Route path="/seller" element={<SellerPage />} />
+            <Route path="/" element={<LandingPage />} />
             <Route path="/brand" element={<Brandpage />} />
             <Route path="/brand/:brandName" element={<MobileHome />} />
             <Route path="/mobile/:mobiledetail" element={<Mobiledetail />} />
