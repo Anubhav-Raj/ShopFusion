@@ -406,7 +406,7 @@ const AddMobile = () => {
 
       // If validation fails, return early
       if (!isValid) {
-        //return;
+        return;
       }
 
       // Extract data from the form state
@@ -455,7 +455,7 @@ const AddMobile = () => {
     }
   };
 
-  console.log(uploadPhotos);
+  // console.log(uploadPhotos);
   return (
     <div className="formbold-main-wrapper">
       <div className="formbold-form-wrapper">

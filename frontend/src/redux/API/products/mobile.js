@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import axios from "axios";
 
@@ -34,9 +35,10 @@ export const mobileAPI = createApi({
         formData.append("googleDriveLink", mobile.googleDriveLink);
         formData.append("mobileDescription", mobile.mobileDescription);
 
+        //  return console.log(mobile);
         // Handle uploadPhotos
         mobile.uploadPhotos.forEach((photo, index) => {
-          formData.append(`uploadPhotos[${index}]`, photo.originFileObj);
+          formData.append("uploadPhotos", photo.originFileObj);
         });
 
         // Handle uploadVideo
@@ -48,10 +50,6 @@ export const mobileAPI = createApi({
         if (mobile.uploadFile && mobile.uploadFile.file) {
           formData.append("uploadFile", mobile.uploadFile.file.originFileObj);
         }
-
-        Object.entries(formData).forEach(([key, value]) => {
-          console.log(`${key}: ${value}`);
-        });
 
         return {
           url: "createMobile",

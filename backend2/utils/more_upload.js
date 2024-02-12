@@ -1,14 +1,16 @@
 const multer = require("multer");
 const fs = require("fs");
+const path = require("path");
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Choose destination directory based on file type
-    console.log(file.fieldname);
-    if (file.fieldname === "images") {
+
+    if (file.fieldname === "uploadPhotos") {
       cb(null, "uploads/images");
-    } else if (file.fieldname === "video") {
+    } else if (file.fieldname === "uploadVideo") {
       cb(null, "uploads/videos");
-    } else if (file.fieldname === "file") {
+    } else if (file.fieldname === "uploadFile") {
       cb(null, "uploads/files");
     }
   },
