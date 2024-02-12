@@ -11,15 +11,6 @@ router.post("/resetpassword", userCon.resetPassword);
 router.post("/userbyid", protect, userCon.getUserById);
 
 router.get("/verifyUser/:id/:token", userCon.verifyUser);
-router.post(
-  "/createMobile",
-  more_upload.fields([
-    { name: "uploadPhotos", maxCount: 5 },
-    { name: "uploadVideo", maxCount: 1 },
-    { name: "uploadFile", maxCount: 1 },
-  ]),
-  userCon.createMobile
-);
 router.post("/addaddress", protect, userCon.addaddress);
 router.post("/isnumberunique", userCon.isNumberUnique);
 router.post("/sendemailotp", protect, userCon.sendEmailOtp);

@@ -3,42 +3,13 @@ const mongoose = require("mongoose");
 // Define the product schema
 const productSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-    },
-    brand: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Brand",
-    },
+    category: String,
+    subCategory: String,
     price: {
       type: Number,
-      required: true,
-    },
-    stock: {
-      type: Number,
-      required: true,
-    },
-    sold: {
-      type: Number,
       default: 0,
     },
-    images: {
-      type: Array,
-      default: [],
-    },
-    rating: {
-      type: Number,
-      default: 0,
-    },
+
     reviews: {
       type: Array,
       default: [],
@@ -47,22 +18,59 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    sellerName: {
-      type: String,
-    },
-    seller: {
+
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    TypeOfSeller: {
-      type: String,
-      default: "seller",
+
+    sellerType: String,
+    sellerName: String,
+    gstNumber: String,
+    color: String,
+    selectBrand: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Brand",
     },
-    gstNumber: {
+    selectModel: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ModelBrand",
+    },
+    mobileName: String,
+    condition: String,
+    yearOfPurchase: {
       type: String,
     },
-    color: {
+    availableQuantity: Number,
+    minimumOrder: Number,
+
+    paymentMode: String,
+    serviceMode: String,
+    enterAddress: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Address",
+    },
+    googleDriveLink: String,
+    mobileDescription: String,
+    images: {
+      type: Array,
+      default: [],
+    },
+    file: {
       type: String,
+      default: "",
+    },
+    video: {
+      type: String,
+      default: "",
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    isApproved: {
+      type: Boolean,
+      default: false,
     },
   },
   {

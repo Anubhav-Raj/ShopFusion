@@ -33,6 +33,7 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Address" }],
+  products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
 });
 
 // Create the User model

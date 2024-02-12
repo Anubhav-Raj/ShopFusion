@@ -4,18 +4,27 @@ const path = require("path");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // Choose destination directory based on file type
+    let destDir;
 
+    // Choose destination directory based on file type
     if (file.fieldname === "uploadPhotos") {
-      cb(null, "uploads/images");
+      destDir = "uploads/images";
     } else if (file.fieldname === "uploadVideo") {
-      cb(null, "uploads/videos");
+      destDir = "uploads/videos";
     } else if (file.fieldname === "uploadFile") {
-      cb(null, "uploads/files");
+      destDir = "uploads/files";
     }
+
+    // Create destination directory if it doesn't exist
+    fs.mkdir(destDir, { recursive: true }, (err) => {
+      if (err) {
+        return cb(err);
+      }
+      cb(null, destDir);
+    });
   },
   filename: function (req, file, cb) {
-    return cb(
+    cb(
       null,
       `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
     );

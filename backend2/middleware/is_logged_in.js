@@ -13,7 +13,8 @@ exports.protect = asyncHandler(async (request, response, next) => {
       const decode = jwt.verify(token, process.env.SECRET);
       request.user = await User.findById(decode.id)
         .select("-password")
-        .populate("addresses");
+        .populate("addresses")
+        .populate("products");
       next();
     } catch (error) {
       console.error(error);

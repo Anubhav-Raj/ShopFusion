@@ -161,32 +161,6 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-exports.createMobile = async (req, res) => {
-  return console.log(req.body);
-  const { recaptchaToken } = req.body;
-  let success = true;
-  const SECRET_KEY_v3 = "6LfplmApAAAAAIoOHdbF-BquBwgjBFakSq5bxPFg";
-  const recaptchaResponse = await axios.post(
-    `https://www.google.com/recaptcha/api/siteverify?secret=${SECRET_KEY_v3}&response=${recaptchaToken}`
-  );
-
-  if (
-    !recaptchaResponse.data.success ||
-    recaptchaResponse.data.score < 0.5 ||
-    recaptchaResponse.data.action !== "login"
-  ) {
-    success = false;
-  }
-
-  // Authenticate with email and password
-
-  return {
-    valid: success,
-  };
-  // console.log(req.body);
-  // console.log(req.files);
-  // res.send({ name: "anubhav" });
-};
 exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
