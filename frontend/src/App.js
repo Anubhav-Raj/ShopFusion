@@ -61,7 +61,7 @@ function App() {
       <Router>
         <Navebar />
         <Navlist />
-        <LandingPage/>
+        {/* <LandingPage/> */}
         <Suspense fallback={<Loader />}>
           <Routes>
             <Route path="/seller" element={<SellerPage />} />

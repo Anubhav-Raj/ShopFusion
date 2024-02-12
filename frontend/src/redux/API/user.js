@@ -5,7 +5,7 @@ import axios from "axios";
 // Get the API base URL from the environment variable
 const baseUrl = "http://localhost:5000/api/user/";
 const token = localStorage.getItem("ZoneHub");
-console.log(token);
+
 export const userAPI = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({

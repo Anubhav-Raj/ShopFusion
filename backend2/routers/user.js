@@ -14,14 +14,14 @@ router.get("/verifyUser/:id/:token", userCon.verifyUser);
 router.post(
   "/createMobile",
   more_upload.fields([
-    { name: "uploadPhotos" },
-    { name: "uploadVideo" },
-    { name: "uploadFile" },
+    { name: "uploadPhotos", maxCount: 5 },
+    { name: "uploadVideo", maxCount: 1 },
+    { name: "uploadFile", maxCount: 1 },
   ]),
   userCon.createMobile
 );
 router.post("/addaddress", protect, userCon.addaddress);
 router.post("/isnumberunique", userCon.isNumberUnique);
-router.post("/sendemailotp", userCon.sendEmailOtp);
-router.post("/verifyemailotp", userCon.verifyEmailOtp);
+router.post("/sendemailotp", protect, userCon.sendEmailOtp);
+router.post("/verifyemailotp", protect, userCon.verifyEmailOtp);
 module.exports = router;

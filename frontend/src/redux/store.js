@@ -4,15 +4,19 @@ import brandReducer from "./brand.slice";
 import productReducer from "./product.slice";
 import { userReducer } from "./user.slice";
 import { userAPI } from "./API/user";
+import { OtpAPI } from "./API/otp";
 import { mobileAPI } from "./API/products/mobile";
 import { AddressAPI } from "./API/products/profile";
 import userinfo from "./API/user_slice/user.slice";
 import loginReducer from "./API/user_slice/login.slice";
+import { CheckUniqueAPI } from "./API/uniqueIdentification";
 
 const store = configureStore({
   reducer: {
     [userAPI.reducerPath]: userAPI.reducer,
     [mobileAPI.reducerPath]: mobileAPI.reducer,
+    [OtpAPI.reducerPath]: OtpAPI.reducer,
+    [CheckUniqueAPI.reducerPath]: CheckUniqueAPI.reducer,
     [AddressAPI.reducerPath]: AddressAPI.reducer,
     [userReducer.name]: userReducer.reducer,
     brands: brandReducer,
@@ -24,7 +28,9 @@ const store = configureStore({
     getDefaultMiddleware().concat(
       userAPI.middleware,
       mobileAPI.middleware,
-      AddressAPI.middleware
+      AddressAPI.middleware,
+      OtpAPI.middleware,
+      CheckUniqueAPI.middleware
     ),
 });
 

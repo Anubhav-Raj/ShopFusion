@@ -9,11 +9,20 @@ import {
   Space,
   Descriptions,
   message,
+  Form,
+  Modal,
 } from "antd";
 import axios from "axios";
 import { PlusOutlined } from "@ant-design/icons";
 import { useAddAddressMutation } from "../../redux/API/products/profile";
 import useRecaptchaV3 from "../../Hooks/reCaptchaV3";
+import OtpInput from "react-otp-input";
+import OTPInput from "react-otp-input";
+import {
+  useEmailotpMutation,
+  useSendemailotpMutation,
+} from "../../redux/API/otp";
+import { usePhoneNumberUniqueMutation } from "../../redux/API/uniqueIdentification";
 const { Option } = AutoComplete;
 let addstate = 0;
 const AddaddressPage = () => {
@@ -42,6 +51,7 @@ const AddaddressPage = () => {
   const [pincode, setPincode] = useState("");
   const [gstNumber, setGstNumber] = useState("");
   const [email, setemail] = useState("");
+  const [altNumber, setAltNumber] = useState("");
 
   const [validationErrors, setValidationErrors] = useState({
     userName: false,
@@ -56,6 +66,7 @@ const AddaddressPage = () => {
     pincode: false,
     gstNumber: false,
     email: false,
+    altNumber: false,
   });
 
   const options = [
@@ -142,6 +153,8 @@ const AddaddressPage = () => {
   };
 
   const [AddAddressMutation] = useAddAddressMutation();
+  const [PhoneNumberUniqueMutation] = usePhoneNumberUniqueMutation();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const recaptchaToken = await executeRecaptcha("addmobile");
@@ -198,12 +211,36 @@ const AddaddressPage = () => {
       return;
     }
 
+    if (phoneNumber === altNumber) {
+      message.error("Phone No and Whatapp not be same ");
+      return;
+    }
+    const phonenumber = {
+      phoneNumber: phoneNumber,
+    };
+    const checkuniquephone = await PhoneNumberUniqueMutation(phonenumber);
+    if (checkuniquephone.data.isError) {
+      message.error("Phone number must be Unique");
+      return;
+    }
+    const Whatappnumber = {
+      phoneNumber: altNumber,
+    };
+    const checkuniquewhatappnumber = await PhoneNumberUniqueMutation(
+      Whatappnumber
+    );
+    if (checkuniquewhatappnumber.data.isError) {
+      message.error("Whatapp number must be Unique");
+      return;
+    }
+
     try {
       // Your existing API call or any other action here
       const formData = {
         userName,
         selectedCountry,
         phoneNumber,
+        altNumber,
         selectedState,
         district,
         subDistrict,
@@ -235,12 +272,13 @@ const AddaddressPage = () => {
       setPincode("");
       setGstNumber("");
       setemail("");
+      setAltNumber("");
 
       // Reset the form state or close the form here if needed
       setShowForm(false);
     } catch (error) {
       // Handle errors
-      console.error("Error adding address:", error);
+      // console.error("Error adding address:", error);
       message.error("Error adding address. Please try again.");
     }
   };
@@ -272,9 +310,85 @@ const AddaddressPage = () => {
         "No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China",
     },
   ];
+  const [showOtpModal, setShowOtpModal] = useState(false); // State to control OTP modal visibility
+  const [code, setCode] = useState("");
+  const [EmailotpMutation] = useEmailotpMutation();
+  const [SendmailOtpMutation] = useSendemailotpMutation();
+  const handleChange = (code) => setCode(code);
+  const handleOpenOtpModal = async () => {
+    if (!email) {
+      alert("Enter the Email");
+      return;
+    }
+    const formData = {
+      email: email,
+    };
+    setShowOtpModal(true);
+    const sandopt = await SendmailOtpMutation(formData);
+    console.log(sandopt);
+  };
 
+  const handleCloseOtpModal = () => {
+    setShowOtpModal(false);
+  };
+  const otpHandleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = {
+        otp: code,
+      };
+      const result = await EmailotpMutation(formData);
+      console.log("Email OTP verification successful:", result);
+      setShowOtpModal(false);
+    } catch (error) {
+      console.error("Error verifying email OTP:", error);
+      setShowOtpModal(false);
+    }
+  };
   return (
     <>
+      <Modal
+        title="Enter OTP"
+        visible={showOtpModal}
+        onCancel={handleCloseOtpModal}
+        footer={[
+          <Button key="cancel" onClick={handleCloseOtpModal}>
+            Cancel
+          </Button>,
+          <Button key="submit" type="primary" onClick={otpHandleSubmit}>
+            Submit
+          </Button>,
+        ]}
+      >
+        <OtpInput
+          style={{ display: "flex", justifyContent: "space-around" }}
+          value={code}
+          onChange={handleChange}
+          numInputs={6}
+          separator={<span style={{ width: "8px" }}>-</span>}
+          isInputNum={true}
+          shouldAutoFocus={true}
+          renderInput={(props) => <input {...props} />}
+          inputStyle={{
+            borderRadius: "8px",
+            width: "54px",
+            height: "54px",
+            fontSize: "12px",
+            color: "#000",
+            fontWeight: "400",
+            caretColor: "blue",
+          }}
+          focusStyle={{
+            border: "1px solid #CFD3DB",
+            outline: "none",
+          }}
+          containerStyle={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "10px",
+          }}
+        />
+      </Modal>
       {showfrom ? (
         <div className="formbold-main-wrapper">
           <div className="formbold-form-wrapper">
@@ -305,7 +419,9 @@ const AddaddressPage = () => {
                     onChange={(e) => setemail(e.target.value)}
                     className={validationErrors.userName ? "error" : ""}
                   />
+                  <div onClick={handleOpenOtpModal}>Verify </div>
                 </div>
+
                 <div>
                   <label htmlFor="gstnumber" className="formbold-form-label">
                     GST Number
@@ -368,7 +484,7 @@ const AddaddressPage = () => {
                       <Input
                         style={{ height: 50 }}
                         placeholder="Enter Phone No."
-                        type="Phone"
+                        type="number"
                         onChange={(e) => setPhoneNumber(e.target.value)}
                         className={validationErrors.phoneNumber ? "error" : ""}
                       />
@@ -377,15 +493,18 @@ const AddaddressPage = () => {
                     <Input
                       style={{ height: 50 }}
                       placeholder="Enter Phone No."
-                      type="Phone"
+                      type="number"
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       className={validationErrors.phoneNumber ? "error" : ""}
                     />
                   )}
                 </div>
                 <div>
-                  <label htmlFor="phone number" className="formbold-form-label">
-                    Phone number
+                  <label
+                    htmlFor=" Whatapp number "
+                    className="formbold-form-label"
+                  >
+                    Whatapp number
                   </label>
                   {searchSelectedCountry ? (
                     <div
@@ -414,8 +533,8 @@ const AddaddressPage = () => {
                       <Input
                         style={{ height: 50 }}
                         placeholder="Enter Phone No."
-                        type="Phone"
-                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        type="number"
+                        onChange={(e) => setAltNumber(e.target.value)}
                         className={validationErrors.phoneNumber ? "error" : ""}
                       />
                     </div>
@@ -423,8 +542,8 @@ const AddaddressPage = () => {
                     <Input
                       style={{ height: 50 }}
                       placeholder="Enter Phone No."
-                      type="Phone"
-                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      type="number"
+                      onChange={(e) => setAltNumber(e.target.value)}
                       className={validationErrors.phoneNumber ? "error" : ""}
                     />
                   )}

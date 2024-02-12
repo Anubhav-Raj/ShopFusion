@@ -14,15 +14,55 @@ export const mobileAPI = createApi({
     providesTags: ["mobilepost"],
 
     createMobile: builder.mutation({
-      query: (mobile) => ({
-        url: "createMobile",
-        method: "POST",
-        body: mobile,
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "multipart/form-data",
-        },
-      }),
+      query: (mobile) => {
+        const formData = new FormData();
+        formData.append("sellerType", mobile.sellerType);
+        formData.append("sellerName", mobile.sellerName);
+        formData.append("gstNumber", mobile.gstNumber);
+        formData.append("color", mobile.color);
+        formData.append("selectBrand", mobile.selectBrand);
+        formData.append("selectModel", mobile.selectModel);
+        formData.append("mobileName", mobile.mobileName);
+        formData.append("condition", mobile.condition);
+        formData.append("yearOfPurchase", mobile.yearOfPurchase);
+        formData.append("availableQuantity", mobile.availableQuantity);
+        formData.append("minimumOrder", mobile.minimumOrder);
+        formData.append("price", mobile.price);
+        formData.append("paymentMode", mobile.paymentMode);
+        formData.append("serviceMode", mobile.serviceMode);
+        formData.append("enterAddress", mobile.enterAddress);
+        formData.append("googleDriveLink", mobile.googleDriveLink);
+        formData.append("mobileDescription", mobile.mobileDescription);
+
+        // Handle uploadPhotos
+        mobile.uploadPhotos.forEach((photo, index) => {
+          formData.append(`uploadPhotos[${index}]`, photo.originFileObj);
+        });
+
+        // Handle uploadVideo
+        if (mobile.uploadVideo && mobile.uploadVideo.file) {
+          formData.append("uploadVideo", mobile.uploadVideo.file.originFileObj);
+        }
+
+        // Handle uploadFile
+        if (mobile.uploadFile && mobile.uploadFile.file) {
+          formData.append("uploadFile", mobile.uploadFile.file.originFileObj);
+        }
+
+        Object.entries(formData).forEach(([key, value]) => {
+          console.log(`${key}: ${value}`);
+        });
+
+        return {
+          url: "createMobile",
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        };
+      },
+
       invalidatesTags: ["mobilepost"],
     }),
     getProductById: builder.query({

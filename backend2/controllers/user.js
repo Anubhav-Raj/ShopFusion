@@ -315,6 +315,7 @@ exports.addaddress = async (req, res) => {
 exports.isNumberUnique = async (req, res) => {
   try {
     const { phoneNumber } = req.body;
+    // console.log(phoneNumber);
     // in phone or alt phone number
     const address = await Address.findOne({
       $or: [
@@ -322,14 +323,16 @@ exports.isNumberUnique = async (req, res) => {
         { "altNumber.altNumber": phoneNumber },
       ],
     });
+    //console.log(address);
     if (address) {
-      return res.status(404).send({
+      return res.status(200).json({
         isError: true,
       });
+    } else {
+      return res.status(200).json({
+        isError: false,
+      });
     }
-    res.json({
-      isError: false,
-    });
   } catch (error) {
     res.status(500).json({
       error: error.message,
