@@ -25,13 +25,13 @@ exports.createMobile = async (req, res) => {
     // if brand exsist then create model
     var brandExsist = await Brand.findOne({ name: brand });
     if (!brandExsist) {
-      newBrand = new Brand({ name: brand });
-      await newBrand.save();
+      brandExsist = new Brand({ name: brand });
+      await brandExsist.save();
     }
     var modelExsist = await ModelBrand.findOne({ name: model });
     if (!modelExsist) {
-      newModel = new ModelBrand({ name: model, brand: brandExsist._id });
-      await newModel.save();
+      modelExsist = new ModelBrand({ name: model, brand: brandExsist._id });
+      await modelExsist.save();
     }
     // return console.log( req.files.uploadPhotos, req.files.uploadVideo, req.files.uploadFile );
 

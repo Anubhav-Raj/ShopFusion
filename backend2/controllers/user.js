@@ -320,7 +320,7 @@ exports.isNumberUnique = async (req, res) => {
 
 exports.sendEmailOtp = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, addressId } = req.body;
     const otp = Math.floor(100000 + Math.random() * 900000);
     const user = await User.findById(req.user._id);
     user.otpemail = otp;
