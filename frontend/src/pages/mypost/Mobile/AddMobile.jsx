@@ -403,7 +403,7 @@ const AddMobile = () => {
 
       // If validation fails, return early
       if (!isValid) {
-        return;
+        //  return;
       }
 
       // Extract data from the form state
