@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import "./addMobile.css";
 import {
@@ -58,17 +59,7 @@ const AddMobile = () => {
 
     fetchData();
   }, []);
-  const addressoption =
-    userData &&
-    userData.addresses.map((element) => {
-      const newPropsObj = {
-        value: element._id,
-        label: `${element.userName}, \n${element.flatHouseNo} ${element.areaStreetVillage}`,
-      };
 
-      return { ...element, ...newPropsObj };
-    });
-  console.log(addressoption);
   const executeRecaptcha = useRecaptchaV3(
     "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
   );
@@ -161,6 +152,8 @@ const AddMobile = () => {
     setUploadVideoError,
     uploadFileError,
     setUploadFileError,
+    addressoption,
+    allgstNumber,
   } = useMobileFormState();
 
   const handleCancel = () => setPreviewOpen(false);
@@ -515,7 +508,7 @@ const AddMobile = () => {
               <AutoComplete
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter GST Number"
-                options={sellerTypeOptions}
+                options={allgstNumber}
                 filterOption={true}
                 onSelect={(val) => {
                   setGstNumber(val);

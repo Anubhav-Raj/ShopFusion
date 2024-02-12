@@ -1,8 +1,35 @@
 // MobileFormState.js
 
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserData } from "../../../redux/API/user_slice/user.slice";
 
 export const useMobileFormState = () => {
+  const dispatch = useDispatch();
+  const userData = useSelector(selectUserData);
+
+  const addressoption =
+    userData &&
+    userData.addresses.map((element) => {
+      const newPropsObj = {
+        value: element._id,
+        label: `${element.userName}, \n ${element.flatHouseNo} ${element.areaStreetVillage}`,
+      };
+
+      return { ...element, ...newPropsObj };
+    });
+
+  const allgstNumber =
+    userData &&
+    userData.addresses.map((element) => {
+      const newPropsObj = {
+        value: element.gstNumber,
+        label: element.gstNumber,
+      };
+
+      return { ...element, ...newPropsObj };
+    });
+
   const [sellerType, setSellerType] = useState("");
   const [sellerName, setSellerName] = useState("");
   const [gstNumber, setGstNumber] = useState("");
@@ -138,6 +165,9 @@ export const useMobileFormState = () => {
     setUploadVideoError,
     uploadFileError,
     setUploadFileError,
+
+    addressoption,
+    allgstNumber,
   };
 };
 
