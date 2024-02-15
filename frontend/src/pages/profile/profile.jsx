@@ -6,26 +6,26 @@ import {
   Select,
   Button,
   Divider,
-  Space,
   Descriptions,
   message,
-  Form,
   Modal,
 } from "antd";
 import axios from "axios";
-import { PlusOutlined } from "@ant-design/icons";
 import { useAddAddressMutation } from "../../redux/API/products/profile";
 import useRecaptchaV3 from "../../Hooks/reCaptchaV3";
 import OtpInput from "react-otp-input";
-import OTPInput from "react-otp-input";
 import {
   useEmailotpMutation,
   useSendemailotpMutation,
 } from "../../redux/API/otp";
 import { usePhoneNumberUniqueMutation } from "../../redux/API/uniqueIdentification";
+import { useSelector } from "react-redux";
+import { loginData } from "../../redux/API/user_slice/login.slice";
+import { setUser } from "../../redux/API/user_slice/user.slice";
 const { Option } = AutoComplete;
-let addstate = 0;
+
 const AddaddressPage = () => {
+  const userData = useSelector(loginData);
   const executeRecaptcha = useRecaptchaV3(
     "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
   );
@@ -282,50 +282,14 @@ const AddaddressPage = () => {
       message.error("Error adding address. Please try again.");
     }
   };
-  const item = [
-    {
-      key: "1",
-      label: "UserName",
-      children: "Zhou Maomao",
-    },
-    {
-      key: "2",
-      label: "Telephone",
-      children: "1810000000",
-    },
-    {
-      key: "3",
-      label: "Live",
-      children: "Hangzhou, Zhejiang",
-    },
-    {
-      key: "4",
-      label: "Remark",
-      children: "empty",
-    },
-    {
-      key: "5",
-      label: "Address",
-      children:
-        "No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China",
-    },
-  ];
+
   const [showOtpModal, setShowOtpModal] = useState(false); // State to control OTP modal visibility
   const [code, setCode] = useState("");
   const [EmailotpMutation] = useEmailotpMutation();
   const [SendmailOtpMutation] = useSendemailotpMutation();
   const handleChange = (code) => setCode(code);
-  const handleOpenOtpModal = async () => {
-    if (!email) {
-      alert("Enter the Email");
-      return;
-    }
-    const formData = {
-      email: email,
-    };
+  const handleOpenOtpModal = () => {
     setShowOtpModal(true);
-    const sandopt = await SendmailOtpMutation(formData);
-    console.log(sandopt);
   };
 
   const handleCloseOtpModal = () => {
@@ -344,6 +308,16 @@ const AddaddressPage = () => {
       console.error("Error verifying email OTP:", error);
       setShowOtpModal(false);
     }
+  };
+  //const userData = useSelector(loginData);
+  const handlesandOtp = async (email) => {
+    const formData = {
+      email: email,
+    };
+    console.log(email);
+    setShowOtpModal(true);
+    const sandopt = await SendmailOtpMutation(formData);
+    console.log(sandopt);
   };
   return (
     <>
@@ -699,32 +673,109 @@ const AddaddressPage = () => {
 
           <div style={{ border: "2px solid #F1F3F6", marginTop: "20px" }}>
             {/* Replace the hard-coded Descriptions data with your actual data */}
-            <Descriptions
-              style={{
-                padding: "5px",
-                marginBottom: "5px",
-              }}
-              title="Anubhav"
-              items={item}
-            />
-            <hr />
-            <Descriptions
-              style={{
-                padding: "5px",
-                marginBottom: "5px",
-              }}
-              title="Anubhav"
-              items={item}
-            />
-            <hr />
-            <Descriptions
-              style={{
-                padding: "5px",
-                marginBottom: "5px",
-              }}
-              title="Anubhav"
-              items={item}
-            />
+            {userData &&
+              userData.addresses &&
+              userData.addresses.map((item, index) => {
+                return (
+                  <>
+                    <Descriptions
+                      key={index}
+                      style={{
+                        padding: "5px",
+                        marginBottom: "5px",
+                      }}
+                      title={item.userName}
+                      items={[
+                        {
+                          key: "1",
+                          label: "UserName",
+                          children: `${item.userName}`,
+                        },
+                        {
+                          key: "2",
+                          label: "Phone",
+                          children: (
+                            <span
+                              style={{
+                                color: item.phoneNumber.isVerified
+                                  ? "green"
+                                  : "red",
+                              }}
+                            >
+                              {`${item.phoneNumber.phoneNumber} ${
+                                item.phoneNumber.isVerified
+                                  ? "verified"
+                                  : "Unverified"
+                              }`}
+                            </span>
+                          ),
+                        },
+                        item.altNumber.altNumber && {
+                          key: "3",
+                          label: "WhatsApp No",
+                          children: (
+                            <span
+                              style={{
+                                color: item.altNumber.isVerified
+                                  ? "green"
+                                  : "red",
+                              }}
+                            >
+                              {`${item.altNumber.altNumber} ${
+                                item.altNumber.isVerified
+                                  ? "verified"
+                                  : "Unverified"
+                              }`}
+                            </span>
+                          ),
+                        },
+
+                        {
+                          key: "4",
+                          label: "E-Mail",
+
+                          children: (
+                            <span
+                              style={{
+                                color: item.email.isVerified ? "green" : "red",
+                              }}
+                              onClick={() => handlesandOtp(item.email.email)}
+                            >
+                              {`${item.email.email} ${
+                                item.email.isVerified
+                                  ? "verified"
+                                  : "Unverified"
+                              }`}
+                            </span>
+                          ),
+                        },
+                        {
+                          key: "5",
+                          label: "GST Number",
+                          children: `${item.gstNumber}`,
+                        },
+                        {
+                          key: "6",
+                          label: "Country",
+                          children: `${item.selectedCountry}`,
+                        },
+                        {
+                          key: "7",
+                          label: "PinCode",
+                          children: `${item.pincode}`,
+                        },
+                        {
+                          key: "8",
+                          label: "Address",
+                          children: `${item.flatHouseNo}, ${item.areaStreetVillage}, ${item.subDistrict}, ${item.district}, ${item.selectedState}, ${item.selectedCountry}`,
+                        },
+                      ]}
+                    />
+
+                    <hr />
+                  </>
+                );
+              })}
           </div>
         </div>
       </div>

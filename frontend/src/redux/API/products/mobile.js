@@ -34,6 +34,14 @@ export const mobileAPI = createApi({
         formData.append("enterAddress", mobile.enterAddress);
         formData.append("googleDriveLink", mobile.googleDriveLink);
         formData.append("mobileDescription", mobile.mobileDescription);
+        formData.append("selectedType", mobile.selectedType);
+        formData.append("selecteddepartment", mobile.selecteddepartment);
+        formData.append("selectedcategories", mobile.selectedcategories);
+        formData.append("selectedsubcategories", mobile.selectedsubcategories);
+        formData.append(
+          "selectedsubcategoriesitem",
+          mobile.selectedsubcategoriesitem
+        );
 
         //  return console.log(mobile);
         // Handle uploadPhotos
@@ -63,6 +71,30 @@ export const mobileAPI = createApi({
 
       invalidatesTags: ["mobilepost"],
     }),
+    getAllBrand: builder.mutation({
+      query: () => {
+        return {
+          url: "allbrands",
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+    }),
+    getAllBrandModal: builder.mutation({
+      query: (brandId) => {
+        return {
+          url: "allmodelsonmodel",
+          method: "POST",
+          body: brandId,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+    }),
+
     getProductById: builder.query({
       query: (productId) => `product/${productId}`,
     }),
@@ -76,4 +108,6 @@ export const {
   useCreateMobileMutation,
   useGetProductByIdQuery,
   useGetAllProductsQuery,
+  useGetAllBrandMutation,
+  useGetAllBrandModalMutation,
 } = mobileAPI;

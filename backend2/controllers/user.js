@@ -353,6 +353,7 @@ exports.sendEmailOtp = async (req, res) => {
 exports.verifyEmailOtp = async (req, res) => {
   try {
     const { otp } = req.body;
+    console.log(otp);
     const user = await User.findById(req.user._id);
     if (user.otpemail !== otp) {
       return res.status(404).send({

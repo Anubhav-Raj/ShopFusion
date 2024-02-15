@@ -14,6 +14,6 @@ router.post(
   ]),
   productCon.createMobile
 );
-router.get("/allbrands", productCon.getAllBrands);
+router.get("/allbrands", protect, productCon.getAllBrands);
 router.post("/allmodelsonmodel", productCon.getModels);
 module.exports = router;

@@ -1,110 +1,199 @@
+/* eslint-disable react/jsx-pascal-case */
+/* eslint-disable array-callback-return */
 import React, { useState } from "react";
 import "./mypost.css";
 import MY_post_list from "../../components/mypost/MY_post_list"; // Make sure the path is correct
 import Dropdown1 from "../../components/mypost/dropdown";
 import Table_post from "../../components/mypost/Table_post";
+import AddMobile from "./Mobile/AddMobile";
+import { Select } from "antd";
+import { department } from "../../utils/data";
 
 const My_post = () => {
+  const [tableShow, setTableShow] = useState(true);
+
   const tabItems = [
-    { href: "/mobiles", label: "Seller", id: "", className: "" },
-    { href: "/laptops", label: "Buyer", id: "", className: "" },
-    {
-      href: "/tvs",
-      label: "Employers",
-      id: "style-RSVdl",
-      className: "style-RSVdl",
-    },
-    { href: "/deals", label: "Job Seekers", id: "", className: "" },
-    {
-      href: "/mobiles",
-      label: "Rental Service Provider",
-      id: "",
-      className: "",
-    },
-    {
-      href: "/laptops",
-      label: "Rental Service Seekers",
-      id: "",
-      className: "",
-    },
-    {
-      href: "/tvs",
-      label: "Other Service Provider",
-      id: "style-RSVdl",
-      className: "style-RSVdl",
-    },
-    { href: "/deals", label: "Other Service Seekers", id: "", className: "" },
-    { href: "/deals", label: "MATRIMONY", id: "", className: "" },
-    { href: "/mobile", label: "Mobile", id: "", className: "" },
+    { label: "Seller", value: "Seller" },
+    { label: "Buyer", value: "Buyer" },
+    { label: "Employers", value: "Employers" },
+    { label: "Job Seekers", vlaue: "Job Seekers" },
+    { label: "Rental Service Provider", value: "Rental Service Provider" },
+    { label: "Rental Service Seekers", value: "Rental Service Seekers" },
+    { label: "Other Service Provider", value: "Other Service Provider" },
+    { label: "Other Service Seekers", value: "Other Service Seekers" },
+    { label: "Matrimony", value: "Matrimony" },
+    { label: "Mobile", value: "Mobile" },
   ];
-  const dropdowndata = [
-    {
-      label: "Electronics Peripherals",
-      items: [
-        { href: "/deals", label: "Mobile", id: "", className: "" },
-        { href: "/deals", label: "Tablet", id: "", className: "" },
-        { href: "/deals", label: "Laptop", id: "", className: "" },
-        { href: "/deals", label: "Desktop", id: "", className: "" },
-        { href: "/deals", label: "Smartwatch", id: "", className: "" },
-      ],
-    },
-    {
-      label: "Electronics Components",
-      items: [
-        { href: "/deals", label: "RAM", id: "", className: "" },
-        { href: "/deals", label: "ROM", id: "", className: "" },
-        { href: "/deals", label: "PSU", id: "", className: "" },
-        { href: "/deals", label: "Desktop", id: "", className: "" },
-        { href: "/deals", label: "Smartwatch", id: "", className: "" },
-      ],
-    },
-    {
-      label: "Electronics Accessories",
-      items: [
-        { href: "/deals", label: "Mobile", id: "", className: "" },
-        { href: "/deals", label: "Tablet", id: "", className: "" },
-        { href: "/deals", label: "Laptop", id: "", className: "" },
-        { href: "/deals", label: "Desktop", id: "", className: "" },
-        { href: "/deals", label: "Smartwatch", id: "", className: "" },
-      ],
-    },
-    {
-      label: "Home Appliances",
-      items: [
-        { href: "/deals", label: "RAM", id: "", className: "" },
-        { href: "/deals", label: "ROM", id: "", className: "" },
-        { href: "/deals", label: "PSU", id: "", className: "" },
-        { href: "/deals", label: "Desktop", id: "", className: "" },
-        { href: "/deals", label: "Smartwatch", id: "", className: "" },
-      ],
-    },
-  ];
+  const [categories, setCategories] = useState();
+  const [subcategories, setSubCategories] = useState();
+  const [item, setItem] = useState();
 
-  const [selectedDropdown, setSelectedDropdown] = useState(null);
+  const [selectedType, setSelectedselectedType] = useState();
+  const [selecteddepartment, setSelectedDepartment] = useState();
+  const [selectedcategories, setSelectedcategories] = useState();
+  const [selectedsubcategories, setSelectedsubcategories] = useState();
+  const [selectedsubcategoriesitem, setSelectedsubcategoriesitem] = useState();
 
-  // Function to handle dropdown item selection
-  const handleDropdownChange = (selectedItem) => {
-    setSelectedDropdown(selectedItem);
+  const handleSelectedDepartment = (value) => {
+    setSelectedDepartment(value);
+    const selectedDepartmentCategories =
+      department.find((item) => item.label === value)?.categories ?? [];
+    setSelectedcategories(selectedDepartmentCategories);
   };
+  const handleSelectedcategories = (value) => {
+    setCategories(value);
+    const selectedCategoriesSubCategories =
+      selectedcategories.find((item) => item.label === value)?.subcategories ??
+      [];
+    setSelectedsubcategories(selectedCategoriesSubCategories);
+  };
+  const handleSelectedSubcategories = (value) => {
+    setSubCategories(value);
+    const selectedCategoriesSubCategoriesItem =
+      selectedsubcategories.find((item) => item.label === value)
+        ?.subCategoriesitem ?? [];
+    setSelectedsubcategoriesitem(selectedCategoriesSubCategoriesItem);
+  };
+
+  const handleSelectedSubcategoriesitem = (value) => {
+    setItem(value);
+  };
+  const handleType = (value) => {
+    setSelectedselectedType(value);
+  };
+
   return (
     <>
-      <div>
-        <div className="bgsetter">
-          <p className="myposte_1st">POST TYPE & NO. OF ACTIVE POST</p>
-          <MY_post_list tabItems={tabItems} />
-        </div>
-        <div className="bgsetter">
-          <Dropdown1
-            options={dropdowndata}
-            selected={selectedDropdown}
-            onSelect={handleDropdownChange}
+      <div className="formbold-main-wrapper" style={{ paddingBottom: "0px" }}>
+        <div className="formbold-form-wrapper">
+          <h6>Choose Type</h6>
+          <Select
+            showSearch
+            style={{
+              width: 200,
+            }}
+            placeholder="Search to Select"
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              (option?.label ?? "").includes(input)
+            }
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            options={tabItems}
+            onChange={handleType}
           />
-          {selectedDropdown && (
-            <MY_post_list tabItems={selectedDropdown.items} />
-          )}
+        </div>
+        <div className="formbold-form-wrapper">
+          <h6>Choose Department</h6>
+          <Select
+            showSearch
+            style={{
+              width: 200,
+            }}
+            placeholder="Search to Select"
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              (option?.label ?? "").includes(input)
+            }
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            options={department}
+            onChange={handleSelectedDepartment} // Pass the appropriate handler
+            //value={selecteddepartment}
+          />
+        </div>
+
+        <div className="formbold-form-wrapper">
+          <h6>Choose Categories</h6>
+          <Select
+            showSearch
+            style={{
+              width: 200,
+            }}
+            placeholder="Search to Select"
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              (option?.label ?? "").includes(input)
+            }
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            options={selectedcategories}
+            onChange={handleSelectedcategories}
+          />
+        </div>
+
+        <div className="formbold-form-wrapper">
+          <h6>Choose Subcategories</h6>
+          <Select
+            showSearch
+            style={{
+              width: 200,
+            }}
+            placeholder="Search to Select"
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              (option?.label ?? "").includes(input)
+            }
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            options={selectedsubcategories}
+            onChange={handleSelectedSubcategories}
+          />
+        </div>
+
+        <div className="formbold-form-wrapper">
+          <h6>Choose Item</h6>
+          <Select
+            showSearch
+            style={{
+              width: 200,
+            }}
+            placeholder="Search to Select"
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              (option?.label ?? "").includes(input)
+            }
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            options={
+              selectedsubcategoriesitem &&
+              selectedsubcategoriesitem.map((item, index) => ({
+                value: item.value,
+                label: item.label,
+                key: `${item.value}-${index}`, // Unique key generation
+              }))
+            }
+            onChange={handleSelectedSubcategoriesitem}
+          />
         </div>
       </div>
-      <Table_post/>
+      {tableShow ? (
+        <AddMobile
+          selectedType={selectedType}
+          selecteddepartment={selecteddepartment}
+          selectedcategories={categories}
+          selectedsubcategories={subcategories}
+          selectedsubcategoriesitem={item}
+          setTableShow={setTableShow}
+        />
+      ) : null}
+
+      <Table_post setTableShow={setTableShow} />
     </>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Form, Radio, Space, Switch, Table } from "antd";
@@ -345,7 +346,7 @@ for (let i = 1; i <= 5; i++) {
   });
 }
 
-function Table_post() {
+function Table_post({ setTableShow }) {
   const [bordered] = useState(true);
   const [showHeader] = useState(true);
   const [rowSelection] = useState({});
@@ -378,26 +379,26 @@ function Table_post() {
 
   return (
     <>
-    <div style={{
-        padding: "0px 45px",
-      }}>
-    <Table
-      {...tableProps}
-      columns={tableColumns}
-      dataSource={hasData ? data : []}
-      scroll={scroll}
-      style={{
-        marginTop: "50px",
-      }}
-    />
-
-    </div>
-     
+      <div
+        style={{
+          padding: "0px 45px",
+        }}
+      >
+        <Table
+          {...tableProps}
+          columns={tableColumns}
+          dataSource={hasData ? data : []}
+          scroll={scroll}
+          style={{
+            marginTop: "50px",
+          }}
+        />
+      </div>
 
       <div className="row snipcss-JxGSH">
         <div className="container">
           <div className="btn-wrap">
-            <a href="javascript:;" className="btn btn-primary ">
+            <a onClick={() => setTableShow(true)} className="btn btn-primary ">
               + Add More
             </a>
             <a href="javascript:;" className="btn addrows">
@@ -414,8 +415,6 @@ function Table_post() {
           </div>
         </div>
       </div>
-
-      <AddMobile />
     </>
   );
 }

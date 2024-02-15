@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import "./addMobile.css";
@@ -12,7 +13,11 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
-import { useCreateMobileMutation } from "../../../redux/API/products/mobile";
+import {
+  useCreateMobileMutation,
+  useGetAllBrandMutation,
+  useGetAllBrandModalMutation,
+} from "../../../redux/API/products/mobile";
 import {
   useMobileFormState,
   sellerTypeOptions,
@@ -38,9 +43,23 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-const AddMobile = () => {
+const AddMobile = ({
+  selectedType,
+  selecteddepartment,
+  selectedcategories,
+  selectedsubcategories,
+  selectedsubcategoriesitem,
+  setTableShow,
+}) => {
+  const [listBrends, setListBrends] = useState([]);
+  const [listBrendsModal, setListBrendsModal] = useState([]);
   const [userByID] = useUserByIDMutation();
+  const [allbrands] = useGetAllBrandMutation();
+  const [brandModal] = useGetAllBrandModalMutation();
+  const [createMobileMutation] = useCreateMobileMutation();
+
   const dispatch = useDispatch();
+
   const token = localStorage.getItem("ZoneHub");
   const userData = useSelector(selectUserData);
 
@@ -52,6 +71,7 @@ const AddMobile = () => {
           return;
         }
         const { data } = await userByID();
+
         dispatch(setUser(data.user));
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -60,6 +80,60 @@ const AddMobile = () => {
 
     fetchData();
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (!token) {
+          console.error("Token not available");
+          return;
+        }
+        const { data } = await allbrands();
+        setListBrends(data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handlebrandModal = async (brandId) => {
+    try {
+      if (!token) {
+        console.error("Token not available");
+        return;
+      }
+      const formdata = {
+        brandId: brandId,
+      };
+      const { data } = await brandModal(formdata);
+      setListBrendsModal(data);
+      //console.log(data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const brandList =
+    listBrends &&
+    listBrends.map((element) => {
+      const newPropsObj = {
+        value: element._id,
+        label: element.name,
+      };
+
+      return { ...element, ...newPropsObj };
+    });
+  const brandmodalList =
+    listBrendsModal &&
+    listBrendsModal.map((element) => {
+      const newPropsObj = {
+        value: element._id,
+        label: element.name,
+      };
+
+      return { ...element, ...newPropsObj };
+    });
 
   const executeRecaptcha = useRecaptchaV3(
     "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
@@ -207,8 +281,6 @@ const AddMobile = () => {
       }
     },
   };
-
-  const [createMobileMutation] = useCreateMobileMutation();
 
   const resetForm = () => {
     // Reset all form fields
@@ -403,7 +475,7 @@ const AddMobile = () => {
 
       // If validation fails, return early
       if (!isValid) {
-        //  return;
+        return;
       }
 
       // Extract data from the form state
@@ -429,6 +501,11 @@ const AddMobile = () => {
         uploadVideo,
         uploadFile,
         recaptchaToken,
+        selectedType,
+        selecteddepartment,
+        selectedcategories,
+        selectedsubcategories,
+        selectedsubcategoriesitem,
       };
 
       // Object.entries(formData).forEach(([key, value]) => {
@@ -443,8 +520,7 @@ const AddMobile = () => {
 
       // Reset the form after successful submission
       resetForm();
-      // Reset the form or navigate to another page
-      // ...
+      setTableShow(false);
     } catch (error) {
       // Handle the error
       console.error("Error creating mobile:", error);
@@ -489,7 +565,6 @@ const AddMobile = () => {
               <AutoComplete
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter sallername"
-                options={sellerTypeOptions}
                 filterOption={true}
                 onSelect={(val) => {
                   setSellerName(val);
@@ -520,6 +595,78 @@ const AddMobile = () => {
               />
             </div>
             <div>
+              <label htmlFor="Color" className="formbold-form-label">
+                Enter Item Name
+              </label>
+              <AutoComplete
+                placeholder="Enter Mobile Name"
+                style={{
+                  height: 50,
+                  width: "100%",
+                }}
+                onChange={(value) => setMobileName(value)}
+              />
+              {mobileNameError && (
+                <div className="error-message">{mobileNameError}</div>
+              )}
+            </div>
+          </div>
+          {/* Second row */}
+          <div className="formbold-input-flex">
+            <div>
+              <label htmlFor="SellerName" className="formbold-form-label">
+                Select Brand
+              </label>
+              <AutoComplete
+                style={{ width: 300, height: 50 }}
+                placeholder="Enter Brand"
+                options={brandList}
+                value={selectBrand}
+                filterOption={true}
+                onSelect={async (val) => {
+                  const selectedBrand = await brandList.find(
+                    (item) => item.value === val
+                  );
+                  const t = selectedBrand ? selectedBrand.label : val;
+                  setSelectBrand(t);
+                  handlebrandModal(val);
+                }}
+                onSearch={(val) => {
+                  setSelectBrand(val);
+                }}
+              />
+              {selectBrandError && (
+                <div className="error-message">{selectBrandError}</div>
+              )}
+            </div>
+            <div>
+              <label htmlFor="SellerName" className="formbold-form-label">
+                Select Model Name
+              </label>
+              <AutoComplete
+                style={{ width: 300, height: 50 }}
+                placeholder="Enter Model Name"
+                options={brandmodalList}
+                value={selectModel}
+                filterOption={true}
+                onSelect={(val) => {
+                  const selectedBrand = brandmodalList.find(
+                    (item) => item.value === val
+                  );
+                  const modelName = selectedBrand ? selectedBrand.label : val;
+
+                  setSelectModel(modelName);
+                }}
+                onSearch={(val) => {
+                  setSelectModel(val);
+                }}
+              />
+
+              {selectModelError && (
+                <div className="error-message">{selectModelError}</div>
+              )}
+            </div>
+            <div>
               <label
                 htmlFor="Enter Address "
                 className="formbold-form-label"
@@ -538,65 +685,6 @@ const AddMobile = () => {
               />
               {enterAddressError && (
                 <div className="error-message">{enterAddressError}</div>
-              )}
-            </div>
-          </div>
-          {/* Second row */}
-          <div className="formbold-input-flex">
-            <div>
-              <label htmlFor="SellerName" className="formbold-form-label">
-                Select Brand
-              </label>
-              <AutoComplete
-                style={{ width: 300, height: 50 }}
-                placeholder="Enter Brand"
-                options={sellerTypeOptions}
-                filterOption={true}
-                onSelect={(val) => {
-                  setSelectBrand(val);
-                }}
-                onSearch={(val) => {
-                  setSelectBrand(val);
-                }}
-              />
-              {selectBrandError && (
-                <div className="error-message">{selectBrandError}</div>
-              )}
-            </div>
-            <div>
-              <label htmlFor="SellerName" className="formbold-form-label">
-                Select Model Name
-              </label>
-              <AutoComplete
-                style={{ width: 300, height: 50 }}
-                placeholder="Enter Model Name"
-                options={sellerTypeOptions}
-                filterOption={true}
-                onSelect={(val) => {
-                  setSelectModel(val);
-                }}
-                onSearch={(val) => {
-                  setSelectModel(val);
-                }}
-              />
-              {selectModelError && (
-                <div className="error-message">{selectModelError}</div>
-              )}
-            </div>
-            <div>
-              <label htmlFor="Color" className="formbold-form-label">
-                Enter Mobile Name
-              </label>
-              <AutoComplete
-                placeholder="Enter Mobile Name"
-                style={{
-                  height: 50,
-                  width: "100%",
-                }}
-                onChange={(value) => setMobileName(value)}
-              />
-              {mobileNameError && (
-                <div className="error-message">{mobileNameError}</div>
               )}
             </div>
 
@@ -801,6 +889,7 @@ const AddMobile = () => {
             </div>
           </div>
           {/*Sixth Row */}
+          <span> Only Accept (.jpeg .png .jpg)</span>
           <div className="formbold-form-file-flex">
             <label htmlFor=" Upload Photos" className="formbold-form-label">
               Upload Photos
@@ -808,6 +897,7 @@ const AddMobile = () => {
             {uploadPhotosError && (
               <div className="error-message">{uploadPhotosError}</div>
             )}
+
             <Upload
               listType="picture-card"
               fileList={uploadPhotos}
@@ -834,6 +924,7 @@ const AddMobile = () => {
               />
             </Modal>
           </div>
+
           {/*Seventh Row */}
           <div className="formbold-form-file-flex">
             <label htmlFor=" Upload Video" className="formbold-form-label">
@@ -842,7 +933,9 @@ const AddMobile = () => {
             <Upload name="video" {...videoprops} accept="video/*">
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
+            <span> Only Accept (.MP4 .HD .4k)</span>
           </div>
+
           {/*Eight Row */}
           <div
             style={{ marginTop: "10px" }}
@@ -852,11 +945,28 @@ const AddMobile = () => {
               Upload Files
             </label>
 
-            <Upload name="file" {...fileprops} accept=".pdf,.doc,.docx">
+            <Upload
+              name="file"
+              {...fileprops}
+              accept=".pdf,.doc,.docx,.xls,.zip,.rar"
+            >
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
+            <span> Only Accept (.pdf/ .Doc/ .Xls/.Rar/.Zip)</span>
           </div>
-          <button className="formbold-btn">Apply Now</button>
+          {/*Nine Row */}
+          <div
+            style={{ marginTop: "10px" }}
+            className="formbold-form-file-flex"
+          >
+            <button className="formbold-btn">Save</button>
+            <button
+              className="formbold-btn"
+              onClick={() => setTableShow(false)}
+            >
+              Cancle
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -48,6 +48,7 @@ function App() {
           return;
         }
         const { data } = await userByID();
+        // console.log(data);
         dispatch(loginSuccess(data.user));
       } catch (error) {
         console.error("Error fetching user data:", error);
