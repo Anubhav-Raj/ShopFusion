@@ -695,19 +695,24 @@ const AddaddressPage = () => {
                           key: "2",
                           label: "Phone",
                           children: (
-                            <span
-                              style={{
-                                color: item.phoneNumber.isVerified
-                                  ? "green"
-                                  : "red",
-                              }}
-                            >
-                              {`${item.phoneNumber.phoneNumber} ${
-                                item.phoneNumber.isVerified
-                                  ? "verified"
-                                  : "Unverified"
-                              }`}
-                            </span>
+                            <>
+                              <span
+                                style={{
+                                  color: item.phoneNumber.isVerified
+                                    ? "green"
+                                    : "red",
+                                }}
+                              >
+                                {`${item.phoneNumber.phoneNumber} ${
+                                  item.phoneNumber.isVerified
+                                    ? "verified"
+                                    : "Unverified"
+                                }`}
+                              </span>
+                              <span style={{ marginLeft: "10px" }}>
+                                Get OTP
+                              </span>
+                            </>
                           ),
                         },
                         item.altNumber.altNumber && {
