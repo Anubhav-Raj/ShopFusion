@@ -323,7 +323,7 @@ exports.sendEmailOtp = async (req, res) => {
     const { email, id } = req.body;
     const otp = Math.floor(100000 + Math.random() * 900000);
     const address = await Address.findById(id);
-    address.otp = otp;
+    address.email.otp = otp;
     await address.save();
     const bodypart = ` <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">
 
