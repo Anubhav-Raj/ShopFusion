@@ -355,14 +355,15 @@ exports.verifyEmailOtp = async (req, res) => {
     const { otp, id } = req.body;
 
     const address = await Address.findById(id);
-    if (address.otp != otp) {
+    if (address.email.otp != otp) {
       return res.status(404).send({
         token: "Invalid OTP!",
         isError: true,
         message: "Wrong OTP",
       });
     }
-    address.otpemail = "";
+    address.email.otp = "";
+    address.email.isVerified = true;
     await address.save();
     res.json({
       message: "Email verified successfully!",
