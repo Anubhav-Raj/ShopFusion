@@ -37,6 +37,7 @@ const addressSchema = new mongoose.Schema(
         type: Boolean,
         default: false,
       },
+      otp: String,
     },
     isDefault: {
       type: Boolean,

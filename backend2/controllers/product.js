@@ -20,8 +20,8 @@ exports.createMobile = async (req, res) => {
     ) {
       success = false;
     }
-    const brand = req.body.selectBrand.toLowerCase();
-    const model = req.body.selectModel.toLowerCase();
+    const brand = req.body.selectBrand.toLowerCase().trim();
+    const model = req.body.selectModel.toLowerCase().trim();
     // if brand exsist then create model
     var brandExsist = await Brand.findOne({ name: brand });
     if (!brandExsist) {

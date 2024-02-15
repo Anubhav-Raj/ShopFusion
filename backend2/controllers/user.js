@@ -320,11 +320,11 @@ exports.isNumberUnique = async (req, res) => {
 
 exports.sendEmailOtp = async (req, res) => {
   try {
-    const { email, addressId } = req.body;
+    const { email, id } = req.body;
     const otp = Math.floor(100000 + Math.random() * 900000);
-    const user = await User.findById(req.user._id);
-    user.otpemail = otp;
-    await user.save();
+    const address = await Address.findById(id);
+    address.otp = otp;
+    await address.save();
     const bodypart = ` <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">
 
             <tr>
@@ -352,16 +352,18 @@ exports.sendEmailOtp = async (req, res) => {
 
 exports.verifyEmailOtp = async (req, res) => {
   try {
-    const { otp } = req.body;
-    console.log(otp);
-    const user = await User.findById(req.user._id);
-    if (user.otpemail !== otp) {
+    const { otp, id } = req.body;
+
+    const address = await Address.findById(id);
+    if (address.otp != otp) {
       return res.status(404).send({
         token: "Invalid OTP!",
+        isError: true,
+        message: "Wrong OTP",
       });
     }
-    user.otpemail = "";
-    await user.save();
+    address.otpemail = "";
+    await address.save();
     res.json({
       message: "Email verified successfully!",
       isError: false,
