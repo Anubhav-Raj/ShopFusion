@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require("uuid");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const Address = require("../models/address");
+const Razorpay = require("razorpay");
 
 exports.signup = async (req, res) => {
   try {
@@ -352,9 +353,9 @@ exports.sendEmailOtp = async (req, res) => {
 
 exports.verifyEmailOtp = async (req, res) => {
   try {
-    const { otp, id } = req.body;
-
+    const { id, otp } = req.body;
     const address = await Address.findById(id);
+
     if (address.email.otp != otp) {
       return res.status(404).send({
         token: "Invalid OTP!",
@@ -365,14 +366,46 @@ exports.verifyEmailOtp = async (req, res) => {
     address.email.otp = "";
     address.email.isVerified = true;
     await address.save();
-    res.json({
+    res.status(200).json({
       message: "Email verified successfully!",
       isError: false,
+      data: address,
     });
   } catch (error) {
     res.status(500).json({
       error: error.message,
       message: "Verify Faild",
     });
+  }
+};
+
+const razorpay = new Razorpay({
+  key_id: "rzp_test_AjDOUl6GpeumxG",
+  key_secret: "XBEo1dlSMj06gL9KEwlMxBZj",
+});
+
+exports.payment = async (req, res) => {
+  try {
+    //console.log(req.body);
+    const payment_capture = 1;
+    const amount = 1;
+    const currency = "INR"; // apply  condition accoding to country
+
+    const options = {
+      amount: amount * 100,
+      currency,
+      receipt: "receipt_order_74394",
+      payment_capture,
+    };
+
+    const response = await razorpay.orders.create(options);
+    //console.log(response);
+    res.json({
+      id: response.id,
+      currency: response.currency,
+      amount: response.amount,
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
