@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Department from "./departmrnt";
 import Video_displayer from "../../components/Landing/Video_displayer";
 import "./Homepg.css";
 
@@ -62,6 +63,7 @@ function Home() {
   return (
     <>
       <Video_displayer videoData={videoData} />
+      <Department/>
     </>
   );
 }

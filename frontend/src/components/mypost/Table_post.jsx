@@ -13,9 +13,17 @@ const columns = [
   {
     title: "S.no",
     dataIndex: "S.no",
-    width: 80,
+    width: 60,
+    fixed: "left",
     sorter: (a, b) => a.age - b.age,
   },
+  {
+    title: "Action",
+    dataIndex: "Action",
+    children: [{ title: "View", width: 65 ,fixed: "left",},{ title: "Edit", width: 65,fixed: "left", },{ title: "Delete", width: 65,fixed: "left", }],
+  },
+ 
+
   {
     title: "Status",
     dataIndex: "Status",
