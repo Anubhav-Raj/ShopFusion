@@ -25,7 +25,9 @@ import { setUser } from "../../redux/API/user_slice/user.slice";
 const { Option } = AutoComplete;
 
 const AddaddressPage = () => {
+  const token = localStorage.getItem("ZoneHub");
   const userData = useSelector(loginData);
+  console.log(userData);
   const executeRecaptcha = useRecaptchaV3(
     "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
   );
@@ -146,7 +148,6 @@ const AddaddressPage = () => {
   }, [selectedCountry]);
 
   //     for  state
-
   const inputRef = useRef(null);
   const onNameChange = (event) => {
     setName(event.target.value);
@@ -293,16 +294,27 @@ const AddaddressPage = () => {
   };
 
   const handleCloseOtpModal = () => {
+    setCode("");
     setShowOtpModal(false);
   };
+  const [addressID, setAddressID] = useState("");
   const otpHandleSubmit = async (e) => {
     e.preventDefault();
     try {
       const formData = {
+        id: addressID,
         otp: code,
       };
+      setCode("");
       const result = await EmailotpMutation(formData);
       console.log("Email OTP verification successful:", result);
+      if (result) {
+        if (result && result.error && result.error.data) {
+          message.error(result.error.data.message);
+        } else {
+          message.success(result.data.message);
+        }
+      }
       setShowOtpModal(false);
     } catch (error) {
       console.error("Error verifying email OTP:", error);
@@ -310,15 +322,85 @@ const AddaddressPage = () => {
     }
   };
   //const userData = useSelector(loginData);
-  const handlesandOtp = async (email) => {
+  const handlesandOtp = async (email, id) => {
     const formData = {
       email: email,
+      id: id,
     };
-    console.log(email);
+    setAddressID(id);
+
     setShowOtpModal(true);
     const sandopt = await SendmailOtpMutation(formData);
-    console.log(sandopt);
   };
+  // For Payment
+  const baseUrl = "http://localhost:5000/api/payment/";
+
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  }
+  const __DEV__ = document.domain === "localhost";
+  async function displayRazorpay(id, phonenumber, altNumber) {
+    const res = await loadScript(
+      "https://checkout.razorpay.com/v1/checkout.js"
+    );
+
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+    const formdata = {
+      id: id,
+      phone: phonenumber,
+      altNumber: altNumber || "null",
+    };
+    const data = await fetch(`${baseUrl}/otppayment`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify(formdata),
+    }).then((t) => t.json());
+
+    console.log(data);
+    if (!data) {
+      alert("Server error. Are you online?");
+      return;
+    }
+
+    const options = {
+      key: "rzp_test_AjDOUl6GpeumxG",
+      currency: data.currency,
+      amount: data.amount.toString(),
+      order_id: data.id,
+      name: "ZoneHub",
+      description: "Thank you for nothing. Please give us some money",
+      image:
+        "https://scontent.fdel29-1.fna.fbcdn.net/v/t39.30808-6/361586894_3669385440010177_673264268362134479_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=9c7eae&_nc_ohc=NEOVieuKC8sAX8AASGL&_nc_ht=scontent.fdel29-1.fna&oh=00_AfBBY6wkPRKddru9fQfL7MzBCFVTfOyM6Y6rmvU7vjnAZg&oe=65D38A80",
+      handler: function (response) {
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature);
+      },
+      prefill: {
+        name: userData.name,
+        email: userData.email,
+        phone_number: phonenumber,
+      },
+    };
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  }
   return (
     <>
       <Modal
@@ -339,8 +421,8 @@ const AddaddressPage = () => {
           value={code}
           onChange={handleChange}
           numInputs={6}
-          separator={<span style={{ width: "8px" }}>-</span>}
           isInputNum={true}
+          separator={<span style={{ width: "8px" }}>-</span>}
           shouldAutoFocus={true}
           renderInput={(props) => <input {...props} />}
           inputStyle={{
@@ -709,9 +791,19 @@ const AddaddressPage = () => {
                                     : "Unverified"
                                 }`}
                               </span>
-                              <span style={{ marginLeft: "10px" }}>
-                                Get OTP
-                              </span>
+                              {!item.phoneNumber.isVerified ? (
+                                <Button
+                                  onClick={() =>
+                                    handlesandOtp(item.email.email, item._id)
+                                  }
+                                  style={{
+                                    width: "20%",
+                                    marginLeft: "10px",
+                                  }}
+                                >
+                                  Get OTP
+                                </Button>
+                              ) : null}
                             </>
                           ),
                         },
@@ -719,19 +811,34 @@ const AddaddressPage = () => {
                           key: "3",
                           label: "WhatsApp No",
                           children: (
-                            <span
-                              style={{
-                                color: item.altNumber.isVerified
-                                  ? "green"
-                                  : "red",
-                              }}
-                            >
-                              {`${item.altNumber.altNumber} ${
-                                item.altNumber.isVerified
-                                  ? "verified"
-                                  : "Unverified"
-                              }`}
-                            </span>
+                            <>
+                              <span
+                                style={{
+                                  color: item.altNumber.isVerified
+                                    ? "green"
+                                    : "red",
+                                }}
+                              >
+                                {`${item.altNumber.altNumber} ${
+                                  item.altNumber.isVerified
+                                    ? "verified"
+                                    : "Unverified"
+                                }`}
+                              </span>
+                              {!item.altNumber.isVerified ? (
+                                <Button
+                                  onClick={() =>
+                                    handlesandOtp(item.email.email, item._id)
+                                  }
+                                  style={{
+                                    width: "20%",
+                                    marginLeft: "10px",
+                                  }}
+                                >
+                                  Get OTP
+                                </Button>
+                              ) : null}
+                            </>
                           ),
                         },
 
@@ -740,18 +847,34 @@ const AddaddressPage = () => {
                           label: "E-Mail",
 
                           children: (
-                            <span
-                              style={{
-                                color: item.email.isVerified ? "green" : "red",
-                              }}
-                              onClick={() => handlesandOtp(item.email.email)}
-                            >
-                              {`${item.email.email} ${
-                                item.email.isVerified
-                                  ? "verified"
-                                  : "Unverified"
-                              }`}
-                            </span>
+                            <>
+                              <span
+                                style={{
+                                  color: item.email.isVerified
+                                    ? "green"
+                                    : "red",
+                                }}
+                              >
+                                {`${item.email.email} ${
+                                  item.email.isVerified
+                                    ? "verified"
+                                    : "Unverified"
+                                }`}
+                              </span>
+                              {!item.email.isVerified ? (
+                                <Button
+                                  onClick={() =>
+                                    handlesandOtp(item.email.email, item._id)
+                                  }
+                                  style={{
+                                    width: "20%",
+                                    marginLeft: "10px",
+                                  }}
+                                >
+                                  Get OTP
+                                </Button>
+                              ) : null}
+                            </>
                           ),
                         },
                         {
@@ -773,6 +896,34 @@ const AddaddressPage = () => {
                           key: "8",
                           label: "Address",
                           children: `${item.flatHouseNo}, ${item.areaStreetVillage}, ${item.subDistrict}, ${item.district}, ${item.selectedState}, ${item.selectedCountry}`,
+                        },
+                        {
+                          key: "8",
+                          label: "Payment",
+                          children: (
+                            <>
+                              <Button
+                                style={{
+                                  width: "40%",
+                                  background: "#6a64f1",
+                                  color: "white",
+                                }}
+                                onClick={() =>
+                                  displayRazorpay(
+                                    item._id,
+                                    item.phoneNumber.phoneNumber,
+                                    item.altNumber
+                                      ? item.altNumber.altNumber
+                                      : undefined
+                                  )
+                                }
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {item.paymentStatus ? "Already Pay" : "Pay"}
+                              </Button>
+                            </>
+                          ),
                         },
                       ]}
                     />

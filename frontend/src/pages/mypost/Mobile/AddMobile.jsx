@@ -905,7 +905,7 @@ const AddMobile = ({
               onChange={handleChange}
               multiple
               name="uploadPhotos"
-              accept=".jpeg,.png,.jpg"
+              accept=".jpeg,.png,.jpg,.webp"
             >
               {fileList.length >= 8 ? null : uploadButton}
             </Upload>
