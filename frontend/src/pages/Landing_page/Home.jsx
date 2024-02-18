@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Department from "./departmrnt";
+import Department from "../../components/Landing/departmrnt";
 import Video_displayer from "../../components/Landing/Video_displayer";
 import "./Homepg.css";
 
