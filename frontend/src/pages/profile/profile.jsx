@@ -22,12 +22,12 @@ import { usePhoneNumberUniqueMutation } from "../../redux/API/uniqueIdentificati
 import { useSelector } from "react-redux";
 import { loginData } from "../../redux/API/user_slice/login.slice";
 import { setUser } from "../../redux/API/user_slice/user.slice";
+import { Link } from "react-router-dom";
 const { Option } = AutoComplete;
-
 const AddaddressPage = () => {
   const token = localStorage.getItem("ZoneHub");
   const userData = useSelector(loginData);
-  console.log(userData);
+
   const executeRecaptcha = useRecaptchaV3(
     "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
   );
@@ -387,11 +387,12 @@ const AddaddressPage = () => {
       description: "Thank you for nothing. Please give us some money",
       image:
         "https://scontent.fdel29-1.fna.fbcdn.net/v/t39.30808-6/361586894_3669385440010177_673264268362134479_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=9c7eae&_nc_ohc=NEOVieuKC8sAX8AASGL&_nc_ht=scontent.fdel29-1.fna&oh=00_AfBBY6wkPRKddru9fQfL7MzBCFVTfOyM6Y6rmvU7vjnAZg&oe=65D38A80",
-      handler: function (response) {
-        alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature);
-      },
+      // handler: function (response) {
+      //   alert(response.razorpay_payment_id);
+      //   alert(response.razorpay_order_id);
+      //   alert(response.razorpay_signature);
+      // },
+      callback_url: "http://localhost:5000/api/payment/paymentverification",
       prefill: {
         name: userData.name,
         email: userData.email,
@@ -449,7 +450,7 @@ const AddaddressPage = () => {
         <div className="formbold-main-wrapper">
           <div className="formbold-form-wrapper">
             <h4>Add Address</h4>
-            <form onSubmit={handleSubmit}>
+            <form>
               <div className="formbold-input-flex">
                 <div>
                   <label htmlFor="sellertype" className="formbold-form-label">
@@ -475,7 +476,6 @@ const AddaddressPage = () => {
                     onChange={(e) => setemail(e.target.value)}
                     className={validationErrors.userName ? "error" : ""}
                   />
-                  <div onClick={handleOpenOtpModal}>Verify </div>
                 </div>
 
                 <div>
@@ -717,9 +717,9 @@ const AddaddressPage = () => {
               <div
                 style={{ display: "flex", justifyContent: "end", gap: "10px" }}
               >
-                <button type="submit" className="formbold-btn">
+                <Link onClick={handleSubmit} className="formbold-btn">
                   Submit
-                </button>
+                </Link>
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}

@@ -7,6 +7,7 @@ const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const Address = require("../models/address");
 const Razorpay = require("razorpay");
+const crypto = require("crypto");
 
 exports.signup = async (req, res) => {
   try {
@@ -386,7 +387,7 @@ const razorpay = new Razorpay({
 
 exports.payment = async (req, res) => {
   try {
-    //console.log(req.body);
+    console.log(req.body);
     const payment_capture = 1;
     const amount = 1;
     const currency = "INR"; // apply  condition accoding to country
@@ -407,5 +408,40 @@ exports.payment = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+  }
+};
+
+exports.paymentVerification = async (req, res) => {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+    req.body;
+
+  const body = razorpay_order_id + "|" + razorpay_payment_id;
+
+  const expectedSignature = crypto
+    .createHmac("sha256", "XBEo1dlSMj06gL9KEwlMxBZj")
+    .update(body.toString())
+    .digest("hex");
+
+  const isAuthentic = expectedSignature === razorpay_signature;
+  console.log(isAuthentic);
+  if (isAuthentic) {
+    // Database comes here
+
+    // await Payment.create({
+    //   razorpay_order_id,
+    //   razorpay_payment_id,
+    //   razorpay_signature,
+    // });
+
+    res.redirect(
+      `http://localhost:3000/paymentsuccess?reference=${razorpay_payment_id}`
+    );
+  } else {
+    res.redirect(
+      `http://localhost:3000/paymentfail?reference=${razorpay_payment_id}`
+    );
+    res.status(400).json({
+      success: false,
+    });
   }
 };

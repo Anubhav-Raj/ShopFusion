@@ -17,6 +17,8 @@ import Footer from "./components/footer/footer";
 import Loader from "./components/loader";
 import ProtectedRoute from "./utils/protectedRoute.js";
 import { loginData, loginSuccess } from "./redux/API/user_slice/login.slice.js";
+import PaymentSuccess from "./pages/paymentSucess.jsx";
+import PaymentFail from "./pages/paymentFaill.jsx";
 
 // Use React.lazy for lazy loading
 const Brandpage = lazy(() => import("./pages/Brand_page/Brandpage"));
@@ -71,11 +73,12 @@ function App() {
             <Route path="/post" element={<Mypost />} />
             {/* //------------------------------------------------------------------------------ */}
 
-            
             <Route path="/brand" element={<Brandpage />} />
             <Route path="/brand/:brandName" element={<MobileHome />} />
             <Route path="/mobile/:mobiledetail" element={<Mobiledetail />} />
             <Route path="/compair" element={<Compair />} />
+            <Route path="/paymentsuccess" element={<PaymentSuccess />} />
+            <Route path="/paymentfail" element={<PaymentFail />} />
 
             {/* Protected Routes */}
             {token && userData && <Route path="/post" element={<Mypost />} />}
