@@ -528,7 +528,6 @@ const AddMobile = ({
     }
   };
 
-  // console.log(uploadPhotos);
   return (
     <div className="formbold-main-wrapper">
       <div className="formbold-form-wrapper">

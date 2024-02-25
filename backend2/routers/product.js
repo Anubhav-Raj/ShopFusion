@@ -16,4 +16,5 @@ router.post(
 );
 router.get("/allbrands", protect, productCon.getAllBrands);
 router.post("/allmodelsonmodel", productCon.getModels);
+router.get("/userallproduct", protect, productCon.userAllProduct);
 module.exports = router;

@@ -1,22 +1,37 @@
 @font-face {
-    font-family: 'ProximaNova-Regular';
-    src: url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_0_0.eot");
-    src: url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.eot?#iefix") format("embedded-opentype"), url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.woff2") format("woff2"), url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.woff") format("woff"), url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.ttf") format("truetype"), url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.svg#wf") format("svg");
+  font-family: "ProximaNova-Regular";
+  src: url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_0_0.eot");
+  src: url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.eot?#iefix")
+      format("embedded-opentype"),
+    url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.woff2")
+      format("woff2"),
+    url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.woff")
+      format("woff"),
+    url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.ttf")
+      format("truetype"),
+    url("https://teja10.kuikr.com/public/fonts/proxima-nova/2E7201_1_0.svg#wf")
+      format("svg");
 }
 
 body {
-    font-size: 14px;
-    font: inherit;
-    background: #f2f2f2;
-    font-family: sans-serif;
-    line-height: 1;
-    color: #333;
+  font-size: 14px;
+  font: inherit;
+  background: #f2f2f2;
+  font-family: sans-serif;
+  line-height: 1;
+  color: #333;
 }
 
 * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.description-column {
+  max-height: 3.6em; /* Adjust the height as needed for one or two lines of text */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 /* 
 div {
@@ -832,195 +847,206 @@ i {
 
 /* These were inline style tags. Uses id+class to override almost everything */
 #style-RkAan.style-RkAan {
-    display: none;
+  display: none;
 }
 
 #style-H8Ugn.style-H8Ugn {
-    display: none;
+  display: none;
 }
 
 #style-STC3W.style-STC3W {
-    color: red;
+  color: red;
 }
-
 
 .snipcss-eBKL4 {
-    margin: 51px 15px 0px;
+  margin: 51px 15px 0px;
 }
-
-
-
-
 
 /* Apply styles to the container */
 .row.snipcss-JxGSH {
-    margin: 20px;
-    /* Adjust the margin as needed */
+  margin: 20px;
+  /* Adjust the margin as needed */
 }
 
 .container {
-    max-width: 1200px;
-    /* Adjust the maximum width as needed */
-    margin: 0 auto;
-    /* Center the container */
+  max-width: 1200px;
+  /* Adjust the maximum width as needed */
+  margin: 0 auto;
+  /* Center the container */
 }
 
 /* Style the button wrap */
 .btn-wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Style the "Add more" button */
 .btn.addrows {
-    background-color: #3498db;
-    /* Set your desired background color */
-    color: #fff;
-    /* Set your desired text color */
-    padding: 10px 20px;
-    /* Adjust padding as needed */
-    text-decoration: none;
-    border-radius: 5px;
-    /* Add border-radius for rounded corners */
+  background-color: #3498db;
+  /* Set your desired background color */
+  color: #fff;
+  /* Set your desired text color */
+  padding: 10px 20px;
+  /* Adjust padding as needed */
+  text-decoration: none;
+  border-radius: 5px;
+  /* Add border-radius for rounded corners */
 }
 
 /* Style the right wrap */
 .rightWrap {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 /* Style the primary button */
 .btn.btn-primary {
-    background-color: #2ecc71;
-    /* Set your desired background color */
-    color: #fff;
-    /* Set your desired text color */
-    padding: 10px 20px;
-    /* Adjust padding as needed */
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    /* Add border-radius for rounded corners */
-    margin-left: 10px;
-    /* Adjust the margin as needed */
+  background-color: #2ecc71;
+  /* Set your desired background color */
+  color: #fff;
+  /* Set your desired text color */
+  padding: 10px 20px;
+  /* Adjust padding as needed */
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  /* Add border-radius for rounded corners */
+  margin-left: 10px;
+  /* Adjust the margin as needed */
 }
 
 /* Style the "Buy premium pack" link */
 .btn.btn-primary.mkCta {
-    background-color: #e74c3c;
-    /* Set your desired background color */
-    color: #fff;
-    /* Set your desired text color */
-    padding: 10px 20px;
-    /* Adjust padding as needed */
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    /* Add border-radius for rounded corners */
-    margin-left: 10px;
-    /* Adjust the margin as needed */
+  background-color: #e74c3c;
+  /* Set your desired background color */
+  color: #fff;
+  /* Set your desired text color */
+  padding: 10px 20px;
+  /* Adjust padding as needed */
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  /* Add border-radius for rounded corners */
+  margin-left: 10px;
+  /* Adjust the margin as needed */
 }
 
 /* Hide the "Buy premium pack" link initially */
 .btn.btn-primary.mkCta.hide {
-    display: none;
+  display: none;
 }
 
 /* Add additional styles as needed */
 .form-grp input[type="checkbox"] {
-    /* Your styling here */
-    /* For example: */
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-    /* Add other styles as needed */
+  /* Your styling here */
+  /* For example: */
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  /* Add other styles as needed */
 }
 
 .table-scroll {
-    display: block;
-    margin-bottom: 10px;
-    overflow: scroll;
-    overflow-x: none;
-    scrollbar-width: 10px;
-    /* For Firefox */
-    scrollbar-color: #ccc #f5f5f5;
-    /* For Firefox */
+  display: block;
+  margin-bottom: 10px;
+  overflow: scroll;
+  overflow-x: none;
+  scrollbar-width: 10px;
+  /* For Firefox */
+  scrollbar-color: #ccc #f5f5f5;
+  /* For Firefox */
 
-    /* For WebKit (Chrome, Safari) */
-    &::-webkit-scrollbar {
-        width: 4px;
-    }
+  /* For WebKit (Chrome, Safari) */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
 
-    &::-webkit-scrollbar-track {
-        background-color: #f5f5f5;
-    }
+  &::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+  }
 
-    &::-webkit-scrollbar-thumb {
-        background-color: #ccc;
-        border-radius: 4px;
-    }
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
 
-    &::-webkit-scrollbar-thumb:hover {
-        background-color: #999;
-        height: 4px;
-        width: 4px;
-    }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #999;
+    height: 4px;
+    width: 4px;
+  }
 }
-
-
 
 /* Table */
 
 .components-table-demo-control-bar .ant-form-item {
-    margin-right: 16px !important;
-    margin-bottom: 8px !important;
+  margin-right: 16px !important;
+  margin-bottom: 8px !important;
 }
 
 .ant-table-cell {
-    width: 150px;
+  width: 150px;
 }
 
-:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper .ant-table-thead>tr>th,
-:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper .ant-table-thead>tr>td {
-    position: relative;
-    color: rgb(241 239 239 / 88%);
-    font-weight: 600;
-    text-align: start;
-    background: #605d5d;
-    border-bottom: 1px solid #a57f7f;
-    transition: background 0.2s ease;
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > td {
+  position: relative;
+  color: rgb(241 239 239 / 88%);
+  font-weight: 600;
+  text-align: start;
+  background: #605d5d;
+  border-bottom: 1px solid #a57f7f;
+  transition: background 0.2s ease;
 }
 
 :where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper .ant-table-cell,
-:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper .ant-table-thead>tr>th,
-:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper .ant-table-tbody>tr>th,
-:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper .ant-table-tbody>tr>td,
-:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper tfoot>tr>th,
-:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper tfoot>tr>td {
-    position: relative;
-    padding: 5px 10px;
-    overflow-wrap: break-word;
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > td,
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper tfoot > tr > th,
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper
+  tfoot
+  > tr
+  > td {
+  position: relative;
+  padding: 5px 10px;
+  overflow-wrap: break-word;
 }
 
 /* Add this CSS to your table.css or another stylesheet */
-.ant-table-tbody>tr:nth-child(odd) {
-    background-color: #f5f5f5;
-    /* Change this color to your preferred color */
+.ant-table-tbody > tr:nth-child(odd) {
+  background-color: #f5f5f5;
+  /* Change this color to your preferred color */
 }
 
-.ant-table-tbody>tr:nth-child(even) {
-    background-color: #ffffff;
-    /* Change this color to your preferred color */
+.ant-table-tbody > tr:nth-child(even) {
+  background-color: #ffffff;
+  /* Change this color to your preferred color */
 }
 
-.ant-table-tbody>tr:hover {
-    background-color: #e6f7ff;
-    /* Change this color to your preferred hover color */
+.ant-table-tbody > tr:hover {
+  background-color: #e6f7ff;
+  /* Change this color to your preferred hover color */
 }
 
 /* Add some padding to the cells for better readability */
 .ant-table-cell {
-    padding: 12px;
+  padding: 12px;
 }

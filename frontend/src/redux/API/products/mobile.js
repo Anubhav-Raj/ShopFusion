@@ -1,6 +1,5 @@
 /* eslint-disable no-unreachable */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import axios from "axios";
 
 const baseUrl = "http://localhost:5000/api/product/";
 const token = localStorage.getItem("ZoneHub");
@@ -94,20 +93,24 @@ export const mobileAPI = createApi({
         };
       },
     }),
-
-    getProductById: builder.query({
-      query: (productId) => `product/${productId}`,
-    }),
-    getAllProducts: builder.query({
-      query: () => "allProducts",
+    getUserProducts: builder.mutation({
+      query: () => {
+        return {
+          url: "userallproduct",
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+      invalidatesTags: ["mobilepost"],
     }),
   }),
 });
 
 export const {
   useCreateMobileMutation,
-  useGetProductByIdQuery,
-  useGetAllProductsQuery,
   useGetAllBrandMutation,
   useGetAllBrandModalMutation,
+  useGetUserProductsMutation,
 } = mobileAPI;

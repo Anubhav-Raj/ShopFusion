@@ -13,8 +13,13 @@ exports.protect = asyncHandler(async (request, response, next) => {
       const decode = jwt.verify(token, process.env.SECRET);
       request.user = await User.findById(decode.id)
         .select("-password")
-        .populate("addresses")
-        .populate("products");
+        .populate("addresses");
+      // .populate("products")
+      // .populate({
+      //   path: "products",
+      //   populate: { path: "enterAddress", model: "Address" },
+      // });
+      // popunlate inside the product modal of enterAddress
       next();
     } catch (error) {
       console.error(error);

@@ -23,6 +23,7 @@ import { useSelector } from "react-redux";
 import { loginData } from "../../redux/API/user_slice/login.slice";
 import { setUser } from "../../redux/API/user_slice/user.slice";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 const { Option } = AutoComplete;
 const AddaddressPage = () => {
   const token = localStorage.getItem("ZoneHub");
@@ -307,7 +308,7 @@ const AddaddressPage = () => {
       };
       setCode("");
       const result = await EmailotpMutation(formData);
-      console.log("Email OTP verification successful:", result);
+      // console.log("Email OTP verification successful:", result);
       if (result) {
         if (result && result.error && result.error.data) {
           message.error(result.error.data.message);
@@ -317,7 +318,7 @@ const AddaddressPage = () => {
       }
       setShowOtpModal(false);
     } catch (error) {
-      console.error("Error verifying email OTP:", error);
+      toast.error("Error verifying email OTP:", error);
       setShowOtpModal(false);
     }
   };

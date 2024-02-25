@@ -10,7 +10,7 @@ import { Select } from "antd";
 import { department } from "../../utils/data";
 
 const My_post = () => {
-  const [tableShow, setTableShow] = useState(true);
+  const [tableShow, setTableShow] = useState(false); // change here to hide table
 
   const tabItems = [
     { label: "Seller", value: "Seller" },
@@ -33,7 +33,7 @@ const My_post = () => {
   const [selectedcategories, setSelectedcategories] = useState();
   const [selectedsubcategories, setSelectedsubcategories] = useState();
   const [selectedsubcategoriesitem, setSelectedsubcategoriesitem] = useState();
-
+  // localStorage.setItem("selectedType", selectedType);
   const handleSelectedDepartment = (value) => {
     setSelectedDepartment(value);
     const selectedDepartmentCategories =
@@ -182,7 +182,9 @@ const My_post = () => {
           />
         </div>
       </div>
-      {tableShow ? (
+      {tableShow &&
+      selectedType === "Seller" &&
+      selecteddepartment === "Electronics & Electrical Supplies" ? (
         <AddMobile
           selectedType={selectedType}
           selecteddepartment={selecteddepartment}
