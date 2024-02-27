@@ -148,22 +148,25 @@ a:focus {
 
 .categories .content .icon {
   display: flex;
-  border: solid #5086fa;
+  border: solid #e2e2e2;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 11px;
   width: 200px;
   height: 180px;
-  line-height: 57px;
   margin: 0 auto;
   margin-bottom: 5px;
-  box-shadow: 0 2px 10px -1px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.15);
+}
+
+
+.categories .content .icon:hover {
+  border: 3px solid #619df5;
+
 }
 
 .categories .content:hover .icon img {
   transform: scale(1.1);
-  /* Scale the image to 110% of its original size */
   transition: transform 0.3s ease;
-  /* Apply a smooth transition effect */
 }
 
 
@@ -209,6 +212,22 @@ span.topings {
   justify-content: center;
 }
 
+span.topings1 {
+  display: flex;
+  background: white;
+  bottom: 3%;
+  width: auto;
+  border-radius: 11%;
+  font-size: 14px;
+  height: auto;
+  text-align: center;
+  left: 80%;
+  padding: 2%;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+}
+
 
 /* nsjnnjnddddddddddddddddddddddddddddddddddddddddddddddddddddddddd */
 .mainflexprovider {
@@ -238,9 +257,9 @@ span.topings {
   display: flex;
   width: 60%;
   margin: left;
-  /* margin-left: 56px; */
   align-items: center;
   justify-content: space-around;
+  flex-direction: row-reverse;
 }
 
 .form-data-wrapper1 {
@@ -437,7 +456,7 @@ span.crosstoclose:hover {
 }
 
 .categories.segments.snipcss-jPyl7 {
-  background: white;
+  /* background: white; */
   margin-top: 30px;
 }
 
@@ -451,33 +470,89 @@ span.ant-select-selection-placeholder {
 }
 
 h1.titlesh {
+  /* display: inline-block; */
   position: absolute;
   background: white;
   padding: 0px 22px;
-  left: 45%;
+  left: 5%;
   /* right: 45%; */
-  top: 100%;
+  top: -4%;
   color: #1d5a9f;
   width: auto;
   text-align-last: center;
 }
 
+h3.titlesh1 {
+  position: absolute;
+  background: white;
+  color: #5086fa;
+  width: auto;
+  top: -5%;
+  left: 5%;
+  padding: 0px 10px;
+  font-size: 18px;
+}
+
+/* .titlesh11 {
+  display: block;
+  position: absolute;
+  background: white;
+  color: #827e7e;
+  width: auto;
+  bottom: 0%;
+  z-index: 1;
+  left: 29%;
+  cursor: default;
+  padding: 0px 10px;
+  font-size: 15px;
+} */
+
 .sjiiudbs {
+  position: relative;
   display: flex;
   margin: 26px 59px;
   border: 3px solid #0d6efd;
-  border-radius: 22px;
-  overflow: hidden;
+ border-radius: 8px;
+  /* overflow: hidden; */
+  flex-direction: column;
+  padding: 31px 7px;
+}
+
+.topdivsellerscroll {
+  display: flex;
 }
 
 .sjiiudbs22 {
   display: flex;
+  position: relative;
   margin: 13px 11px;
   border: 3px solid #0d6efd;
-  border-radius: 22px;
+ border-radius: 8px;
   max-height: 268px;
-  overflow: hidden;
+  overflow-x: clip;
 }
+
+.sjiiudbs2222 {
+  display: flex;
+  position: relative;
+  margin: 13px 11px;
+  border: 3px solid #0d6efd;
+ border-radius: 8px;
+  max-height: 268px;
+  overflow-x: clip;
+}
+
+.sjiiudbs223 {
+  display: flex;
+  position: relative;
+  margin: 13px 11px;
+  border: 3px solid #0d6efd;
+ border-radius: 8px;
+  max-height: 268px;
+  width: 282px !important;
+  overflow-x: clip;
+}
+
 
 .sjiiudbs22 .row {
   display: flex;
@@ -491,29 +566,67 @@ h1.titlesh {
   overflow-y: hidden;
 }
 
+.sjiiudbs2222 .row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  /* align-content: center; */
+  justify-content: flex-start;
+}
+
+.sjiiudbs2222 .categories.segments.snipcss-jPyl7 {
+  overflow-y: hidden;
+  width: 100%;
+}
+
 .sjiikdudbs {
   padding: 2px;
   background: white;
 }
 
-/* Scrollbar */
 .categories.segments.snipcss-jPyl7::-webkit-scrollbar {
-  height: 5px; /* Width of the scrollbar */
+  height: 6px;
   background-color: transparent;
+  transition: background-color 1s ease;
+  /* Transition for background color */
 }
 
-/* Scrollbar Track */
-.categories.segments.snipcss-jPyl7::-webkit-scrollbar-track {
-  background-color: transparent;
+.categories.segments.snipcss-jPyl7:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+  /* Make scrollbar visible on hover */
+  background-color: rgb(97, 156, 204);
+  /* Change color on hover */
+  transition: background-color 2.3s ease-in-out;
+  /* Smooth transition for background color with a 3-second delay */
 }
 
-/* Scrollbar Thumb */
 .categories.segments.snipcss-jPyl7::-webkit-scrollbar-thumb {
-  background-color: rgba(50, 127, 191, 0.7); /* Color of the scrollbar thumb */
-  border-radius: 5px; /* Rounded corners */
+  animation: hideScrollbar 2s linear 3s forwards;
+  /* Delayed animation */
 }
 
-/* Hover effect on Scrollbar Thumb */
-.categories.segments.snipcss-jPyl7::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(50, 127, 191, 1); /* Change color on hover */
+/* Keyframe animation to hide the scrollbar after 2 seconds */
+@keyframes hideScrollbar {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
+
+
+
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-card .ant-card-body {
+  padding: 6px;
+  border-radius: 0 0 8px 8px;
+}
+
+.ccccccc {
+  max-height: none;
+}
+
+/* .categories.segments.snipcss-jPyl7:hover .titlesh11 {
+  display: flex !important;
+} */

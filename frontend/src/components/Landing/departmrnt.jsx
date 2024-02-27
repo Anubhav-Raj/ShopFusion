@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Imgss from "./monitor-removebg-preview.png";
 import Card from "./Card";
+import Itemcard from "./Itemcard";
 
 function Department() {
-  const departments = [
+  const departments = [  // update this data on select departmennt name >catagories>subcategory>items list
     {
       name: "Electronics",
       categories: [
@@ -26,12 +27,12 @@ function Department() {
         "Others",
       ],
     },
-    // Add more departments as needed
+  
   ];
 
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [selectedcategories, setSelectedcategories] = useState(
-    departments[0].categories // Default categories
+    departments[0].categories 
   );
   const [isInitialCardVisible, setIsInitialCardVisible] = useState(true);
 
@@ -44,40 +45,65 @@ function Department() {
     if (isInitialCardVisible == false) {
       setIsInitialCardVisible(true);
     } else {
-      setIsInitialCardVisible(false); // Close the popup
+      setIsInitialCardVisible(false);
     }
   };
 
   return (
     <>
       {isInitialCardVisible ? (
-        <div className="sjiikdudbs">
+        <fieldset className="sjiikdudbs">
           <div className="sjiiudbs">
             <h1 className="titlesh">Seller</h1>
-            <Card
-              categories={[
-                {
-                  name: selectedDepartment
-                    ? selectedDepartment
-                    : departments[0].name,
-                  image: Imgss,
-                },
-              ]}
-              onClick={() =>
-                handleDepartmentClick(
-                  selectedDepartment ? selectedDepartment : departments[0].name
-                )
-              }
-            />
-            <div className="sjiiudbs22">
-              <Card
+            <div className="topdivsellerscroll">
+              <div className="sjiiudbs223">
+                <h3 className="titlesh1"> Department</h3>
+                {/* <h3 className="titlesh11"> View More</h3> */}
+
+                <Card  // department list is showed here
+                  categories={[ 
+                    {
+                      name: selectedDepartment
+                        ? selectedDepartment   
+                        : departments[0].name,
+                      image: Imgss,
+                    },
+                  ]}
+                  onClick={() =>
+                    handleDepartmentClick(
+                      selectedDepartment
+                        ? selectedDepartment
+                        : departments[0].name
+                    )
+                  }
+                />
+              </div>
+
+              <div className="sjiiudbs22">
+                <h3 className="titlesh1">Category</h3>
+                <Card // category list is showed here
+                  categories={selectedcategories.map((subcategory) => ({
+                    name: subcategory,
+                  }))}
+                />
+              </div>
+            </div>
+            <div className="sjiiudbs2222">
+              <h3 className="titlesh1"> Sub Category</h3>
+              <Card //subcategory list is showed here
                 categories={selectedcategories.map((subcategory) => ({
                   name: subcategory,
                 }))}
               />
             </div>
+            <div className="sjiiudbs22 ccccccc">  
+            {/* //item list is showed here */}
+              <h3 className="titlesh1"> Items</h3> 
+              <Itemcard />   
+              
+            </div>
           </div>
-        </div>
+        </fieldset>
       ) : (
         <div className="alignmentflx">
           <div className="page">
@@ -86,7 +112,7 @@ function Department() {
                 <div className="left">
                   <span
                     className="crosstoclose"
-                    onClick={() => setIsInitialCardVisible(true)} // Close the popup
+                    onClick={() => setIsInitialCardVisible(true)} 
                   >
                     x
                   </span>
