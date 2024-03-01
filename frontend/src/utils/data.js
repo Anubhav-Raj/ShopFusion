@@ -992,6 +992,28 @@ export const department = [
   {
     label: "Electronics & Electrical Supplies",
     value: "Electronics & Electrical Supplies",
+    categories: [
+      {
+        value: "Mobile Phones, Accessories & Parts",
+        label: "Mobile Phones, Accessories & Parts",
+        subcategories: [
+          {
+            value: "Mobile Phones",
+            label: "Mobile Phones",
+            subCategoriesitem: [
+              {
+                value: "Android Mobile Phones",
+                label: "Android Mobile Phones",
+              },
+              {
+                value: "Gsm Mobile Phone",
+                label: "Gsm Mobile Phone",
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
   {
     label: "Energy & Power",

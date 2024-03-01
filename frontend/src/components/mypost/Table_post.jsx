@@ -2,31 +2,43 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import { Button, Table } from "antd";
+import { Modal, Carousel } from "antd";
 import "./table.css";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { useGetUserProductsMutation } from "../../redux/API/products/mobile";
-import { DeleteOutlined } from "@ant-design/icons";
+import { useGetUserProductsQuery } from "../../redux/API/products/mobile";
+import { DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { EyeOutlined } from "@ant-design/icons";
 import { EditOutlined } from "@ant-design/icons";
 import { loginData } from "../../redux/API/user_slice/login.slice";
-
-function Table_post({ setTableShow }) {
+import { Link } from "react-router-dom";
+import EditMobile from "../../pages/mypost/Mobile/editMobile";
+import moment from "moment";
+import { useDeleteMobileMutation } from "../../redux/API/products/mobile";
+const { confirm } = Modal;
+function Table_post({ setTableShow, setEditTable, setId }) {
   const token = localStorage.getItem("ZoneHub");
   const userData = useSelector(loginData);
   const [bordered] = useState(true);
   const [showHeader] = useState(true);
-  const [hasData] = useState(true);
+  const [hasData, setHasData] = useState(false);
   const [yScroll] = useState(false);
   const [xScroll] = useState("fixed");
   const [products, setProducts] = useState([]);
-  const [getUserProducts] = useGetUserProductsMutation();
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
-  const [deadlineDate, setDeadlineDate] = useState("Feb 30, 2024");
+  const [deadlineDate, setDeadlineDate] = useState(null);
   const [selectedRow, setSelectedRow] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [imagesToDisplay, setImagesToDisplay] = useState([]);
+
+  // Function to handle opening the modal and setting the images to display
+  const handleViewImages = (images) => {
+    setImagesToDisplay(images);
+    setModalVisible(true);
+  };
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -34,33 +46,103 @@ function Table_post({ setTableShow }) {
     },
   };
 
-  const gettime = () => {
-    const time = Date.parse(deadlineDate) - Date.now();
-    setDays(Math.floor(time / (1000 * 60 * 60 * 24)));
-    setHours(Math.floor((time / (1000 * 60 * 60)) % 24));
-    setMinutes(Math.floor((time / 1000 / 60) % 60));
-    setSeconds(Math.floor((time / 1000) % 60));
+  const { isLoading, data } = useGetUserProductsQuery("");
+  useEffect(() => {
+    if (!isLoading && data) {
+      setHasData(true);
+      if (data.products) {
+        const t = data.products.map((element) => {
+          const newPropsObj = {
+            status: element.status,
+            created: element.createdAt,
+            update: element.updatedAt,
+          };
+
+          return { ...element, data: newPropsObj };
+        });
+        setProducts(t);
+      }
+    }
+  }, [isLoading, data]);
+  const [deleteMobileMutation] = useDeleteMobileMutation();
+  const handleDeleteProduct = async (productId) => {
+    // Implement your logic to delete the product with the given productId
+    confirm({
+      title: "Are you sure you want to delete this product?",
+      icon: <ExclamationCircleOutlined />,
+      // content: "This action cannot be undone.",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      async onOk() {
+        // Mark the onOk function as async
+        try {
+          // Implement your logic to delete the product with the given productId
+          const response = await deleteMobileMutation(productId);
+          console.log("response", response);
+
+          // Assuming setProducts is a state updater function
+          setProducts((prevProducts) =>
+            prevProducts.filter((product) => product._id !== productId)
+          );
+
+          toast.success("Product deleted successfully");
+        } catch (error) {
+          console.error("Error deleting product:", error);
+          toast.error("Failed to delete product");
+        }
+      },
+    });
   };
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => gettime(deadlineDate), 1000);
-  //   return () => clearInterval(interval);
-  // }, []);
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    return date.toLocaleString("en-US", options);
+  }
 
-  const renderStatusColumn = () => {
+  const renderdata = (data) => {
+    const createdAtDate = new Date(data.created);
+    createdAtDate.setMonth(createdAtDate.getMonth() + 1);
+    const formattedDate = createdAtDate.toISOString().slice(0, 19);
+    const deadlineDate = formatDate(formattedDate); // Calculate deadline date here
+    const timeRemaining = Math.max(0, Date.parse(deadlineDate) - Date.now());
+    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((timeRemaining / 1000 / 60) % 60);
+    const seconds = Math.floor((timeRemaining / 1000) % 60);
+
     return `${days} D ${hours} H ${minutes} M ${seconds} S`;
   };
+
   useEffect(() => {
-    const FetchData = async () => {
-      try {
-        const response = await getUserProducts();
-        setProducts(response.data.products);
-      } catch (error) {
-        toast.error("Error fetching Product data");
-      }
-    };
-    FetchData();
+    // Function to update countdown every second
+    const interval = setInterval(() => {
+      setProducts((prevProducts) =>
+        prevProducts.map((product) => {
+          const timeRemaining = Math.max(
+            0,
+            Date.parse(product.deadlineDate) - Date.now()
+          );
+          const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((timeRemaining / 1000 / 60) % 60);
+          const seconds = Math.floor((timeRemaining / 1000) % 60);
+          return {
+            ...product,
+            countdown: `${days} D ${hours} H ${minutes} M ${seconds} S`,
+          };
+        })
+      );
+    }, 1000);
+    // Clear interval on component unmount
+    return () => clearInterval(interval);
   }, []);
+
   const columns = [
     {
       title: "S.no",
@@ -74,37 +156,59 @@ function Table_post({ setTableShow }) {
       dataIndex: "Action",
       children: [
         {
-          title: "View",
-          width: 65,
-          fixed: "left",
-          render: () => <Button icon={<EyeOutlined />} />,
-        },
-        {
           title: "Edit",
           width: 65,
+          dataIndex: "_id",
           fixed: "left",
-          render: () => <Button icon={<EditOutlined />} />,
+          render: (id) => (
+            <>
+              <div
+                onClick={() => {
+                  setId(id);
+                  setEditTable(true);
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon icon-tabler icon-tabler-eye-edit"
+                  style={{ fill: "transparent" }}
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                  <path d="M11.192 17.966c-3.242 -.28 -5.972 -2.269 -8.192 -5.966c2.4 -4 5.4 -6 9 -6c3.326 0 6.14 1.707 8.442 5.122" />
+                  <path d="M18.42 15.61a2.1 2.1 0 0 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39z" />
+                </svg>
+              </div>
+            </>
+          ),
         },
         {
           title: "Delete",
           width: 65,
           fixed: "left",
-          render: () => <Button icon={<DeleteOutlined />} />,
+          render: (id) => (
+            <Button
+              icon={<DeleteOutlined />}
+              onClick={() => handleDeleteProduct(id._id)} // Call handleDeleteProduct with the product ID
+            />
+          ),
         },
       ],
     },
-
     {
       title: "Status",
-      dataIndex: "status",
-      // render: (item) => {
-      //   // console.log(item);
-      //   if (item) {
-      //   } else {
-      //     setDeadlineDate();
-      //   }
-      // },
+      dataIndex: "data",
       //render: renderStatusColumn,
+      render: (data) => renderdata(data),
+
       key: "status",
       filters: [
         {
@@ -118,6 +222,7 @@ function Table_post({ setTableShow }) {
       ],
       onFilter: (value, record) => record.status === value,
     },
+
     {
       title: "Type Of Seller",
       dataIndex: "sellerType",
@@ -292,19 +397,87 @@ function Table_post({ setTableShow }) {
       dataIndex: "images",
       className: "description-column",
       key: "images",
+
+      render: (images) => (
+        <Button onClick={() => handleViewImages(images)}>View Images</Button>
+      ),
     },
     {
       title: "Video",
       dataIndex: "video",
       key: "video",
+      render: (id) => (
+        <>
+          <Link
+            target="_blanck"
+            to={`http://localhost:5000/uploads/videos/${id}`}
+          >
+            View Video
+          </Link>
+        </>
+      ),
     },
+
     {
       title: "File",
       dataIndex: "file",
       key: "file",
+      render: (id) => (
+        <>
+          {" "}
+          <Link
+            target="_blanck"
+            to={`http://localhost:5000/uploads/files/${id}`}
+          >
+            View File{" "}
+          </Link>
+        </>
+      ),
+    },
+    {
+      title: "Created At",
+      dataIndex: "createdAt",
+      render: (createdAt) => {
+        return <label>{formatDate(createdAt)}</label>;
+      },
     },
   ];
 
+  const renderImagesModal = () => (
+    <Modal
+      title="Image Gallery"
+      visible={modalVisible}
+      onCancel={() => setModalVisible(false)}
+      footer={null}
+    >
+      <>
+        <div className="flex">
+          {imagesToDisplay && imagesToDisplay.length > 0 && (
+            <div>
+              {imagesToDisplay.map((item, index) => (
+                <div
+                  key={index}
+                  style={{
+                    position: "relative",
+                    display: "inline-block",
+                    marginRight: "10px",
+                  }}
+                >
+                  <img
+                    width={200}
+                    height={200}
+                    style={{ objectFit: "contain" }}
+                    src={`http://localhost:5000/uploads/images/${item}`}
+                    alt=""
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </>
+    </Modal>
+  );
   const scroll = {};
   if (yScroll) {
     scroll.y = 240;
@@ -370,7 +543,7 @@ function Table_post({ setTableShow }) {
       body: JSON.stringify(formdata),
     }).then((t) => t.json());
 
-    console.log(data);
+    // console.log(data);
     if (!data) {
       alert("Server error. Are you online?");
       return;
@@ -403,11 +576,7 @@ function Table_post({ setTableShow }) {
 
   return (
     <>
-      <div
-        style={{
-          padding: "0px 45px",
-        }}
-      >
+      <div style={{ padding: "0px 45px" }}>
         <Table
           {...tableProps}
           columns={tableColumns}
@@ -420,6 +589,7 @@ function Table_post({ setTableShow }) {
             marginTop: "50px",
           }}
         />
+        {renderImagesModal()}
       </div>
 
       <div className="row snipcss-JxGSH">

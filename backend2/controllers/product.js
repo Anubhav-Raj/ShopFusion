@@ -34,7 +34,6 @@ exports.createMobile = async (req, res) => {
       modelExsist = new ModelBrand({ name: model, brand: brandExsist._id });
       await modelExsist.save();
     }
-    // return console.log( req.files.uploadPhotos, req.files.uploadVideo, req.files.uploadFile );
 
     const p = new Product({
       user: req.user._id,
@@ -83,6 +82,131 @@ exports.createMobile = async (req, res) => {
       message: "Verify Faild",
       isError: true,
     });
+  }
+};
+
+exports.editmobile = async (req, res) => {
+  try {
+    // Input validation
+    const requiredFields = [
+      "id",
+      "sellerType",
+      "sellerName",
+      "gstNumber",
+      "color",
+      "selectBrand",
+      "selectModel",
+      "mobileName",
+      "condition",
+      "yearOfPurchase",
+      "availableQuantity",
+      "minimumOrder",
+      "price",
+      "paymentMode",
+      "serviceMode",
+      "enterAddress",
+      "googleDriveLink",
+      "mobileDescription",
+      "uploadPhotos",
+      "uploadFile",
+      "uploadVideo",
+    ];
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        return res
+          .status(400)
+          .json({ message: `${field} is required`, isError: true });
+      }
+    }
+
+    const product = await Product.findById(req.body.id);
+    if (!product) {
+      return res
+        .status(404)
+        .json({ message: "Product not found", isError: true });
+    }
+    if (product.user.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: "Not authorized", isError: true });
+    }
+
+    // Process brand and model
+    const brand = req.body.selectBrand.toLowerCase().trim();
+    const model = req.body.selectModel.toLowerCase().trim();
+
+    // Check if brand exists, if not, create it
+    let brandExsist = await Brand.findOne({ name: brand });
+    if (!brandExsist) {
+      brandExsist = new Brand({ name: brand });
+      await brandExsist.save();
+    }
+
+    // Check if model exists, if not, create it
+    let modelExsist = await ModelBrand.findOne({ name: model });
+    if (!modelExsist) {
+      modelExsist = new ModelBrand({ name: model, brand: brandExsist._id });
+      await modelExsist.save();
+    }
+
+    // Update product fields
+    product.sellerType = req.body.sellerType;
+    product.sellerName = req.body.sellerName;
+    product.gstNumber = req.body.gstNumber;
+    product.color = req.body.color;
+    product.selectBrand = brandExsist._id;
+    product.selectModel = modelExsist._id;
+    product.mobileName = req.body.mobileName;
+    product.condition = req.body.condition;
+    product.yearOfPurchase = req.body.yearOfPurchase;
+    product.availableQuantity = req.body.availableQuantity;
+    product.minimumOrder = req.body.minimumOrder;
+    product.price = req.body.price;
+    product.paymentMode = req.body.paymentMode;
+    product.serviceMode = req.body.serviceMode;
+    product.enterAddress = req.body.enterAddress;
+    product.googleDriveLink = req.body.googleDriveLink;
+    product.mobileDescription = req.body.mobileDescription;
+
+    // Process file uploads
+    product.images = req.files.uploadPhotos.map((photo) => photo.filename);
+    product.file = req.files.uploadFile[0].filename;
+    product.video = req.files.uploadVideo[0].filename;
+
+    // Save product changes
+    await product.save();
+
+    res.json({ message: "Product updated", isError: false });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).json({ message: "Internal server error", isError: true });
+  }
+};
+exports.deletemobile = async (req, res) => {
+  console.log("Body", req.body);
+  try {
+    // Input validation
+    if (!req.body.id || typeof req.body.id !== "string") {
+      return res
+        .status(400)
+        .json({ message: "Invalid product ID", isError: true });
+    }
+
+    // Authorization check
+    const product = await Product.findById(req.body.id);
+    if (!product) {
+      return res
+        .status(404)
+        .json({ message: "Product not found", isError: true });
+    }
+    if (product.user.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: "Not authorized", isError: true });
+    }
+
+    // Deletion
+    await product.deleteOne();
+    res.json({ message: "Product removed", isError: false });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    res.status(500).json({ message: "Internal server error", isError: true });
   }
 };
 

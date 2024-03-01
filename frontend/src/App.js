@@ -33,7 +33,9 @@ const SellerPage = lazy(() => import("./pages/Seller/Seller_page.jsx"));
 const Mypost = lazy(() => import("./pages/mypost/My_post.jsx"));
 
 const AddMobile = lazy(() => import("./pages/mypost/Mobile/AddMobile.jsx"));
+const EditMobile = lazy(() => import("./pages/mypost/Mobile/editMobile.jsx"));
 const AddaddressPage = lazy(() => import("./pages/profile/profile.jsx"));
+
 function App() {
   const [userByID] = useUserByIDMutation();
   const dispatch = useDispatch();
@@ -83,11 +85,11 @@ function App() {
             {/* Protected Routes */}
             {token && userData && <Route path="/post" element={<Mypost />} />}
             {token && userData && (
-              <Route path="/addmobile" element={<AddMobile />} />
-            )}
-            {token && userData && (
               <Route path="/address" element={<AddaddressPage />} />
             )}
+            {/* {token && userData && (
+              <Route path="/mobileedit" element={<EditMobile />} />
+            )} */}
           </Routes>
         </Suspense>
         <Toaster position="bottom-center" />

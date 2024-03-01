@@ -8,25 +8,6 @@ export const useMobileFormState = () => {
   const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
 
-  // const addressoption =
-  //   userData &&
-  //   userData.addresses.map((element) => {
-  //     const newPropsObj = {
-  //       value: element._id,
-  //       label: `${element.userName}, \n ${element.flatHouseNo} ${element.areaStreetVillage}`,
-  //     };
-
-  //     if (
-  //       element.phoneNumber.isVerified &&
-  //       element.altNumber.isVerified &&
-  //       element.email.isVerified
-  //     ) {
-  //       return { ...element, ...newPropsObj };
-  //     } else {
-  //       return {}; // or return the original element if conditions are not met
-  //     }
-  //   });
-
   const addressoption =
     userData &&
     userData.addresses
@@ -40,10 +21,6 @@ export const useMobileFormState = () => {
         value: element._id,
         label: `${element.userName}, \n ${element.flatHouseNo} ${element.areaStreetVillage}`,
       }));
-
-  // console.log(addressOptions);
-
-  // console.log(addressoption);
 
   const allgstNumber =
     userData &&
@@ -191,7 +168,6 @@ export const useMobileFormState = () => {
     setUploadVideoError,
     uploadFileError,
     setUploadFileError,
-
     addressoption,
     allgstNumber,
   };

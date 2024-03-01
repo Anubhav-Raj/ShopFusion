@@ -2,16 +2,16 @@
 /* eslint-disable array-callback-return */
 import React, { useState } from "react";
 import "./mypost.css";
-import MY_post_list from "../../components/mypost/MY_post_list"; // Make sure the path is correct
-import Dropdown1 from "../../components/mypost/dropdown";
 import Table_post from "../../components/mypost/Table_post";
 import AddMobile from "./Mobile/AddMobile";
 import { Select } from "antd";
 import { department } from "../../utils/data";
+import EditMobile from "./Mobile/editMobile";
 
 const My_post = () => {
   const [tableShow, setTableShow] = useState(false); // change here to hide table
-
+  const [edittableshow, setEditTable] = useState(false);
+  const [id, setId] = useState(null);
   const tabItems = [
     { label: "Seller", value: "Seller" },
     { label: "Buyer", value: "Buyer" },
@@ -27,13 +27,11 @@ const My_post = () => {
   const [categories, setCategories] = useState();
   const [subcategories, setSubCategories] = useState();
   const [item, setItem] = useState();
-
   const [selectedType, setSelectedselectedType] = useState();
   const [selecteddepartment, setSelectedDepartment] = useState();
   const [selectedcategories, setSelectedcategories] = useState();
   const [selectedsubcategories, setSelectedsubcategories] = useState();
   const [selectedsubcategoriesitem, setSelectedsubcategoriesitem] = useState();
-  // localStorage.setItem("selectedType", selectedType);
   const handleSelectedDepartment = (value) => {
     setSelectedDepartment(value);
     const selectedDepartmentCategories =
@@ -182,9 +180,8 @@ const My_post = () => {
           />
         </div>
       </div>
-      {tableShow &&
-      selectedType === "Seller" &&
-      selecteddepartment === "Electronics & Electrical Supplies" ? (
+
+      {tableShow && (
         <AddMobile
           selectedType={selectedType}
           selecteddepartment={selecteddepartment}
@@ -193,9 +190,21 @@ const My_post = () => {
           selectedsubcategoriesitem={item}
           setTableShow={setTableShow}
         />
-      ) : null}
+      )}
+      {edittableshow && <EditMobile id={id} setEditTable={setEditTable} />}
 
-      <Table_post setTableShow={setTableShow} />
+      {selectedType === "Seller" &&
+      selecteddepartment === "Electronics & Electrical Supplies" &&
+      categories === "Mobile Phones, Accessories & Parts" &&
+      subcategories === "Mobile Phones" &&
+      item === "Android Mobile Phones" ? (
+        <></>
+      ) : null}
+      <Table_post
+        setTableShow={setTableShow}
+        setEditTable={setEditTable}
+        setId={setId}
+      />
     </>
   );
 };

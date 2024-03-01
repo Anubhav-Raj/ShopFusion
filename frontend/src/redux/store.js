@@ -10,7 +10,7 @@ import { AddressAPI } from "./API/products/profile";
 import userinfo from "./API/user_slice/user.slice";
 import loginReducer from "./API/user_slice/login.slice";
 import { CheckUniqueAPI } from "./API/uniqueIdentification";
-
+import { mobileproduct } from "./API/products/mobile.reducer.js";
 const store = configureStore({
   reducer: {
     [userAPI.reducerPath]: userAPI.reducer,
@@ -18,6 +18,7 @@ const store = configureStore({
     [OtpAPI.reducerPath]: OtpAPI.reducer,
     [CheckUniqueAPI.reducerPath]: CheckUniqueAPI.reducer,
     [AddressAPI.reducerPath]: AddressAPI.reducer,
+    [mobileproduct.name]: mobileproduct.reducer,
     [userReducer.name]: userReducer.reducer,
     brands: brandReducer,
     products: productReducer,

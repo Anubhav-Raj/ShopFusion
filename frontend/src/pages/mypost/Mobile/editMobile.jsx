@@ -13,12 +13,15 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import toast from "react-hot-toast";
 import {
   useCreateMobileMutation,
   useGetAllBrandMutation,
   useGetAllBrandModalMutation,
-  useGetUserProductsMutation,
+  useGetUserProductsQuery,
+  useEditMobileMutation,
 } from "../../../redux/API/products/mobile";
+import { Link, useParams } from "react-router-dom";
 import {
   useMobileFormState,
   sellerTypeOptions,
@@ -27,9 +30,11 @@ import {
   serviceModeOptions,
   colores,
 } from "./MobileFormState";
-import useRecaptchaV3 from "../../../Hooks/reCaptchaV3/index.js";
+// import useRecaptchaV3 from "../../../Hooks/reCaptchaV3/index.js";
 import { useUserByIDMutation } from "../../../redux/API/user.js";
 import { useDispatch, useSelector } from "react-redux";
+import { DeleteOutlined } from "@ant-design/icons";
+
 import {
   selectUserData,
   setUser,
@@ -44,101 +49,18 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-const AddMobile = ({
-  selectedType,
-  selecteddepartment,
-  selectedcategories,
-  selectedsubcategories,
-  selectedsubcategoriesitem,
-  setTableShow,
-}) => {
+const EditMobile = ({ id, setEditTable }) => {
+  // const { id } = useParams();
   const [listBrends, setListBrends] = useState([]);
   const [listBrendsModal, setListBrendsModal] = useState([]);
+  const [mobile, setMobileData] = useState(null);
   const [userByID] = useUserByIDMutation();
+  const { data, isLoading, isError } = useGetUserProductsQuery("");
   const [allbrands] = useGetAllBrandMutation();
   const [brandModal] = useGetAllBrandModalMutation();
-  const [createMobileMutation] = useCreateMobileMutation();
-
+  const [editMobileMutation] = useEditMobileMutation();
   const dispatch = useDispatch();
-
   const token = localStorage.getItem("ZoneHub");
-  const userData = useSelector(selectUserData);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!token) {
-          console.error("Token not available");
-          return;
-        }
-        const { data } = await userByID();
-
-        dispatch(setUser(data.user));
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!token) {
-          console.error("Token not available");
-          return;
-        }
-        const { data } = await allbrands();
-        setListBrends(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const handlebrandModal = async (brandId) => {
-    try {
-      if (!token) {
-        console.error("Token not available");
-        return;
-      }
-      const formdata = {
-        brandId: brandId,
-      };
-      const { data } = await brandModal(formdata);
-      setListBrendsModal(data);
-      //console.log(data);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-
-  const brandList =
-    listBrends &&
-    listBrends.map((element) => {
-      const newPropsObj = {
-        value: element._id,
-        label: element.name,
-      };
-
-      return { ...element, ...newPropsObj };
-    });
-  const brandmodalList =
-    listBrendsModal &&
-    listBrendsModal.map((element) => {
-      const newPropsObj = {
-        value: element._id,
-        label: element.name,
-      };
-
-      return { ...element, ...newPropsObj };
-    });
-
-  const executeRecaptcha = useRecaptchaV3(
-    "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
-  );
   const {
     sellerType,
     setSellerType,
@@ -231,8 +153,144 @@ const AddMobile = ({
     addressoption,
     allgstNumber,
   } = useMobileFormState();
+  useEffect(() => {
+    if (!isLoading && !isError) {
+      // Find the mobile product data by ID
+      const mobile = data && data.products.find((item) => item._id === id);
+      if (mobile) {
+        // Extract address information
+        const { userName, flatHouseNo, areaStreetVillage, _id } =
+          mobile.enterAddress;
+
+        // Construct the address object
+        const address = {
+          value: _id,
+          label: `${userName}, \n ${flatHouseNo} ${areaStreetVillage}`,
+        };
+        const newObjWithAddress = { ...mobile, address };
+        setMobileData(newObjWithAddress);
+
+        // Extract brand information
+        const { _id: brandId, name: brandName } = mobile.selectBrand;
+        const brand = {
+          value: brandId,
+          label: brandName,
+        };
+        const newObjWithBrand = { ...newObjWithAddress, brand };
+        setMobileData(newObjWithBrand);
+
+        // Extract model information
+        const { _id: modelId, name: modelName } = mobile.selectModel;
+        const model = {
+          value: modelId,
+          label: modelName,
+        };
+        const newObjWithModel = { ...newObjWithBrand, model };
+        setMobileData(newObjWithModel);
+      }
+    }
+  }, [isLoading, isError, data, id]);
+
+  const [uploadeditimage, setuploadeditimage] = useState([]);
+  useEffect(() => {
+    if (mobile) {
+      setSellerType(mobile.sellerType);
+      setSellerName(mobile.sellerName);
+      setGstNumber(mobile.gstNumber);
+      setColor(mobile.color);
+      setSelectBrand(mobile.selectBrand);
+      setSelectModel(mobile.selectModel);
+      setMobileName(mobile.mobileName);
+      setCondition(mobile.condition);
+      setYearOfPurchase(mobile.yearOfPurchase);
+      setAvailableQuantity(mobile.availableQuantity);
+      setMinimumOrder(mobile.minimumOrder);
+      setPrice(mobile.price);
+      setPaymentMode(mobile.paymentMode);
+      setServiceMode(mobile.serviceMode);
+      setEnterAddress(mobile.address);
+      setGoogleDriveLink(mobile.googleDriveLink);
+      setMobileDescription(mobile.mobileDescription);
+      setuploadeditimage(mobile.images);
+      setUploadVideo(mobile.video);
+      setUploadFile(mobile.file);
+    }
+  }, [mobile]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (!token) {
+          console.error("Token not available");
+          return;
+        }
+        const { data } = await userByID();
+        dispatch(setUser(data.user));
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (!token) {
+          console.error("Token not available");
+          return;
+        }
+        const { data } = await allbrands();
+        setListBrends(data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handlebrandModal = async (brandId) => {
+    try {
+      if (!token) {
+        console.error("Token not available");
+        return;
+      }
+      const formdata = {
+        brandId: brandId,
+      };
+      const { data } = await brandModal(formdata);
+      setListBrendsModal(data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const brandList =
+    listBrends &&
+    listBrends.map((element) => {
+      const newPropsObj = {
+        value: element._id,
+        label: element.name,
+      };
+
+      return { ...element, ...newPropsObj };
+    });
+  const brandmodalList =
+    listBrendsModal &&
+    listBrendsModal.map((element) => {
+      const newPropsObj = {
+        value: element._id,
+        label: element.name,
+      };
+
+      return { ...element, ...newPropsObj };
+    });
+
+  // const executeRecaptcha = useRecaptchaV3(
+  //   "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
+  // );
 
   const handleCancel = () => setPreviewOpen(false);
+
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -330,7 +388,7 @@ const AddMobile = ({
   };
   const beforeUpload = (files) => {
     let isValid = true;
-
+    //setUploadFile("");
     files.forEach((file) => {
       const isJpgOrPng =
         file.type === "image/jpeg" || file.type === "image/png";
@@ -351,10 +409,11 @@ const AddMobile = ({
 
     return isValid;
   };
-
+  // console.log(uploadPhotos);
+  console.log(enterAddress);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const recaptchaToken = await executeRecaptcha("addmobile");
+    // const recaptchaToken = await executeRecaptcha("addmobile");
     // Reset error messages
     setSellerTypeError("");
     setSellerNameError("");
@@ -378,7 +437,6 @@ const AddMobile = ({
     setUploadFileError("");
     try {
       let isValid = true;
-
       // Validation for sellerType
       if (!sellerType) {
         setSellerTypeError("Seller type is required");
@@ -464,18 +522,24 @@ const AddMobile = ({
       }
 
       // Validation for uploadPhotos
-      if (!uploadPhotos || uploadPhotos.length === 0) {
+      if (
+        !uploadPhotos ||
+        uploadPhotos.length === 0 ||
+        !uploadeditimage ||
+        uploadeditimage.length === 0
+      ) {
         setUploadPhotosError("Upload at least one photo");
-
         isValid = false;
       }
-
-      if (!beforeUpload(uploadPhotos)) {
+      const totalimagelngth = uploadPhotos.length + uploadeditimage.length;
+      if (!uploadPhotos || totalimagelngth > 6) {
+        setUploadPhotosError("Upload only 6  photos");
         isValid = false;
       }
 
       // If validation fails, return early
       if (!isValid) {
+        toast.error("Please fill all the required fields");
         return;
       }
 
@@ -499,29 +563,25 @@ const AddMobile = ({
         googleDriveLink,
         mobileDescription,
         uploadPhotos,
+        uploadeditimage,
         uploadVideo,
         uploadFile,
-        recaptchaToken,
-        selectedType,
-        selecteddepartment,
-        selectedcategories,
-        selectedsubcategories,
-        selectedsubcategoriesitem,
       };
+      console.log(selectBrand);
 
       // Object.entries(formData).forEach(([key, value]) => {
       //   console.log(`${key}: ${value}`);
       // });
+      // return;
       // Trigger the createMobile mutation
-      const result = await createMobileMutation(formData);
-
+      const result = await editMobileMutation(formData);
+      console.log(result);
       // Handle the success response
-      console.log("Mobile created successfully:", result);
+
       message.success("Mobile created successfully");
 
       // Reset the form after successful submission
       resetForm();
-      setTableShow(false);
     } catch (error) {
       // Handle the error
       console.error("Error creating mobile:", error);
@@ -529,10 +589,25 @@ const AddMobile = ({
     }
   };
 
+  const [hoverIndex, setHoverIndex] = useState(null);
+
+  const handleMouseEnter = (index) => {
+    setHoverIndex(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverIndex(null);
+  };
+
+  const handleDelete = (index) => {
+    const updatedPhotos = uploadeditimage.filter((_, i) => i !== index);
+    setuploadeditimage(updatedPhotos);
+  };
+  // console.log("uploadeditimage", uploadeditimage);
   return (
-    <div className="formbold-main-wrapper">
-      <div className="formbold-form-wrapper">
-        <h4>Add Mobile</h4>
+    <div className="  formbold-main-wrapper">
+      <div className=" formbold-form-wrapper">
+        <h4>Edit Mobile</h4>
         <form onSubmit={handleSubmit}>
           {/* First row */}
           <div className="formbold-input-flex">
@@ -544,13 +619,14 @@ const AddMobile = ({
                 style={{ width: 300, height: 50 }}
                 placeholder="Choose Seller name"
                 options={sellerTypeOptions}
+                value={sellerType}
                 filterOption={true}
                 onSelect={(val) => {
                   setSellerType(val);
                   setSellerTypeError("");
                 }}
                 onSearch={(val) => {
-                  console.log(val);
+                  // console.log(val);
                 }}
               />
               {/* Display error message */}
@@ -566,6 +642,7 @@ const AddMobile = ({
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter sallername"
                 filterOption={true}
+                value={sellerName}
                 onSelect={(val) => {
                   setSellerName(val);
                 }}
@@ -585,6 +662,7 @@ const AddMobile = ({
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter GST Number"
                 options={allgstNumber}
+                value={gstNumber}
                 filterOption={true}
                 onSelect={(val) => {
                   setGstNumber(val);
@@ -604,6 +682,7 @@ const AddMobile = ({
                   height: 50,
                   width: "100%",
                 }}
+                value={mobileName}
                 onChange={(value) => setMobileName(value)}
               />
               {mobileNameError && (
@@ -621,14 +700,20 @@ const AddMobile = ({
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter Brand"
                 options={brandList}
-                value={selectBrand}
+                value={selectBrand.name}
                 filterOption={true}
                 onSelect={async (val) => {
                   const selectedBrand = await brandList.find(
                     (item) => item.value === val
                   );
+
                   const t = selectedBrand ? selectedBrand.label : val;
-                  setSelectBrand(t);
+
+                  const f = {
+                    name: t,
+                    _id: val,
+                  };
+                  setSelectBrand(f);
                   handlebrandModal(val);
                 }}
                 onSearch={(val) => {
@@ -647,15 +732,19 @@ const AddMobile = ({
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter Model Name"
                 options={brandmodalList}
-                value={selectModel}
+                value={selectModel.name}
                 filterOption={true}
                 onSelect={(val) => {
                   const selectedBrand = brandmodalList.find(
                     (item) => item.value === val
                   );
                   const modelName = selectedBrand ? selectedBrand.label : val;
+                  const f = {
+                    _id: val,
+                    name: modelName,
+                  };
 
-                  setSelectModel(modelName);
+                  setSelectModel(f);
                 }}
                 onSearch={(val) => {
                   setSelectModel(val);
@@ -680,7 +769,14 @@ const AddMobile = ({
                   height: 50,
                   width: "100%",
                 }}
-                onChange={(value) => setEnterAddress(value)}
+                value={enterAddress}
+                onChange={(value) => {
+                  const f = {
+                    value: value,
+                    //  we need as objet with label and value
+                  };
+                  setEnterAddress(f);
+                }}
                 options={addressoption}
               />
               {enterAddressError && (
@@ -702,6 +798,7 @@ const AddMobile = ({
                   height: 50,
                   width: "100%",
                 }}
+                value={condition}
                 onChange={(value) => setCondition(value)}
                 options={conditionOptions}
               />
@@ -725,6 +822,7 @@ const AddMobile = ({
                 style={{
                   height: 50,
                 }}
+                value={yearOfPurchase}
                 onChange={(e) => setYearOfPurchase(e.target.value)}
               />
               {yearOfPurchaseError && (
@@ -743,6 +841,7 @@ const AddMobile = ({
                 style={{
                   height: 50,
                 }}
+                value={availableQuantity}
                 placeholder="Available Quantity"
                 onChange={(e) => setAvailableQuantity(e.target.value)}
               />
@@ -763,6 +862,7 @@ const AddMobile = ({
                 style={{
                   height: 50,
                 }}
+                value={minimumOrder}
                 placeholder="Minimum Order"
                 type="Number"
                 onChange={(e) => setMinimumOrder(e.target.value)}
@@ -781,6 +881,7 @@ const AddMobile = ({
                   height: 50,
                 }}
                 placeholder="Price"
+                value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 type="Number"
               />
@@ -803,6 +904,7 @@ const AddMobile = ({
                   height: 50,
                   width: "100%",
                 }}
+                value={paymentMode}
                 onChange={(value) => setPaymentMode(value)}
                 options={paymentModeOptions}
               />
@@ -825,6 +927,7 @@ const AddMobile = ({
                   height: 50,
                   width: "100%",
                 }}
+                value={serviceMode}
                 onChange={(value) => setServiceMode(value)}
                 options={serviceModeOptions}
               />
@@ -845,6 +948,7 @@ const AddMobile = ({
                   height: 50,
                 }}
                 onChange={(e) => setGoogleDriveLink(e.target.value)}
+                value={googleDriveLink}
                 placeholder="Google Drive Link"
                 type="text"
               />
@@ -861,6 +965,7 @@ const AddMobile = ({
                 placeholder="Enter Color Name"
                 options={colores}
                 filterOption={true}
+                value={color}
                 onSelect={(val) => {
                   setColor(val);
                 }}
@@ -884,6 +989,7 @@ const AddMobile = ({
               <TextArea
                 onChange={(e) => setMobileDescription(e.target.value)}
                 placeholder="Mobile Description"
+                value={mobileDescription}
                 rows={4}
               />
             </div>
@@ -894,6 +1000,7 @@ const AddMobile = ({
             <label htmlFor=" Upload Photos" className="formbold-form-label">
               Upload Photos
             </label>
+
             {uploadPhotosError && (
               <div className="error-message">{uploadPhotosError}</div>
             )}
@@ -904,10 +1011,11 @@ const AddMobile = ({
               onPreview={handlePreview}
               onChange={handleChange}
               multiple
+              maxCount={6}
               name="uploadPhotos"
               accept=".jpeg,.png,.jpg,.webp"
             >
-              {fileList.length >= 8 ? null : uploadButton}
+              {fileList.length >= 6 ? null : uploadButton}
             </Upload>
             <Modal
               open={previewOpen}
@@ -925,11 +1033,74 @@ const AddMobile = ({
             </Modal>
           </div>
 
+          <div className="flex row">
+            {uploadeditimage && uploadeditimage.length > 0 && (
+              <div>
+                {uploadeditimage.map((item, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      position: "relative",
+                      display: "inline-block",
+                      marginRight: "10px",
+                    }}
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <img
+                      width={100}
+                      height={100}
+                      style={{ objectFit: "contain" }}
+                      src={`http://localhost:5000/uploads/images/${item}`} // Assuming item is an object with a 'name' property
+                      alt={item.name} // Adding an alt attribute for accessibility
+                    />
+                    {hoverIndex === index && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "5px",
+                          right: "5px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <DeleteOutlined onClick={() => handleDelete(index)} />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/*Seventh Row */}
           <div className="formbold-form-file-flex">
             <label htmlFor=" Upload Video" className="formbold-form-label">
               Upload Video
             </label>
+
+            {uploadVideo && !uploadVideo.fileList && (
+              <div>
+                <label>{uploadVideo}</label>
+              </div>
+            )}
+
+            {uploadVideo && !uploadVideo.fileList && (
+              <>
+                <div>
+                  <Button
+                    onClick={() => setUploadVideo("")}
+                    icon={<DeleteOutlined />}
+                  />
+                </div>
+                <Link
+                  target="_blank"
+                  to={`http://localhost:5000/uploads/videos/${uploadVideo}`}
+                >
+                  Download
+                </Link>
+              </>
+            )}
+
             <Upload name="video" {...videoprops} accept="video/*">
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
@@ -945,6 +1116,29 @@ const AddMobile = ({
               Upload Files
             </label>
 
+            {uploadFile && !uploadFile.fileList && (
+              <div>
+                <label>{uploadFile}</label>
+              </div>
+            )}
+
+            {uploadFile && !uploadFile.fileList && (
+              <>
+                <div>
+                  <Button
+                    onClick={() => setUploadFile("")}
+                    icon={<DeleteOutlined />}
+                  />
+                </div>
+                <Link
+                  target="_blank"
+                  to={`http://localhost:5000/uploads/files/${uploadFile}`}
+                >
+                  Download
+                </Link>
+              </>
+            )}
+
             <Upload
               name="file"
               {...fileprops}
@@ -957,12 +1151,18 @@ const AddMobile = ({
           {/*Nine Row */}
           <div
             style={{ marginTop: "10px" }}
-            className="formbold-form-file-flex"
+            className="formbold-form-file-flex  gap-5"
           >
-            <button className="formbold-btn">Save</button>
             <button
+              type="submit"
               className="formbold-btn"
-              onClick={() => setTableShow(false)}
+              style={{ width: "15%" }}
+            >
+              Save Changes
+            </button>
+            <button
+              onClick={() => setEditTable(false)}
+              className="formbold-btn"
             >
               Cancle
             </button>
@@ -973,4 +1173,4 @@ const AddMobile = ({
   );
 };
 
-export default AddMobile;
+export default EditMobile;
