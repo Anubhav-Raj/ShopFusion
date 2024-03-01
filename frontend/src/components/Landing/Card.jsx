@@ -19,6 +19,7 @@ function Card({ categories, onClick }) {
                       // alt={category.name}
                     />
                     <span className="topings">{category.name}</span>
+                    <span className="topings1">10k</span>
                   </div>
                 </div>
               </div>
