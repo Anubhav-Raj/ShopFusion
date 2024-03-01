@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import "./video_displayer.css";
 import { Select } from "antd";
+import { CaretDownOutlined } from "@ant-design/icons";
+import { CaretUpOutlined } from "@ant-design/icons";
 
 function Video_displayer({ videoData }) {
+  const [videovisible, isvideovisible] = useState(false);
   const [currentVideoSrc, setCurrentVideoSrc] = useState(videoData[0].src);
   const [selectedType, setSelectedselectedType] = useState();
   const handleVideoClick = (src) => {
@@ -30,9 +33,19 @@ function Video_displayer({ videoData }) {
     <>
       <div className="form-data-wrapper1">
         <div className="form-data-wrapper">
-          <h3>Watch Related Video
-            
+          <h3 onClick={()=>{isvideovisible(!videovisible)}} className="watchmorevide">
+            Watch Related Video
+            {videovisible ? (
+              <span>
+                <CaretUpOutlined />
+              </span>
+            ) : (
+              <span>
+                <CaretDownOutlined />
+              </span>
+            )}
           </h3>
+
           <div className="displayflex">
             <div className="formbold-form-wrapper">
               <Select
@@ -77,7 +90,7 @@ function Video_displayer({ videoData }) {
           </div>
         </div>
       </div>
-      <div
+      {videovisible && (<div
         className="bgfff mb30px br2px p20px pt10px ffos dn snipcss-eyoVN style-R5Qn9"
         id="you_tube_video_section"
       >
@@ -124,7 +137,9 @@ function Video_displayer({ videoData }) {
             </div>
           </div>
         </div>
-      </div>
+      </div>)}
+
+      
     </>
   );
 }

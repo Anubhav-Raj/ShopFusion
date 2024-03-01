@@ -476,7 +476,20 @@ h1.titlesh {
   padding: 0px 22px;
   left: 5%;
   /* right: 45%; */
-  top: -4%;
+  top: -3%;
+  color: #1d5a9f;
+  width: auto;
+  text-align-last: center;
+}
+
+h1.titleshseller {
+  /* display: inline-block; */
+  position: absolute;
+  background: white;
+  padding: 0px 22px;
+  left: 5%;
+  /* right: 82%; */
+  top: -24px;
   color: #1d5a9f;
   width: auto;
   text-align-last: center;
@@ -512,7 +525,7 @@ h3.titlesh1 {
   display: flex;
   margin: 26px 59px;
   border: 3px solid #0d6efd;
- border-radius: 8px;
+  border-radius: 8px;
   /* overflow: hidden; */
   flex-direction: column;
   padding: 31px 7px;
@@ -527,7 +540,7 @@ h3.titlesh1 {
   position: relative;
   margin: 13px 11px;
   border: 3px solid #0d6efd;
- border-radius: 8px;
+  border-radius: 8px;
   max-height: 268px;
   overflow-x: clip;
 }
@@ -537,7 +550,7 @@ h3.titlesh1 {
   position: relative;
   margin: 13px 11px;
   border: 3px solid #0d6efd;
- border-radius: 8px;
+  border-radius: 8px;
   max-height: 268px;
   overflow-x: clip;
 }
@@ -547,7 +560,7 @@ h3.titlesh1 {
   position: relative;
   margin: 13px 11px;
   border: 3px solid #0d6efd;
- border-radius: 8px;
+  border-radius: 8px;
   max-height: 268px;
   width: 282px !important;
   overflow-x: clip;
@@ -630,3 +643,43 @@ h3.titlesh1 {
 /* .categories.segments.snipcss-jPyl7:hover .titlesh11 {
   display: flex !important;
 } */
+
+h3.watchmorevide {
+  cursor: pointer;
+  border: 2px solid #3535357a;
+  border-radius: 7px;
+  font-size: 22px;
+  padding: 3px 11px;
+  margin: 0;
+  color: #535050d4;
+}
+
+.watchmorevide>span {
+  margin-left: 5px;
+}
+
+.scroollong {
+  display: flex;
+  overflow-x: scroll;
+}
+
+.scroollong::-webkit-scrollbar {
+  height: 6px;
+  background-color: transparent;
+  transition: background-color 1s ease;
+  /* Transition for background color */
+}
+
+.scroollong:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+  /* Make scrollbar visible on hover */
+  background-color: rgb(97, 156, 204);
+  /* Change color on hover */
+  transition: background-color 2.3s ease-in-out;
+  /* Smooth transition for background color with a 3-second delay */
+}
+
+.scroollong::-webkit-scrollbar-thumb {
+  animation: hideScrollbar 2s linear 3s forwards;
+  /* Delayed animation */
+}
