@@ -255,7 +255,7 @@ span.topings1 {
 
 .form-data-wrapper {
   display: flex;
-  width: 60%;
+  width: 100%;
   margin: left;
   align-items: center;
   justify-content: space-around;
@@ -266,10 +266,22 @@ span.topings1 {
   display: flex;
   width: 100%;
   padding: 10px;
-  /* margin-left: 56px; */
   align-items: center;
+  justify-content: center;
 }
 
+h3.titlesh11:hover {
+  color: #0d6efd;
+}
+h3.titlesh11 {
+  position: absolute;
+  color: #003078;
+  rotate: 90deg;
+  z-index: 1;
+  font-size: 34px;
+  bottom: -12px;
+  left: 39%;
+}
 .dropdowndepartmentoptions .card_amazon {
   padding: 5px;
   cursor: pointer;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Imgss from "./monitor-removebg-preview.png";
 import Card from "./Card";
 import Itemcard from "./Itemcard";
+import { DoubleRightOutlined } from "@ant-design/icons";
 
 function Department() {
   const departments = [
@@ -59,7 +60,10 @@ function Department() {
               <div className="topdivsellerscroll">
                 <div className="sjiiudbs223">
                   <h3 className="titlesh1"> Department</h3>
-                  {/* <h3 className="titlesh11"> View More</h3> */}
+
+                  <h3 className="titlesh11">
+                    <DoubleRightOutlined />{" "}
+                  </h3>
 
                   <Card // department list is showed here
                     categories={[
