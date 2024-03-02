@@ -390,10 +390,11 @@ exports.payment = async (req, res) => {
   try {
     console.log(req.body);
     const payment_capture = 1;
-    const amount = 1;
+    let amount = 1;
     var currency = "INR"; // apply  condition accoding to country
 
     const address = await Address.findById(req.body.addressId);
+    // console.log(address);
     if (address.selectedCountry === "India") {
       currency = "INR";
     } else {
@@ -434,7 +435,6 @@ exports.paymentVerification = async (req, res) => {
     .digest("hex");
 
   const isAuthentic = expectedSignature === razorpay_signature;
-  console.log(isAuthentic);
   if (isAuthentic) {
     // Database comes here
     const address = await Address.findById(req.body.addressId);

@@ -61,14 +61,6 @@ function Table_post({ setTableShow, setEditTable, setId }) {
           return { ...element, data: newPropsObj };
         });
         setProducts(t);
-        const paymentedProduct = hasData
-          ? products.map((item) => {
-              if (item.status === true) {
-                return item._id;
-              }
-            })
-          : [];
-        console.log(paymentedProduct);
       }
     }
   }, [isLoading, data]);
@@ -101,6 +93,15 @@ function Table_post({ setTableShow, setEditTable, setId }) {
       },
     });
   };
+
+  // console.log(products);
+  const paymentedProduct =
+    products &&
+    products.map((item) => {
+      if (item.status === true) {
+        return item._id;
+      }
+    });
 
   function formatDate(timestamp) {
     const date = new Date(timestamp);
@@ -526,6 +527,21 @@ function Table_post({ setTableShow, setEditTable, setId }) {
   }
   const __DEV__ = document.domain === "localhost";
   async function displayRazorpay() {
+    //match selected row  id with paymentedProduct
+    const t = selectedRow.filter((item) => {
+      // console.log(item);
+      if (paymentedProduct.includes(item)) {
+        return true;
+      }
+    });
+    if (t) {
+      toast.error(
+        "You have already paid for this product. Please select another product to proceed."
+      );
+      return;
+    }
+    return;
+
     if (selectedRow.length === 0) {
       toast.error("Please select a product to proceed");
       return;

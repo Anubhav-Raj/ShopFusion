@@ -228,9 +228,11 @@ const AddaddressPage = () => {
     const Whatappnumber = {
       phoneNumber: altNumber,
     };
+
     const checkuniquewhatappnumber = await PhoneNumberUniqueMutation(
       Whatappnumber
     );
+
     if (checkuniquewhatappnumber.data.isError) {
       message.error("Whatapp number must be Unique");
       return;
@@ -360,7 +362,7 @@ const AddaddressPage = () => {
       return;
     }
     const formdata = {
-      id: id,
+      addressId: id,
       phone: phonenumber,
       altNumber: altNumber || "null",
     };
@@ -393,7 +395,33 @@ const AddaddressPage = () => {
       //   alert(response.razorpay_order_id);
       //   alert(response.razorpay_signature);
       // },
-      callback_url: "http://localhost:5000/api/payment/paymentverification",
+      // callback_url: "http://localhost:5000/api/payment/paymentverification",
+
+      handler: function (response) {
+        const responseData = {
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_signature: response.razorpay_signature,
+          addressId: id,
+          receipt: data.receipt,
+        };
+
+        // Send the data to your server-side for processing
+        fetch("http://localhost:5000/api/payment/addresspaymentverification", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(responseData),
+        })
+          .then((response) => {
+            // Handle response
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      },
       prefill: {
         name: userData.name,
         email: userData.email,
@@ -792,7 +820,8 @@ const AddaddressPage = () => {
                                     : "Unverified"
                                 }`}
                               </span>
-                              {!item.phoneNumber.isVerified ? (
+                              {!item.phoneNumber.isVerified &&
+                              item.status === true ? (
                                 <Button
                                   onClick={() =>
                                     handlesandOtp(item.email.email, item._id)
@@ -826,7 +855,8 @@ const AddaddressPage = () => {
                                     : "Unverified"
                                 }`}
                               </span>
-                              {!item.altNumber.isVerified ? (
+                              {!item.altNumber.isVerified &&
+                              item.status === true ? (
                                 <Button
                                   onClick={() =>
                                     handlesandOtp(item.email.email, item._id)
@@ -903,26 +933,38 @@ const AddaddressPage = () => {
                           label: "Payment",
                           children: (
                             <>
-                              <Button
-                                style={{
-                                  width: "40%",
-                                  background: "#6a64f1",
-                                  color: "white",
-                                }}
-                                onClick={() =>
-                                  displayRazorpay(
-                                    item._id,
-                                    item.phoneNumber.phoneNumber,
-                                    item.altNumber
-                                      ? item.altNumber.altNumber
-                                      : undefined
-                                  )
-                                }
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {item.paymentStatus ? "Already Pay" : "Pay"}
-                              </Button>
+                              {item.status === false ? (
+                                <Button
+                                  style={{
+                                    width: "40%",
+                                    background: "#6a64f1",
+                                    color: "white",
+                                  }}
+                                  onClick={() =>
+                                    displayRazorpay(
+                                      item._id,
+                                      item.phoneNumber.phoneNumber,
+                                      item.altNumber
+                                        ? item.altNumber.altNumber
+                                        : undefined
+                                    )
+                                  }
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {item.paymentStatus ? "Already Pay" : "Pay"}
+                                </Button>
+                              ) : (
+                                <Button
+                                  style={{
+                                    width: "40%",
+                                    background: "#6a64f1",
+                                    color: "white",
+                                  }}
+                                >
+                                  Paid
+                                </Button>
+                              )}
                             </>
                           ),
                         },
