@@ -51,14 +51,14 @@ function Table_post({ setTableShow, setEditTable, setId }) {
       setHasData(true);
 
       if (data.products) {
-        const t = data.products.map((element) => {
+        const t = data.products.map((element, index) => {
           const newPropsObj = {
             status: element.status,
             created: element.createdAt,
             update: element.updatedAt,
           };
 
-          return { ...element, data: newPropsObj };
+          return { ...element, data: newPropsObj, key: index };
         });
         setProducts(t);
       }
@@ -95,13 +95,6 @@ function Table_post({ setTableShow, setEditTable, setId }) {
   };
 
   // console.log(products);
-  const paymentedProduct =
-    products &&
-    products.map((item) => {
-      if (item.status === true) {
-        return item._id;
-      }
-    });
 
   function formatDate(timestamp) {
     const date = new Date(timestamp);
@@ -555,6 +548,15 @@ function Table_post({ setTableShow, setEditTable, setId }) {
   }
   const __DEV__ = document.domain === "localhost";
   async function displayRazorpay() {
+    const paymentedProduct =
+      products &&
+      products.map((item) => {
+        if (item.status === true) {
+          return item._id;
+        }
+      });
+    console.log(products);
+
     const hasMatch = selectedRow.some((item) =>
       paymentedProduct.includes(item)
     );
