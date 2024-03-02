@@ -268,6 +268,7 @@ exports.payment = async (req, res) => {
       id: response.id,
       currency: response.currency,
       amount: response.amount,
+      receipt: "receipt_order_74394",
     });
   } catch (error) {
     console.log(error);

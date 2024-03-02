@@ -550,6 +550,7 @@ function Table_post({ setTableShow, setEditTable, setId }) {
       currency: data.currency,
       amount: data.amount.toString(),
       order_id: data.id,
+      receipt: data.receipt,
       name: "ZoneHub",
       description: "Thank you for nothing. Please give us some money",
       image:
@@ -560,6 +561,7 @@ function Table_post({ setTableShow, setEditTable, setId }) {
           razorpay_order_id: response.razorpay_order_id,
           razorpay_signature: response.razorpay_signature,
           productID: formdata, // Include the formdata here
+          receipt: data.receipt,
         };
 
         // Send the data to your server-side for processing
