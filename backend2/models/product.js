@@ -76,6 +76,10 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    payment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Payment",
+    },
   },
   {
     timestamps: true,

@@ -5,6 +5,7 @@ const ModelBrand = require("../models/model_brand");
 const User = require("../models/user");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
+const Payment = require("../models/payment");
 
 exports.createMobile = async (req, res) => {
   try {
@@ -241,6 +242,8 @@ exports.userAllProduct = async (req, res) => {
   }
 };
 
+//razorpay payment
+
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_SECRET_KEY,
@@ -248,17 +251,21 @@ const razorpay = new Razorpay({
 
 exports.payment = async (req, res) => {
   try {
-    console.log(req.body.productsID.length);
     const { productsID } = req.body;
+    const product_first = await Product.findById(productsID[0]).populate(
+      "enterAddress"
+    );
 
     const payment_capture = 1;
     const amount = productsID.length * 5; // apply  condition accoding to country
-    const currency = "INR"; // apply  condition accoding to country
-
+    var currency = "INR"; // apply  condition accoding to country
+    if (product_first.enterAddress.selectedCountry !== "India") {
+      currency = "USD";
+    }
     const options = {
       amount: amount * 100,
       currency,
-      receipt: "receipt_order_74394",
+      receipt: "receipt_order_for_post_payment",
       payment_capture,
     };
 
@@ -268,7 +275,7 @@ exports.payment = async (req, res) => {
       id: response.id,
       currency: response.currency,
       amount: response.amount,
-      receipt: "receipt_order_74394",
+      receipt: "receipt_order_For_post_payment",
     });
   } catch (error) {
     console.log(error);
@@ -276,37 +283,52 @@ exports.payment = async (req, res) => {
 };
 
 exports.paymentVerification = async (req, res) => {
-  console.log(req.body);
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-    req.body;
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
 
-  const body = razorpay_order_id + "|" + razorpay_payment_id;
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
 
-  const expectedSignature = crypto
-    .createHmac("sha256", process.env.RAZORPAY_SECRET_KEY)
-    .update(body.toString())
-    .digest("hex");
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_SECRET_KEY)
+      .update(body.toString())
+      .digest("hex");
 
-  const isAuthentic = expectedSignature === razorpay_signature;
-  console.log(isAuthentic);
-  if (isAuthentic) {
-    // Database comes here
+    const isAuthentic = expectedSignature === razorpay_signature;
 
-    // await Payment.create({
-    //   razorpay_order_id,
-    //   razorpay_payment_id,
-    //   razorpay_signature,
-    // });
+    if (isAuthentic) {
+      // Database comes here
+      const products = req.body.productID.productsID;
 
-    res.redirect(
-      `http://localhost:3000/paymentsuccess?reference=${razorpay_payment_id}`
-    );
-  } else {
-    res.redirect(
-      `http://localhost:3000/paymentfail?reference=${razorpay_payment_id}`
-    );
-    res.status(400).json({
-      success: false,
-    });
+      const p = new Payment({
+        products: products,
+        paymentID: razorpay_payment_id,
+        signature: razorpay_signature,
+        amount: products.length * 5,
+        orderID: razorpay_order_id,
+        status: true,
+      });
+      await p.save();
+      // fetch product and update status
+      for (let i = 0; i < products.length; i++) {
+        const product = await Product.findById(products[i]);
+        product.status = true;
+        product.payment = p._id;
+        await product.save();
+      }
+
+      res.redirect(
+        `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`
+      );
+    } else {
+      res.redirect(
+        `${process.env.FRONTEND_URL}/paymentfail?reference=${razorpay_payment_id}`
+      );
+      res.status(400).json({
+        success: false,
+      });
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
