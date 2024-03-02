@@ -348,6 +348,17 @@ function Table_post({ setTableShow, setEditTable, setId }) {
       onFilter: (value, record) => record.serviceMode === value,
     },
     {
+      title: "Payment Status",
+      dataIndex: "status",
+      render: (status) => (status ? "Paid" : "Unpaid"),
+      filters: [
+        { text: "Paid", value: true },
+        { text: "Unpaid", value: false },
+      ],
+      onFilter: (value, record) => record.status === value,
+    },
+
+    {
       title: "Service Mode",
       dataIndex: "serviceMode",
       filters: [
@@ -365,13 +376,27 @@ function Table_post({ setTableShow, setEditTable, setId }) {
     {
       title: "Mobile No.",
       dataIndex: "enterAddress",
-      render: (item) => item[Object.keys(item)[0]].phoneNumber,
+      render: (item) => {
+        // console.log(item);
+        if (item && Object.keys(item).length > 0) {
+          return item[Object.keys(item)[0]].phoneNumber;
+        } else {
+          return null; // Or any default value you want to return when item is null or undefined
+        }
+      },
     },
     {
       title: "E-mail",
       dataIndex: "enterAddress",
       className: "description-column",
-      render: (item) => item[Object.keys(item)[2]].email,
+      render: (item) => {
+        // console.log(item);
+        if (item && Object.keys(item).length > 0) {
+          return item[Object.keys(item)[2]].email;
+        } else {
+          return null; // Or any default value you want to return when item is null or undefined
+        }
+      },
       key: "email",
     },
 
@@ -380,6 +405,7 @@ function Table_post({ setTableShow, setEditTable, setId }) {
       dataIndex: "enterAddress",
       className: "description-column",
       render: (item) => {
+        if (!item) return null; // Handle null or undefined item
         const {
           flatHouseNo,
           areaStreetVillage,
@@ -390,7 +416,9 @@ function Table_post({ setTableShow, setEditTable, setId }) {
           selectedCountry,
           pincode,
         } = item;
-        return `${flatHouseNo}, ${areaStreetVillage}, ${landmark}, ${subDistrict}, ${district}, ${selectedState},${selectedCountry},${pincode}`;
+        // Add null check for flatHouseNo
+        const flatHouseNoValue = flatHouseNo ? flatHouseNo : "";
+        return `${flatHouseNoValue}, ${areaStreetVillage}, ${landmark}, ${subDistrict}, ${district}, ${selectedState},${selectedCountry},${pincode}`;
       },
       key: "enterAddress",
     },
@@ -527,20 +555,17 @@ function Table_post({ setTableShow, setEditTable, setId }) {
   }
   const __DEV__ = document.domain === "localhost";
   async function displayRazorpay() {
-    //match selected row  id with paymentedProduct
-    const t = selectedRow.filter((item) => {
-      // console.log(item);
-      if (paymentedProduct.includes(item)) {
-        return true;
-      }
-    });
-    if (t) {
+    const hasMatch = selectedRow.some((item) =>
+      paymentedProduct.includes(item)
+    );
+
+    if (hasMatch) {
+      // At least one ID in selectedRow matches with an ID in paymentedProduct
       toast.error(
         "You have already paid for this product. Please select another product to proceed."
       );
       return;
     }
-    return;
 
     if (selectedRow.length === 0) {
       toast.error("Please select a product to proceed");
