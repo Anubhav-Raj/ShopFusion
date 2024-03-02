@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const Address = require("../models/address");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
+const AddressPayment = require("../models/address_payment");
 
 exports.signup = async (req, res) => {
   try {
@@ -390,12 +391,22 @@ exports.payment = async (req, res) => {
     console.log(req.body);
     const payment_capture = 1;
     const amount = 1;
-    const currency = "INR"; // apply  condition accoding to country
+    var currency = "INR"; // apply  condition accoding to country
 
+    const address = await Address.findById(req.body.addressId);
+    if (address.selectedCountry === "India") {
+      currency = "INR";
+    } else {
+      currency = "USD";
+    }
+
+    if (!address.altNumber || address.altNumber.altNumber === "") {
+      amount = amount + 1;
+    }
     const options = {
       amount: amount * 100,
       currency,
-      receipt: "receipt_order_74394",
+      receipt: "receipt_order_for_address_payment",
       payment_capture,
     };
 
@@ -426,19 +437,31 @@ exports.paymentVerification = async (req, res) => {
   console.log(isAuthentic);
   if (isAuthentic) {
     // Database comes here
+    const address = await Address.findById(req.body.addressId);
+    var amount = 1;
+    if (!address.altNumber || address.altNumber.altNumber === "") {
+      amount = amount + 1;
+    }
 
-    // await Payment.create({
-    //   razorpay_order_id,
-    //   razorpay_payment_id,
-    //   razorpay_signature,
-    // });
+    const p = new AddressPayment({
+      address: req.body.addressId,
+      paymentID: razorpay_payment_id,
+      signature: razorpay_signature,
+      amount: amount,
+      orderID: razorpay_order_id,
+      status: true,
+    });
+    await p.save();
+    address.payment = p._id;
+    address.status = true;
+    await address.save();
 
     res.redirect(
-      `http://localhost:3000/paymentsuccess?reference=${razorpay_payment_id}`
+      `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`
     );
   } else {
     res.redirect(
-      `http://localhost:3000/paymentfail?reference=${razorpay_payment_id}`
+      `${process.env.FRONTEND_URL}/paymentfail?reference=${razorpay_payment_id}`
     );
     res.status(400).json({
       success: false,

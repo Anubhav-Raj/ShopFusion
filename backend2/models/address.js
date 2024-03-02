@@ -47,6 +47,15 @@ const addressSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    status: {
+      type: Boolean,
+      default: false,
+    },
+
+    payment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "AddressPayment",
+    },
   },
   {
     timestamps: true,
