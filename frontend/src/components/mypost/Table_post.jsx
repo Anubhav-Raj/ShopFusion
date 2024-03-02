@@ -13,7 +13,6 @@ import { EditOutlined } from "@ant-design/icons";
 import { loginData } from "../../redux/API/user_slice/login.slice";
 import { Link } from "react-router-dom";
 import EditMobile from "../../pages/mypost/Mobile/editMobile";
-import moment from "moment";
 import { useDeleteMobileMutation } from "../../redux/API/products/mobile";
 const { confirm } = Modal;
 function Table_post({ setTableShow, setEditTable, setId }) {
@@ -79,7 +78,6 @@ function Table_post({ setTableShow, setEditTable, setId }) {
         try {
           // Implement your logic to delete the product with the given productId
           const response = await deleteMobileMutation(productId);
-          console.log("response", response);
 
           // Assuming setProducts is a state updater function
           setProducts((prevProducts) =>
@@ -530,7 +528,6 @@ function Table_post({ setTableShow, setEditTable, setId }) {
       alert("Razorpay SDK failed to load. Are you online?");
       return;
     }
-    //return console.log("selectedRow", selectedRow);
     const formdata = {
       productsID: selectedRow,
     };
@@ -543,7 +540,6 @@ function Table_post({ setTableShow, setEditTable, setId }) {
       body: JSON.stringify(formdata),
     }).then((t) => t.json());
 
-    // console.log(data);
     if (!data) {
       alert("Server error. Are you online?");
       return;
@@ -558,13 +554,30 @@ function Table_post({ setTableShow, setEditTable, setId }) {
       description: "Thank you for nothing. Please give us some money",
       image:
         "https://scontent.fdel29-1.fna.fbcdn.net/v/t39.30808-6/361586894_3669385440010177_673264268362134479_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=9c7eae&_nc_ohc=NEOVieuKC8sAX8AASGL&_nc_ht=scontent.fdel29-1.fna&oh=00_AfBBY6wkPRKddru9fQfL7MzBCFVTfOyM6Y6rmvU7vjnAZg&oe=65D38A80",
-      // handler: function (response) {
-      //   alert(response.razorpay_payment_id);
-      //   alert(response.razorpay_order_id);
-      //   alert(response.razorpay_signature);
-      // },
-      callback_url:
-        "http://localhost:5000/api/payment/mobilepaymentverification",
+      handler: function (response) {
+        const responseData = {
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_signature: response.razorpay_signature,
+          productID: formdata, // Include the formdata here
+        };
+
+        // Send the data to your server-side for processing
+        fetch("http://localhost:5000/api/payment/mobilepaymentverification", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(responseData),
+        })
+          .then((response) => {
+            // Handle response
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      },
       prefill: {
         name: userData.name,
         email: userData.email,

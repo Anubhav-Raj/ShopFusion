@@ -4,12 +4,13 @@ const Brand = require("../models/brand");
 const ModelBrand = require("../models/model_brand");
 const User = require("../models/user");
 const Razorpay = require("razorpay");
+const crypto = require("crypto");
 
 exports.createMobile = async (req, res) => {
   try {
     const { recaptchaToken } = req.body;
     let success = true;
-    const SECRET_KEY_v3 = "6LfplmApAAAAAIoOHdbF-BquBwgjBFakSq5bxPFg";
+    const SECRET_KEY_v3 = process.env.RECAPTCHA_SECRET_KEY_v3;
     const recaptchaResponse = await axios.post(
       `https://www.google.com/recaptcha/api/siteverify?secret=${SECRET_KEY_v3}&response=${recaptchaToken}`
     );
@@ -241,14 +242,15 @@ exports.userAllProduct = async (req, res) => {
 };
 
 const razorpay = new Razorpay({
-  key_id: "rzp_test_AjDOUl6GpeumxG",
-  key_secret: "XBEo1dlSMj06gL9KEwlMxBZj",
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_SECRET_KEY,
 });
 
 exports.payment = async (req, res) => {
   try {
     console.log(req.body.productsID.length);
     const { productsID } = req.body;
+
     const payment_capture = 1;
     const amount = productsID.length * 5; // apply  condition accoding to country
     const currency = "INR"; // apply  condition accoding to country
@@ -261,7 +263,7 @@ exports.payment = async (req, res) => {
     };
 
     const response = await razorpay.orders.create(options);
-    console.log(response);
+    // console.log(response);
     res.json({
       id: response.id,
       currency: response.currency,
@@ -273,13 +275,14 @@ exports.payment = async (req, res) => {
 };
 
 exports.paymentVerification = async (req, res) => {
+  console.log(req.body);
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
     req.body;
 
   const body = razorpay_order_id + "|" + razorpay_payment_id;
 
   const expectedSignature = crypto
-    .createHmac("sha256", "XBEo1dlSMj06gL9KEwlMxBZj")
+    .createHmac("sha256", process.env.RAZORPAY_SECRET_KEY)
     .update(body.toString())
     .digest("hex");
 

@@ -11,7 +11,6 @@ export const CheckUniqueAPI = createApi({
   endpoints: (builder) => ({
     phoneNumberUnique: builder.mutation({
       query: (phone) => {
-        // console.log("phone :", phone); // Log the email OTP
         return {
           url: "isnumberunique",
           method: "POST",

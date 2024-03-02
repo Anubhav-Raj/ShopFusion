@@ -7,10 +7,8 @@ const ProtectedRoute = ({ element, ...rest }) => {
   // Get user data from Redux store
   //   const userData = useSelector(selectUserData);
   const token = localStorage.getItem("ZoneHub");
-
   // Check if user is authenticated
   const isAuthenticated = !!token;
-  console.log(isAuthenticated);
   return isAuthenticated ? (
     <Route {...rest} element={element} />
   ) : (

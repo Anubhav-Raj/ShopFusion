@@ -198,13 +198,14 @@ const My_post = () => {
       categories === "Mobile Phones, Accessories & Parts" &&
       subcategories === "Mobile Phones" &&
       item === "Android Mobile Phones" ? (
-        <></>
+        <>
+          <Table_post
+            setTableShow={setTableShow}
+            setEditTable={setEditTable}
+            setId={setId}
+          />
+        </>
       ) : null}
-      <Table_post
-        setTableShow={setTableShow}
-        setEditTable={setEditTable}
-        setId={setId}
-      />
     </>
   );
 };

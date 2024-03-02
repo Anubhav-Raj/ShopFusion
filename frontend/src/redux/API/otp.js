@@ -13,7 +13,6 @@ export const OtpAPI = createApi({
   endpoints: (builder) => ({
     emailotp: builder.mutation({
       query: (emailotp) => {
-        console.log("Email OTP:", emailotp); // Log the email OTP
         return {
           url: "verifyemailotp",
           method: "POST",
