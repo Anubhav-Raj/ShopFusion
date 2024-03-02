@@ -15,12 +15,20 @@ const addressSchema = new mongoose.Schema(
         type: Boolean,
         default: false,
       },
+      show: {
+        type: Boolean,
+        default: true,
+      },
     },
     altNumber: {
       altNumber: String,
       isVerified: {
         type: Boolean,
         default: false,
+      },
+      show: {
+        type: Boolean,
+        default: true,
       },
     },
     selectedState: String,
@@ -38,6 +46,10 @@ const addressSchema = new mongoose.Schema(
         default: false,
       },
       otp: String,
+      show: {
+        type: Boolean,
+        default: true,
+      },
     },
     isDefault: {
       type: Boolean,

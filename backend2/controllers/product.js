@@ -37,6 +37,9 @@ exports.createMobile = async (req, res) => {
       await modelExsist.save();
     }
 
+    var file = req.files.uploadFile ? req.files.uploadFile[0].filename : "";
+    var video = req.files.uploadVideo ? req.files.uploadVideo[0].filename : "";
+
     const p = new Product({
       user: req.user._id,
       sellerType: req.body.sellerType,
@@ -57,8 +60,8 @@ exports.createMobile = async (req, res) => {
       googleDriveLink: req.body.googleDriveLink,
       mobileDescription: req.body.mobileDescription,
       images: req.files.uploadPhotos.map((photo) => photo.filename),
-      file: req.files.uploadFile[0].filename,
-      video: req.files.uploadVideo[0].filename,
+      file: file,
+      video: video,
     });
     await p.save();
     const user = await User.findById(req.user._id)
@@ -324,9 +327,6 @@ exports.paymentVerification = async (req, res) => {
       res.redirect(
         `${process.env.FRONTEND_URL}/paymentfail?reference=${razorpay_payment_id}`
       );
-      res.status(400).json({
-        success: false,
-      });
     }
   } catch (error) {
     console.log(error);

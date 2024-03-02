@@ -401,9 +401,6 @@ exports.payment = async (req, res) => {
       currency = "USD";
     }
 
-    if (!address.altNumber || address.altNumber.altNumber === "") {
-      amount = amount + 1;
-    }
     const options = {
       amount: amount * 100,
       currency,
@@ -424,47 +421,45 @@ exports.payment = async (req, res) => {
 };
 
 exports.paymentVerification = async (req, res) => {
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-    req.body;
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
 
-  const body = razorpay_order_id + "|" + razorpay_payment_id;
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
 
-  const expectedSignature = crypto
-    .createHmac("sha256", process.env.RAZORPAY_SECRET_KEY)
-    .update(body.toString())
-    .digest("hex");
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_SECRET_KEY)
+      .update(body.toString())
+      .digest("hex");
 
-  const isAuthentic = expectedSignature === razorpay_signature;
-  if (isAuthentic) {
-    // Database comes here
-    const address = await Address.findById(req.body.addressId);
-    var amount = 1;
-    if (!address.altNumber || address.altNumber.altNumber === "") {
-      amount = amount + 1;
+    const isAuthentic = expectedSignature === razorpay_signature;
+    if (isAuthentic) {
+      // Database comes here
+      const address = await Address.findById(req.body.addressId);
+      var amount = 1;
+
+      const p = new AddressPayment({
+        address: req.body.addressId,
+        paymentID: razorpay_payment_id,
+        signature: razorpay_signature,
+        amount: amount,
+        orderID: razorpay_order_id,
+        status: true,
+      });
+      await p.save();
+      address.payment = p._id;
+      address.status = true;
+      await address.save();
+
+      res.redirect(
+        `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`
+      );
+    } else {
+      res.redirect(
+        `${process.env.FRONTEND_URL}/paymentfail?reference=${razorpay_payment_id}`
+      );
     }
-
-    const p = new AddressPayment({
-      address: req.body.addressId,
-      paymentID: razorpay_payment_id,
-      signature: razorpay_signature,
-      amount: amount,
-      orderID: razorpay_order_id,
-      status: true,
-    });
-    await p.save();
-    address.payment = p._id;
-    address.status = true;
-    await address.save();
-
-    res.redirect(
-      `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`
-    );
-  } else {
-    res.redirect(
-      `${process.env.FRONTEND_URL}/paymentfail?reference=${razorpay_payment_id}`
-    );
-    res.status(400).json({
-      success: false,
-    });
+  } catch (error) {
+    console.log(error);
   }
 };
