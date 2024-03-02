@@ -49,6 +49,7 @@ function Table_post({ setTableShow, setEditTable, setId }) {
   useEffect(() => {
     if (!isLoading && data) {
       setHasData(true);
+
       if (data.products) {
         const t = data.products.map((element) => {
           const newPropsObj = {
@@ -60,6 +61,14 @@ function Table_post({ setTableShow, setEditTable, setId }) {
           return { ...element, data: newPropsObj };
         });
         setProducts(t);
+        const paymentedProduct = hasData
+          ? products.map((item) => {
+              if (item.status === true) {
+                return item._id;
+              }
+            })
+          : [];
+        console.log(paymentedProduct);
       }
     }
   }, [isLoading, data]);
