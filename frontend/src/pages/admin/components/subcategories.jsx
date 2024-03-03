@@ -4,9 +4,14 @@ import { Select } from "antd";
 const OPTIONS = ["Apples", "Nails", "Bananas", "Helicopters"];
 const SubCategories = ({ onFinish, onFinishFailed }) => {
   const [selectedItems, setSelectedItems] = useState([]);
+  const [file, setFile] = useState(null);
 
   const handleSelectChange = (value) => {
     setSelectedItems(value);
+  };
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setFile(file);
   };
   const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
   return (
@@ -33,7 +38,7 @@ const SubCategories = ({ onFinish, onFinishFailed }) => {
         initialValues={{
           remember: true,
         }}
-        onFinish={onFinish}
+        onFinish={(values) => onFinish({ ...values, subCategoryimage: file })}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
@@ -134,7 +139,11 @@ const SubCategories = ({ onFinish, onFinishFailed }) => {
               },
             ]}
           >
-            <Input type="file" accept=".png,.jpeg, .jpg" />
+            <Input
+              type="file"
+              onChange={handleFileChange}
+              accept=".png,.jpeg, .jpg"
+            />
           </Form.Item>
         </div>
 

@@ -8,6 +8,12 @@ const Categories = ({ onFinish, onFinishFailed }) => {
   const handleSelectChange = (value) => {
     setSelectedItems(value);
   };
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setFile(file);
+  };
   const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
   return (
     <>
@@ -33,7 +39,7 @@ const Categories = ({ onFinish, onFinishFailed }) => {
         initialValues={{
           remember: true,
         }}
-        onFinish={onFinish}
+        onFinish={(values) => onFinish({ ...values, categoryImage: file })}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
@@ -109,7 +115,11 @@ const Categories = ({ onFinish, onFinishFailed }) => {
               },
             ]}
           >
-            <Input type="file" accept=".png,.jpeg, .jpg" />
+            <Input
+              type="file"
+              onChange={handleFileChange}
+              accept=".png,.jpeg, .jpg"
+            />
           </Form.Item>
         </div>
 

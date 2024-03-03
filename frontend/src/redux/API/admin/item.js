@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-const baseUrl = "http://localhost:5000/api/product/";
+const baseUrl = "http://localhost:5000/api/admin/";
 const token = localStorage.getItem("ZoneHub");
 
 export const ItemApi = createApi({
@@ -20,7 +20,7 @@ export const ItemApi = createApi({
         formData.append("itemImage", item.itemImage);
         formData.append("itemDescription", item.itemDescription);
         return {
-          url: "createItem",
+          url: "createitem",
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

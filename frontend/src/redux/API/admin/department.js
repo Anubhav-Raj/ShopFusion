@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const baseUrl = "http://localhost:5000/api/product/";
+const baseUrl = "http://localhost:5000/api/admin/";
 const token = localStorage.getItem("ZoneHub");
 
 export const DepartmentApi = createApi({
@@ -12,19 +12,17 @@ export const DepartmentApi = createApi({
   endpoints: (builder) => ({
     createDepartment: builder.mutation({
       query: (department) => {
+        console.log(department);
         const formData = new FormData();
         formData.append("sallerType", department.sallerType);
-        formData.append("categoryImage", department.categoryImage);
         formData.append("departmentName", department.departmentName);
         formData.append(
           "departmentDescription",
-          department.departmentDescription
+          department.departmentDescription.File
         );
-        // for (let [key, value] of formData.entries()) {
-        //   console.log(key, value);
-        // }
+        formData.append("departmentImage", department.departmentImage); // Assuming departmentImage is the file object
         return {
-          url: "createDepartment",
+          url: "createdepartment",
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

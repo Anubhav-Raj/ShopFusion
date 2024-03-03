@@ -2,15 +2,38 @@ const express = require("express");
 const router = express.Router();
 const { protect } = require("../middleware/is_logged_in");
 const adminCon = require("../controllers/admin");
+const more_upload = require("../utils/more_upload");
 
-router.post("/create-saller-type", protect, adminCon.createSallerType);
-router.post("/create-department", protect, adminCon.createDepartment);
-router.post("/create-category", protect, adminCon.createCategory);
-router.post("/create-subcategory", protect, adminCon.createSubCategory);
-router.post("/create-item", protect, adminCon.createItem);
+router.post("/createsallertype", protect, adminCon.createSallerType);
+router.post(
+  "/createdepartment",
+  protect,
+  more_upload.single("departmentImage"),
+  adminCon.createDepartment
+);
+router.post(
+  "/createcategory",
+  protect,
+  more_upload.single("categoryImage"),
+  adminCon.createCategory
+);
+router.post(
+  "/createsubcategory",
+  protect,
+  more_upload.single("subCategoryImage"),
+  adminCon.createSubCategory
+);
+router.post(
+  "/createitem",
+  protect,
+  more_upload.single("itemImage"),
+  adminCon.createItem
+);
 
-router.get("/fetch-all-saller-types", protect, adminCon.fetchAllSallerTypes);
-router.get("/fetch-all-departments", protect, adminCon.fetchAllDepartments);
-router.get("/fetch-all-categories", protect, adminCon.fetchAllCategories);
-router.get("/fetch-all-subcategories", protect, adminCon.fetchAllSubCategories);
-router.get("/fetch-all-items", protect, adminCon.fetchAllItems);
+router.get("/fetchallsallertypes", protect, adminCon.fetchAllSallerTypes);
+router.get("/fetchalldepartments", protect, adminCon.fetchAllDepartments);
+router.get("/fetchallcategories", protect, adminCon.fetchAllCategories);
+router.get("/fetchallsubcategories", protect, adminCon.fetchAllSubCategories);
+router.get("/fetchallitems", protect, adminCon.fetchAllItems);
+
+module.exports = router;

@@ -65,7 +65,6 @@ const AdminLayout = () => {
   const handleDepartmentFinish = async (values) => {
     try {
       // Validate values before making the API call
-      console.log(values);
       if (
         !values.sallerType ||
         !values.departmentDescription ||

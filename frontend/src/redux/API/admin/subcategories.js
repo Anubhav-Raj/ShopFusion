@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-const baseUrl = "http://localhost:5000/api/product/";
+const baseUrl = "http://localhost:5000/api/admin/";
 const token = localStorage.getItem("ZoneHub");
 
 export const SubCategoriesApi = createApi({
@@ -11,22 +11,20 @@ export const SubCategoriesApi = createApi({
   endpoints: (builder) => ({
     createSubCategories: builder.mutation({
       query: (subCategories) => {
+        console.log(subCategories);
         const formData = new FormData();
         formData.append("sallerType", subCategories.sallerType);
         formData.append("department", subCategories.department);
         formData.append("category", subCategories.category);
-        formData.append("subcategoryImage", subCategories.subCategoryimage);
+        formData.append("subCategoryImage", subCategories.subCategoryimage);
         formData.append("subcategoryName", subCategories.subcategoryName);
         formData.append(
           "subcategoryDescription",
           subCategories.subcategoryDescription
         );
 
-        // for (let [key, value] of formData.entries()) {
-        //   console.log(key, value);
-        // }
         return {
-          url: "createDepartment",
+          url: "createsubcategory",
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

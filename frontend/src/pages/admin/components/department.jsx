@@ -5,9 +5,15 @@ const OPTIONS = ["Apples", "Nails", "Bananas", "Helicopters"];
 
 const Department = ({ onFinish, onFinishFailed }) => {
   const [selectedItems, setSelectedItems] = useState([]);
+  const [file, setFile] = useState(null);
 
   const handleSelectChange = (value) => {
     setSelectedItems(value);
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setFile(file);
   };
 
   return (
@@ -34,7 +40,7 @@ const Department = ({ onFinish, onFinishFailed }) => {
         initialValues={{
           remember: true,
         }}
-        onFinish={(values) => onFinish({ ...values })}
+        onFinish={(values) => onFinish({ ...values, departmentImage: file })}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
@@ -79,8 +85,8 @@ const Department = ({ onFinish, onFinishFailed }) => {
           </Form.Item>
 
           <Form.Item
-            name="departmentImage"
             label="Department Image"
+            name="departmentImage"
             rules={[
               {
                 required: true,
@@ -88,7 +94,11 @@ const Department = ({ onFinish, onFinishFailed }) => {
               },
             ]}
           >
-            <Input type="file" accept=".png,.jpeg, .jpg" />
+            <input
+              type="file"
+              accept=".png,.jpeg,.jpg"
+              onChange={handleFileChange}
+            />
           </Form.Item>
         </div>
 

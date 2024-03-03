@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const baseUrl = "http://localhost:5000/api/product/";
+const baseUrl = "http://localhost:5000/api/admin/";
 const token = localStorage.getItem("ZoneHub");
 
 export const sallerTypeApi = createApi({
@@ -12,19 +12,13 @@ export const sallerTypeApi = createApi({
   endpoints: (builder) => ({
     createSallerType: builder.mutation({
       query: (sallerType) => {
-        const formData = new FormData();
-        formData.append("sallerType", sallerType.SallerName);
-        formData.append("sallerTypeDescription", sallerType.sallerDescription);
-        for (let [key, value] of formData.entries()) {
-          console.log(key, value);
-        }
         return {
-          url: "createSallerType",
+          url: "createsallertype",
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          body: formData,
+          body: sallerType,
         };
       },
       invalidatesTags: ["sallerType"],
@@ -42,7 +36,7 @@ export const sallerTypeApi = createApi({
     fetchAllSallerType: builder.query({
       query: () => {
         return {
-          url: "fetchAllSallerType",
+          url: "fetchallsallertypes",
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
