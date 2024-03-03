@@ -4,6 +4,7 @@ const cors = require("cors");
 const userRouters = require("./routers/user");
 const productRouters = require("./routers/product.js");
 const paymentRouters = require("./routers/payment.js");
+const adminRouters = require("./routers/admin.js");
 const bodyParser = require("body-parser");
 
 require("dotenv").config();
@@ -25,6 +26,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/user", userRouters);
 app.use("/api/product", productRouters);
 app.use("/api/payment", paymentRouters);
+app.use("/api/admin", adminRouters);
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

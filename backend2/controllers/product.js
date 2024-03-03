@@ -246,12 +246,10 @@ exports.userAllProduct = async (req, res) => {
 };
 
 //razorpay payment
-
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_SECRET_KEY,
 });
-
 exports.payment = async (req, res) => {
   try {
     const { productsID } = req.body;
@@ -284,7 +282,6 @@ exports.payment = async (req, res) => {
     console.log(error);
   }
 };
-
 exports.paymentVerification = async (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
