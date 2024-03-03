@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const chooseTypeSchema = new mongoose.Schema(
   {
     name: String,
-    image: String,
+    desc: String,
   },
   {
     timestamps: true,

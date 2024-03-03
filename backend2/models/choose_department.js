@@ -5,6 +5,7 @@ const cDSchema = new mongoose.Schema(
   {
     name: String,
     image: String,
+    desc: String,
     choose_type: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ChooseType",
