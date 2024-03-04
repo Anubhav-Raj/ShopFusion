@@ -1,22 +1,58 @@
 import React, { useState } from "react";
-import { Form, Input, Button } from "antd";
-import { Select } from "antd";
-const OPTIONS = ["Apples", "Nails", "Bananas", "Helicopters"];
-const Items = ({ onFinish, onFinishFailed }) => {
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [file, setFile] = useState(null);
+import { Form, Input, Button, Select, message } from "antd";
 
-  const handleSelectChange = (value) => {
-    setSelectedItems(value);
-  };
+import { useFetchAllDepartmentQuery } from "../../../redux/API/admin/department";
+import { useFetchAllCategoryQuery } from "../../../redux/API/admin/categories";
+import { useFetchAllSubCategoriesQuery } from "../../../redux/API/admin/subcategories";
+
+const OPTIONS = ["Apples", "Nails", "Bananas", "Helicopters"];
+
+const Items = ({ onFinish, onFinishFailed, data }) => {
+  const [selectedSellerType, setSelectedSellerType] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState([]);
+  const [file, setFile] = useState(null);
+  const [form] = Form.useForm(); // Initialize form instance
+
+  const { data: departmentData } = useFetchAllDepartmentQuery(
+    selectedSellerType || ""
+  );
+  const { data: categoriesData } = useFetchAllCategoryQuery(
+    selectedDepartment || ""
+  );
+  const { data: subcategoriesData } = useFetchAllSubCategoriesQuery(
+    selectedCategories || ""
+  );
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setFile(file);
   };
-  const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
+
+  const handleSubmit = async (values) => {
+    try {
+      // Trim the values before submitting
+      const trimmedValues = Object.fromEntries(
+        Object.entries(values).map(([key, value]) => [key, value.trim()])
+      );
+
+      // Pass form values and itemImage file to onFinish
+      await onFinish({ ...trimmedValues, itemImage: file });
+      // Reset form fields after successful submission
+      form.resetFields();
+      // Optionally, display a success message
+      message.success("Item created successfully");
+    } catch (error) {
+      // Handle submission error
+      console.error("Error submitting form:", error);
+    }
+  };
+
   return (
     <>
       <Form
+        form={form} // Pass the form instance to the Form component
         name="basic"
         labelCol={{
           span: 8,
@@ -38,14 +74,14 @@ const Items = ({ onFinish, onFinishFailed }) => {
         initialValues={{
           remember: true,
         }}
-        onFinish={(values) => onFinish({ ...values, itemImage: file })}
+        onFinish={handleSubmit} // Pass handleSubmit as the onFinish callback
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <h3>Create Items</h3>
         <div className="flex row">
           <Form.Item
-            label="Choose Saller Type"
+            label="Choose Seller Type"
             name="sallerType"
             rules={[
               {
@@ -56,16 +92,19 @@ const Items = ({ onFinish, onFinishFailed }) => {
           >
             <Select
               mode="single"
-              placeholder="Choose Saller Type"
-              value={selectedItems}
-              onChange={handleSelectChange}
+              placeholder="Choose Seller Type"
+              value={selectedSellerType}
               style={{
                 width: "100%",
               }}
-              options={filteredOptions.map((item) => ({
-                value: item,
-                label: item,
-              }))}
+              onChange={(value) => setSelectedSellerType(value)}
+              options={
+                data &&
+                data.map((item) => ({
+                  value: item._id,
+                  label: item.name,
+                }))
+              }
             />
           </Form.Item>
           <Form.Item
@@ -74,22 +113,25 @@ const Items = ({ onFinish, onFinishFailed }) => {
             rules={[
               {
                 required: true,
-                message: "Please choose the seller type!",
+                message: "Please choose the department!",
               },
             ]}
           >
             <Select
               mode="single"
-              placeholder="Choose Saller Type"
-              value={selectedItems}
-              onChange={handleSelectChange}
+              placeholder="Choose Department Type"
+              value={selectedDepartment}
+              onChange={(value) => setSelectedDepartment(value)}
               style={{
                 width: "100%",
               }}
-              options={filteredOptions.map((item) => ({
-                value: item,
-                label: item,
-              }))}
+              options={
+                departmentData &&
+                departmentData.Departments.map((item) => ({
+                  value: item._id,
+                  label: item.name,
+                }))
+              }
             />
           </Form.Item>
           <Form.Item
@@ -105,18 +147,20 @@ const Items = ({ onFinish, onFinishFailed }) => {
             <Select
               mode="single"
               placeholder="Choose Category Type"
-              value={selectedItems}
-              onChange={handleSelectChange}
+              value={selectedCategories}
               style={{
                 width: "100%",
               }}
-              options={OPTIONS.map((item) => ({
-                value: item,
-                label: item,
-              }))}
+              onChange={(value) => setSelectedCategories(value)}
+              options={
+                categoriesData &&
+                categoriesData.Categories.map((item) => ({
+                  value: item._id,
+                  label: item.name,
+                }))
+              }
             />
           </Form.Item>
-
           <Form.Item
             label="Choose Sub Category Type"
             name="subCategory"
@@ -130,25 +174,27 @@ const Items = ({ onFinish, onFinishFailed }) => {
             <Select
               mode="single"
               placeholder="Choose Sub Category Type"
-              value={selectedItems}
-              onChange={handleSelectChange}
+              value={selectedSubCategories}
               style={{
                 width: "100%",
               }}
-              options={filteredOptions.map((item) => ({
-                value: item,
-                label: item,
-              }))}
+              onChange={(value) => setSelectedSubCategories(value)}
+              options={
+                subcategoriesData &&
+                subcategoriesData.SubCategories.map((item) => ({
+                  value: item._id,
+                  label: item.name,
+                }))
+              }
             />
           </Form.Item>
-
           <Form.Item
             label="Item Name"
             name="itemName"
             rules={[
               {
                 required: true,
-                message: " Please input your sub Item name!",
+                message: "Please input your Item name!",
               },
             ]}
           >
@@ -193,7 +239,7 @@ const Items = ({ onFinish, onFinishFailed }) => {
             }}
           >
             <Button type="primary" htmlType="submit">
-              create Item
+              Create Item
             </Button>
           </Form.Item>
         </div>

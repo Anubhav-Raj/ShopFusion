@@ -11,7 +11,7 @@ exports.createSallerType = async (req, res) => {
   try {
     // console.log(req.body);
     const ct = new ChooseType({
-      name: req.body.SallerName,
+      name: req.body.sallerName,
       desc: req.body.sallerDescription,
     });
     await ct.save();
@@ -24,16 +24,15 @@ exports.createSallerType = async (req, res) => {
 };
 
 // Controller function to create a new department
-exports.createDepartment = async (req, res) => {
+exports.createDepartment = async (req, res, next) => {
   try {
     // Handle department creation logic here
-    console.log(req.body);
-    console.log(req.file);
+
     const cd = new ChooseDepartment({
       name: req.body.departmentName,
       desc: req.body.departmentDescription,
       image: req.file.path,
-      choose_type_id: req.body.choose_type_id,
+      choose_type: req.body.choose_type_id,
     });
     await cd.save();
     res.status(200).json({ message: "Department fetched successfully" });
@@ -43,14 +42,15 @@ exports.createDepartment = async (req, res) => {
 };
 
 // Controller function to create a new category
-exports.createCategory = async (req, res) => {
+exports.createCategory = async (req, res, next) => {
   try {
     // Handle category creation logic here
+
     const cc = new ChooseCategory({
       name: req.body.categoryName,
       desc: req.body.categoryDescription,
       image: req.file.path,
-      choose_department_id: req.body.choose_department_id,
+      choose_department: req.body.choose_department_id,
     });
     await cc.save();
     res
@@ -63,14 +63,16 @@ exports.createCategory = async (req, res) => {
 };
 
 // Controller function to create a new subcategory
-exports.createSubCategory = async (req, res) => {
+exports.createSubCategory = async (req, res, next) => {
   try {
+    console.log(req.file.path);
+
     // Handle subcategory creation logic here
     const csc = new ChooseSubCategory({
-      name: req.body.subCategoryName,
+      name: req.body.subcategoryName,
       desc: req.body.subCategoryDescription,
       image: req.file.path,
-      choose_category_id: req.body.choose_category_id,
+      choose_category: req.body.choose_category_id,
     });
     await csc.save();
     console.log(req.body);
@@ -83,14 +85,15 @@ exports.createSubCategory = async (req, res) => {
 };
 
 // Controller function to create a new item
-exports.createItem = async (req, res) => {
+exports.createItem = async (req, res, next) => {
   try {
     // Handle item creation logic here
+    console.log(req.body);
     const ci = new ChooseItem({
       name: req.body.itemName,
       desc: req.body.itemDescription,
       image: req.file.path,
-      choose_subcategory_id: req.body.choose_subcategory_id,
+      choose_category_id: req.body.choose_subcategory_id,
     });
     await ci.save();
     res.status(200).json({ message: "Item created successfully", data: ci });
@@ -116,13 +119,13 @@ exports.fetchAllSallerTypes = async (req, res) => {
 exports.fetchAllDepartments = async (req, res) => {
   try {
     // Handle fetching all departments logic here
+
     const Departments = await ChooseDepartment.find({
-      choose_type_id: req.body.choose_type_id,
+      choose_type: req.body.choose_type_id,
     });
     res
       .status(200)
       .json({ message: "Departments fetched successfully", Departments });
-    console.log(req.body);
   } catch (error) {
     next(error);
   }
@@ -133,12 +136,11 @@ exports.fetchAllCategories = async (req, res) => {
   try {
     // Handle fetching all categories logic here
     const Categories = await ChooseCategory.find({
-      choose_department_id: req.body.choose_department_id,
+      choose_department: req.body.choose_department_id,
     });
     res
       .status(200)
       .json({ message: "Categories fetched successfully", Categories });
-    console.log(req.body);
   } catch (error) {
     next(error);
   }
@@ -147,15 +149,14 @@ exports.fetchAllCategories = async (req, res) => {
 // Controller function to fetch all subcategories
 exports.fetchAllSubCategories = async (req, res) => {
   try {
+    console.log(req.body);
     // Handle fetching all subcategories logic here
     const SubCategories = await ChooseSubCategory.find({
-      choose_category_id: req.body.choose_category_id,
+      choose_category: req.body.choose_category_id,
     });
     res
       .status(200)
       .json({ message: "Subcategories fetched successfully", SubCategories });
-
-    console.log(req.body);
   } catch (error) {
     next(error);
   }

@@ -1,22 +1,51 @@
 import React, { useState } from "react";
-import { Form, Input, Button } from "antd";
-import { Select } from "antd";
-const OPTIONS = ["Apples", "Nails", "Bananas", "Helicopters"];
-const SubCategories = ({ onFinish, onFinishFailed }) => {
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [file, setFile] = useState(null);
+import { Form, Input, Button, Select, message } from "antd";
+import { useFetchAllCategoryQuery } from "../../../redux/API/admin/categories";
+import { useFetchAllDepartmentQuery } from "../../../redux/API/admin/department";
 
-  const handleSelectChange = (value) => {
-    setSelectedItems(value);
-  };
+const SubCategories = ({ onFinish, onFinishFailed, data }) => {
+  const [selectedSellerType, setSelectedSellerType] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [file, setFile] = useState(null);
+  const [form] = Form.useForm(); // Initialize form instance
+
+  const { data: departmentData } = useFetchAllDepartmentQuery(
+    selectedSellerType || ""
+  );
+
+  const { data: categoriesData } = useFetchAllCategoryQuery(
+    selectedDepartment || ""
+  );
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setFile(file);
   };
-  const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
+
+  const handleSubmit = async (values) => {
+    try {
+      // Trim the values before submitting
+      const trimmedValues = Object.fromEntries(
+        Object.entries(values).map(([key, value]) => [key, value.trim()])
+      );
+
+      // Pass form values and categoryImage file to onFinish
+      await onFinish({ ...trimmedValues, subCategoryImage: file });
+      // Reset form fields after successful submission
+      form.resetFields();
+      // Optionally, display a success message
+      message.success("Sub Category created successfully");
+    } catch (error) {
+      // Handle submission error
+      console.error("Error submitting form:", error);
+    }
+  };
+
   return (
     <>
       <Form
+        form={form} // Pass the form instance to the Form component
         name="basic"
         labelCol={{
           span: 8,
@@ -38,15 +67,15 @@ const SubCategories = ({ onFinish, onFinishFailed }) => {
         initialValues={{
           remember: true,
         }}
-        onFinish={(values) => onFinish({ ...values, subCategoryimage: file })}
+        onFinish={handleSubmit} // Pass handleSubmit as the onFinish callback
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <h3>Create Sub Category</h3>
         <div className="flex row">
           <Form.Item
-            label="Choose Saller Type"
-            name="sallerType"
+            label="Choose Seller Type"
+            name="sellerType"
             rules={[
               {
                 required: true,
@@ -56,16 +85,19 @@ const SubCategories = ({ onFinish, onFinishFailed }) => {
           >
             <Select
               mode="single"
-              placeholder="Choose Saller Type"
-              value={selectedItems}
-              onChange={handleSelectChange}
+              placeholder="Choose Seller Type"
+              value={selectedSellerType}
               style={{
                 width: "100%",
               }}
-              options={OPTIONS.map((item) => ({
-                value: item,
-                label: item,
-              }))}
+              onChange={(value) => setSelectedSellerType(value)}
+              options={
+                data &&
+                data.map((item) => ({
+                  value: item._id,
+                  label: item.name,
+                }))
+              }
             />
           </Form.Item>
           <Form.Item
@@ -74,22 +106,25 @@ const SubCategories = ({ onFinish, onFinishFailed }) => {
             rules={[
               {
                 required: true,
-                message: "Please choose the seller type!",
+                message: "Please choose the department!",
               },
             ]}
           >
             <Select
               mode="single"
-              placeholder="Choose Saller Type"
-              value={selectedItems}
-              onChange={handleSelectChange}
+              placeholder="Choose Department"
+              value={selectedDepartment}
+              onChange={(value) => setSelectedDepartment(value)}
               style={{
                 width: "100%",
               }}
-              options={OPTIONS.map((item) => ({
-                value: item,
-                label: item,
-              }))}
+              options={
+                departmentData &&
+                departmentData.Departments.map((item) => ({
+                  value: item._id,
+                  label: item.name,
+                }))
+              }
             />
           </Form.Item>
           <Form.Item
@@ -105,33 +140,36 @@ const SubCategories = ({ onFinish, onFinishFailed }) => {
             <Select
               mode="single"
               placeholder="Choose Category Type"
-              value={selectedItems}
-              onChange={handleSelectChange}
+              value={selectedCategories}
               style={{
                 width: "100%",
               }}
-              options={OPTIONS.map((item) => ({
-                value: item,
-                label: item,
-              }))}
+              onChange={(value) => setSelectedCategories(value)}
+              options={
+                categoriesData &&
+                categoriesData.Categories.map((item) => ({
+                  value: item._id,
+                  label: item.name,
+                }))
+              }
             />
           </Form.Item>
 
           <Form.Item
-            label=" Sub Category Name"
+            label="Sub Category Name"
             name="subcategoryName"
             rules={[
               {
                 required: true,
-                message: " Please input your sub category name!",
+                message: "Please input your sub category name!",
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            name="subCategoryimage"
-            label="category Image"
+            name="subCategoryImage"
+            label="Sub Category Image"
             rules={[
               {
                 required: true,
@@ -168,7 +206,7 @@ const SubCategories = ({ onFinish, onFinishFailed }) => {
             }}
           >
             <Button type="primary" htmlType="submit">
-              create Sub Category
+              Create Sub Category
             </Button>
           </Form.Item>
         </div>

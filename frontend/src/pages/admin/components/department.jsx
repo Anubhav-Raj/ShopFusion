@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Select } from "antd";
+import { Form, Input, Button, Select, message } from "antd";
+import { useFetchAllDepartmentQuery } from "../../../redux/API/admin/department";
 
-const OPTIONS = ["Apples", "Nails", "Bananas", "Helicopters"];
-
-const Department = ({ onFinish, onFinishFailed }) => {
+const Department = ({ onFinish, onFinishFailed, data }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [file, setFile] = useState(null);
+  const [form] = Form.useForm(); // Initialize form instance
 
   const handleSelectChange = (value) => {
     setSelectedItems(value);
@@ -16,9 +16,29 @@ const Department = ({ onFinish, onFinishFailed }) => {
     setFile(file);
   };
 
+  const handleSubmit = async (values) => {
+    try {
+      // Trim the values before submitting
+      const trimmedValues = Object.fromEntries(
+        Object.entries(values).map(([key, value]) => [key, value.trim()])
+      );
+
+      // Pass form values and departmentImage file to onFinish
+      await onFinish({ ...trimmedValues, departmentImage: file });
+      // Reset form fields after successful submission
+      form.resetFields();
+      // Optionally, display a success message
+      message.success("Department created successfully");
+    } catch (error) {
+      // Handle submission error
+      console.error("Error submitting form:", error);
+    }
+  };
+
   return (
     <>
       <Form
+        form={form} // Pass the form instance to the Form component
         name="basic"
         labelCol={{
           span: 8,
@@ -40,14 +60,14 @@ const Department = ({ onFinish, onFinishFailed }) => {
         initialValues={{
           remember: true,
         }}
-        onFinish={(values) => onFinish({ ...values, departmentImage: file })}
+        onFinish={handleSubmit} // Pass handleSubmit as the onFinish callback
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <h3>Create Department</h3>
         <div className="flex row">
           <Form.Item
-            label="Choose Saller Type"
+            label="Choose Seller Type"
             name="sallerType"
             rules={[
               {
@@ -58,16 +78,19 @@ const Department = ({ onFinish, onFinishFailed }) => {
           >
             <Select
               mode="single"
-              placeholder="Choose Saller Type"
+              placeholder="Choose Seller Type"
               value={selectedItems}
               onChange={handleSelectChange}
               style={{
                 width: "100%",
               }}
-              options={OPTIONS.map((item) => ({
-                value: item,
-                label: item,
-              }))}
+              options={
+                data &&
+                data.map((item) => ({
+                  value: item._id,
+                  label: item.name,
+                }))
+              }
             />
           </Form.Item>
 

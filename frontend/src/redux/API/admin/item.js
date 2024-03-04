@@ -15,7 +15,7 @@ export const ItemApi = createApi({
         formData.append("sallerType", item.sallerType);
         formData.append("department", item.department);
         formData.append("category", item.category);
-        formData.append("subCategory", item.subCategory);
+        formData.append("choose_subcategory_id", item.subCategory);
         formData.append("itemName", item.itemName);
         formData.append("itemImage", item.itemImage);
         formData.append("itemDescription", item.itemDescription);
@@ -29,35 +29,23 @@ export const ItemApi = createApi({
         };
       },
       invalidatesTags: ["item"],
-      onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-        dispatch(
-          queryFulfilled({
-            endpointName: "createItem",
-            response: {},
-          })
-        );
-      },
     }),
 
     fetchAllItem: builder.query({
-      query: () => {
+      query: (id) => {
+        const formData = {
+          choose_subcategory_id: id,
+        };
         return {
-          url: "fetchAllItem",
-          method: "GET",
+          url: "fetchallitems",
+          method: "POST",
+          body: formData,
           headers: {
             Authorization: `Bearer ${token}`,
           },
         };
       },
       invalidatesTags: ["item"],
-      onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-        dispatch(
-          queryFulfilled({
-            endpointName: "fetchAllItem",
-            response: {},
-          })
-        );
-      },
     }),
   }),
 });

@@ -30,10 +30,10 @@ router.post(
   adminCon.createItem
 );
 
-router.get("/fetchallsallertypes", protect, adminCon.fetchAllSallerTypes);
-router.get("/fetchalldepartments", protect, adminCon.fetchAllDepartments);
-router.get("/fetchallcategories", protect, adminCon.fetchAllCategories);
-router.get("/fetchallsubcategories", protect, adminCon.fetchAllSubCategories);
-router.get("/fetchallitems", protect, adminCon.fetchAllItems);
+router.get("/fetchallsallertypes", adminCon.fetchAllSallerTypes);
+router.post("/fetchalldepartments", adminCon.fetchAllDepartments);
+router.post("/fetchallcategories", adminCon.fetchAllCategories);
+router.post("/fetchallsubcategories", adminCon.fetchAllSubCategories);
+router.post("/fetchallitems", adminCon.fetchAllItems);
 
 module.exports = router;

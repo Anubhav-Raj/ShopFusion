@@ -11,17 +11,20 @@ export const SubCategoriesApi = createApi({
   endpoints: (builder) => ({
     createSubCategories: builder.mutation({
       query: (subCategories) => {
-        console.log(subCategories);
+        // console.log(subCategories);
         const formData = new FormData();
-        formData.append("sallerType", subCategories.sallerType);
+        formData.append("sellerType", subCategories.sellerType);
         formData.append("department", subCategories.department);
-        formData.append("category", subCategories.category);
-        formData.append("subCategoryImage", subCategories.subCategoryimage);
+        formData.append("choose_category_id", subCategories.category);
+        formData.append("subCategoryImage", subCategories.subCategoryImage);
         formData.append("subcategoryName", subCategories.subcategoryName);
         formData.append(
           "subcategoryDescription",
           subCategories.subcategoryDescription
         );
+        for (let [key, value] of formData.entries()) {
+          console.log(key, value);
+        }
 
         return {
           url: "createsubcategory",
@@ -33,35 +36,29 @@ export const SubCategoriesApi = createApi({
         };
       },
       invalidatesTags: ["subCategories"],
-      onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-        dispatch(
-          queryFulfilled({
-            endpointName: "createSubCategories",
-            response: {},
-          })
-        );
-      },
+      // onQueryStarted: (_, { dispatch, queryFulfilled }) => {
+      //   dispatch(
+      //     queryFulfilled({
+      //       endpointName: "createSubCategories",
+      //       response: {},
+      //     })
+      //   );
+      // },
     }),
 
     fetchAllSubCategories: builder.query({
-      query: () => {
+      query: (id) => {
+        console.log(id);
+        const formData = {
+          choose_category_id: id,
+        };
         return {
-          url: "fetchAllSubCategories",
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          url: "fetchallsubcategories",
+          method: "POST",
+          body: formData,
         };
       },
       invalidatesTags: ["subCategories"],
-      onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-        dispatch(
-          queryFulfilled({
-            endpointName: "fetchAllSubCategories",
-            response: {},
-          })
-        );
-      },
     }),
   }),
 });

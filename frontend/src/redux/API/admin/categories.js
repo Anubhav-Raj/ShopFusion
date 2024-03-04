@@ -12,15 +12,14 @@ export const CategoryApi = createApi({
   endpoints: (builder) => ({
     createCategory: builder.mutation({
       query: (category) => {
+        console.log(category);
         const formData = new FormData();
-        formData.append("sallerType", category.sallerType);
-        formData.append("department", category.department);
+        formData.append("sellerType", category.sallerType);
+        formData.append("choose_department_id", category.department);
         formData.append("categoryName", category.categoryName);
         formData.append("categoryImage", category.categoryImage);
         formData.append("categoryDescription", category.categoryDescription);
-        // for (let [key, value] of formData.entries()) {
-        //   console.log(key, value);
-        // }
+
         return {
           url: "createCategory",
           method: "POST",
@@ -31,35 +30,28 @@ export const CategoryApi = createApi({
         };
       },
       invalidatesTags: ["category"],
-      onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-        dispatch(
-          queryFulfilled({
-            endpointName: "createCategory",
-            response: {},
-          })
-        );
-      },
+      // onQueryStarted: (_, { dispatch, queryFulfilled }) => {
+      //   dispatch(
+      //     queryFulfilled({
+      //       endpointName: "createCategory",
+      //       response: {},
+      //     })
+      //   );
+      // },
     }),
 
     fetchAllCategory: builder.query({
-      query: () => {
+      query: (id) => {
+        const formData = {
+          choose_department_id: id,
+        };
         return {
-          url: "fetchAllCategory",
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          url: "fetchallcategories",
+          method: "POST",
+          body: formData,
         };
       },
       invalidatesTags: ["category"],
-      onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-        dispatch(
-          queryFulfilled({
-            endpointName: "fetchAllCategory",
-            response: {},
-          })
-        );
-      },
     }),
   }),
 });

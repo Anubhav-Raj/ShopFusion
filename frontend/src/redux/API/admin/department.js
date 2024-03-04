@@ -12,13 +12,12 @@ export const DepartmentApi = createApi({
   endpoints: (builder) => ({
     createDepartment: builder.mutation({
       query: (department) => {
-        console.log(department);
         const formData = new FormData();
-        formData.append("sallerType", department.sallerType);
+        formData.append("choose_type_id", department.sallerType);
         formData.append("departmentName", department.departmentName);
         formData.append(
           "departmentDescription",
-          department.departmentDescription.File
+          department.departmentDescription
         );
         formData.append("departmentImage", department.departmentImage); // Assuming departmentImage is the file object
         return {
@@ -31,35 +30,37 @@ export const DepartmentApi = createApi({
         };
       },
       invalidatesTags: ["department"],
-      onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-        dispatch(
-          queryFulfilled({
-            endpointName: "createDepartment",
-            response: {},
-          })
-        );
-      },
+      // onQueryStarted: (_, { dispatch, queryFulfilled }) => {
+      //   dispatch(
+      //     queryFulfilled({
+      //       endpointName: "createDepartment",
+      //       response: {},
+      //     })
+      //   );
+      // },
     }),
 
     fetchAllDepartment: builder.query({
-      query: () => {
+      query: (selectedItems) => {
+        console.log(selectedItems);
+        const formData = {
+          choose_type_id: selectedItems,
+        };
         return {
-          url: "fetchAllDepartment",
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          url: "fetchalldepartments",
+          method: "POST",
+          body: formData,
         };
       },
       invalidatesTags: ["department"],
-      onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-        dispatch(
-          queryFulfilled({
-            endpointName: "fetchAllDepartment",
-            response: {},
-          })
-        );
-      },
+      // onQueryStarted: (_, { dispatch, queryFulfilled }) => {
+      //   dispatch(
+      //     queryFulfilled({
+      //       endpointName: "fetchAllDepartment",
+      //       response: {},
+      //     })
+      //   );
+      // },
     }),
   }),
 });

@@ -28,11 +28,11 @@ const store = configureStore({
     [mobileproduct.name]: mobileproduct.reducer,
     [userReducer.name]: userReducer.reducer,
     // For Admin
-    [sallerTypeApi.name]: sallerTypeApi.reducer,
-    [CategoryApi.name]: CategoryApi.reducer,
-    [DepartmentApi.name]: DepartmentApi.reducer,
-    [SubCategoriesApi.name]: SubCategoriesApi.reducer,
-    [ItemApi.name]: ItemApi.reducer,
+    [sallerTypeApi.reducerPath]: sallerTypeApi.reducer,
+    [DepartmentApi.reducerPath]: DepartmentApi.reducer,
+    [CategoryApi.reducerPath]: CategoryApi.reducer,
+    [SubCategoriesApi.reducerPath]: SubCategoriesApi.reducer,
+    [ItemApi.reducerPath]: ItemApi.reducer,
 
     brands: brandReducer,
     products: productReducer,
@@ -47,8 +47,8 @@ const store = configureStore({
       OtpAPI.middleware,
       CheckUniqueAPI.middleware,
       sallerTypeApi.middleware,
-      CategoryApi.middleware,
       DepartmentApi.middleware,
+      CategoryApi.middleware,
       SubCategoriesApi.middleware,
       ItemApi.middleware
     ),

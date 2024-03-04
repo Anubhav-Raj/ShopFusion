@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   UploadOutlined,
   UserOutlined,
@@ -10,9 +10,15 @@ import SallerType from "../components/sallertype";
 import SubCategories from "../components/subcategories";
 import Department from "../components/department";
 import Items from "../components/item";
-import { useCreateSallerTypeMutation } from "../../../redux/API/admin/saller";
+import {
+  useCreateSallerTypeMutation,
+  useFetchAllSallerTypeQuery,
+} from "../../../redux/API/admin/saller";
 import { useCreateCategoryMutation } from "../../../redux/API/admin/categories";
-import { useCreateDepartmentMutation } from "../../../redux/API/admin/department";
+import {
+  useCreateDepartmentMutation,
+  useFetchAllDepartmentQuery,
+} from "../../../redux/API/admin/department";
 import { useCreateSubCategoriesMutation } from "../../../redux/API/admin/subcategories";
 import { useCreateItemMutation } from "../../../redux/API/admin/item";
 
@@ -33,16 +39,24 @@ const AdminLayout = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const [sallerType, setSallerType] = useState([]);
+
   const [createSallerType] = useCreateSallerTypeMutation();
   const [createCategory] = useCreateCategoryMutation();
   const [createDepartment] = useCreateDepartmentMutation();
   const [createSubCategories] = useCreateSubCategoriesMutation();
   const [createItem] = useCreateItemMutation();
+  const { isLoading, data } = useFetchAllSallerTypeQuery();
+  useEffect(() => {
+    if (data) {
+      setSallerType(data && data.SellerTypes);
+    }
+  }, [isLoading, data]);
 
   const handleSallerTypeFinish = async (values) => {
     try {
       // Validate values before making the API call
-      if (!values.SallerName || !values.sallerDescription) {
+      if (!values.sallerName || !values.sallerDescription) {
         throw new Error("Saller type and description are required.");
       }
 
@@ -92,9 +106,10 @@ const AdminLayout = () => {
 
   const handleCategoriesFinish = async (values) => {
     try {
+      console.log(values);
       // Validate values before making the API call
       if (
-        !values.sallerType ||
+        !values.sellerType ||
         !values.department ||
         !values.categoryName ||
         !values.categoryDescription ||
@@ -103,6 +118,7 @@ const AdminLayout = () => {
         throw new Error("Saller type and description are required.");
       }
 
+      console.log(values);
       // Make the API call to create saller type
       const response = await createCategory(values);
 
@@ -121,14 +137,13 @@ const AdminLayout = () => {
 
   const handleSubCategoriesFinish = async (values) => {
     try {
-      // Validate values before making the API call
       if (
-        !values.sallerType ||
+        !values.sellerType ||
         !values.department ||
         !values.category ||
         !values.subcategoryName ||
         !values.subcategoryDescription ||
-        !values.subCategoryimage
+        !values.subCategoryImage
       ) {
         throw new Error("Saller type and description are required.");
       }
@@ -222,6 +237,7 @@ const AdminLayout = () => {
             <Department
               onFinish={handleDepartmentFinish}
               onFinishFailed={handleFinishFailed}
+              data={sallerType && sallerType}
             />
           </div>
           <div
@@ -237,10 +253,12 @@ const AdminLayout = () => {
             <Categories
               onFinish={handleCategoriesFinish}
               onFinishFailed={handleFinishFailed}
+              data={sallerType && sallerType}
             />
             <SubCategories
               onFinish={handleSubCategoriesFinish}
               onFinishFailed={handleFinishFailed}
+              data={sallerType && sallerType}
             />
           </div>
           <div
@@ -256,6 +274,7 @@ const AdminLayout = () => {
             <Items
               onFinish={handleItemsFinish}
               onFinishFailed={handleFinishFailed}
+              data={sallerType && sallerType}
             />
           </div>
         </Content>

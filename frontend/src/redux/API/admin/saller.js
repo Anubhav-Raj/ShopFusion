@@ -23,14 +23,14 @@ export const sallerTypeApi = createApi({
       },
       invalidatesTags: ["sallerType"],
       // Add a tag for this endpoint
-      onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-        dispatch(
-          queryFulfilled({
-            endpointName: "createSallerType",
-            response: {},
-          })
-        );
-      },
+      // onQueryStarted: (_, { dispatch, queryFulfilled }) => {
+      //   dispatch(
+      //     queryFulfilled({
+      //       endpointName: "createSallerType",
+      //       response: {},
+      //     })
+      //   );
+      // },
     }),
 
     fetchAllSallerType: builder.query({
@@ -38,21 +38,9 @@ export const sallerTypeApi = createApi({
         return {
           url: "fetchallsallertypes",
           method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         };
       },
       invalidatesTags: ["sallerType"],
-      // Add a tag for this endpoint
-      onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-        dispatch(
-          queryFulfilled({
-            endpointName: "fetchAllSallerType",
-            response: {},
-          })
-        );
-      },
     }),
   }),
 });

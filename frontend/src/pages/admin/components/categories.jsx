@@ -1,23 +1,56 @@
 import React, { useState } from "react";
-import { Form, Input, Button } from "antd";
-import { Select } from "antd";
-const OPTIONS = ["Apples", "Nails", "Bananas", "Helicopters"];
-const Categories = ({ onFinish, onFinishFailed }) => {
-  const [selectedItems, setSelectedItems] = useState([]);
+import { Form, Input, Button, Select, message } from "antd";
+import { useFetchAllDepartmentQuery } from "../../../redux/API/admin/department";
 
-  const handleSelectChange = (value) => {
-    setSelectedItems(value);
+const OPTIONS = ["Apples", "Nails", "Bananas", "Helicopters"];
+
+const Categories = ({ onFinish, onFinishFailed, data }) => {
+  const [selectedSellerType, setSelectedSellerType] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState([]);
+  const [form] = Form.useForm(); // Initialize form instance
+
+  const { data: departmentData } = useFetchAllDepartmentQuery(
+    selectedSellerType || ""
+  );
+
+  const handleSellerTypeChange = (value) => {
+    setSelectedSellerType(value);
   };
+
+  const handleDepartmentChange = (value) => {
+    setSelectedDepartment(value);
+  };
+
   const [file, setFile] = useState(null);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setFile(file);
   };
-  const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
+
+  const handleSubmit = async (values) => {
+    try {
+      // Trim the values before submitting
+      const trimmedValues = Object.fromEntries(
+        Object.entries(values).map(([key, value]) => [key, value.trim()])
+      );
+
+      // Pass form values and categoryImage file to onFinish
+      await onFinish({ ...trimmedValues, categoryImage: file });
+      // Reset form fields after successful submission
+      form.resetFields();
+      // Optionally, display a success message
+      message.success("Category created successfully");
+    } catch (error) {
+      // Handle submission error
+      console.error("Error submitting form:", error);
+    }
+  };
+
   return (
     <>
       <Form
+        form={form} // Pass the form instance to the Form component
         name="basic"
         labelCol={{
           span: 8,
@@ -39,15 +72,15 @@ const Categories = ({ onFinish, onFinishFailed }) => {
         initialValues={{
           remember: true,
         }}
-        onFinish={(values) => onFinish({ ...values, categoryImage: file })}
+        onFinish={handleSubmit} // Pass handleSubmit as the onFinish callback
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <h3>Create Category</h3>
         <div className="flex row">
           <Form.Item
-            label="Choose Saller Type"
-            name="sallerType"
+            label="Choose Seller Type"
+            name="sellerType"
             rules={[
               {
                 required: true,
@@ -57,15 +90,15 @@ const Categories = ({ onFinish, onFinishFailed }) => {
           >
             <Select
               mode="single"
-              placeholder="Choose Saller Type"
-              value={selectedItems}
-              onChange={handleSelectChange}
+              placeholder="Choose Seller Type"
+              value={selectedSellerType}
+              onChange={handleSellerTypeChange}
               style={{
                 width: "100%",
               }}
-              options={OPTIONS.map((item) => ({
-                value: item,
-                label: item,
+              options={data.map((item) => ({
+                value: item._id,
+                label: item.name,
               }))}
             />
           </Form.Item>
@@ -75,22 +108,25 @@ const Categories = ({ onFinish, onFinishFailed }) => {
             rules={[
               {
                 required: true,
-                message: "Please choose the seller type!",
+                message: "Please choose the department!",
               },
             ]}
           >
             <Select
               mode="single"
-              placeholder="Choose Saller Type"
-              value={selectedItems}
-              onChange={handleSelectChange}
+              placeholder="Choose Department"
+              value={selectedDepartment}
+              onChange={handleDepartmentChange}
               style={{
                 width: "100%",
               }}
-              options={OPTIONS.map((item) => ({
-                value: item,
-                label: item,
-              }))}
+              options={
+                departmentData &&
+                departmentData.Departments.map((item) => ({
+                  value: item._id,
+                  label: item.name,
+                }))
+              }
             />
           </Form.Item>
           <Form.Item
@@ -144,7 +180,7 @@ const Categories = ({ onFinish, onFinishFailed }) => {
             }}
           >
             <Button type="primary" htmlType="submit">
-              create category
+              Create Category
             </Button>
           </Form.Item>
         </div>

@@ -1,10 +1,30 @@
 import React from "react";
-import { Form, Input, Checkbox, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 
 const SallerType = ({ onFinish, onFinishFailed }) => {
+  const [form] = Form.useForm(); // Initialize form instance
+
+  const handleSubmit = async (values) => {
+    try {
+      // Trim the values before submitting
+      const trimmedValues = Object.fromEntries(
+        Object.entries(values).map(([key, value]) => [key, value.trim()])
+      );
+
+      await onFinish(trimmedValues);
+      form.resetFields();
+      // Optionally, display a success message
+      message.success("Saller created successfully");
+    } catch (error) {
+      // Handle submission error
+      console.error("Error submitting form:", error);
+    }
+  };
+
   return (
     <>
       <Form
+        form={form} // Pass the form instance to the Form component
         name="basic"
         labelCol={{
           span: 8,
@@ -26,7 +46,7 @@ const SallerType = ({ onFinish, onFinishFailed }) => {
         initialValues={{
           remember: true,
         }}
-        onFinish={onFinish}
+        onFinish={handleSubmit} // Pass handleSubmit as the onFinish callback
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
@@ -34,7 +54,7 @@ const SallerType = ({ onFinish, onFinishFailed }) => {
         <div className="flex row">
           <Form.Item
             label="Saller Name"
-            name="SallerName"
+            name="sallerName" // Corrected field name
             rules={[
               {
                 required: true,
@@ -48,12 +68,12 @@ const SallerType = ({ onFinish, onFinishFailed }) => {
 
         <div className="flex row">
           <Form.Item
-            label="Category Description"
+            label="Saller Description" // Corrected label
             name="sallerDescription"
             rules={[
               {
                 required: true,
-                message: "Please input your category description!",
+                message: "Please input your saller description!",
               },
             ]}
           >
