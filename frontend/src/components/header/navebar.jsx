@@ -33,17 +33,17 @@ function Navbar() {
 
   const openLogin = () => {
     setShowLogin(true);
-    setShowSignup(false);
   };
 
   const openSignup = () => {
-    setShowSignup(true);
-    setShowLogin(false);
+    setShowSignup((pre)=>!pre);
   };
 
   const closeModals = () => {
-    setShowLogin(false);
-    setShowSignup(false);
+    setShowLogin((pre)=>!pre);
+  };
+  const closeModals1 = () => {
+    setShowSignup((pre)=>!pre);
   };
   const dispatch = useDispatch();
   const user = useSelector(loginData);
@@ -179,7 +179,7 @@ function Navbar() {
         <Mobile_headlist />
       </header>
       {showLogin && <Login onClose={closeModals} />}
-      {showSignup && <Signup onClose={closeModals} />}
+      {showSignup && <Signup onClose={closeModals1} />}
     </>
   );
 }

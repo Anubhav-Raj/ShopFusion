@@ -18,21 +18,11 @@ import {
 import { setUser } from "../../redux/API/user_slice/user.slice.js";
 import { loginSuccess } from "../../redux/API/user_slice/login.slice.js";
 
-function Login() {
+function Login({onClose}) {
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
   const [isVisible, setIsVisible] = useState(true);
   const [userByID] = useUserByIDMutation();
-
-  const handleCloseClick = () => {
-    setIsVisible(false);
-  };
-
-  useEffect(() => {
-    return () => {
-      setIsVisible(true);
-    };
-  }, []);
 
   const signInWithGoogle = async () => {
     try {
@@ -79,6 +69,7 @@ function Login() {
         localStorage.setItem("ZoneHub", res.data.token);
         dispatch(loginSuccess(res.data));
         toast.success(res.data.message);
+        onClose();
       } else {
         toast.error(res.error.data.message);
       }
@@ -100,7 +91,7 @@ function Login() {
                 <button
                   type="button"
                   className="btn-close"
-                  onClick={handleCloseClick}
+                  onClick={onClose}
                 >
                   <span className="icon-cross"></span>
                   <span className="visually-hidden">Close</span>

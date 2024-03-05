@@ -14,20 +14,20 @@ import {
 import { auth } from "../../firebase";
 import { userExist, userNotExist } from "../../redux/user.slice";
 import toast from "react-hot-toast";
-function Signup() {
+function Signup({onClose }) {
   const dispatch = useDispatch();
   const [signup] = useSignupMutation();
   const [isVisible, setIsVisible] = useState(true);
 
-  const handleCloseClick = () => {
-    setIsVisible(false);
-  };
+  // const handleCloseClick = () => {
+  //   setIsVisible((pre) => !pre);
+  // };
 
-  useEffect(() => {
-    return () => {
-      setIsVisible(true);
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     setIsVisible(true);
+  //   };
+  // }, []);
 
   const handleEmailSignup = async (event) => {
     event.preventDefault();
@@ -46,6 +46,7 @@ function Signup() {
       });
       if ("data" in res) {
         toast.success(res.data.message);
+        onClose();
         // localStorage.setItem("ZoneHub", res.data.token);
       } else {
         toast.error(res.error.data.message);
@@ -65,7 +66,7 @@ function Signup() {
                 <button
                   type="button"
                   className="btn-close"
-                  onClick={handleCloseClick}
+                  onClick={onClose}
                 >
                   <span className="icon-cross"></span>
                   <span className="visually-hidden">Close</span>
