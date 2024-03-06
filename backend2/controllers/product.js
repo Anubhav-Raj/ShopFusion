@@ -90,6 +90,13 @@ exports.createMobile = async (req, res) => {
   }
 };
 
+exports.createProduct = async (req, res) => {
+  try {
+    console.log(req.body);
+    res.json({ products: "Creted Product", isError: false });
+  } catch (error) {}
+};
+
 exports.editmobile = async (req, res) => {
   try {
     // Input validation

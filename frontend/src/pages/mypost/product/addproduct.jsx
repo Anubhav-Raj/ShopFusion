@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import "./addMobile.css";
+import "../Mobile/addMobile.css";
 import {
   AutoComplete,
   Button,
@@ -10,23 +10,26 @@ import {
   Upload,
   message,
   Select,
+  Form,
+  Space,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import { MinusCircleOutlined } from "@ant-design/icons";
 import {
   useCreateMobileMutation,
   useGetAllBrandMutation,
   useGetAllBrandModalMutation,
   useGetUserProductsMutation,
 } from "../../../redux/API/products/mobile";
+import { useCreateOtherProductMutation } from "../../../redux/API/products/allOtherproduct.js";
 import {
   useMobileFormState,
   sellerTypeOptions,
   conditionOptions,
   paymentModeOptions,
   serviceModeOptions,
-  colores,
-} from "./MobileFormState";
+} from "../Mobile/MobileFormState.js";
 import useRecaptchaV3 from "../../../Hooks/reCaptchaV3/index.js";
 import { useUserByIDMutation } from "../../../redux/API/user.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,7 +47,7 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-const AddMobile = ({
+const AddProduct = ({
   selectedType,
   selecteddepartment,
   selectedcategories,
@@ -57,7 +60,7 @@ const AddMobile = ({
   const [userByID] = useUserByIDMutation();
   const [allbrands] = useGetAllBrandMutation();
   const [brandModal] = useGetAllBrandModalMutation();
-  const [createMobileMutation] = useCreateMobileMutation();
+  const [createOtherProductMutation] = useCreateOtherProductMutation();
 
   const dispatch = useDispatch();
 
@@ -137,9 +140,9 @@ const AddMobile = ({
     });
 
   //  have to push into env file
-  const executeRecaptcha = useRecaptchaV3(
-    "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
-  );
+  //   const executeRecaptcha = useRecaptchaV3(
+  //     "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
+  //   );
   const {
     sellerType,
     setSellerType,
@@ -353,20 +356,24 @@ const AddMobile = ({
     return isValid;
   };
 
+  // console.log(uploadFile);
+  // console.log(uploadVideo);
   console.log(uploadPhotos);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const recaptchaToken = await executeRecaptcha("addmobile");
+
+  const handleSubmit = async (values) => {
+    // e.preventDefault();
+    // console.log("Form values:", values);
+    // const recaptchaToken = await executeRecaptcha("addmobile");
     // Reset error messages
     setSellerTypeError("");
     setSellerNameError("");
     setGstNumberError("");
     setColorError("");
-    setSelectBrandError("");
-    setSelectModelError("");
-    setMobileNameError("");
+    // setSelectBrandError("");
+    // setSelectModelError("");
+    // setMobileNameError("");
     setConditionError("");
-    setYearOfPurchaseError("");
+    // setYearOfPurchaseError("");
     setAvailableQuantityError("");
     setMinimumOrderError("");
     setPriceError("");
@@ -379,7 +386,7 @@ const AddMobile = ({
     setUploadVideoError("");
     setUploadFileError("");
     try {
-      let isValid = true;
+      let isValid = false;
 
       // Validation for sellerType
       if (!sellerType) {
@@ -394,22 +401,22 @@ const AddMobile = ({
       }
 
       // Validation for color
-      if (!color) {
-        setColorError("Color is required");
-        isValid = false;
-      }
+      // if (!color) {
+      //   setColorError("Color is required");
+      //   isValid = false;
+      // }
 
       // Validation for selectBrand
-      if (!selectBrand) {
-        setSelectBrandError("Brand selection is required");
-        isValid = false;
-      }
+      // if (!selectBrand) {
+      //   setSelectBrandError("Brand selection is required");
+      //   isValid = false;
+      // }
 
       // Validation for selectModel
-      if (!selectModel) {
-        setSelectModelError("Model selection is required");
-        isValid = false;
-      }
+      // if (!selectModel) {
+      //   setSelectModelError("Model selection is required");
+      //   isValid = false;
+      // }
 
       // Validation for mobileName
       if (!mobileName) {
@@ -424,10 +431,10 @@ const AddMobile = ({
       }
 
       // Validation for yearOfPurchase
-      if (!yearOfPurchase) {
-        setYearOfPurchaseError("Year of purchase is required");
-        isValid = false;
-      }
+      // if (!yearOfPurchase) {
+      //   setYearOfPurchaseError("Year of purchase is required");
+      //   isValid = false;
+      // }
 
       // Validation for availableQuantity
       if (!availableQuantity) {
@@ -472,26 +479,26 @@ const AddMobile = ({
         isValid = false;
       }
 
-      if (!beforeUpload(uploadPhotos)) {
-        isValid = false;
-      }
+      // if (!beforeUpload(uploadPhotos)) {
+      //   isValid = false;
+      // }
 
       // If validation fails, return early
-      // if (!isValid) {
-      //   return;
-      // }
+      //   if (!isValid) {
+      //     return;
+      //   }
 
       // Extract data from the form state
       const formData = {
         sellerType,
         sellerName,
         gstNumber,
-        color,
-        selectBrand,
-        selectModel,
+        // color,
+        // selectBrand,
+        // selectModel,
         mobileName,
         condition,
-        yearOfPurchase,
+        // yearOfPurchase,
         availableQuantity,
         minimumOrder,
         price,
@@ -500,30 +507,31 @@ const AddMobile = ({
         enterAddress,
         googleDriveLink,
         mobileDescription,
+        values,
         uploadPhotos,
         uploadVideo,
         uploadFile,
-        recaptchaToken,
-        selectedType,
-        selecteddepartment,
-        selectedcategories,
-        selectedsubcategories,
-        selectedsubcategoriesitem,
+        // selectedType,
+        // selecteddepartment,
+        // selectedcategories,
+        // selectedsubcategories,
+        // selectedsubcategoriesitem,
       };
 
       // Object.entries(formData).forEach(([key, value]) => {
       //   console.log(`${key}: ${value}`);
       // });
+
       // Trigger the createMobile mutation
-      const result = await createMobileMutation(formData);
+      const result = await createOtherProductMutation(formData);
 
       // Handle the success response
       console.log("Mobile created successfully:", result);
       message.success("Mobile created successfully");
 
       // Reset the form after successful submission
-      resetForm();
-      setTableShow(false);
+      // resetForm();
+      //setTableShow(false);
     } catch (error) {
       // Handle the error
       console.error("Error creating mobile:", error);
@@ -534,8 +542,14 @@ const AddMobile = ({
   return (
     <div className="formbold-main-wrapper">
       <div className="formbold-form-wrapper">
-        <h4>Add Mobile</h4>
-        <form onSubmit={handleSubmit}>
+        <h4>Add Product</h4>
+        {/* <form onSubmit={handleSubmit}> */}
+
+        <Form
+          name="dynamic_form_nest_item"
+          autoComplete="off"
+          onFinish={handleSubmit}
+        >
           {/* First row */}
           <div className="formbold-input-flex">
             <div>
@@ -615,7 +629,7 @@ const AddMobile = ({
           </div>
           {/* Second row */}
           <div className="formbold-input-flex">
-            <div>
+            {/* <div>
               <label htmlFor="SellerName" className="formbold-form-label">
                 Select Brand
               </label>
@@ -667,7 +681,7 @@ const AddMobile = ({
               {selectModelError && (
                 <div className="error-message">{selectModelError}</div>
               )}
-            </div>
+            </div> */}
             <div>
               <label
                 htmlFor="Enter Address "
@@ -711,28 +725,6 @@ const AddMobile = ({
                 <div className="error-message">{conditionError}</div>
               )}
             </div>
-          </div>
-          {/* third Row  */}
-          <div className="formbold-input-flex">
-            <div>
-              <label
-                htmlFor=" Year of Purchase"
-                className="formbold-form-label"
-              >
-                Year of Purchase
-              </label>
-
-              <Input
-                placeholder="Year of Purchase"
-                style={{
-                  height: 50,
-                }}
-                onChange={(e) => setYearOfPurchase(e.target.value)}
-              />
-              {yearOfPurchaseError && (
-                <div className="error-message">{yearOfPurchaseError}</div>
-              )}
-            </div>
             <div>
               <label
                 htmlFor="Available Quanitity"
@@ -770,6 +762,29 @@ const AddMobile = ({
                 onChange={(e) => setMinimumOrder(e.target.value)}
               />
             </div>
+          </div>
+          {/* third Row  */}
+          <div className="formbold-input-flex">
+            {/* <div>
+              <label
+                htmlFor=" Year of Purchase"
+                className="formbold-form-label"
+              >
+                Year of Purchase
+              </label>
+
+              <Input
+                placeholder="Year of Purchase"
+                style={{
+                  height: 50,
+                }}
+                onChange={(e) => setYearOfPurchase(e.target.value)}
+              />
+              {yearOfPurchaseError && (
+                <div className="error-message">{yearOfPurchaseError}</div>
+              )}
+            </div> */}
+
             <div>
               <label
                 htmlFor="Price"
@@ -788,9 +803,6 @@ const AddMobile = ({
               />
               {priceError && <div className="error-message">{priceError}</div>}
             </div>
-          </div>
-          {/* forth Row */}
-          <div className="formbold-input-flex">
             <div>
               <label
                 htmlFor="Payment Mode"
@@ -852,26 +864,9 @@ const AddMobile = ({
               />
             </div>
           </div>
+
           {/*Fifth Row */}
           <div className="formbold-input-flex">
-            <div>
-              <label htmlFor="Color" className="formbold-form-label">
-                Color
-              </label>
-              <AutoComplete
-                style={{ width: 300, height: 50 }}
-                placeholder="Enter Color Name"
-                options={colores}
-                filterOption={true}
-                onSelect={(val) => {
-                  setColor(val);
-                }}
-                onSearch={(val) => {
-                  setColor(val);
-                }}
-              />
-              {colorError && <div className="error-message">{colorError}</div>}
-            </div>
             <div
               style={{
                 width: "100%",
@@ -881,16 +876,89 @@ const AddMobile = ({
                 htmlFor="Mobile Description"
                 className="formbold-form-label"
               >
-                Mobile Description
+                Product Description
               </label>
               <TextArea
                 onChange={(e) => setMobileDescription(e.target.value)}
                 placeholder="Mobile Description"
+                name="productDescription"
                 rows={4}
               />
             </div>
           </div>
+
           {/*Sixth Row */}
+          <div className="formbold-input-flex">
+            <div
+              style={{
+                width: "100%",
+              }}
+            >
+              <label
+                htmlFor="Color"
+                className="formbold-form-label"
+                style={{ marginBottom: "10px" }}
+              >
+                Add Other Field
+              </label>
+
+              <Form.List name="otherfeature">
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <Space
+                        key={key}
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          marginBottom: 8,
+                        }}
+                        align="baseline"
+                      >
+                        <Form.Item
+                          {...restField}
+                          name={[name, "first"]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Missing Title ",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Title" />
+                        </Form.Item>
+                        <Form.Item
+                          {...restField}
+                          name={[name, "last"]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Missing Value",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Value" />
+                        </Form.Item>
+                        <MinusCircleOutlined onClick={() => remove(name)} />
+                      </Space>
+                    ))}
+                    <Form.Item>
+                      <Button
+                        type="dashed"
+                        onClick={() => add()}
+                        block
+                        icon={<PlusOutlined />}
+                      >
+                        Add field
+                      </Button>
+                    </Form.Item>
+                  </>
+                )}
+              </Form.List>
+            </div>
+          </div>
+
+          {/*Seventh Row */}
           <span> Only Accept (.jpeg .png .jpg)</span>
           <div className="formbold-form-file-flex">
             <label htmlFor=" Upload Photos" className="formbold-form-label">
@@ -927,7 +995,7 @@ const AddMobile = ({
             </Modal>
           </div>
 
-          {/*Seventh Row */}
+          {/*Eight Row */}
           <div className="formbold-form-file-flex">
             <label htmlFor=" Upload Video" className="formbold-form-label">
               Upload Video
@@ -938,7 +1006,7 @@ const AddMobile = ({
             <span> Only Accept (.MP4 .HD .4k)</span>
           </div>
 
-          {/*Eight Row */}
+          {/*Nine Row */}
           <div
             style={{ marginTop: "10px" }}
             className="formbold-form-file-flex"
@@ -956,12 +1024,14 @@ const AddMobile = ({
             </Upload>
             <span> Only Accept (.pdf/ .Doc/ .Xls/.Rar/.Zip)</span>
           </div>
-          {/*Nine Row */}
+          {/* Tenth Row */}
           <div
             style={{ marginTop: "10px" }}
             className="formbold-form-file-flex"
           >
-            <button className="formbold-btn">Save</button>
+            <button type="submit" className="formbold-btn">
+              Save
+            </button>
             <button
               className="formbold-btn"
               onClick={() => setTableShow(false)}
@@ -969,10 +1039,10 @@ const AddMobile = ({
               Cancle
             </button>
           </div>
-        </form>
+        </Form>
       </div>
     </div>
   );
 };
 
-export default AddMobile;
+export default AddProduct;

@@ -7,6 +7,7 @@ import AddMobile from "./Mobile/AddMobile";
 import { Select } from "antd";
 import { department } from "../../utils/data";
 import EditMobile from "./Mobile/editMobile";
+import AddProduct from "./product/addproduct";
 
 const My_post = () => {
   const [tableShow, setTableShow] = useState(false); // change here to hide table
@@ -200,6 +201,7 @@ const My_post = () => {
       item === "Android Mobile Phones" ? (
         <></>
       ) : null}
+      <AddProduct />
       <Table_post
         setTableShow={setTableShow}
         setEditTable={setEditTable}

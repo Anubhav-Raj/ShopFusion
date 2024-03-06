@@ -17,11 +17,13 @@ import { CategoryApi } from "./API/admin/categories.js";
 import { DepartmentApi } from "./API/admin/department.js";
 import { SubCategoriesApi } from "./API/admin/subcategories.js";
 import { ItemApi } from "./API/admin/item.js";
+import { OtherProductAPI } from "./API/products/allOtherproduct.js";
 
 const store = configureStore({
   reducer: {
     [userAPI.reducerPath]: userAPI.reducer,
     [mobileAPI.reducerPath]: mobileAPI.reducer,
+    [OtherProductAPI.reducerPath]: OtherProductAPI.reducer,
     [OtpAPI.reducerPath]: OtpAPI.reducer,
     [CheckUniqueAPI.reducerPath]: CheckUniqueAPI.reducer,
     [AddressAPI.reducerPath]: AddressAPI.reducer,
@@ -50,7 +52,8 @@ const store = configureStore({
       DepartmentApi.middleware,
       CategoryApi.middleware,
       SubCategoriesApi.middleware,
-      ItemApi.middleware
+      ItemApi.middleware,
+      OtherProductAPI.middleware
     ),
 });
 

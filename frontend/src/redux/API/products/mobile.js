@@ -56,6 +56,12 @@ export const mobileAPI = createApi({
           formData.append("uploadFile", mobile.uploadFile.file.originFileObj);
         }
 
+        for (let pair of formData.entries()) {
+          console.log(pair[0] + ", " + pair[1]);
+        }
+
+        //return;
+
         return {
           url: "createMobile",
           method: "POST",

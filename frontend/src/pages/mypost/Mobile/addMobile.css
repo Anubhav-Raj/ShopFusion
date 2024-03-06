@@ -136,3 +136,7 @@ select.formbold-form-input,
 .error-message {
   color: red;
 }
+
+.ant-space-item {
+  width: 50%;
+}
