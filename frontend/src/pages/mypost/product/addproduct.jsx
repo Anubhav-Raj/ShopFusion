@@ -30,7 +30,6 @@ import {
   paymentModeOptions,
   serviceModeOptions,
 } from "../Mobile/MobileFormState.js";
-import useRecaptchaV3 from "../../../Hooks/reCaptchaV3/index.js";
 import { useUserByIDMutation } from "../../../redux/API/user.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -511,11 +510,11 @@ const AddProduct = ({
         uploadPhotos,
         uploadVideo,
         uploadFile,
-        // selectedType,
-        // selecteddepartment,
-        // selectedcategories,
-        // selectedsubcategories,
-        // selectedsubcategoriesitem,
+        selectedType,
+        selecteddepartment,
+        selectedcategories,
+        selectedsubcategories,
+        selectedsubcategoriesitem,
       };
 
       // Object.entries(formData).forEach(([key, value]) => {
@@ -937,7 +936,7 @@ const AddProduct = ({
                             },
                           ]}
                         >
-                          <Input placeholder="Value" />
+                          <Input placeholder="Value /Discription " />
                         </Form.Item>
                         <MinusCircleOutlined onClick={() => remove(name)} />
                       </Space>

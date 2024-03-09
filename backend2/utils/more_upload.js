@@ -21,6 +21,8 @@ const storage = multer.diskStorage({
       destDir = "uploads/subCategoryImages";
     } else if (file.fieldname === "itemImage") {
       destDir = "uploads/itemImages";
+    } else if (file.fieldname == "brandImage") {
+      destDir = "uploads/brandImage";
     } else {
       destDir = "uploads";
     }

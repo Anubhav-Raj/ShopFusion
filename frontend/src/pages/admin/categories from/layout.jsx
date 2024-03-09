@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, theme } from "antd";
+
+import { Layout, theme } from "antd";
 import Categories from "../components/categories";
 import SallerType from "../components/sallertype";
 import SubCategories from "../components/subcategories";
@@ -16,23 +12,15 @@ import {
 } from "../../../redux/API/admin/saller";
 import { useCreateCategoryMutation } from "../../../redux/API/admin/categories";
 import {
+  seCreateDepartmentMutation,
   useCreateDepartmentMutation,
-  useFetchAllDepartmentQuery,
 } from "../../../redux/API/admin/department";
 import { useCreateSubCategoriesMutation } from "../../../redux/API/admin/subcategories";
 import { useCreateItemMutation } from "../../../redux/API/admin/item";
+import AdminFooter from "../components/common/footer";
+import Adminsidebar from "../components/common/sidebar";
 
-const { Header, Content, Footer, Sider } = Layout;
-const items = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  UserOutlined,
-].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `nav ${index + 1}`,
-}));
+const { Header, Content } = Layout;
 
 const AdminLayout = () => {
   const {
@@ -40,7 +28,6 @@ const AdminLayout = () => {
   } = theme.useToken();
 
   const [sallerType, setSallerType] = useState([]);
-
   const [createSallerType] = useCreateSallerTypeMutation();
   const [createCategory] = useCreateCategoryMutation();
   const [createDepartment] = useCreateDepartmentMutation();
@@ -199,24 +186,7 @@ const AdminLayout = () => {
 
   return (
     <Layout>
-      <Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
-      >
-        <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["4"]}
-          items={items}
-        />
-      </Sider>
+      <Adminsidebar />
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }} />
         <Content style={{ margin: "24px 16px 0" }}>
@@ -278,9 +248,8 @@ const AdminLayout = () => {
             />
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
-        </Footer>
+
+        <AdminFooter />
       </Layout>
     </Layout>
   );

@@ -222,6 +222,14 @@ exports.deletemobile = async (req, res) => {
   }
 };
 
+exports.createBrand = async (req, res) => {
+  try {
+    console.log(req.body);
+    console.log(req.files);
+    res.status(200).json({ message: error.message, isError: false });
+  } catch (error) {}
+};
+
 exports.getAllBrands = async (req, res) => {
   try {
     const brands = await Brand.find({});

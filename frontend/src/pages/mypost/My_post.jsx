@@ -8,23 +8,19 @@ import { Select } from "antd";
 import { department } from "../../utils/data";
 import EditMobile from "./Mobile/editMobile";
 import AddProduct from "./product/addproduct";
-
+import { useEffect } from "react";
+import { useFetchAllSallerTypeQuery } from "../../redux/API/admin/saller";
+import {
+  useCreateDepartmentMutation,
+  useFetchAllDepartmentQuery,
+} from "../../redux/API/admin/department";
+import { useFetchAllSubCategoriesQuery } from "../../redux/API/admin/subcategories";
+import { useFetchAllCategoryQuery } from "../../redux/API/admin/categories";
+import { useFetchAllItemQuery } from "../../redux/API/admin/item";
 const My_post = () => {
   const [tableShow, setTableShow] = useState(false); // change here to hide table
   const [edittableshow, setEditTable] = useState(false);
   const [id, setId] = useState(null);
-  const tabItems = [
-    { label: "Seller", value: "Seller" },
-    { label: "Buyer", value: "Buyer" },
-    { label: "Employers", value: "Employers" },
-    { label: "Job Seekers", vlaue: "Job Seekers" },
-    { label: "Rental Service Provider", value: "Rental Service Provider" },
-    { label: "Rental Service Seekers", value: "Rental Service Seekers" },
-    { label: "Other Service Provider", value: "Other Service Provider" },
-    { label: "Other Service Seekers", value: "Other Service Seekers" },
-    { label: "Matrimony", value: "Matrimony" },
-    { label: "Mobile", value: "Mobile" },
-  ];
   const [categories, setCategories] = useState();
   const [subcategories, setSubCategories] = useState();
   const [item, setItem] = useState();
@@ -32,34 +28,110 @@ const My_post = () => {
   const [selecteddepartment, setSelectedDepartment] = useState();
   const [selectedcategories, setSelectedcategories] = useState();
   const [selectedsubcategories, setSelectedsubcategories] = useState();
-  const [selectedsubcategoriesitem, setSelectedsubcategoriesitem] = useState();
   const handleSelectedDepartment = (value) => {
     setSelectedDepartment(value);
-    const selectedDepartmentCategories =
-      department.find((item) => item.label === value)?.categories ?? [];
-    setSelectedcategories(selectedDepartmentCategories);
   };
   const handleSelectedcategories = (value) => {
     setCategories(value);
-    const selectedCategoriesSubCategories =
-      selectedcategories.find((item) => item.label === value)?.subcategories ??
-      [];
-    setSelectedsubcategories(selectedCategoriesSubCategories);
   };
   const handleSelectedSubcategories = (value) => {
     setSubCategories(value);
-    const selectedCategoriesSubCategoriesItem =
-      selectedsubcategories.find((item) => item.label === value)
-        ?.subCategoriesitem ?? [];
-    setSelectedsubcategoriesitem(selectedCategoriesSubCategoriesItem);
   };
-
   const handleSelectedSubcategoriesitem = (value) => {
     setItem(value);
   };
   const handleType = (value) => {
     setSelectedselectedType(value);
   };
+  // Fetch Saller Type
+  const [Types, setTypes] = useState();
+  const { isLoading, data } = useFetchAllSallerTypeQuery();
+  useEffect(() => {
+    if (!isLoading && data) {
+      const modifiedArray = data.SellerTypes.map((item) => ({
+        ...item,
+        newobj: {
+          label: item.name,
+          value: item._id,
+        },
+      }));
+      const newobjArray = modifiedArray.map((item) => item.newobj);
+      setTypes(newobjArray);
+    }
+  }, [isLoading]);
+
+  // Fetch Department
+  const { data: departmentData, isLoading: departmentLoading } =
+    useFetchAllDepartmentQuery(selectedType || "");
+  const [department, setDepartment] = useState([]);
+  useEffect(() => {
+    if (departmentData) {
+      const modifiedArray = departmentData.Departments.map((item) => ({
+        ...item,
+        newobj: {
+          label: item.name,
+          value: item._id,
+        },
+      }));
+      const newobjArray = modifiedArray.map((item) => item.newobj);
+      setDepartment(newobjArray);
+    }
+  }, [departmentLoading, selectedType, departmentData]);
+
+  //Categories Fetch
+  const { data: categoriesData, isLoading: categoriesLoading } =
+    useFetchAllCategoryQuery(selecteddepartment || "");
+  const [allcategories, setAllCategories] = useState([]);
+  useEffect(() => {
+    if (categoriesData) {
+      const modifiedArray = categoriesData.Categories.map((item) => ({
+        ...item,
+        newobj: {
+          label: item.name,
+          value: item._id,
+        },
+      }));
+      const newobjArray = modifiedArray.map((item) => item.newobj);
+      setAllCategories(newobjArray);
+    }
+  }, [categoriesLoading, selecteddepartment, categoriesData]);
+
+  //SubCategories Fetch
+  const { data: subcategoriesData, isLoading: subcategoriesLoading } =
+    useFetchAllSubCategoriesQuery(categories || "");
+  const [allsubcategories, setAllSelectedsubcategories] = useState([]);
+  useEffect(() => {
+    if (subcategoriesData) {
+      const modifiedArray = subcategoriesData.SubCategories.map((item) => ({
+        ...item,
+        newobj: {
+          label: item.name,
+          value: item._id,
+        },
+      }));
+      const newobjArray = modifiedArray.map((item) => item.newobj);
+      setAllSelectedsubcategories(newobjArray);
+    }
+  }, [subcategoriesLoading, selectedcategories, subcategoriesData]);
+
+  // Item Fetch
+  const { data: itemData, isLoading: itemLoading } = useFetchAllItemQuery(
+    subcategories || ""
+  );
+  const [allsubcategoriesitem, setAllSelectedsubcategoriesitem] = useState([]);
+  useEffect(() => {
+    if (itemData) {
+      const modifiedArray = itemData.Items.map((item) => ({
+        ...item,
+        newobj: {
+          label: item.name,
+          value: item._id,
+        },
+      }));
+      const newobjArray = modifiedArray.map((item) => item.newobj);
+      setAllSelectedsubcategoriesitem(newobjArray);
+    }
+  }, [itemLoading, selectedsubcategories, itemData]);
 
   return (
     <>
@@ -81,7 +153,7 @@ const My_post = () => {
                 .toLowerCase()
                 .localeCompare((optionB?.label ?? "").toLowerCase())
             }
-            options={tabItems}
+            options={Types}
             onChange={handleType}
           />
         </div>
@@ -125,7 +197,7 @@ const My_post = () => {
                 .toLowerCase()
                 .localeCompare((optionB?.label ?? "").toLowerCase())
             }
-            options={selectedcategories}
+            options={allcategories}
             onChange={handleSelectedcategories}
           />
         </div>
@@ -147,7 +219,7 @@ const My_post = () => {
                 .toLowerCase()
                 .localeCompare((optionB?.label ?? "").toLowerCase())
             }
-            options={selectedsubcategories}
+            options={allsubcategories}
             onChange={handleSelectedSubcategories}
           />
         </div>
@@ -169,14 +241,7 @@ const My_post = () => {
                 .toLowerCase()
                 .localeCompare((optionB?.label ?? "").toLowerCase())
             }
-            options={
-              selectedsubcategoriesitem &&
-              selectedsubcategoriesitem.map((item, index) => ({
-                value: item.value,
-                label: item.label,
-                key: `${item.value}-${index}`, // Unique key generation
-              }))
-            }
+            options={allsubcategoriesitem}
             onChange={handleSelectedSubcategoriesitem}
           />
         </div>
@@ -201,7 +266,14 @@ const My_post = () => {
       item === "Android Mobile Phones" ? (
         <></>
       ) : null}
-      <AddProduct />
+      <AddProduct
+        selectedType={selectedType}
+        selecteddepartment={selecteddepartment}
+        selectedcategories={categories}
+        selectedsubcategories={subcategories}
+        selectedsubcategoriesitem={item}
+        setTableShow={setTableShow}
+      />
       <Table_post
         setTableShow={setTableShow}
         setEditTable={setEditTable}

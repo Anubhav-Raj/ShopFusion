@@ -56,7 +56,7 @@ exports.createCategory = async (req, res, next) => {
     res
       .status(200)
       .json({ message: "Category created successfully", data: cc });
-    console.log(req.body);
+    // console.log(req.body);
   } catch (error) {
     next(error);
   }
@@ -65,7 +65,7 @@ exports.createCategory = async (req, res, next) => {
 // Controller function to create a new subcategory
 exports.createSubCategory = async (req, res, next) => {
   try {
-    console.log(req.file.path);
+    //console.log(req.file.path);
 
     // Handle subcategory creation logic here
     const csc = new ChooseSubCategory({
@@ -75,7 +75,7 @@ exports.createSubCategory = async (req, res, next) => {
       choose_category: req.body.choose_category_id,
     });
     await csc.save();
-    console.log(req.body);
+    // console.log(req.body);
     res
       .status(200)
       .json({ message: "Subcategory created successfully", data: csc });
@@ -88,7 +88,6 @@ exports.createSubCategory = async (req, res, next) => {
 exports.createItem = async (req, res, next) => {
   try {
     // Handle item creation logic here
-    console.log(req.body);
     const ci = new ChooseItem({
       name: req.body.itemName,
       desc: req.body.itemDescription,
@@ -111,7 +110,8 @@ exports.fetchAllSallerTypes = async (req, res) => {
       .status(200)
       .json({ message: "Saller types fetched successfully", SellerTypes });
   } catch (error) {
-    next(error);
+    // next(error);
+    res.status(500).json({ message: "Saller types fetched Faild" });
   }
 };
 
@@ -127,7 +127,8 @@ exports.fetchAllDepartments = async (req, res) => {
       .status(200)
       .json({ message: "Departments fetched successfully", Departments });
   } catch (error) {
-    next(error);
+    // next(error);
+    res.status(500).json({ message: "Departments fetched Faild" });
   }
 };
 
@@ -142,14 +143,14 @@ exports.fetchAllCategories = async (req, res) => {
       .status(200)
       .json({ message: "Categories fetched successfully", Categories });
   } catch (error) {
-    next(error);
+    res.status(500).json({ message: "Categories fetched Faild" });
   }
 };
 
 // Controller function to fetch all subcategories
 exports.fetchAllSubCategories = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     // Handle fetching all subcategories logic here
     const SubCategories = await ChooseSubCategory.find({
       choose_category: req.body.choose_category_id,
@@ -158,20 +159,23 @@ exports.fetchAllSubCategories = async (req, res) => {
       .status(200)
       .json({ message: "Subcategories fetched successfully", SubCategories });
   } catch (error) {
-    next(error);
+    res.status(500).json({ message: "Subcategories fetched Faild" });
   }
 };
 
 // Controller function to fetch all items
 exports.fetchAllItems = async (req, res) => {
   try {
+    if (req.body.choose_subcategory_id === " ") {
+      res.status(500).json({ message: "Items fetched Faild" });
+    }
     // Handle fetching all items logic here
     const Items = await ChooseItem.find({
       choose_subcategory_id: req.body.choose_subcategory_id,
     });
     res.status(200).json({ message: "Items fetched successfully", Items });
-    console.log(req.body);
+    // console.log(req.body);
   } catch (error) {
-    next(error);
+    res.status(500).json({ message: "Items fetched Faild" });
   }
 };

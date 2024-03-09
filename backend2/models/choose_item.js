@@ -9,7 +9,7 @@ const itemSchema = new mongose.Schema({
   image: {
     type: String,
   },
-  choose_category_id: {
+  choose_subcategory_id: {
     type: mongose.Schema.Types.ObjectId,
     ref: "ChooseCategory",
   },

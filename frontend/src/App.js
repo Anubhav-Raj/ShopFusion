@@ -33,6 +33,9 @@ const Compair = lazy(() => import("./pages/compare_page/Compair.jsx"));
 const SellerPage = lazy(() => import("./pages/Seller/Seller_page.jsx"));
 const Mypost = lazy(() => import("./pages/mypost/My_post.jsx"));
 const AddaddressPage = lazy(() => import("./pages/profile/profile.jsx"));
+const AdminDashboard = lazy(() => import("./pages/admin/pages/dashboard.jsx"));
+const TypeList = lazy(() => import("./pages/admin/pages/alltype.jsx"));
+const BrandList = lazy(() => import("./pages/admin/pages/allBrand.jsx"));
 
 function App() {
   const [userByID] = useUserByIDMutation();
@@ -57,7 +60,12 @@ function App() {
     fetchData();
   }, [token, userByID, dispatch]);
 
-  const excludedRoutes = ["/createcategories"];
+  const excludedRoutes = [
+    "/admin/createcategories",
+    "/admin",
+    "/admin/listtype",
+    "/admin/listbrand",
+  ];
 
   return (
     <Router>
@@ -67,21 +75,26 @@ function App() {
         <Routes>
           <Route path="/seller" element={<SellerPage />} />
           <Route path="/" element={<LandingPage />} />
-
           <Route path="/post" element={<Mypost />} />
-
           <Route path="/brand" element={<Brandpage />} />
           <Route path="/brand/:brandName" element={<MobileHome />} />
           <Route path="/mobile/:mobiledetail" element={<Mobiledetail />} />
           <Route path="/compair" element={<Compair />} />
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
           <Route path="/paymentfail" element={<PaymentFail />} />
-          <Route path="/createcategories" element={<AdminLayout />} />
 
           {token && userData && <Route path="/post" element={<Mypost />} />}
           {token && userData && (
             <Route path="/address" element={<AddaddressPage />} />
           )}
+
+          {/* Admin Routes */}
+          <Route path="/admin/" element={<AdminDashboard />} />
+          <Route path="/admin/listtype" element={<TypeList />} />
+          <Route path="/admin/listbrand" element={<BrandList />} />
+          <Route path="admin/createcategories" element={<AdminLayout />} />
+
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>
       <Toaster position="bottom-center" />

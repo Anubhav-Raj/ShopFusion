@@ -18,6 +18,7 @@ import { DepartmentApi } from "./API/admin/department.js";
 import { SubCategoriesApi } from "./API/admin/subcategories.js";
 import { ItemApi } from "./API/admin/item.js";
 import { OtherProductAPI } from "./API/products/allOtherproduct.js";
+import { brandApi } from "./API/admin/brand.js";
 
 const store = configureStore({
   reducer: {
@@ -35,6 +36,7 @@ const store = configureStore({
     [CategoryApi.reducerPath]: CategoryApi.reducer,
     [SubCategoriesApi.reducerPath]: SubCategoriesApi.reducer,
     [ItemApi.reducerPath]: ItemApi.reducer,
+    [brandApi.reducerPath]: brandApi.reducer,
 
     brands: brandReducer,
     products: productReducer,
@@ -53,6 +55,7 @@ const store = configureStore({
       CategoryApi.middleware,
       SubCategoriesApi.middleware,
       ItemApi.middleware,
+      brandApi.middleware,
       OtherProductAPI.middleware
     ),
 });

@@ -33,10 +33,18 @@ router.post(
   ]),
   productCon.editmobile
 );
+//router.post("/createbrand", productCon.createBrand);
+
 router.post("/deletemobile", protect, productCon.deletemobile);
 router.get("/allbrands", protect, productCon.getAllBrands);
 router.post("/allmodelsonmodel", productCon.getModels);
 router.get("/userallproduct", protect, productCon.userAllProduct);
 
-// router.post("/createproduct", protect, productCon.createProduct);
+router.post(
+  "/createbrand",
+  more_upload.array("brandImage"),
+  productCon.createBrand
+);
+
+//router.post("/createproduct",  , productCon.createProduct);
 module.exports = router;
