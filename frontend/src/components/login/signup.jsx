@@ -14,7 +14,7 @@ import {
 import { auth } from "../../firebase";
 import { userExist, userNotExist } from "../../redux/user.slice";
 import toast from "react-hot-toast";
-function Signup({onClose }) {
+function Signup({ onClose }) {
   const dispatch = useDispatch();
   const [signup] = useSignupMutation();
   const [isVisible, setIsVisible] = useState(true);
@@ -63,11 +63,7 @@ function Signup({onClose }) {
             <div>
               <div className="drawer-mlx">
                 Sign Up
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={onClose}
-                >
+                <button type="button" className="btn-close" onClick={onClose}>
                   <span className="icon-cross"></span>
                   <span className="visually-hidden">Close</span>
                 </button>
@@ -75,6 +71,7 @@ function Signup({onClose }) {
               <div className="sm-social-bjz">
                 <div className="goo-aod">Login With Google</div>
               </div>
+
               <div className="box-8ya size-78k pad-t5w">
                 <div className="header-omj">
                   <div className="title-9cx">
@@ -120,6 +117,7 @@ function Signup({onClose }) {
                   </div>
                 </form>
               </div>
+
               <div className="box-8ya">
                 <div className="item-5nq">
                   <a>Login →</a>

@@ -23,7 +23,13 @@ import { useFetchAllDepartmentQuery } from "../../../redux/API/admin/department"
 import { useFetchAllCategoryQuery } from "../../../redux/API/admin/categories";
 import { useFetchAllSubCategoriesQuery } from "../../../redux/API/admin/subcategories";
 import { useFetchAllItemQuery } from "../../../redux/API/admin/item";
-import { useCreateBrandMutation } from "../../../redux/API/admin/brand";
+
+import {
+  useCreateBrandMutation,
+  useCreateBrandModalMutation,
+  useFetchAllBrandQuery,
+} from "../../../redux/API/admin/brand";
+
 import toast from "react-hot-toast";
 const { Content } = Layout;
 const { Option } = Select;
@@ -80,6 +86,7 @@ const BrandList = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisible2, setIsModalVisible2] = useState(false);
+  const [isModalVisible3, setIsModalVisible3] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   //fetch saller type
   const [sallerType, setSallerType] = useState();
@@ -176,6 +183,9 @@ const BrandList = () => {
   const showModal2 = () => {
     setIsModalVisible2(true);
   };
+  const showModal3 = () => {
+    setIsModalVisible3(true);
+  };
 
   const handleOk = () => {
     form.submit();
@@ -185,6 +195,7 @@ const BrandList = () => {
     form.resetFields();
     setIsModalVisible(false);
     setIsModalVisible2(false);
+    setIsModalVisible3(false);
   };
 
   const searchInput = useRef(null);
@@ -351,7 +362,9 @@ const BrandList = () => {
       key: "action",
       render: () => (
         <Space size="middle">
-          <Button type="primary">Edit</Button>
+          <Button type="primary" onClick={showModal3}>
+            Edit
+          </Button>
           <Button type="danger">Delete</Button>
           <Button type="link" onClick={showModal2}>
             Add BrandModal
@@ -392,7 +405,8 @@ const BrandList = () => {
     setBrandFields(updatedFields);
   };
   const [CreateBrandMutation] = useCreateBrandMutation();
-  const onFinish = (values) => {
+
+  const onFinish = async (values) => {
     // console.log("Received values of form:", values);
     const form = {
       brandFields: brandFields,
@@ -400,9 +414,8 @@ const BrandList = () => {
       categories: values.categories,
       type: values.type,
     };
-    // console.log(form);
     try {
-      const response = CreateBrandMutation(form);
+      const response = await CreateBrandMutation(form);
       // Check if the API call was successful
       if (response.error) {
         throw new Error(response.error.message); // Handle specific API errors
@@ -423,6 +436,27 @@ const BrandList = () => {
     // Show error message
     message.error("Failed to create.");
   };
+  const [createBrandModal] = useCreateBrandModalMutation();
+  const onFinish2 = async (values) => {
+    try {
+      const response = await createBrandModal(values);
+      if (response.error) {
+        throw new Error(response.error.message); // Handle specific API errors
+      }
+      // Log the successful response
+      form.resetFields();
+      setIsModalVisible2(false);
+      toast.success("Modal created successfully:", response.data);
+    } catch (error) {
+      console.error("Error creating Brand:", error.message);
+      toast.error("Error creating Brand:", error.message);
+    }
+  };
+  const onFinishFailed2 = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+    // Show error message
+    message.error("Failed to create.");
+  };
 
   return (
     <Layout>
@@ -435,6 +469,7 @@ const BrandList = () => {
             <Button type="primary" onClick={showModal}>
               <PlusOutlined /> Add New Brand
             </Button>
+
             <Button
               type="danger"
               onClick={() => handleDelete(selectedRows)}
@@ -442,6 +477,7 @@ const BrandList = () => {
             >
               Delete Selected
             </Button>
+            {/* Add Brand  */}
             <Modal
               title="Add New Brand"
               visible={isModalVisible}
@@ -625,10 +661,10 @@ const BrandList = () => {
                 </Form.Item>
               </Form>
             </Modal>
-            {/* second modal */}
+            {/* Edit modal  */}
             <Modal
-              title="Add New Brand"
-              visible={isModalVisible2}
+              title="Edit Brand"
+              visible={isModalVisible3}
               onOk={handleOk}
               onCancel={handleCancel}
             >
@@ -637,6 +673,190 @@ const BrandList = () => {
                 name="dynamic_form_nest_item"
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
+                style={{
+                  maxWidth: 600,
+                }}
+                autoComplete="off"
+              >
+                <Form.Item
+                  name="type"
+                  label="Type"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Missing Type",
+                    },
+                  ]}
+                >
+                  <Select
+                    mode="single"
+                    showSearch
+                    placeholder="Select Type"
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                    onChange={(value) => setSelectedselectedType(value)}
+                    options={
+                      sallerType &&
+                      sallerType.map((item) => ({
+                        value: item._id,
+                        label: item.name,
+                      }))
+                    }
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="Department"
+                  label="Department"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Missing Department ",
+                    },
+                  ]}
+                >
+                  <Select
+                    mode="Single"
+                    showSearch
+                    placeholder="Select categories"
+                    optionFilterProp="children"
+                    onChange={(value) => setSelecteddepartment(value)}
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                    options={department && department}
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  name="categories"
+                  label="Categories"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Missing Category",
+                    },
+                  ]}
+                >
+                  <Select
+                    mode="multiple"
+                    showSearch
+                    placeholder="Select categories"
+                    optionFilterProp="children"
+                    onChange={(value) => setSelectedcategories(value)}
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                    options={allcategories && allcategories}
+                  />
+                </Form.Item>
+
+                <Form.List name="barnd">
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map(({ key, name, ...restField }, index) => (
+                        <Space
+                          key={key}
+                          style={{
+                            display: "flex",
+                            marginBottom: 8,
+                          }}
+                          align="baseline"
+                        >
+                          <Form.Item
+                            {...restField}
+                            name={[name, "Brandname"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Missing Brand",
+                              },
+                            ]}
+                          >
+                            <Input
+                              placeholder="Brand Name"
+                              value={brandFields[index]?.Brandname}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  index,
+                                  "Brandname",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            {...restField}
+                            name={[name, "brandImage"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Missing Image",
+                              },
+                            ]}
+                          >
+                            <Input
+                              type="file"
+                              onChange={(event) => {
+                                // Handle the file here
+                                const file = event.target.files[0];
+                                handleInputChange(index, "brandImage", file);
+                              }}
+                              placeholder="Select Image"
+                            />
+                          </Form.Item>
+                          <MinusCircleOutlined
+                            onClick={() => {
+                              remove(name);
+                              handleRemoveField(index);
+                            }}
+                          />
+                        </Space>
+                      ))}
+
+                      <Form.Item>
+                        <Button
+                          type="dashed"
+                          onClick={() => {
+                            add();
+                            handleAddField();
+                          }}
+                          block
+                          icon={<PlusOutlined />}
+                        >
+                          Add field
+                        </Button>
+                      </Form.Item>
+                    </>
+                  )}
+                </Form.List>
+
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Form>
+            </Modal>
+            {/* ADD model modal */}
+            <Modal
+              title="Add Modal"
+              visible={isModalVisible2}
+              onOk={handleOk}
+              onCancel={handleCancel}
+            >
+              <Form
+                form={form}
+                name="dynamic_form_nest_item"
+                onFinish={onFinish2}
+                onFinishFailed={onFinishFailed2}
                 style={{
                   maxWidth: 600,
                 }}

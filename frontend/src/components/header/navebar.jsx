@@ -5,21 +5,33 @@ import LanguageSelector from "./dropdown/Laung_selector";
 import logo from "../../assets/zonehubcom-high-resolution-logo-white-transparent.png";
 import Login from "../login/Login";
 import Signup from "../login/signup";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase";
 import toast from "react-hot-toast";
 import Mobile_headlist from "./Mobile_headlist";
-
-import { loginData, logout } from "../../redux/API/user_slice/login.slice";
+import { useAppSelector } from "../../redux/store";
+import { useLogoutUserMutation } from "../../redux/API/user2";
 
 function Navbar() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
 
+  const user = useAppSelector((state) => state.user2.user);
+  const [logoutUser, { isLoading, isSuccess, error, isError }] =
+    useLogoutUserMutation();
+  const onLogoutHandler = async () => {
+    logoutUser();
+  };
+  if (isSuccess) {
+    toast.success("Logout Sucessfully !! ");
+  }
+  if (isError) {
+    toast.error("Logout Faild !!");
+  }
   useEffect(() => {
+    if (isSuccess) {
+      window.location.href = "/";
+    }
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
@@ -29,38 +41,23 @@ function Navbar() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [isLoading]);
 
   const openLogin = () => {
     setShowLogin(true);
   };
 
   const openSignup = () => {
-    setShowSignup((pre)=>!pre);
+    setShowSignup((pre) => !pre);
   };
 
   const closeModals = () => {
-    setShowLogin((pre)=>!pre);
+    setShowLogin((pre) => !pre);
   };
   const closeModals1 = () => {
-    setShowSignup((pre)=>!pre);
+    setShowSignup((pre) => !pre);
   };
-  const dispatch = useDispatch();
-  const user = useSelector(loginData);
 
-  // Dispatch action to update user state (clear token)
-  const logoutHandler = () => {
-    try {
-      // Remove token from local storage
-      localStorage.removeItem("ZoneHub");
-      dispatch(logout());
-      // Display success message
-      toast.success("Sign Out Successfully");
-    } catch (error) {
-      // Display error message if sign out fails
-      toast.error("Sign Out Fail");
-    }
-  };
   return (
     <>
       <header className="snipcss-ECSde">
@@ -119,7 +116,7 @@ function Navbar() {
                         <svg className="icon" viewBox="0 0 24 24">
                           <path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"></path>
                         </svg>
-                        <span className="text" onClick={logoutHandler}>
+                        <span className="text" onClick={onLogoutHandler}>
                           logout
                         </span>
                       </Link>
@@ -137,18 +134,18 @@ function Navbar() {
                   </svg>
                   <div className="x">
                     <div className="sm-menu">
-                      <a onClick={openLogin} role="button">
+                      <Link onClick={openLogin} role="button">
                         <svg className="icon" viewBox="0 0 24 24">
                           <path d="M14,12L10,8V11H2V13H10V16M20,18V6C20,4.89 19.1,4 18,4H6A2,2 0 0,0 4,6V9H6V6H18V18H6V15H4V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18Z"></path>
                         </svg>
                         <span className="text">Login</span>
-                      </a>
-                      <a onClick={openSignup} role="button">
+                      </Link>
+                      <Link onClick={openSignup} role="button">
                         <svg className="icon" viewBox="0 0 24 24">
                           <path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"></path>
                         </svg>
                         <span className="text">Signup</span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </>

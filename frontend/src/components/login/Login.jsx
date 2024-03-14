@@ -15,43 +15,15 @@ import {
   useLoginMutation,
   useUserByIDMutation,
 } from "../../redux/API/user.js";
-import { setUser } from "../../redux/API/user_slice/user.slice.js";
 import { loginSuccess } from "../../redux/API/user_slice/login.slice.js";
-
-function Login({onClose}) {
+import { getGoogleUrl } from "../../utils/getGoogleUrl.js";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "../../redux/API/user2.js";
+import { Button } from "antd";
+function Login({ onClose }) {
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
   const [isVisible, setIsVisible] = useState(true);
-  const [userByID] = useUserByIDMutation();
-
-  const signInWithGoogle = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      const { user } = await signInWithPopup(auth, provider);
-      const res = await login({
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-        password: "none",
-        role: "user",
-      });
-      console.log(res);
-      if ("data" in res) {
-        toast.success(res.data.message);
-        localStorage.setItem("token", res.data.token);
-        const data = await getUser(user.uid);
-        data.token = res.data.token;
-        dispatch(userExist(data));
-      } else {
-        toast.error(res.error.data.message);
-        dispatch(userNotExist());
-      }
-
-      setIsVisible(false);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
 
   const handleEmailLogin = async (event) => {
     event.preventDefault();
@@ -80,6 +52,45 @@ function Login({onClose}) {
     }
   };
 
+  // 👇 API Login Mutation
+  const [loginUser, { isLoading, isError, error, isSuccess }] =
+    useLoginUserMutation();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = ((location.state || {}).from || {}).pathname || "/";
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("You successfully logged in");
+      navigate(from);
+    }
+    if (isError) {
+      if (Array.isArray(error.data.error)) {
+        error.data.error.forEach((el) =>
+          toast.error(el.message, {
+            position: "top-right",
+          })
+        );
+      } else {
+        toast.error(error.data.message, {
+          position: "top-right",
+        });
+      }
+    }
+  }, [isLoading, isSuccess, isError, error, navigate, from]);
+
+  // useEffect(() => {
+  //   if (isSubmitSuccessful) {
+  //     reset();
+  //   }
+  // }, [isSubmitSuccessful, reset]);
+
+  const onSubmitHandler = (values) => {
+    // 👇 Executing the loginUser Mutation
+    loginUser(values);
+  };
+
   return isVisible ? (
     <>
       <div className="backdoptrying">
@@ -88,21 +99,18 @@ function Login({onClose}) {
             <div>
               <div className="drawer-6c4">
                 Login
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={onClose}
-                >
+                <button type="button" className="btn-close" onClick={onClose}>
                   <span className="icon-cross"></span>
                   <span className="visually-hidden">Close</span>
                 </button>
               </div>
 
               <div className="sm-social-kpy">
-                <div className="goo-3ji" onClick={signInWithGoogle}>
+                <a className="goo-3ji" href={getGoogleUrl(from)}>
                   Login With Google
-                </div>
+                </a>
               </div>
+
               <div className="box-ntd size-6o5 pad-b31">
                 <div className="header-vc8">
                   <div className="title-bkx">

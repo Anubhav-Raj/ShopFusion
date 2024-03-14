@@ -59,7 +59,7 @@ function App() {
 
     fetchData();
   }, [token, userByID, dispatch]);
-
+  console.log(token, userData);
   const excludedRoutes = [
     "/admin/createcategories",
     "/admin",
@@ -75,7 +75,6 @@ function App() {
         <Routes>
           <Route path="/seller" element={<SellerPage />} />
           <Route path="/" element={<LandingPage />} />
-          <Route path="/post" element={<Mypost />} />
           <Route path="/brand" element={<Brandpage />} />
           <Route path="/brand/:brandName" element={<MobileHome />} />
           <Route path="/mobile/:mobiledetail" element={<Mobiledetail />} />

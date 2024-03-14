@@ -45,6 +45,6 @@ router.post(
   more_upload.array("brandImage"),
   productCon.createBrand
 );
-
-//router.post("/createproduct",  , productCon.createProduct);
+router.post("/createbrandmodal", productCon.createBrandmodal);
+router.post("/fetchallBrandModal", protect, productCon.createBrandmodal);
 module.exports = router;

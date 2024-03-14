@@ -229,6 +229,12 @@ exports.createBrand = async (req, res) => {
     res.status(200).json({ message: error.message, isError: false });
   } catch (error) {}
 };
+exports.createBrandmodal = async (req, res) => {
+  try {
+    console.log(req.body);
+    res.status(200).json({ message: "Created suessfully", isError: false });
+  } catch (error) {}
+};
 
 exports.getAllBrands = async (req, res) => {
   try {

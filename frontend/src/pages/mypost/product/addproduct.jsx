@@ -357,7 +357,7 @@ const AddProduct = ({
 
   // console.log(uploadFile);
   // console.log(uploadVideo);
-  console.log(uploadPhotos);
+  // console.log(uploadPhotos);
 
   const handleSubmit = async (values) => {
     // e.preventDefault();
@@ -493,7 +493,7 @@ const AddProduct = ({
         sellerName,
         gstNumber,
         // color,
-        // selectBrand,
+        selectBrand,
         // selectModel,
         mobileName,
         condition,
@@ -764,26 +764,6 @@ const AddProduct = ({
           </div>
           {/* third Row  */}
           <div className="formbold-input-flex">
-            {/* <div>
-              <label
-                htmlFor=" Year of Purchase"
-                className="formbold-form-label"
-              >
-                Year of Purchase
-              </label>
-
-              <Input
-                placeholder="Year of Purchase"
-                style={{
-                  height: 50,
-                }}
-                onChange={(e) => setYearOfPurchase(e.target.value)}
-              />
-              {yearOfPurchaseError && (
-                <div className="error-message">{yearOfPurchaseError}</div>
-              )}
-            </div> */}
-
             <div>
               <label
                 htmlFor="Price"
@@ -861,6 +841,50 @@ const AddProduct = ({
                 placeholder="Google Drive Link"
                 type="text"
               />
+            </div>
+          </div>
+          <div className="formbold-input-flex">
+            <div>
+              <label htmlFor="Select Brand" className="formbold-form-label">
+                Select Brand
+              </label>
+
+              <Select
+                placeholder="Select Brand"
+                style={{
+                  height: 50,
+                  width: "100%",
+                }}
+                onChange={(e) => setListBrends(e.target.value)}
+              >
+                <Option>Brand1</Option>
+                <Option>Brand1</Option>
+                <Option>Brand1</Option>
+              </Select>
+              {yearOfPurchaseError && (
+                <div className="error-message">{yearOfPurchaseError}</div>
+              )}
+            </div>
+            <div>
+              <label htmlFor="Select Brand" className="formbold-form-label">
+                Select Brand Moadl
+              </label>
+
+              <Select
+                placeholder="Select Brand"
+                style={{
+                  height: 50,
+                  width: "100%",
+                }}
+                onChange={(e) => setListBrends(e.target.value)}
+              >
+                <Option>Brand Moadl 1</Option>
+                <Option>Brand Modal 1</Option>
+                <Option>Brand Modal 1</Option>
+              </Select>
+              {yearOfPurchaseError && (
+                <div className="error-message">{yearOfPurchaseError}</div>
+              )}
             </div>
           </div>
 

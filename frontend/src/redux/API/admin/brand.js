@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const baseUrl = "http://localhost:5000/api/product/";
 const token = localStorage.getItem("ZoneHub");
 
-const baseQuery = fetchBaseQuery({ baseUrl });
+// const baseQuery = fetchBaseQuery({ baseUrl });
 export const brandApi = createApi({
   reducerPath: "brandApi",
   baseQuery: fetchBaseQuery({ baseUrl }),
@@ -27,11 +27,6 @@ export const brandApi = createApi({
           fromData.append("brandImage", photo);
         });
 
-        // console  from data into key pair
-        // for (const pair of fromData.entries()) {
-        //   console.log(pair[0] + ": " + pair[1]);
-        // }
-
         return {
           url: "createbrand",
           method: "POST",
@@ -41,13 +36,47 @@ export const brandApi = createApi({
           body: fromData,
         };
       },
-      invalidatesTags: ["admin"],
+      invalidatesTags: ["brand"],
     }),
     fetchAllBrand: builder.query({
       query: (id) => `/department/${id}`,
-      providesTags: ["admin"],
+      providesTags: ["brand"],
+    }),
+
+    createBrandModal: builder.mutation({
+      query: (modal) => {
+        const formData = new FormData();
+        formData.append("modalData", JSON.stringify(modal)); // Assuming modal is an object
+        return {
+          url: "createbrandmodal",
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        };
+      },
+      invalidatesTags: ["brand"],
+    }),
+
+    fetchAllBrandModal: builder.query({
+      query: (id) => {
+        const formData = new FormData();
+        formData.append("brand_id", id);
+        return {
+          url: "fetchallBrandModal",
+          method: "POST",
+          body: formData,
+        };
+      },
+      providesTags: ["brand"],
     }),
   }),
 });
 
-export const { useCreateBrandMutation, useFetchAllBrandQuery } = brandApi;
+export const {
+  useCreateBrandMutation,
+  useFetchAllBrandQuery,
+  useCreateBrandModalMutation,
+  useFetchAllBrandModalQuery,
+} = brandApi;

@@ -144,6 +144,19 @@ export const mobileAPI = createApi({
       },
       invalidatesTags: ["mobilepost"],
     }),
+    deleteMobile: builder.mutation({
+      query: (productId) => {
+        return {
+          url: "deletemobile",
+          method: "POST",
+          body: { id: productId },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+      invalidatesTags: ["mobilepost"],
+    }),
 
     getAllBrand: builder.mutation({
       query: () => {
@@ -168,7 +181,6 @@ export const mobileAPI = createApi({
         };
       },
     }),
-
     getUserProducts: builder.query({
       query: () => {
         return {
@@ -180,19 +192,6 @@ export const mobileAPI = createApi({
         };
       },
       providesTags: ["mobilepost"],
-    }),
-    deleteMobile: builder.mutation({
-      query: (productId) => {
-        return {
-          url: "deletemobile",
-          method: "POST",
-          body: { id: productId },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-      },
-      invalidatesTags: ["mobilepost"],
     }),
   }),
 });

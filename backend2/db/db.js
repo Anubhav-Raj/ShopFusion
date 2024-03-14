@@ -1,10 +1,13 @@
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
 require("dotenv").config();
-
+//process.env.MONGO_ONLINE
+//shopfusion
+//mongodb://0.0.0.0:27017/
 mongoose
-  .connect(process.env.MONGO_ONLINE, {
-    dbName: "shopfusion",
+  .connect("mongodb://0.0.0.0:27017/", {
+    //dbName: "shopfusion",
+    dbName: "mzone",
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
