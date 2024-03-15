@@ -19,9 +19,7 @@ export const userApi1 = createApi({
       async onQueryStarted(args, { dispatch, queryFulfilled, getState }) {
         try {
           const { data } = await queryFulfilled;
-
           dispatch(setUser(data)); // Dispatch setUser action to update Redux store
-          toast.success("Login Successfully");
         } catch (error) {
           console.error("Error fetching user data:", error);
         }

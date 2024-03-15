@@ -10,18 +10,22 @@ export const authApi = createApi({
   baseQuery: customFetchBase,
   endpoints: (builder) => ({
     registerUser: builder.mutation({
-      query: (data) => ({
-        url: "auth/register",
-        method: "POST",
-        body: data,
-      }),
+      query: (data) => {
+        console.log(data);
+        return {
+          url: "user/register",
+          method: "POST",
+          body: data,
+        };
+      },
     }),
     loginUser: builder.mutation({
       query: (data) => {
         console.log("redux data", data); // Log the data before returning the query object
         return {
-          url: "user/glogin",
+          url: "user/login",
           method: "POST",
+          body: data,
           credentials: "include",
         };
       },
@@ -29,7 +33,7 @@ export const authApi = createApi({
         try {
           await queryFulfilled;
           console.log("Login query started successfully.");
-          alert("Login query started successfully.");
+          // alert("Login query started successfully.");
           await dispatch(userApi1.endpoints.getMe.initiate(null));
         } catch (error) {
           console.error("Error occurred during login query:", error);

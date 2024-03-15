@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useEffect, useState } from "react";
 import "./navbar.css";
 import Dropdown from "./dropdown/Dropdown";
@@ -19,6 +20,11 @@ function Navbar() {
   const user = useAppSelector((state) => state.user2.user);
   const [logoutUser, { isLoading, isSuccess, error, isError }] =
     useLogoutUserMutation();
+
+  console.log(user);
+  useEffect(() => {
+    toast.success("Login Sucessfully !! ");
+  }, []);
   const onLogoutHandler = async () => {
     logoutUser();
   };
@@ -97,9 +103,18 @@ function Navbar() {
             <div className="sm-dropdown sm-d-header-user">
               {user ? (
                 <>
-                  <svg className="icon" viewBox="0 0 24 24">
-                    <path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"></path>
-                  </svg>
+                  <div
+                    className="icon"
+                    style={{ borderRadius: "50%", overflow: "hidden" }}
+                  >
+                    <img
+                      style={{ borderRadius: "50%" }}
+                      width={30}
+                      src={user.photo}
+                      alt="User Photo"
+                    />
+                  </div>
+
                   <span>{user.name}</span>
                   <svg className="icon d" viewBox="0 0 24 24">
                     <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path>

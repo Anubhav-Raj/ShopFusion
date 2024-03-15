@@ -1,94 +1,53 @@
 import React, { useState, useEffect } from "react";
 import "./login.css";
-import Signup from "./signup";
-import { auth } from "../../firebase.js";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { userExist, userNotExist } from "../../redux/user.slice";
-import {
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
-import {
-  getUser,
-  useLoginMutation,
-  useUserByIDMutation,
-} from "../../redux/API/user.js";
-import { loginSuccess } from "../../redux/API/user_slice/login.slice.js";
 import { getGoogleUrl } from "../../utils/getGoogleUrl.js";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../../redux/API/user2.js";
-import { Button } from "antd";
 function Login({ onClose }) {
-  const dispatch = useDispatch();
-  const [login] = useLoginMutation();
   const [isVisible, setIsVisible] = useState(true);
-
-  const handleEmailLogin = async (event) => {
-    event.preventDefault();
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-
-    try {
-      const res = await login({
-        email: email,
-        password: password,
-        method: "byEmail",
-      });
-      console.log(res);
-      if ("data" in res) {
-        localStorage.setItem("ZoneHub", res.data.token);
-        dispatch(loginSuccess(res.data));
-        toast.success(res.data.message);
-        onClose();
-      } else {
-        toast.error(res.error.data.message);
-      }
-
-      setIsVisible(false);
-    } catch (error) {
-      toast.error(error.message);
-    }
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const reset = () => {
+    setEmail("");
+    setPassword("");
   };
 
   // 👇 API Login Mutation
-  const [loginUser, { isLoading, isError, error, isSuccess }] =
+  const [loginUser, { isLoading, isError, error, isSuccess, data }] =
     useLoginUserMutation();
   const navigate = useNavigate();
   const location = useLocation();
 
   const from = ((location.state || {}).from || {}).pathname || "/";
-
   useEffect(() => {
     if (isSuccess) {
       toast.success("You successfully logged in");
       navigate(from);
     }
     if (isError) {
-      if (Array.isArray(error.data.error)) {
-        error.data.error.forEach((el) =>
-          toast.error(el.message, {
-            position: "top-right",
-          })
-        );
-      } else {
-        toast.error(error.data.message, {
-          position: "top-right",
-        });
-      }
+      toast.error(error.data.message);
     }
-  }, [isLoading, isSuccess, isError, error, navigate, from]);
+  }, [isLoading]);
 
-  // useEffect(() => {
-  //   if (isSubmitSuccessful) {
-  //     reset();
-  //   }
-  // }, [isSubmitSuccessful, reset]);
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
 
-  const onSubmitHandler = (values) => {
-    // 👇 Executing the loginUser Mutation
+    if (!email) {
+      toast.error("Email Required");
+      return;
+    }
+    if (!password) {
+      toast.error("Password Required");
+      return;
+    }
+    const values = {
+      email,
+      password,
+    };
+
     loginUser(values);
+    reset();
   };
 
   return isVisible ? (
@@ -117,7 +76,7 @@ function Login({ onClose }) {
                     <h2>Login Using Email</h2>
                   </div>
                 </div>
-                <form className="form-hjp" onSubmit={handleEmailLogin}>
+                <form className="form-hjp" onSubmit={(e) => onSubmitHandler(e)}>
                   <div className="input-d7q label-kan">
                     <input
                       name="email"
@@ -125,6 +84,7 @@ function Login({ onClose }) {
                       className="input-13o"
                       type="text"
                       id="use-42d"
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="input-d7q label-kan">
@@ -134,6 +94,7 @@ function Login({ onClose }) {
                       className="input-13o"
                       type="password"
                       id="pas-ekg"
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
                   <div className="input-d7q label-kan">
@@ -149,10 +110,10 @@ function Login({ onClose }) {
               </div>
               <div className="box-ntd">
                 <div className="item-gt5">
-                  <a>Sign Up →</a>
+                  <Link to={"/signup"}>Sign Up →</Link>
                 </div>
                 <div className="item-gt5">
-                  <a>Forgot Password →</a>
+                  <Link>Forgot Password →</Link>
                 </div>
               </div>
             </div>

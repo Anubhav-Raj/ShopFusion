@@ -37,7 +37,7 @@ const store = configureStore({
     [CheckUniqueAPI.reducerPath]: CheckUniqueAPI.reducer,
     [AddressAPI.reducerPath]: AddressAPI.reducer,
     [mobileproduct.name]: mobileproduct.reducer,
-    [userReducer.name]: userReducer.reducer,
+    [userReducer.name]: userReducer2.reducer,
     [rating_and_review.reducerPath]: rating_and_review.reducer,
     // For Admin
     [sallerTypeApi.reducerPath]: sallerTypeApi.reducer,

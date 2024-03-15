@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from "react";
+import React, { lazy, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -6,19 +6,14 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { useUserByIDMutation } from "./redux/API/user.js";
-import { loginData, loginSuccess } from "./redux/API/user_slice/login.slice.js";
-import { useDispatch, useSelector } from "react-redux";
 
 // components import
 import Navebar from "./components/header/navebar";
 import Navlist from "./components/header/navlist";
 import Footer from "./components/footer/footer";
 import Loader from "./components/loader";
-import ProtectedRoute from "./utils/protectedRoute.js";
 import PaymentSuccess from "./pages/paymentSucess.jsx";
 import PaymentFail from "./pages/paymentFaill.jsx";
-import Categories from "./pages/admin/components/categories.jsx";
 import AdminLayout from "./pages/admin/categories from/layout.jsx";
 // import { useLocation } from "react-router-dom";
 
@@ -36,30 +31,9 @@ const AddaddressPage = lazy(() => import("./pages/profile/profile.jsx"));
 const AdminDashboard = lazy(() => import("./pages/admin/pages/dashboard.jsx"));
 const TypeList = lazy(() => import("./pages/admin/pages/alltype.jsx"));
 const BrandList = lazy(() => import("./pages/admin/pages/allBrand.jsx"));
-
+const RequireUser = lazy(() => import("./utils/requrieduser.js"));
+const UnauthorizePage = lazy(() => import("./pages/unauthorized.jsx"));
 function App() {
-  const [userByID] = useUserByIDMutation();
-  const dispatch = useDispatch();
-  const token = localStorage.getItem("ZoneHub");
-  const userData = useSelector(loginData);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!token) {
-          console.error("Token not available");
-          return;
-        }
-        const { data } = await userByID();
-        dispatch(loginSuccess(data.user));
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchData();
-  }, [token, userByID, dispatch]);
-  console.log(token, userData);
   const excludedRoutes = [
     "/admin/createcategories",
     "/admin",
@@ -81,17 +55,20 @@ function App() {
           <Route path="/compair" element={<Compair />} />
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
           <Route path="/paymentfail" element={<PaymentFail />} />
+          <Route path="/unauthorized" element={<UnauthorizePage />} />
 
-          {token && userData && <Route path="/post" element={<Mypost />} />}
-          {token && userData && (
+          <Route element={<RequireUser allowedRoles={["user"]} />}>
+            <Route path="/post" element={<Mypost />} />
             <Route path="/address" element={<AddaddressPage />} />
-          )}
+          </Route>
 
           {/* Admin Routes */}
-          <Route path="/admin/" element={<AdminDashboard />} />
-          <Route path="/admin/listtype" element={<TypeList />} />
-          <Route path="/admin/listbrand" element={<BrandList />} />
-          <Route path="admin/createcategories" element={<AdminLayout />} />
+          <Route element={<RequireUser allowedRoles={["Admin"]} />}>
+            <Route path="/admin/" element={<AdminDashboard />} />
+            <Route path="/admin/listtype" element={<TypeList />} />
+            <Route path="/admin/listbrand" element={<BrandList />} />
+            <Route path="admin/createcategories" element={<AdminLayout />} />
+          </Route>
 
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

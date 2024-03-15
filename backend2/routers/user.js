@@ -7,10 +7,11 @@ const { deserializeUser } = require("../middleware/deserializeUser");
 const { requireUser } = require("../middleware/requireUser");
 router.get("/me", deserializeUser, userCon.getMeHandler);
 router.get("/logout", deserializeUser, requireUser, userCon.logoutHandler);
+router.post("/register", userCon.registerHandler);
+router.post("/login", userCon.loginHandler);
 router.get("/refresh", userCon.refreshAccessTokenHandler);
 
 router.post("/signup", userCon.signup);
-router.post("/login", userCon.login);
 router.post("/forgotpassword", userCon.forgotPassword);
 router.post("/resetpassword", userCon.resetPassword);
 router.post("/userbyid", protect, userCon.getUserById);

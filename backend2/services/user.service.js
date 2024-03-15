@@ -8,7 +8,8 @@ const excludedFields = ["password"];
 // CreateUser service
 exports.createUser = async (input) => {
   const user = await User.create(input);
-  return omit(user.toJSON(), excields);
+  console.log(user);
+  return omit(user.toJSON(), excludedFields);
 };
 
 // Find All users

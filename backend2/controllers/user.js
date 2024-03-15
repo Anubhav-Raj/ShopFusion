@@ -9,13 +9,18 @@ const Address = require("../models/address");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const AddressPayment = require("../models/address_payment");
+const AppError = require("../utils/AppError");
 const {
   getGoogleOauthToken,
   getGoogleUser,
 } = require("../services/session.service");
 const { findAndUpdateUser, signToken } = require("../services/user.service");
 const origin = process.env.ORIGIN;
-const { findAllUsers } = require("../services/user.service");
+const {
+  findAllUsers,
+  findUser,
+  createUser,
+} = require("../services/user.service");
 const redisClient = require("../utils/connectRedis");
 
 // Cookie options
@@ -41,25 +46,20 @@ exports.googleOauthHandler = async (req, res, next) => {
     if (!code) {
       return next(new AppError("Authorization code not provided!", 401));
     }
-    // console.log(code);
 
     // Use the code to get the id and access tokens
     const { id_token, access_token } = await getGoogleOauthToken({ code });
-    // console.log("id_token", id_token);
-    // console.log("access_token", access_token);
-    // Use the token to get the User
+
     const { name, verified_email, email, picture } = await getGoogleUser({
       id_token,
       access_token,
     });
-    // console.log(name, verified_email, email, picture);
 
     // Check if user is verified
     if (!verified_email) {
       return next(new AppError("Google account not verified", 403));
     }
 
-    // console.log(name, verified_email, email, picture);
     // Update user if user already exists or create new user
     const user = await findAndUpdateUser(
       { email },
@@ -76,7 +76,6 @@ exports.googleOauthHandler = async (req, res, next) => {
     if (!user) {
       res.redirect(`${origin}${pathUrl}`);
     }
-
     // Create access and refresh token
     const { access_token: accessToken, refresh_token } = await signToken(user);
     // Send cookie
@@ -93,19 +92,92 @@ exports.googleOauthHandler = async (req, res, next) => {
   }
 };
 
-exports.loginHandler = async (req, res, next) => {
-  const pathUrl = req.query.state || "/";
+exports.registerHandler = async (req, res, next) => {
+  try {
+    const { name, email, password } = req.body;
+    let user = await User.findOne({ email: email });
+    if (user) {
+      console.log("Email already exist! ");
+      return res.status(500).json({
+        isError: true,
+        message: "Email already exist!",
+      });
+    }
 
+    let hashedPass = "";
+    let token1 = "";
+
+    hashedPass = await bcrypt.hash(password, 12);
+
+    token1 = uuidv4();
+
+    const newUser = new User({
+      name: name,
+      email: email,
+      password: hashedPass,
+      isVerified: false,
+      provider: "mail",
+      photo:
+        "https://images.generated.photos/fy2Uo9U5gRzrs8gikNUxmi0A31SU47CRIL7AxpFhmnQ/rs:fit:256:256/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/MTMxMjYyLmpwZw.jpg",
+    });
+
+    const savedUser = await newUser.save();
+    delete savedUser.password;
+
+    const uri = `${process.env.BACKEND_URL}/api/user/verifyUser/${newUser._id}/${token1}`;
+    const bodypart = ` <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">
+            <tr>
+              <td style="background-color: #fff; padding: 20px; text-align: center;">
+                <h1 style="color: #7c3aed;">Hello ${newUser.name}</h1>
+                <h3>Click on the button below to verify your email</h3>
+                <a href="${uri}" style="background-color: #7c3aed; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; display: inline-block;">Click here to verify</a>
+              </td>
+            </tr>
+          </table>
+            </body>
+          </html>`;
+
+    const callFun = await mailSender(
+      newUser.email,
+      "Verify your email",
+      bodypart
+    );
+
+    res.json({
+      savedUser,
+      message: "Signup Sucessfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: error.message,
+      message: "Login Failda",
+    });
+  }
+};
+
+exports.loginHandler = async (req, res, next) => {
   try {
     // Get the user from the collection
     const user = await findUser({ email: req.body.email });
-    console.log(user);
+    if (!user) {
+      res.status(402).json({
+        isError: true,
+        message: "Email is  Not Register !!",
+      });
+    }
+    if (user.isVerified == false) {
+      res.status(402).json({
+        isError: true,
+        message: "Email is Not verified !!",
+      });
+    }
     // Check if user exists and password is correct
-    if (
-      !user ||
-      !(await user.comparePasswords(user.password, req.body.password))
-    ) {
-      return next(new AppError("Invalid email or password", 401));
+    if (!user || !(await user.comparePasswords(req.body.password))) {
+      res.status(402).json({
+        isError: true,
+        message: "Password  is Not Correct !!",
+      });
     }
 
     // Create the Access and refresh Tokens
@@ -243,8 +315,6 @@ exports.signup = async (req, res) => {
     hashedPass = await bcrypt.hash(password, 12);
 
     token1 = uuidv4();
-
-    // console.log("aejfnsj");
 
     const newUser = new User({
       name: name,
