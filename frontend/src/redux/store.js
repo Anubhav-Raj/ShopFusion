@@ -6,7 +6,7 @@ import productReducer from "./product.slice";
 import { userReducer } from "./user.slice";
 import { userAPI } from "./API/user";
 
-import { OtpAPI } from "./API/otp";
+// import { OtpAPI } from "./API/otp";
 import { mobileAPI } from "./API/products/mobile";
 import { AddressAPI } from "./API/products/profile";
 import userinfo from "./API/user_slice/user.slice";
@@ -33,7 +33,7 @@ const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [mobileAPI.reducerPath]: mobileAPI.reducer,
     [OtherProductAPI.reducerPath]: OtherProductAPI.reducer,
-    [OtpAPI.reducerPath]: OtpAPI.reducer,
+    // [OtpAPI.reducerPath]: OtpAPI.reducer,
     [CheckUniqueAPI.reducerPath]: CheckUniqueAPI.reducer,
     [AddressAPI.reducerPath]: AddressAPI.reducer,
     [mobileproduct.name]: mobileproduct.reducer,
@@ -57,7 +57,7 @@ const store = configureStore({
       userAPI.middleware,
       mobileAPI.middleware,
       AddressAPI.middleware,
-      OtpAPI.middleware,
+      // OtpAPI.middleware,
       CheckUniqueAPI.middleware,
       sallerTypeApi.middleware,
       DepartmentApi.middleware,

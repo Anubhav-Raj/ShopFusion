@@ -8,16 +8,19 @@ const redisClient = require("../utils/connectRedis");
 
 exports.deserializeUser = async (req, res, next) => {
   try {
-    // Get the token
-    // console.log("backend seserialize user");
+    // Get the
+    // console.log(req.cookies);
+    console.log("backend seserialize user");
     let access_token;
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
     ) {
       access_token = req.headers.authorization.split(" ")[1];
+      // console.log("authorization");
     } else if (req.cookies.access_token) {
       access_token = req.cookies.access_token;
+      // console.log("cookies");
     }
 
     if (!access_token) {
@@ -47,6 +50,8 @@ exports.deserializeUser = async (req, res, next) => {
     }
 
     res.locals.user = user;
+    // console.log(user);
+    console.log("backend seserialize user End ");
 
     next();
   } catch (err) {

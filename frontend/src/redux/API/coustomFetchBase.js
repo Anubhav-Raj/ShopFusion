@@ -19,6 +19,8 @@ export const customFetchBase = async (args, api, extraOptions) => {
   // wait until the mutex is available without locking it
   await mutex.waitForUnlock();
   let result = await baseQuery(args, api, extraOptions);
+  // console.log(result);
+
   if (
     result.error &&
     result.error.data &&
@@ -28,7 +30,7 @@ export const customFetchBase = async (args, api, extraOptions) => {
       const release = await mutex.acquire();
 
       try {
-        console.log("user/refresh");
+        // console.log("user/refresh");
         const refreshResult = await baseQuery(
           { credentials: "include", url: "user/refresh" },
           api,

@@ -1,24 +1,17 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-// Get the API base URL from the environment variable
-const baseUrl = "http://localhost:5000/api/user/";
-const token = localStorage.getItem("ZoneHub");
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { customFetchBase } from "./coustomFetchBase";
 
 export const OtpAPI = createApi({
   reducerPath: "otpApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: baseUrl,
-  }),
+  baseQuery: customFetchBase,
   tagTypes: ["otp"],
   endpoints: (builder) => ({
     emailotp: builder.mutation({
       query: (emailotp) => {
         return {
-          url: "verifyemailotp",
+          url: "user/verifyemailotp",
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
           body: emailotp,
         };
       },
@@ -28,11 +21,9 @@ export const OtpAPI = createApi({
     sendemailotp: builder.mutation({
       query: (email) => {
         return {
-          url: "sendemailotp",
+          url: "user/sendemailotp",
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
           body: email,
         };
       },
@@ -41,12 +32,10 @@ export const OtpAPI = createApi({
 
     phoneOTP: builder.mutation({
       query: (phoneOTP) => ({
-        url: "verifyemailotp",
+        url: "user/verifyemailotp",
         method: "POST",
         body: phoneOTP,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
       }),
       invalidatesTags: ["otp"],
     }),

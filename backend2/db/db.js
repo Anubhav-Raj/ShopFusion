@@ -5,9 +5,9 @@ require("dotenv").config();
 //shopfusion
 //mongodb://0.0.0.0:27017/
 mongoose
-  .connect("mongodb://0.0.0.0:27017/", {
-    //dbName: "shopfusion",
-    dbName: "mzone",
+  .connect(process.env.MONGO_ONLINE, {
+    dbName: "shopfusion",
+    //dbName: "mzone",
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

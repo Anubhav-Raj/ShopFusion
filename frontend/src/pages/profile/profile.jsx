@@ -11,24 +11,27 @@ import {
   Modal,
 } from "antd";
 import axios from "axios";
-import { useAddAddressMutation } from "../../redux/API/products/profile";
-import useRecaptchaV3 from "../../Hooks/reCaptchaV3";
-import OtpInput from "react-otp-input";
 import {
+  useAddAddressMutation,
+  useAllAddressQuery,
   useEmailotpMutation,
   useSendemailotpMutation,
-} from "../../redux/API/otp";
+  useFetchPaymentMutation,
+  useVerifyPaymentMutation,
+} from "../../redux/API/products/profile";
+import useRecaptchaV3 from "../../Hooks/reCaptchaV3";
+import OtpInput from "react-otp-input";
+
 import { usePhoneNumberUniqueMutation } from "../../redux/API/uniqueIdentification";
 import { useSelector } from "react-redux";
 import { loginData } from "../../redux/API/user_slice/login.slice";
 import { setUser } from "../../redux/API/user_slice/user.slice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useAppSelector } from "../../redux/store";
 const { Option } = AutoComplete;
 const AddaddressPage = () => {
-  const token = localStorage.getItem("ZoneHub");
-  const userData = useSelector(loginData);
-
+  const userData = useAppSelector((state) => state.user2.user);
   const executeRecaptcha = useRecaptchaV3(
     "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
   );
@@ -260,8 +263,12 @@ const AddaddressPage = () => {
       const result = await AddAddressMutation(formData);
 
       // Handle the success response
-      console.log("Address added successfully:", result);
-      message.success("Address added successfully");
+      if (result.data.isError === true) {
+        message.error(result.data.message);
+        return;
+      } else {
+        message.success(result.data.message);
+      }
 
       // Reset all fields
       setUserName("");
@@ -335,8 +342,12 @@ const AddaddressPage = () => {
     setShowOtpModal(true);
     const sandopt = await SendmailOtpMutation(formData);
   };
+
+  //  fetch all addresss
+  const { data: addresses } = useAllAddressQuery("");
   // For Payment
-  const baseUrl = "http://localhost:5000/api/payment/";
+  const [fetchPaymentQuery] = useFetchPaymentMutation();
+  const [verifyPayment] = useVerifyPaymentMutation();
 
   function loadScript(src) {
     return new Promise((resolve) => {
@@ -351,7 +362,7 @@ const AddaddressPage = () => {
       document.body.appendChild(script);
     });
   }
-  const __DEV__ = document.domain === "localhost";
+  const navigate = useNavigate();
   async function displayRazorpay(id, phonenumber, altNumber) {
     const res = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
@@ -366,36 +377,24 @@ const AddaddressPage = () => {
       phone: phonenumber,
       altNumber: altNumber || "null",
     };
-    const data = await fetch(`${baseUrl}/otppayment`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      body: JSON.stringify(formdata),
-    }).then((t) => t.json());
 
-    console.log(data);
+    const { data } = await fetchPaymentQuery(formdata);
+
     if (!data) {
       alert("Server error. Are you online?");
       return;
     }
 
+    const amount = data.amount ? data.amount.toString() : "0";
     const options = {
       key: "rzp_test_AjDOUl6GpeumxG",
       currency: data.currency,
-      amount: data.amount.toString(),
+      amount: amount,
       order_id: data.id,
       name: "ZoneHub",
       description: "Thank you for nothing. Please give us some money",
       image:
         "https://scontent.fdel29-1.fna.fbcdn.net/v/t39.30808-6/361586894_3669385440010177_673264268362134479_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=9c7eae&_nc_ohc=NEOVieuKC8sAX8AASGL&_nc_ht=scontent.fdel29-1.fna&oh=00_AfBBY6wkPRKddru9fQfL7MzBCFVTfOyM6Y6rmvU7vjnAZg&oe=65D38A80",
-      // handler: function (response) {
-      //   alert(response.razorpay_payment_id);
-      //   alert(response.razorpay_order_id);
-      //   alert(response.razorpay_signature);
-      // },
-      // callback_url: "http://localhost:5000/api/payment/paymentverification",
 
       handler: function (response) {
         const responseData = {
@@ -405,23 +404,19 @@ const AddaddressPage = () => {
           addressId: id,
           receipt: data.receipt,
         };
-
-        // Send the data to your server-side for processing
-        fetch("http://localhost:5000/api/payment/addresspaymentverification", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(responseData),
-        })
+        verifyPayment(responseData)
+          .unwrap()
           .then((response) => {
-            // Handle response
-            console.log(response);
+            // console.log("payment response", response);
+            window.location.href = response.redirectUrl;
           })
           .catch((error) => {
-            console.error("Error:", error);
+            // Handle verification error
+            // console.error("Error:", error);
+            window.location.href = response.redirectUrl;
           });
       },
+
       prefill: {
         name: userData.name,
         email: userData.email,
@@ -431,6 +426,7 @@ const AddaddressPage = () => {
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   }
+
   return (
     <>
       <Modal
@@ -784,9 +780,8 @@ const AddaddressPage = () => {
 
           <div style={{ border: "2px solid #F1F3F6", marginTop: "20px" }}>
             {/* Replace the hard-coded Descriptions data with your actual data */}
-            {userData &&
-              userData.addresses &&
-              userData.addresses.map((item, index) => {
+            {addresses &&
+              addresses.address.map((item, index) => {
                 return (
                   <>
                     <Descriptions

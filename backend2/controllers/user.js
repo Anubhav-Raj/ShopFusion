@@ -523,6 +523,8 @@ exports.resetPassword = async (req, res) => {
 
 exports.addaddress = async (req, res) => {
   try {
+    // console.log(req.body);
+    const loginuser = res.locals.user;
     const {
       selectedCountry,
       userName,
@@ -539,7 +541,7 @@ exports.addaddress = async (req, res) => {
       altNumber,
     } = req.body;
     const newAddress = new Address({
-      user: req.user._id,
+      user: loginuser._id,
       userName: userName,
       selectedCountry: selectedCountry,
       phoneNumber: { phoneNumber: phoneNumber },
@@ -555,11 +557,11 @@ exports.addaddress = async (req, res) => {
       email: { email: email },
     });
     await newAddress.save();
-    const user = await User.findById(req.user._id).select("-password");
+    const user = await User.findById(loginuser._id).select("-password");
     user.addresses.push(newAddress._id);
     await user.save();
 
-    res.json({
+    res.status(200).json({
       message: "Address added successfully!",
       isError: false,
       user: user,
@@ -569,6 +571,24 @@ exports.addaddress = async (req, res) => {
     res.status(500).json({
       error: error.message,
       message: "Verify Faild",
+      isError: true,
+    });
+  }
+};
+
+exports.getuserAddress = async (req, res) => {
+  try {
+    const loginuser = res.locals.user;
+    const address = await Address.find({ user: loginuser._id });
+    res.status(200).json({
+      message: "Address Fetch !",
+      isError: false,
+      address: address,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+      message: "Faild to fech Address",
       isError: true,
     });
   }
@@ -673,7 +693,6 @@ const razorpay = new Razorpay({
 
 exports.payment = async (req, res) => {
   try {
-    console.log(req.body);
     const payment_capture = 1;
     let amount = 1;
     var currency = "INR"; // apply  condition accoding to country
@@ -694,7 +713,6 @@ exports.payment = async (req, res) => {
     };
 
     const response = await razorpay.orders.create(options);
-    //console.log(response);
     res.json({
       id: response.id,
       currency: response.currency,
@@ -718,8 +736,9 @@ exports.paymentVerification = async (req, res) => {
       .digest("hex");
 
     const isAuthentic = expectedSignature === razorpay_signature;
+    console.log(isAuthentic);
     if (isAuthentic) {
-      // Database comes here
+      // Database operations here
       const address = await Address.findById(req.body.addressId);
       var amount = 1;
 
@@ -736,15 +755,18 @@ exports.paymentVerification = async (req, res) => {
       address.status = true;
       await address.save();
 
-      res.redirect(
-        `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`
-      );
+      res.status(200).json({
+        success: true,
+        redirectUrl: `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`,
+      });
     } else {
-      res.redirect(
-        `${process.env.FRONTEND_URL}/paymentfail?reference=${razorpay_payment_id}`
-      );
+      res.status(200).json({
+        success: false,
+        redirectUrl: `${process.env.FRONTEND_URL}/paymentfail?reference=${razorpay_payment_id}`,
+      });
     }
   } catch (error) {
     console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };

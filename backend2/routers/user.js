@@ -14,13 +14,14 @@ router.get("/refresh", userCon.refreshAccessTokenHandler);
 router.post("/signup", userCon.signup);
 router.post("/forgotpassword", userCon.forgotPassword);
 router.post("/resetpassword", userCon.resetPassword);
-router.post("/userbyid", protect, userCon.getUserById);
+router.post("/userbyid", deserializeUser, userCon.getUserById);
 
 router.get("/verifyUser/:id/:token", userCon.verifyUser);
-router.post("/addaddress", protect, userCon.addaddress);
+router.post("/addaddress", deserializeUser, userCon.addaddress);
+router.get("/useralladdress", deserializeUser, userCon.getuserAddress);
 router.post("/isnumberunique", userCon.isNumberUnique);
-router.post("/sendemailotp", protect, userCon.sendEmailOtp);
-router.post("/verifyemailotp", protect, userCon.verifyEmailOtp);
+router.post("/sendemailotp", deserializeUser, userCon.sendEmailOtp);
+router.post("/verifyemailotp", deserializeUser, userCon.verifyEmailOtp);
 router.get("/oauth/google", userCon.googleOauthHandler);
 router.post("/googlelogin", userCon.loginHandler);
 // Login user route

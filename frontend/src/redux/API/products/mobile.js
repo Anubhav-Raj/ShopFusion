@@ -74,6 +74,7 @@ export const mobileAPI = createApi({
 
       invalidatesTags: ["mobilepost"],
     }),
+
     editMobile: builder.mutation({
       query: (mobile) => {
         const formData = new FormData();
@@ -144,6 +145,7 @@ export const mobileAPI = createApi({
       },
       invalidatesTags: ["mobilepost"],
     }),
+
     deleteMobile: builder.mutation({
       query: (productId) => {
         return {
@@ -169,6 +171,7 @@ export const mobileAPI = createApi({
         };
       },
     }),
+
     getAllBrandModal: builder.mutation({
       query: (brandId) => {
         return {
@@ -181,6 +184,7 @@ export const mobileAPI = createApi({
         };
       },
     }),
+
     getUserProducts: builder.query({
       query: () => {
         return {

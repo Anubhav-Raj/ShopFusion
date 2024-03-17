@@ -2,17 +2,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import { Button, Table } from "antd";
-import { Modal, Carousel } from "antd";
+import { Modal } from "antd";
 import "./table.css";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { useGetUserProductsQuery } from "../../redux/API/products/mobile";
 import { DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
-import { EyeOutlined } from "@ant-design/icons";
-import { EditOutlined } from "@ant-design/icons";
 import { loginData } from "../../redux/API/user_slice/login.slice";
 import { Link } from "react-router-dom";
-import EditMobile from "../../pages/mypost/Mobile/editMobile";
 import { useDeleteMobileMutation } from "../../redux/API/products/mobile";
 const { confirm } = Modal;
 function Table_post({ setTableShow, setEditTable, setId }) {
@@ -24,11 +21,6 @@ function Table_post({ setTableShow, setEditTable, setId }) {
   const [yScroll] = useState(false);
   const [xScroll] = useState("fixed");
   const [products, setProducts] = useState([]);
-  const [days, setDays] = useState(0);
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
-  const [deadlineDate, setDeadlineDate] = useState(null);
   const [selectedRow, setSelectedRow] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [imagesToDisplay, setImagesToDisplay] = useState([]);
