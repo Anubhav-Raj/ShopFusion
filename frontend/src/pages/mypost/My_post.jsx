@@ -43,6 +43,7 @@ const My_post = () => {
   const handleType = (value) => {
     setSelectedselectedType(value);
   };
+
   // Fetch Saller Type
   const [Types, setTypes] = useState();
   const { isLoading, data } = useFetchAllSallerTypeQuery();
@@ -266,14 +267,14 @@ const My_post = () => {
       item === "Android Mobile Phones" ? (
         <></>
       ) : null}
-      <AddProduct
+      {/* <AddProduct
         selectedType={selectedType}
         selecteddepartment={selecteddepartment}
         selectedcategories={categories}
         selectedsubcategories={subcategories}
         selectedsubcategoriesitem={item}
         setTableShow={setTableShow}
-      />
+      /> */}
       <Table_post
         setTableShow={setTableShow}
         setEditTable={setEditTable}

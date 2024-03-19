@@ -1,15 +1,35 @@
 const mongoose = require("mongoose");
 
-// Define the product schema
 const productSchema = new mongoose.Schema(
   {
-    category: String,
-    subCategory: String,
+    type: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ChooseType",
+      required: true,
+    },
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ChooseDepartment",
+    },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ChooseCategory",
+      required: true,
+    },
+    subCategory: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ChooseSubCategory",
+      required: true,
+    },
+    item: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ChooseItem",
+    },
     price: {
       type: Number,
       default: 0,
+      min: 0,
     },
-
     reviews: {
       type: Array,
       default: [],
@@ -18,12 +38,10 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-
     sellerType: String,
     sellerName: String,
     gstNumber: String,
@@ -38,12 +56,17 @@ const productSchema = new mongoose.Schema(
     },
     mobileName: String,
     condition: String,
-    yearOfPurchase: {
-      type: String,
+    yearOfPurchase: String,
+    availableQuantity: {
+      type: Number,
+      default: 0,
+      min: 0,
     },
-    availableQuantity: Number,
-    minimumOrder: Number,
-
+    minimumOrder: {
+      type: Number,
+      default: 1,
+      min: 1,
+    },
     paymentMode: String,
     serviceMode: String,
     enterAddress: {
@@ -85,6 +108,9 @@ const productSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Indexes for frequently queried fields
+productSchema.index({ category: 1, subCategory: 1 });
 
 // Create the Product model
 module.exports = mongoose.model("Product", productSchema);

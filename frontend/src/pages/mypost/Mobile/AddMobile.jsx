@@ -28,12 +28,12 @@ import {
   colores,
 } from "./MobileFormState";
 import useRecaptchaV3 from "../../../Hooks/reCaptchaV3/index.js";
-import { useUserByIDMutation } from "../../../redux/API/user.js";
-import { useDispatch, useSelector } from "react-redux";
 import {
-  selectUserData,
-  setUser,
-} from "../../../redux/API/user_slice/user.slice.js";
+  useFetchCategoriesBrandQuery,
+  useFetchAllBrandModalQuery,
+} from "../../../redux/API/admin/brand.js";
+import { useAppSelector } from "../../../redux/store.js";
+
 const { Option } = AutoComplete;
 
 const getBase64 = (file) =>
@@ -52,82 +52,27 @@ const AddMobile = ({
   selectedsubcategoriesitem,
   setTableShow,
 }) => {
-  const [listBrends, setListBrends] = useState([]);
-  const [listBrendsModal, setListBrendsModal] = useState([]);
-  const [userByID] = useUserByIDMutation();
-  const [allbrands] = useGetAllBrandMutation();
-  const [brandModal] = useGetAllBrandModalMutation();
   const [createMobileMutation] = useCreateMobileMutation();
+  const [selectedBrandid, setSelectBrandid] = useState();
+  const { data: brands, isError: brandError } =
+    useFetchCategoriesBrandQuery(selectedcategories);
 
-  const dispatch = useDispatch();
-
-  const token = localStorage.getItem("ZoneHub");
-  const userData = useSelector(selectUserData);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!token) {
-          console.error("Token not available");
-          return;
-        }
-        const { data } = await userByID();
-
-        dispatch(setUser(data.user));
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!token) {
-          console.error("Token not available");
-          return;
-        }
-        const { data } = await allbrands();
-        setListBrends(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const handlebrandModal = async (brandId) => {
-    try {
-      if (!token) {
-        console.error("Token not available");
-        return;
-      }
-      const formdata = {
-        brandId: brandId,
-      };
-      const { data } = await brandModal(formdata);
-      setListBrendsModal(data);
-      //console.log(data);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-
+  const { data: allbrandsmodal, isError: allbrandsError } =
+    useFetchAllBrandModalQuery(selectedBrandid);
+  // console.log(allbrandsmodal && allbrandsmodal);
   const brandList =
-    listBrends &&
-    listBrends.map((element) => {
+    brands &&
+    brands.brands.map((element) => {
       const newPropsObj = {
         value: element._id,
-        label: element.name,
+        label: element.brandName,
       };
 
       return { ...element, ...newPropsObj };
     });
   const brandmodalList =
-    listBrendsModal &&
-    listBrendsModal.map((element) => {
+    allbrandsmodal &&
+    allbrandsmodal.models.map((element) => {
       const newPropsObj = {
         value: element._id,
         label: element.name,
@@ -353,7 +298,8 @@ const AddMobile = ({
     return isValid;
   };
 
-  console.log(uploadPhotos);
+  const user = useAppSelector((state) => state.user2.user);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const recaptchaToken = await executeRecaptcha("addmobile");
@@ -484,6 +430,7 @@ const AddMobile = ({
       // Extract data from the form state
       const formData = {
         sellerType,
+        user: user._id,
         sellerName,
         gstNumber,
         color,
@@ -511,16 +458,12 @@ const AddMobile = ({
         selectedsubcategoriesitem,
       };
 
-      // Object.entries(formData).forEach(([key, value]) => {
-      //   console.log(`${key}: ${value}`);
-      // });
       // Trigger the createMobile mutation
       const result = await createMobileMutation(formData);
 
       // Handle the success response
       console.log("Mobile created successfully:", result);
-      message.success("Mobile created successfully");
-
+      message.success(result.message);
       // Reset the form after successful submission
       resetForm();
       setTableShow(false);
@@ -552,7 +495,7 @@ const AddMobile = ({
                   setSellerTypeError("");
                 }}
                 onSearch={(val) => {
-                  console.log(val);
+                  // console.log(val);
                 }}
               />
               {/* Display error message */}
@@ -621,22 +564,27 @@ const AddMobile = ({
               </label>
               <AutoComplete
                 style={{ width: 300, height: 50 }}
-                placeholder="Enter Brand"
+                placeholder="Select Brand"
                 options={brandList}
                 value={selectBrand}
-                filterOption={true}
+                filterOption={(inputValue, option) =>
+                  option.label
+                    .toLowerCase()
+                    .indexOf(inputValue.toLowerCase()) !== -1
+                }
                 onSelect={async (val) => {
                   const selectedBrand = await brandList.find(
                     (item) => item.value === val
                   );
                   const t = selectedBrand ? selectedBrand.label : val;
                   setSelectBrand(t);
-                  handlebrandModal(val);
+                  setSelectBrandid(val);
                 }}
                 onSearch={(val) => {
                   setSelectBrand(val);
                 }}
               />
+
               {selectBrandError && (
                 <div className="error-message">{selectBrandError}</div>
               )}
@@ -656,7 +604,6 @@ const AddMobile = ({
                     (item) => item.value === val
                   );
                   const modelName = selectedBrand ? selectedBrand.label : val;
-
                   setSelectModel(modelName);
                 }}
                 onSearch={(val) => {

@@ -1,12 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-const baseUrl = "http://localhost:5000/api/admin/";
-const token = localStorage.getItem("ZoneHub");
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { customFetchBase } from "../coustomFetchBase";
 
 export const SubCategoriesApi = createApi({
   reducerPath: "subCategories",
-  baseQuery: fetchBaseQuery({
-    baseUrl: baseUrl,
-  }),
+  baseQuery: customFetchBase,
   tagTypes: ["subCategories"],
   endpoints: (builder) => ({
     createSubCategories: builder.mutation({
@@ -22,40 +19,28 @@ export const SubCategoriesApi = createApi({
           "subcategoryDescription",
           subCategories.subcategoryDescription
         );
-        for (let [key, value] of formData.entries()) {
-          console.log(key, value);
-        }
 
         return {
-          url: "createsubcategory",
+          url: "admin/createsubcategory",
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
           body: formData,
         };
       },
       invalidatesTags: ["subCategories"],
-      // onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-      //   dispatch(
-      //     queryFulfilled({
-      //       endpointName: "createSubCategories",
-      //       response: {},
-      //     })
-      //   );
-      // },
     }),
 
     fetchAllSubCategories: builder.query({
       query: (id) => {
-        console.log(id);
+        // console.log(id);
         const formData = {
           choose_category_id: id,
         };
         return {
-          url: "fetchallsubcategories",
+          url: "admin/fetchallsubcategories",
           method: "POST",
           body: formData,
+          credentials: "include",
         };
       },
       invalidatesTags: ["subCategories"],

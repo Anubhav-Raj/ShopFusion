@@ -3,14 +3,15 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../../redux/API/user_slice/user.slice";
+import { useAllAddressQuery } from "../../../redux/API/products/profile";
 
 export const useMobileFormState = () => {
   const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
-
+  const { data: addresses } = useAllAddressQuery("");
   const addressoption =
-    userData &&
-    userData.addresses
+    addresses &&
+    addresses.address
       .filter(
         (element) =>
           element.phoneNumber.isVerified &&
@@ -23,8 +24,8 @@ export const useMobileFormState = () => {
       }));
 
   const allgstNumber =
-    userData &&
-    userData.addresses.map((element) => {
+    addresses &&
+    addresses.address.map((element) => {
       const newPropsObj = {
         value: element.gstNumber,
         label: element.gstNumber,

@@ -1,18 +1,18 @@
 /* eslint-disable no-unreachable */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { customFetchBase } from "../coustomFetchBase";
 
 const baseUrl = "http://localhost:5000/api/product/";
 const token = localStorage.getItem("ZoneHub");
 
 export const mobileAPI = createApi({
   reducerPath: "mobileAPI",
-  baseQuery: fetchBaseQuery({
-    baseUrl: baseUrl,
-  }),
+  baseQuery: customFetchBase,
   tagTypes: ["mobilepost"],
   endpoints: (builder) => ({
     createMobile: builder.mutation({
       query: (mobile) => {
+        // console.log(mobile);
         const formData = new FormData();
         formData.append("sellerType", mobile.sellerType);
         formData.append("sellerName", mobile.sellerName);
@@ -22,6 +22,7 @@ export const mobileAPI = createApi({
         formData.append("selectModel", mobile.selectModel);
         formData.append("mobileName", mobile.mobileName);
         formData.append("condition", mobile.condition);
+        formData.append("user", mobile.user);
         formData.append("yearOfPurchase", mobile.yearOfPurchase);
         formData.append("availableQuantity", mobile.availableQuantity);
         formData.append("minimumOrder", mobile.minimumOrder);
@@ -60,15 +61,11 @@ export const mobileAPI = createApi({
           console.log(pair[0] + ", " + pair[1]);
         }
 
-        //return;
-
         return {
-          url: "createMobile",
+          url: "product/createMobile",
           method: "POST",
           body: formData,
-          headers: {
-            Authorization: "Bearer " + token,
-          },
+          credentials: "include",
         };
       },
 
@@ -135,12 +132,10 @@ export const mobileAPI = createApi({
 
         // Return the mutation query
         return {
-          url: "editmobile",
+          url: "product/editmobile",
           method: "POST",
           body: formData,
-          headers: {
-            Authorization: "Bearer " + token,
-          },
+          credentials: "include",
         };
       },
       invalidatesTags: ["mobilepost"],
@@ -149,12 +144,10 @@ export const mobileAPI = createApi({
     deleteMobile: builder.mutation({
       query: (productId) => {
         return {
-          url: "deletemobile",
+          url: "product/deletemobile",
           method: "POST",
           body: { id: productId },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
         };
       },
       invalidatesTags: ["mobilepost"],
@@ -163,11 +156,9 @@ export const mobileAPI = createApi({
     getAllBrand: builder.mutation({
       query: () => {
         return {
-          url: "allbrands",
+          url: "product/allbrands",
           method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
         };
       },
     }),
@@ -175,24 +166,21 @@ export const mobileAPI = createApi({
     getAllBrandModal: builder.mutation({
       query: (brandId) => {
         return {
-          url: "allmodelsonmodel",
+          url: "product/allmodelsonmodel",
           method: "POST",
           body: brandId,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
         };
       },
     }),
 
     getUserProducts: builder.query({
       query: () => {
+        console.log("Productfetxhing");
         return {
-          url: "userallproduct",
+          url: "product/userallproduct",
           method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
         };
       },
       providesTags: ["mobilepost"],

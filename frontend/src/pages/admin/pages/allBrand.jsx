@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useEffect, useRef, useState } from "react";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import {
@@ -7,11 +8,10 @@ import {
   Table,
   Modal,
   Form,
-  Upload,
   Select,
   message,
-  Checkbox,
 } from "antd";
+import toast from "react-hot-toast";
 import { MinusCircleOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { Layout, theme } from "antd";
@@ -21,16 +21,12 @@ import Adminheader from "../components/common/header";
 import { useFetchAllSallerTypeQuery } from "../../../redux/API/admin/saller";
 import { useFetchAllDepartmentQuery } from "../../../redux/API/admin/department";
 import { useFetchAllCategoryQuery } from "../../../redux/API/admin/categories";
-import { useFetchAllSubCategoriesQuery } from "../../../redux/API/admin/subcategories";
-import { useFetchAllItemQuery } from "../../../redux/API/admin/item";
-
+import { useAllbrandQuery } from "../../../redux/API/admin/brand";
 import {
   useCreateBrandMutation,
   useCreateBrandModalMutation,
-  useFetchAllBrandQuery,
 } from "../../../redux/API/admin/brand";
 
-import toast from "react-hot-toast";
 const { Content } = Layout;
 const { Option } = Select;
 
@@ -81,6 +77,7 @@ const BrandList = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
   const [form] = Form.useForm();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -88,6 +85,27 @@ const BrandList = () => {
   const [isModalVisible2, setIsModalVisible2] = useState(false);
   const [isModalVisible3, setIsModalVisible3] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+  // fetch all Brand
+  const {
+    data: brands,
+    isError,
+    isLoading: brandloding,
+    isSuccess,
+  } = useAllbrandQuery();
+
+  useEffect(() => {
+    // console.log(brandloding);
+    // if (brandloding === false) {
+    //   toast.loading("Fetching all brands...");
+    // }
+    if (isError) {
+      toast.error("Something went wrong! Please try again.");
+    }
+    if (isSuccess) {
+      toast.success("Successfully fetched all brands");
+    }
+  }, [brandloding]);
+
   //fetch saller type
   const [sallerType, setSallerType] = useState();
   const { isLoading, data: barnd } = useFetchAllSallerTypeQuery();
@@ -176,13 +194,16 @@ const BrandList = () => {
   //     setAllSelectedsubcategoriesitem(newobjArray);
   //   }
   // }, [itemLoading, selectedsubcategories, itemData]);
-
+  const [brandID, setbrandID] = useState("");
   const showModal = () => {
     setIsModalVisible(true);
   };
-  const showModal2 = () => {
+  const showModal2 = (id) => {
     setIsModalVisible2(true);
+    // console.log(id);
+    setbrandID(id);
   };
+  console.log(brandID);
   const showModal3 = () => {
     setIsModalVisible3(true);
   };
@@ -325,7 +346,7 @@ const BrandList = () => {
     },
     {
       title: "Brand Name",
-      dataIndex: "name",
+      dataIndex: "brandName",
       key: "brand",
       ...getColumnSearchProps("brand"),
     },
@@ -334,39 +355,47 @@ const BrandList = () => {
       dataIndex: "Brandmodal",
       key: "brandmodal",
     },
-    {
-      title: "Type",
-      dataIndex: "Type",
-      key: "type",
-      ...getColumnSearchProps("type"),
-    },
-    {
-      title: "Departmemt",
-      dataIndex: "Departmemt",
-      key: "Departmemt",
-      ...getColumnSearchProps("Departmemt"),
-    },
+
     {
       title: "Categories",
-      dataIndex: "Categories",
+      dataIndex: "category_ID",
       key: "Categories",
       ...getColumnSearchProps("Categories"),
+      render: (categories) => (
+        <span>
+          {categories.map((category) => (
+            <span key={category._id}>
+              {category.name}
+              {categories.indexOf(category) !== categories.length - 1 && ", "}
+            </span>
+          ))}
+        </span>
+      ),
     },
+
     {
       title: "Image",
-      dataIndex: "Image",
+      dataIndex: "image",
       key: "Image",
+      render: (image) => (
+        <img
+          src={`http://localhost:5000/${image}`}
+          alt="Brand Image"
+          style={{ width: 50, height: 50 }}
+        />
+      ),
     },
+
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: (text, record) => (
         <Space size="middle">
           <Button type="primary" onClick={showModal3}>
             Edit
           </Button>
           <Button type="danger">Delete</Button>
-          <Button type="link" onClick={showModal2}>
+          <Button type="link" onClick={() => showModal2(record._id)}>
             Add BrandModal
           </Button>
         </Space>
@@ -416,6 +445,7 @@ const BrandList = () => {
     };
     try {
       const response = await CreateBrandMutation(form);
+      console.log("response", response);
       // Check if the API call was successful
       if (response.error) {
         throw new Error(response.error.message); // Handle specific API errors
@@ -428,7 +458,7 @@ const BrandList = () => {
       toast.error("Error creating Brand:", error.message);
     }
 
-    form.resetFields();
+    // form.resetFields();
     setIsModalVisible(false);
   };
   const onFinishFailed = (errorInfo) => {
@@ -439,7 +469,11 @@ const BrandList = () => {
   const [createBrandModal] = useCreateBrandModalMutation();
   const onFinish2 = async (values) => {
     try {
-      const response = await createBrandModal(values);
+      const from = {
+        modalname: values.modalname,
+        brandID: brandID,
+      };
+      const response = await createBrandModal(from);
       if (response.error) {
         throw new Error(response.error.message); // Handle specific API errors
       }
@@ -863,32 +897,6 @@ const BrandList = () => {
                 autoComplete="off"
               >
                 <Form.Item
-                  name="brandname"
-                  label="Brand name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Missing Brand ",
-                    },
-                  ]}
-                >
-                  <Select
-                    mode="single"
-                    showSearch
-                    placeholder="Select Brand"
-                    optionFilterProp="children"
-                    filterOption={(input, option) =>
-                      option.children
-                        .toLowerCase()
-                        .indexOf(input.toLowerCase()) >= 0
-                    }
-                  >
-                    <Option value="Category 1">Brand 1</Option>
-                    <Option value="Category 2">Brand 2</Option>
-                    <Option value="Category 3">Brand 3</Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item
                   name="modalname"
                   label="Modal Name"
                   rules={[
@@ -900,6 +908,9 @@ const BrandList = () => {
                 >
                   <Input type="text" placeholder="Enter Model Name" />
                 </Form.Item>
+                {/* <Form.Item name="brandid" hidden>
+                  <Input value={brandID} />
+                </Form.Item> */}
 
                 <Form.Item>
                   <Button type="primary" htmlType="submit">
@@ -912,7 +923,7 @@ const BrandList = () => {
 
           <Table
             columns={columns}
-            dataSource={data}
+            dataSource={brands && brands.brands}
             rowSelection={{
               type: "checkbox",
               ...rowSelection,

@@ -1,23 +1,19 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-const baseUrl = "http://localhost:5000/api/admin/";
+import { customFetchBase } from "../coustomFetchBase";
+const baseUrl = "http://localhost:5000/api/";
 const token = localStorage.getItem("ZoneHub");
 
 export const sallerTypeApi = createApi({
   reducerPath: "sallerType",
-  baseQuery: fetchBaseQuery({
-    baseUrl: baseUrl,
-  }),
+  baseQuery: customFetchBase,
   tagTypes: ["sallerType"],
   endpoints: (builder) => ({
     createSallerType: builder.mutation({
       query: (sallerType) => {
         return {
-          url: "createsallertype",
+          url: "admin/createsallertype",
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
           body: sallerType,
         };
       },
@@ -36,7 +32,8 @@ export const sallerTypeApi = createApi({
     fetchAllSallerType: builder.query({
       query: () => {
         return {
-          url: "fetchallsallertypes",
+          url: "admin/fetchallsallertypes",
+          credentials: "include",
           method: "GET",
         };
       },

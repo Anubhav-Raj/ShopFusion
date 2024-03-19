@@ -5,7 +5,7 @@ const path = require("path");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     let destDir;
-    console.log(file);
+
     // Choose destination directory based on file type
     if (file.fieldname === "uploadPhotos") {
       destDir = "uploads/images";

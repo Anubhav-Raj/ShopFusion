@@ -3,37 +3,55 @@ const router = express.Router();
 const { protect } = require("../middleware/is_logged_in");
 const adminCon = require("../controllers/admin");
 const more_upload = require("../utils/more_upload");
+const { deserializeUser } = require("../middleware/deserializeUser");
 
-router.post("/createsallertype", protect, adminCon.createSallerType);
+router.post("/createsallertype", deserializeUser, adminCon.createSallerType);
 router.post(
   "/createdepartment",
-  protect,
+  deserializeUser,
   more_upload.single("departmentImage"),
   adminCon.createDepartment
 );
 router.post(
   "/createcategory",
-  protect,
+  deserializeUser,
   more_upload.single("categoryImage"),
   adminCon.createCategory
 );
 router.post(
   "/createsubcategory",
-  protect,
+  deserializeUser,
   more_upload.single("subCategoryImage"),
   adminCon.createSubCategory
 );
 router.post(
   "/createitem",
-  protect,
+  deserializeUser,
   more_upload.single("itemImage"),
   adminCon.createItem
 );
 
-router.get("/fetchallsallertypes", adminCon.fetchAllSallerTypes);
-router.post("/fetchalldepartments", adminCon.fetchAllDepartments);
-router.post("/fetchallcategories", adminCon.fetchAllCategories);
-router.post("/fetchallsubcategories", adminCon.fetchAllSubCategories);
-router.post("/fetchallitems", adminCon.fetchAllItems);
+router.get(
+  "/fetchallsallertypes",
+  deserializeUser,
+  adminCon.fetchAllSallerTypes
+);
+router.post(
+  "/fetchalldepartments",
+  deserializeUser,
+  adminCon.fetchAllDepartments
+);
+router.post(
+  "/fetchallcategories",
+  deserializeUser,
+  adminCon.fetchAllCategories
+);
+router.post(
+  "/fetchallsubcategories",
+  deserializeUser,
+  adminCon.fetchAllSubCategories
+);
+
+router.post("/fetchallitems", deserializeUser, adminCon.fetchAllItems);
 
 module.exports = router;

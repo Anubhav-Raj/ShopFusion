@@ -50,7 +50,7 @@ exports.deserializeUser = async (req, res, next) => {
     }
 
     res.locals.user = user;
-    // console.log(user);
+
     console.log("backend seserialize user End ");
 
     next();

@@ -38,10 +38,10 @@ function Table_post({ setTableShow, setEditTable, setId }) {
   };
 
   const { isLoading, data } = useGetUserProductsQuery("");
+  // console.log(data && data);
   useEffect(() => {
     if (!isLoading && data) {
       setHasData(true);
-
       if (data.products) {
         const t = data.products.map((element, index) => {
           const newPropsObj = {
@@ -52,6 +52,7 @@ function Table_post({ setTableShow, setEditTable, setId }) {
 
           return { ...element, data: newPropsObj, key: index };
         });
+        console.log(t);
         setProducts(t);
       }
     }
@@ -254,13 +255,26 @@ function Table_post({ setTableShow, setEditTable, setId }) {
     {
       title: "Item Brand Name",
       dataIndex: "selectBrand",
-      render: (item) => Object.values(item)[1],
+      render: (item) => {
+        if (item && item.brandName) {
+          return item.brandName;
+        } else {
+          return null; // or any default value you want to display when brandName is undefined
+        }
+      },
       key: "selectBrand",
     },
     {
       title: "Item Model Name",
       dataIndex: "selectModel",
-      render: (item) => Object.values(item)[1],
+      render: (item) => {
+        if (item && item.name) {
+          // console.log(item.brandName);
+          return item.name;
+        } else {
+          return null; // or any default value you want to display when brandName is undefined
+        }
+      },
       key: "selectModel",
     },
     {

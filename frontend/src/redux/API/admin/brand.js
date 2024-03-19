@@ -1,12 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-const baseUrl = "http://localhost:5000/api/product/";
-const token = localStorage.getItem("ZoneHub");
+import { customFetchBase } from "../coustomFetchBase";
 
 // const baseQuery = fetchBaseQuery({ baseUrl });
 export const brandApi = createApi({
   reducerPath: "brandApi",
-  baseQuery: fetchBaseQuery({ baseUrl }),
+  baseQuery: customFetchBase,
   tagTypes: ["brand"],
   endpoints: (builder) => ({
     createBrand: builder.mutation({
@@ -28,32 +26,47 @@ export const brandApi = createApi({
         });
 
         return {
-          url: "createbrand",
+          url: "product/createbrand",
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
           body: fromData,
         };
       },
       invalidatesTags: ["brand"],
     }),
-    fetchAllBrand: builder.query({
-      query: (id) => `/department/${id}`,
+    allbrand: builder.query({
+      query: () => {
+        return {
+          url: "product/fetchallBrand",
+          method: "GET",
+          credentials: "include",
+        };
+      },
+      providesTags: ["brand"],
+    }),
+
+    fetchCategoriesBrand: builder.query({
+      query: (id) => {
+        const fromData = {
+          categories_id: id,
+        };
+        return {
+          url: "product/fetchcategoriesbrands",
+          method: "POST",
+          body: fromData,
+          credentials: "include",
+        };
+      },
       providesTags: ["brand"],
     }),
 
     createBrandModal: builder.mutation({
       query: (modal) => {
-        const formData = new FormData();
-        formData.append("modalData", JSON.stringify(modal)); // Assuming modal is an object
         return {
-          url: "createbrandmodal",
+          url: "product/createbrandmodal",
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
+          credentials: "include",
+          body: modal,
         };
       },
       invalidatesTags: ["brand"],
@@ -61,12 +74,14 @@ export const brandApi = createApi({
 
     fetchAllBrandModal: builder.query({
       query: (id) => {
-        const formData = new FormData();
-        formData.append("brand_id", id);
+        const form = {
+          id,
+        };
         return {
-          url: "fetchallBrandModal",
+          url: "product/fetchallbrandmodal",
           method: "POST",
-          body: formData,
+          body: form,
+          credentials: "include",
         };
       },
       providesTags: ["brand"],
@@ -76,7 +91,8 @@ export const brandApi = createApi({
 
 export const {
   useCreateBrandMutation,
-  useFetchAllBrandQuery,
+  useFetchCategoriesBrandQuery,
   useCreateBrandModalMutation,
   useFetchAllBrandModalQuery,
+  useAllbrandQuery,
 } = brandApi;

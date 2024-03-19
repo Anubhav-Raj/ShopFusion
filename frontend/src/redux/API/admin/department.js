@@ -1,13 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-const baseUrl = "http://localhost:5000/api/admin/";
-const token = localStorage.getItem("ZoneHub");
+import { customFetchBase } from "../coustomFetchBase";
 
 export const DepartmentApi = createApi({
   reducerPath: "department",
-  baseQuery: fetchBaseQuery({
-    baseUrl: baseUrl,
-  }),
+  baseQuery: customFetchBase,
   tagTypes: ["department"],
   endpoints: (builder) => ({
     createDepartment: builder.mutation({
@@ -21,12 +17,10 @@ export const DepartmentApi = createApi({
         );
         formData.append("departmentImage", department.departmentImage); // Assuming departmentImage is the file object
         return {
-          url: "createdepartment",
+          url: "admin/createdepartment",
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
           body: formData,
+          credentials: "include",
         };
       },
       invalidatesTags: ["department"],
@@ -42,14 +36,15 @@ export const DepartmentApi = createApi({
 
     fetchAllDepartment: builder.query({
       query: (selectedItems) => {
-        console.log(selectedItems);
+        // console.log(selectedItems);
         const formData = {
           choose_type_id: selectedItems,
         };
         return {
-          url: "fetchalldepartments",
+          url: "admin/fetchalldepartments",
           method: "POST",
           body: formData,
+          credentials: "include",
         };
       },
       invalidatesTags: ["department"],

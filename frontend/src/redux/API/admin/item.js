@@ -1,12 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-const baseUrl = "http://localhost:5000/api/admin/";
-const token = localStorage.getItem("ZoneHub");
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { customFetchBase } from "../coustomFetchBase";
 
 export const ItemApi = createApi({
   reducerPath: "item",
-  baseQuery: fetchBaseQuery({
-    baseUrl: baseUrl,
-  }),
+  baseQuery: customFetchBase,
   tagTypes: ["item"],
   endpoints: (builder) => ({
     createItem: builder.mutation({
@@ -20,11 +17,9 @@ export const ItemApi = createApi({
         formData.append("itemImage", item.itemImage);
         formData.append("itemDescription", item.itemDescription);
         return {
-          url: "createitem",
+          url: "admin/createitem",
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
           body: formData,
         };
       },
@@ -37,12 +32,10 @@ export const ItemApi = createApi({
           choose_subcategory_id: id,
         };
         return {
-          url: "fetchallitems",
+          url: "admin/fetchallitems",
           method: "POST",
           body: formData,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
         };
       },
       invalidatesTags: ["item"],

@@ -3,9 +3,11 @@ const router = express.Router();
 const { protect } = require("../middleware/is_logged_in");
 const productCon = require("../controllers/product");
 const more_upload = require("../utils/more_upload");
+const { deserializeUser } = require("../middleware/deserializeUser");
+
 router.post(
   "/createproduct",
-  protect,
+  deserializeUser,
   more_upload.fields([
     { name: "uploadPhotos", maxCount: 5 },
     { name: "uploadVideo", maxCount: 1 },
@@ -15,7 +17,7 @@ router.post(
 );
 router.post(
   "/createMobile",
-  protect,
+  deserializeUser,
   more_upload.fields([
     { name: "uploadPhotos", maxCount: 5 },
     { name: "uploadVideo", maxCount: 1 },
@@ -25,7 +27,7 @@ router.post(
 );
 router.post(
   "/editmobile",
-  protect,
+  deserializeUser,
   more_upload.fields([
     { name: "uploadPhotos", maxCount: 5 },
     { name: "uploadVideo", maxCount: 1 },
@@ -35,16 +37,23 @@ router.post(
 );
 //router.post("/createbrand", productCon.createBrand);
 
-router.post("/deletemobile", protect, productCon.deletemobile);
-router.get("/allbrands", protect, productCon.getAllBrands);
-router.post("/allmodelsonmodel", productCon.getModels);
-router.get("/userallproduct", protect, productCon.userAllProduct);
+router.post("/deletemobile", deserializeUser, productCon.deletemobile);
+router.get("/allbrands", deserializeUser, productCon.getAllBrands);
+router.post("/allmodelsonmodel", deserializeUser, productCon.getModels);
+router.get("/userallproduct", deserializeUser, productCon.userAllProduct);
 
 router.post(
   "/createbrand",
   more_upload.array("brandImage"),
   productCon.createBrand
 );
-router.post("/createbrandmodal", productCon.createBrandmodal);
-router.post("/fetchallBrandModal", protect, productCon.createBrandmodal);
+router.post("/createbrandmodal", deserializeUser, productCon.createBrandmodal);
+router.get("/fetchallBrand", deserializeUser, productCon.getAllBrands);
+router.post(
+  "/fetchcategoriesbrands",
+  deserializeUser,
+  productCon.getcategoriesBrand
+);
+router.post("/fetchallbrandmodal", deserializeUser, productCon.getModels);
+
 module.exports = router;

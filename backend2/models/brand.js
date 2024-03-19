@@ -1,14 +1,25 @@
 const mongoose = require("mongoose");
-
-// Define the user schema
 const brandSchema = new mongoose.Schema(
   {
-    name: String,
+    brandName: {
+      type: String,
+      required: true,
+    },
+    category_ID: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ChooseCategory",
+      },
+    ],
+    image: {
+      type: String,
+      required: true,
+    },
   },
+
   {
     timestamps: true,
   }
 );
 
-// Create the User model
 module.exports = mongoose.model("Brand", brandSchema);
