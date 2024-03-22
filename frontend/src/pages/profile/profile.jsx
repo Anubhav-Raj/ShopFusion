@@ -302,7 +302,6 @@ const AddaddressPage = () => {
   const handleOpenOtpModal = () => {
     setShowOtpModal(true);
   };
-
   const handleCloseOtpModal = () => {
     setCode("");
     setShowOtpModal(false);
@@ -342,13 +341,11 @@ const AddaddressPage = () => {
     setShowOtpModal(true);
     const sandopt = await SendmailOtpMutation(formData);
   };
-
   //  fetch all addresss
   const { data: addresses } = useAllAddressQuery("");
   // For Payment
   const [fetchPaymentQuery] = useFetchPaymentMutation();
   const [verifyPayment] = useVerifyPaymentMutation();
-
   function loadScript(src) {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -426,7 +423,6 @@ const AddaddressPage = () => {
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   }
-
   return (
     <>
       <Modal

@@ -211,14 +211,12 @@ exports.createMobile = async (req, res) => {
     });
   }
 };
-
 exports.createProduct = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     res.json({ products: "Creted Product", isError: false });
   } catch (error) {}
 };
-
 exports.editmobile = async (req, res) => {
   try {
     // Input validation
@@ -315,7 +313,7 @@ exports.editmobile = async (req, res) => {
   }
 };
 exports.deletemobile = async (req, res) => {
-  console.log("Body", req.body);
+  // console.log("Body", req.body);
   try {
     // Input validation
     if (!req.body.id || typeof req.body.id !== "string") {
@@ -343,7 +341,6 @@ exports.deletemobile = async (req, res) => {
     res.status(500).json({ message: "Internal server error", isError: true });
   }
 };
-
 exports.createBrand = async (req, res) => {
   try {
     // Input validation
@@ -415,7 +412,6 @@ exports.getAllBrands = async (req, res) => {
     res.status(500).json({ message: error.message, isError: true });
   }
 };
-
 exports.getcategoriesBrand = async (req, res) => {
   try {
     const categories_id = req.body.categories_id;
@@ -448,22 +444,21 @@ exports.getModels = async (req, res) => {
 };
 exports.userAllProduct = async (req, res) => {
   try {
-    console.log("userAllProduct");
+    //console.log("userAllProduct");
     const user = res.locals.user;
 
-    console.log(user);
-    const products = await Product.find({ user: user._id})
+    // console.log(user);
+    const products = await Product.find({ user: user._id })
       .populate("selectBrand")
       .populate("selectModel")
       .populate("enterAddress");
-    console.log(products);
+    //console.log(products);
 
     res.json({ products: products, isError: false });
   } catch (error) {
     res.status(500).json({ message: error.message, isError: true });
   }
 };
-
 //razorpay payment
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -471,6 +466,7 @@ const razorpay = new Razorpay({
 });
 exports.payment = async (req, res) => {
   try {
+    // console.log(req.body);
     const { productsID } = req.body;
     const product_first = await Product.findById(productsID[0]).populate(
       "enterAddress"
@@ -503,6 +499,7 @@ exports.payment = async (req, res) => {
 };
 exports.paymentVerification = async (req, res) => {
   try {
+    // console.log(req.body);
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
       req.body;
 
@@ -514,11 +511,11 @@ exports.paymentVerification = async (req, res) => {
       .digest("hex");
 
     const isAuthentic = expectedSignature === razorpay_signature;
-
+    console.log(isAuthentic);
     if (isAuthentic) {
       // Database comes here
       const products = req.body.productID.productsID;
-
+      console.log(products);
       const p = new Payment({
         products: products,
         paymentID: razorpay_payment_id,
@@ -547,4 +544,15 @@ exports.paymentVerification = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+//  fetch product information
+exports.fetchAllSubCategoriesproduct = async (req, res) => {
+  try {
+    // console.log(req.body);
+    const SubCategories_id = req.body.SubCategories_id;
+    const products = await Product.find({ subCategory: SubCategories_id });
+    // console.log(products);
+    res.json({ products: products, isError: false });
+  } catch (error) {}
 };

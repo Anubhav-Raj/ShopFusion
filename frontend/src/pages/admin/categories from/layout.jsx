@@ -34,6 +34,7 @@ const AdminLayout = () => {
   const [createSubCategories] = useCreateSubCategoriesMutation();
   const [createItem] = useCreateItemMutation();
   const { isLoading, data } = useFetchAllSallerTypeQuery();
+
   useEffect(() => {
     if (data) {
       setSallerType(data && data.SellerTypes);

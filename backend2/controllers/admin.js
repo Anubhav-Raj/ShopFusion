@@ -118,11 +118,13 @@ exports.fetchAllSallerTypes = async (req, res) => {
 // Controller function to fetch all departments
 exports.fetchAllDepartments = async (req, res) => {
   try {
+    // console.log(req.body);
     // Handle fetching all departments logic here
 
     const Departments = await ChooseDepartment.find({
       choose_type: req.body.choose_type_id,
     });
+
     res
       .status(200)
       .json({ message: "Departments fetched successfully", Departments });
@@ -136,9 +138,11 @@ exports.fetchAllDepartments = async (req, res) => {
 exports.fetchAllCategories = async (req, res) => {
   try {
     // Handle fetching all categories logic here
+    // console.log(req.body);
     const Categories = await ChooseCategory.find({
       choose_department: req.body.choose_department_id,
     });
+    // console.log(Categories);
     res
       .status(200)
       .json({ message: "Categories fetched successfully", Categories });
@@ -150,7 +154,6 @@ exports.fetchAllCategories = async (req, res) => {
 // Controller function to fetch all subcategories
 exports.fetchAllSubCategories = async (req, res) => {
   try {
-    // console.log(req.body);
     // Handle fetching all subcategories logic here
     const SubCategories = await ChooseSubCategory.find({
       choose_category: req.body.choose_category_id,

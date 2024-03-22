@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema(
     type: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ChooseType",
-      required: true,
+      //required: true,
     },
     department: {
       type: mongoose.Schema.Types.ObjectId,
@@ -14,12 +14,12 @@ const productSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ChooseCategory",
-      required: true,
+      // required: true,
     },
     subCategory: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ChooseSubCategory",
-      required: true,
+      // required: true,
     },
     item: {
       type: mongoose.Schema.Types.ObjectId,

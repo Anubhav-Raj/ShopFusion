@@ -54,4 +54,8 @@ router.post(
 
 router.post("/fetchallitems", deserializeUser, adminCon.fetchAllItems);
 
+router.post("/publicfetchAllDepartment", adminCon.fetchAllDepartments);
+router.post("/publicfetchallcategories", adminCon.fetchAllCategories);
+router.post("/publicfetchallsubcategories", adminCon.fetchAllSubCategories);
+
 module.exports = router;

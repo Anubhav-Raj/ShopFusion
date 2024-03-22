@@ -2,9 +2,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { customFetchBase } from "../coustomFetchBase";
 
-const baseUrl = "http://localhost:5000/api/product/";
-const token = localStorage.getItem("ZoneHub");
-
 export const mobileAPI = createApi({
   reducerPath: "mobileAPI",
   baseQuery: customFetchBase,
@@ -185,6 +182,24 @@ export const mobileAPI = createApi({
       },
       providesTags: ["mobilepost"],
     }),
+
+    fetchPayment: builder.mutation({
+      query: (formData) => ({
+        url: "payment/productpayment",
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      }),
+    }),
+    verifyPayment: builder.mutation({
+      query: (responseData) => ({
+        url: "payment/mobilepaymentverification",
+        method: "POST",
+        body: responseData,
+        credentials: "include",
+      }),
+      invalidatesTags: ["mobilepost"],
+    }),
   }),
 });
 
@@ -195,4 +210,6 @@ export const {
   useGetUserProductsQuery,
   useEditMobileMutation,
   useDeleteMobileMutation,
+  useFetchPaymentMutation,
+  useVerifyPaymentMutation,
 } = mobileAPI;

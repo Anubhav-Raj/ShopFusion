@@ -20,7 +20,7 @@ body {
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   color: #888;
   font-size: 12px;
   font-weight: 400;
@@ -114,9 +114,12 @@ html {
   margin-bottom: 0;
 }
 
-.row>[class*="col-"] {
+.row > [class*="col-"] {
   box-sizing: border-box;
-  width: calc((100% - var(--f7-grid-gap) * (var(--f7-cols-per-row) - 1)) / var(--f7-cols-per-row));
+  width: calc(
+    (100% - var(--f7-grid-gap) * (var(--f7-cols-per-row) - 1)) /
+      var(--f7-cols-per-row)
+  );
 }
 
 .row .col-20 {
@@ -158,18 +161,14 @@ a:focus {
   box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.15);
 }
 
-
 .categories .content .icon:hover {
   border: 3px solid #619df5;
-
 }
 
 .categories .content:hover .icon img {
   transform: scale(1.1);
   transition: transform 0.3s ease;
 }
-
-
 
 .fas {
   -moz-osx-font-smoothing: grayscale;
@@ -182,7 +181,7 @@ a:focus {
 }
 
 .fas {
-  font-family: 'Font Awesome 5 Free';
+  font-family: "Font Awesome 5 Free";
   font-weight: 900;
 }
 
@@ -191,10 +190,10 @@ a:focus {
   color: #1948ff;
 }
 
-
 img.departimg {
   width: 100%;
   padding: 12px;
+  object-fit: contain;
 }
 
 span.topings {
@@ -227,7 +226,6 @@ span.topings1 {
   align-items: center;
   justify-content: center;
 }
-
 
 /* nsjnnjnddddddddddddddddddddddddddddddddddddddddddddddddddddddddd */
 .mainflexprovider {
@@ -293,24 +291,36 @@ h3.titlesh11 {
 
 /* Adjust styles as needed */
 
-@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
 
 @font-face {
-  font-family: 'Font Awesome 5 Free';
+  font-family: "Font Awesome 5 Free";
   font-style: normal;
   font-weight: 400;
   font-display: auto;
   src: url("http://127.0.0.1:5500/fonts/fa-regular-400.eot");
-  src: url("http://127.0.0.1:5500/fonts/fa-regular-400.eot?#iefix") format("embedded-opentype"), url("http://127.0.0.1:5500/fonts/fa-regular-400.woff2") format("woff2"), url("http://127.0.0.1:5500/fonts/fa-regular-400.woff") format("woff"), url("http://127.0.0.1:5500/fonts/fa-regular-400.ttf") format("truetype"), url("http://127.0.0.1:5500/fonts/fa-regular-400.svg#fontawesome") format("svg");
+  src: url("http://127.0.0.1:5500/fonts/fa-regular-400.eot?#iefix")
+      format("embedded-opentype"),
+    url("http://127.0.0.1:5500/fonts/fa-regular-400.woff2") format("woff2"),
+    url("http://127.0.0.1:5500/fonts/fa-regular-400.woff") format("woff"),
+    url("http://127.0.0.1:5500/fonts/fa-regular-400.ttf") format("truetype"),
+    url("http://127.0.0.1:5500/fonts/fa-regular-400.svg#fontawesome")
+      format("svg");
 }
 
 @font-face {
-  font-family: 'Font Awesome 5 Free';
+  font-family: "Font Awesome 5 Free";
   font-style: normal;
   font-weight: 900;
   font-display: auto;
   src: url("http://127.0.0.1:5500/fonts/fa-solid-900.eot");
-  src: url("http://127.0.0.1:5500/fonts/fa-solid-900.eot?#iefix") format("embedded-opentype"), url("http://127.0.0.1:5500/fonts/fa-solid-900.woff2") format("woff2"), url("http://127.0.0.1:5500/fonts/fa-solid-900.woff") format("woff"), url("http://127.0.0.1:5500/fonts/fa-solid-900.ttf") format("truetype"), url("http://127.0.0.1:5500/fonts/fa-solid-900.svg#fontawesome") format("svg");
+  src: url("http://127.0.0.1:5500/fonts/fa-solid-900.eot?#iefix")
+      format("embedded-opentype"),
+    url("http://127.0.0.1:5500/fonts/fa-solid-900.woff2") format("woff2"),
+    url("http://127.0.0.1:5500/fonts/fa-solid-900.woff") format("woff"),
+    url("http://127.0.0.1:5500/fonts/fa-solid-900.ttf") format("truetype"),
+    url("http://127.0.0.1:5500/fonts/fa-solid-900.svg#fontawesome")
+      format("svg");
 }
 
 .page {
@@ -326,7 +336,6 @@ h3.titlesh11 {
   z-index: 1;
   padding: 30px;
   border-radius: 2px;
-
 }
 
 .alignmentflx {
@@ -336,8 +345,8 @@ h3.titlesh11 {
   z-index: 1;
   width: 100%;
   height: 100vh;
-  -webkit-backdrop-filter: brightness(.1);
-  backdrop-filter: brightness(.1);
+  -webkit-backdrop-filter: brightness(0.1);
+  backdrop-filter: brightness(0.1);
   justify-content: center;
 }
 
@@ -349,14 +358,21 @@ h3.titlesh11 {
   height: 100%;
   position: relative;
   z-index: 1;
-  padding-top: calc(var(--f7-page-navbar-offset, 0px) + var(--f7-page-toolbar-top-offset, 0px) + var(--f7-page-subnavbar-offset, 0px) + var(--f7-page-searchbar-offset, 0px) + var(--f7-page-content-extra-padding-top, 0px));
-  padding-bottom: calc(var(--f7-page-toolbar-bottom-offset, 0px) + var(--f7-safe-area-bottom) + var(--f7-page-content-extra-padding-bottom, 0px));
+  padding-top: calc(
+    var(--f7-page-navbar-offset, 0px) + var(--f7-page-toolbar-top-offset, 0px) +
+      var(--f7-page-subnavbar-offset, 0px) +
+      var(--f7-page-searchbar-offset, 0px) +
+      var(--f7-page-content-extra-padding-top, 0px)
+  );
+  padding-bottom: calc(
+    var(--f7-page-toolbar-bottom-offset, 0px) + var(--f7-safe-area-bottom) +
+      var(--f7-page-content-extra-padding-bottom, 0px)
+  );
 }
 
 .segments {
   padding: 25px 0;
 }
-
 
 .row {
   display: flex;
@@ -374,9 +390,12 @@ h3.titlesh11 {
   margin-bottom: 0;
 }
 
-.row>[class*="col-"] {
+.row > [class*="col-"] {
   box-sizing: border-box;
-  width: calc((100% - var(--f7-grid-gap) * (var(--f7-cols-per-row) - 1)) / var(--f7-cols-per-row));
+  width: calc(
+    (100% - var(--f7-grid-gap) * (var(--f7-cols-per-row) - 1)) /
+      var(--f7-cols-per-row)
+  );
 }
 
 .row .col-33 {
@@ -412,7 +431,7 @@ a {
 }
 
 .fas {
-  font-family: 'Font Awesome 5 Free';
+  font-family: "Font Awesome 5 Free";
   font-weight: 900;
 }
 
@@ -476,7 +495,10 @@ span.ant-select-selection-placeholder {
   color: black !important;
 }
 
-:where(.css-dev-only-do-not-override-1qhpsh8).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
   border: 2px solid #7a7a7a;
   background: #ffffff;
 }
@@ -578,7 +600,6 @@ h3.titlesh1 {
   overflow-x: clip;
 }
 
-
 .sjiiudbs22 .row {
   display: flex;
   flex-direction: row;
@@ -641,8 +662,6 @@ h3.titlesh1 {
   }
 }
 
-
-
 :where(.css-dev-only-do-not-override-1qhpsh8).ant-card .ant-card-body {
   padding: 6px;
   border-radius: 0 0 8px 8px;
@@ -666,7 +685,7 @@ h3.watchmorevide {
   color: #535050d4;
 }
 
-.watchmorevide>span {
+.watchmorevide > span {
   margin-left: 5px;
 }
 

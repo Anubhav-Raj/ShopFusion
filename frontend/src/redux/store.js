@@ -5,7 +5,7 @@ import brandReducer from "./brand.slice";
 import productReducer from "./product.slice";
 import { userReducer } from "./user.slice";
 import { userAPI } from "./API/user";
-
+import { PublicApi } from "./API/publicApi/publicApi.js";
 // import { OtpAPI } from "./API/otp";
 import { mobileAPI } from "./API/products/mobile";
 import { AddressAPI } from "./API/products/profile";
@@ -51,6 +51,7 @@ const store = configureStore({
     products: productReducer,
     userInfo: userinfo,
     login: loginReducer,
+    [PublicApi.reducerPath]: PublicApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -68,7 +69,8 @@ const store = configureStore({
       OtherProductAPI.middleware,
       rating_and_review.middleware,
       authApi.middleware,
-      userApi1.middleware
+      userApi1.middleware,
+      PublicApi.middleware
     ),
 });
 export const RootState = store.getState;

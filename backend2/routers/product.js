@@ -55,5 +55,6 @@ router.post(
   productCon.getcategoriesBrand
 );
 router.post("/fetchallbrandmodal", deserializeUser, productCon.getModels);
+router.post("/subcategoriesProducts", productCon.fetchAllSubCategoriesproduct);
 
 module.exports = router;

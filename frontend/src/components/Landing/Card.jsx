@@ -1,29 +1,42 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from "react";
-import Imgss from "./monitor-removebg-preview.png";
+import { CaretDownOutlined } from "@ant-design/icons";
 
 function Card({ categories, onClick }) {
   return (
     <div className="categories segments snipcss-jPyl7">
       <div className="container">
         <div className="row">
-          {categories &&
+          {categories && categories.length > 0 ? (
             categories.map((category, index) => (
               <div key={index} className="col-20">
-                <div className="content" onClick={() => onClick(category.name)}>
-                  {/* Add onClick event to trigger handleDepartmentClick with category name */}
+                <div
+                  style={{ marginBottom: "0px" }}
+                  className="content"
+                  onClick={() => onClick(category.id)}
+                >
                   <div className="icon">
-                    <img
-                      className="departimg"
-                      // src={category.image}
-                      src={Imgss}
-                      // alt={category.name}
-                    />
+                    {category.image && (
+                      <img
+                        className="departimg"
+                        src={`http://localhost:5000/${category.image}`}
+                        alt={category.name}
+                      />
+                    )}
+
                     <span className="topings">{category.name}</span>
                     <span className="topings1">10k</span>
                   </div>
                 </div>
+                <label>
+                  {category.type && index === 0 ? "More" : ""}
+                  {category.type && index === 0 && <CaretDownOutlined />}
+                </label>
               </div>
-            ))}
+            ))
+          ) : (
+            <div>No data found</div>
+          )}
         </div>
       </div>
     </div>

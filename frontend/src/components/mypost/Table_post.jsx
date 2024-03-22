@@ -4,17 +4,18 @@ import React, { useEffect, useState } from "react";
 import { Button, Table } from "antd";
 import { Modal } from "antd";
 import "./table.css";
-import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { useGetUserProductsQuery } from "../../redux/API/products/mobile";
+import {
+  useFetchPaymentMutation,
+  useGetUserProductsQuery,
+  useVerifyPaymentMutation,
+} from "../../redux/API/products/mobile";
 import { DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
-import { loginData } from "../../redux/API/user_slice/login.slice";
 import { Link } from "react-router-dom";
 import { useDeleteMobileMutation } from "../../redux/API/products/mobile";
+import { useAppSelector } from "../../redux/store";
 const { confirm } = Modal;
 function Table_post({ setTableShow, setEditTable, setId }) {
-  const token = localStorage.getItem("ZoneHub");
-  const userData = useSelector(loginData);
   const [bordered] = useState(true);
   const [showHeader] = useState(true);
   const [hasData, setHasData] = useState(false);
@@ -24,6 +25,7 @@ function Table_post({ setTableShow, setEditTable, setId }) {
   const [selectedRow, setSelectedRow] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [imagesToDisplay, setImagesToDisplay] = useState([]);
+  const userData = useAppSelector((state) => state.user2.user);
 
   // Function to handle opening the modal and setting the images to display
   const handleViewImages = (images) => {
@@ -38,7 +40,6 @@ function Table_post({ setTableShow, setEditTable, setId }) {
   };
 
   const { isLoading, data } = useGetUserProductsQuery("");
-  // console.log(data && data);
   useEffect(() => {
     if (!isLoading && data) {
       setHasData(true);
@@ -52,11 +53,11 @@ function Table_post({ setTableShow, setEditTable, setId }) {
 
           return { ...element, data: newPropsObj, key: index };
         });
-        console.log(t);
         setProducts(t);
       }
     }
   }, [isLoading, data]);
+
   const [deleteMobileMutation] = useDeleteMobileMutation();
   const handleDeleteProduct = async (productId) => {
     // Implement your logic to delete the product with the given productId
@@ -87,8 +88,6 @@ function Table_post({ setTableShow, setEditTable, setId }) {
     });
   };
 
-  // console.log(products);
-
   function formatDate(timestamp) {
     const date = new Date(timestamp);
     const options = {
@@ -100,8 +99,18 @@ function Table_post({ setTableShow, setEditTable, setId }) {
   }
 
   const renderdata = (data) => {
-    const createdAtDate = new Date(data.created);
-    createdAtDate.setMonth(createdAtDate.getMonth() + 1);
+    console.log(data);
+
+    const createdAtDate = new Date(
+      data.status === false ? data.created : data.update
+    );
+
+    if (data.status) {
+      createdAtDate.setMonth(createdAtDate.getMonth() + 3);
+    } else {
+      createdAtDate.setMonth(createdAtDate.getMonth() + 1);
+    }
+
     const formattedDate = createdAtDate.toISOString().slice(0, 19);
     const deadlineDate = formatDate(formattedDate); // Calculate deadline date here
     const timeRemaining = Math.max(0, Date.parse(deadlineDate) - Date.now());
@@ -537,7 +546,8 @@ function Table_post({ setTableShow, setEditTable, setId }) {
   };
 
   // payment method
-  const baseUrl = "http://localhost:5000/api/payment/";
+  const [fetchPaymentQuery] = useFetchPaymentMutation();
+  const [verifyPayment] = useVerifyPaymentMutation();
 
   function loadScript(src) {
     return new Promise((resolve) => {
@@ -552,7 +562,6 @@ function Table_post({ setTableShow, setEditTable, setId }) {
       document.body.appendChild(script);
     });
   }
-  const __DEV__ = document.domain === "localhost";
   async function displayRazorpay() {
     const paymentedProduct =
       products &&
@@ -561,7 +570,6 @@ function Table_post({ setTableShow, setEditTable, setId }) {
           return item._id;
         }
       });
-    console.log(products);
 
     const hasMatch = selectedRow.some((item) =>
       paymentedProduct.includes(item)
@@ -589,14 +597,8 @@ function Table_post({ setTableShow, setEditTable, setId }) {
     const formdata = {
       productsID: selectedRow,
     };
-    const data = await fetch(`${baseUrl}productpayment`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      body: JSON.stringify(formdata),
-    }).then((t) => t.json());
+
+    const { data } = await fetchPaymentQuery(formdata);
 
     if (!data) {
       alert("Server error. Are you online?");
@@ -613,29 +615,25 @@ function Table_post({ setTableShow, setEditTable, setId }) {
       description: "Thank you for nothing. Please give us some money",
       image:
         "https://scontent.fdel29-1.fna.fbcdn.net/v/t39.30808-6/361586894_3669385440010177_673264268362134479_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=9c7eae&_nc_ohc=NEOVieuKC8sAX8AASGL&_nc_ht=scontent.fdel29-1.fna&oh=00_AfBBY6wkPRKddru9fQfL7MzBCFVTfOyM6Y6rmvU7vjnAZg&oe=65D38A80",
+
       handler: function (response) {
         const responseData = {
           razorpay_payment_id: response.razorpay_payment_id,
           razorpay_order_id: response.razorpay_order_id,
           razorpay_signature: response.razorpay_signature,
-          productID: formdata, // Include the formdata here
+          productID: formdata,
           receipt: data.receipt,
         };
-
-        // Send the data to your server-side for processing
-        fetch("http://localhost:5000/api/payment/mobilepaymentverification", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(responseData),
-        })
+        verifyPayment(responseData)
+          .unwrap()
           .then((response) => {
-            // Handle response
-            console.log(response);
+            //  console.log("payment response", response);
+            window.location.href = response.redirectUrl;
           })
           .catch((error) => {
-            console.error("Error:", error);
+            // Handle verification error
+            //  console.error("Error:", error);
+            window.location.href = response.redirectUrl;
           });
       },
       prefill: {
