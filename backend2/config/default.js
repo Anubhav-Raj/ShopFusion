@@ -1,6 +1,6 @@
 module.exports = {
   port: 5000,
-  accessTokenExpiresIn: 15,
+  accessTokenExpiresIn: 59,
   refreshTokenExpiresIn: 59,
   origin: "http://localhost:3000",
   dbName: "jwtAuth",
