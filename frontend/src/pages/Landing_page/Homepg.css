@@ -114,9 +114,12 @@ html {
   margin-bottom: 0;
 }
 
-.row>[class*="col-"] {
+.row > [class*="col-"] {
   box-sizing: border-box;
-  width: calc((100% - var(--f7-grid-gap) * (var(--f7-cols-per-row) - 1)) / var(--f7-cols-per-row));
+  width: calc(
+    (100% - var(--f7-grid-gap) * (var(--f7-cols-per-row) - 1)) /
+      var(--f7-cols-per-row)
+  );
 }
 
 .row .col-20 {
@@ -195,7 +198,7 @@ img.departimg {
 
 span.topings {
   display: flex;
-  background: white;
+  /* background: white;
   top: -8%;
   width: auto;
   font-size: 17px;
@@ -205,6 +208,18 @@ span.topings {
   padding: 0px 13px;
   position: absolute;
   align-items: center;
+  justify-content: center;
+  display: flex; */
+  background: white;
+  top: -6%;
+  /* width: auto; */
+  font-size: 17px;
+  /* height: 22px; */
+  text-align: center;
+  left: 10%;
+  padding: 0px 5px;
+  position: absolute;
+  /* align-items: center; */
   justify-content: center;
 }
 
@@ -298,11 +313,13 @@ h3.titlesh11 {
   font-weight: 400;
   font-display: auto;
   src: url("http://127.0.0.1:5500/fonts/fa-regular-400.eot");
-  src: url("http://127.0.0.1:5500/fonts/fa-regular-400.eot?#iefix") format("embedded-opentype"),
+  src: url("http://127.0.0.1:5500/fonts/fa-regular-400.eot?#iefix")
+      format("embedded-opentype"),
     url("http://127.0.0.1:5500/fonts/fa-regular-400.woff2") format("woff2"),
     url("http://127.0.0.1:5500/fonts/fa-regular-400.woff") format("woff"),
     url("http://127.0.0.1:5500/fonts/fa-regular-400.ttf") format("truetype"),
-    url("http://127.0.0.1:5500/fonts/fa-regular-400.svg#fontawesome") format("svg");
+    url("http://127.0.0.1:5500/fonts/fa-regular-400.svg#fontawesome")
+      format("svg");
 }
 
 @font-face {
@@ -311,11 +328,13 @@ h3.titlesh11 {
   font-weight: 900;
   font-display: auto;
   src: url("http://127.0.0.1:5500/fonts/fa-solid-900.eot");
-  src: url("http://127.0.0.1:5500/fonts/fa-solid-900.eot?#iefix") format("embedded-opentype"),
+  src: url("http://127.0.0.1:5500/fonts/fa-solid-900.eot?#iefix")
+      format("embedded-opentype"),
     url("http://127.0.0.1:5500/fonts/fa-solid-900.woff2") format("woff2"),
     url("http://127.0.0.1:5500/fonts/fa-solid-900.woff") format("woff"),
     url("http://127.0.0.1:5500/fonts/fa-solid-900.ttf") format("truetype"),
-    url("http://127.0.0.1:5500/fonts/fa-solid-900.svg#fontawesome") format("svg");
+    url("http://127.0.0.1:5500/fonts/fa-solid-900.svg#fontawesome")
+      format("svg");
 }
 
 .page {
@@ -353,8 +372,16 @@ h3.titlesh11 {
   height: 100%;
   position: relative;
   z-index: 1;
-  padding-top: calc(var(--f7-page-navbar-offset, 0px) + var(--f7-page-toolbar-top-offset, 0px) + var(--f7-page-subnavbar-offset, 0px) + var(--f7-page-searchbar-offset, 0px) + var(--f7-page-content-extra-padding-top, 0px));
-  padding-bottom: calc(var(--f7-page-toolbar-bottom-offset, 0px) + var(--f7-safe-area-bottom) + var(--f7-page-content-extra-padding-bottom, 0px));
+  padding-top: calc(
+    var(--f7-page-navbar-offset, 0px) + var(--f7-page-toolbar-top-offset, 0px) +
+      var(--f7-page-subnavbar-offset, 0px) +
+      var(--f7-page-searchbar-offset, 0px) +
+      var(--f7-page-content-extra-padding-top, 0px)
+  );
+  padding-bottom: calc(
+    var(--f7-page-toolbar-bottom-offset, 0px) + var(--f7-safe-area-bottom) +
+      var(--f7-page-content-extra-padding-bottom, 0px)
+  );
 }
 
 .segments {
@@ -377,9 +404,12 @@ h3.titlesh11 {
   margin-bottom: 0;
 }
 
-.row>[class*="col-"] {
+.row > [class*="col-"] {
   box-sizing: border-box;
-  width: calc((100% - var(--f7-grid-gap) * (var(--f7-cols-per-row) - 1)) / var(--f7-cols-per-row));
+  width: calc(
+    (100% - var(--f7-grid-gap) * (var(--f7-cols-per-row) - 1)) /
+      var(--f7-cols-per-row)
+  );
 }
 
 .row .col-33 {
@@ -472,14 +502,17 @@ span.crosstoclose:hover {
 
 .categories.segments.snipcss-jPyl7 {
   /* background: white; */
-  margin-top: 30px;
+  /* margin-top: 30px; */
 }
 
 span.ant-select-selection-placeholder {
   color: black !important;
 }
 
-:where(.css-dev-only-do-not-override-1qhpsh8).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
   border: 2px solid #7a7a7a;
   background: #ffffff;
 }
@@ -666,7 +699,7 @@ h3.watchmorevide {
   color: #535050d4;
 }
 
-.watchmorevide>span {
+.watchmorevide > span {
   margin-left: 5px;
 }
 
@@ -712,7 +745,6 @@ h3.watchmorevide {
 }
 .minihight:hover {
   border: 3px solid #0d6efd;
-
 }
 
 .minihight:hover .hoverig {
@@ -771,5 +803,5 @@ h3.watchmorevide {
   align-items: center;
 }
 .col-20 {
-    margin-bottom: 22px;
+  margin-bottom: 22px;
 }

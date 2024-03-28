@@ -122,7 +122,7 @@ const Categories = ({ onFinish, onFinishFailed, data }) => {
               }}
               options={
                 departmentData &&
-                departmentData.Departments.map((item) => ({
+                departmentData.departments.map((item) => ({
                   value: item._id,
                   label: item.name,
                 }))

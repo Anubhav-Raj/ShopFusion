@@ -20,12 +20,16 @@ function Card({ categories, onClick }) {
                       <img
                         className="departimg"
                         src={`http://localhost:5000/${category.image}`}
-                        alt={category.name}
+                        // alt={category.name}
                       />
                     )}
 
-                    <span className="topings">{category.name}</span>
-                    <span className="topings1">10k</span>
+                    <span className="topings" style={{ fontSize: "1vw" }}>
+                      {category.name}
+                    </span>
+                    <span className="topings1" style={{ fontSize: "0.8vw" }}>
+                      10k
+                    </span>
                   </div>
                 </div>
                 <label>

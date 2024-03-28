@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-// Define the user schema
-const cDSchema = new mongoose.Schema(
+// Define the department schema
+const departmentSchema = new mongoose.Schema(
   {
     name: String,
     image: String,
@@ -10,11 +10,17 @@ const cDSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "ChooseType",
     },
+    category: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ChooseCategory",
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
 
-// Create the User model
-module.exports = mongoose.model("ChooseDepartment", cDSchema);
+// Create the Department model
+module.exports = mongoose.model("ChooseDepartment", departmentSchema);

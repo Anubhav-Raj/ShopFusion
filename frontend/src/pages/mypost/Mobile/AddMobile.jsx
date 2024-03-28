@@ -59,7 +59,6 @@ const AddMobile = ({
 
   const { data: allbrandsmodal, isError: allbrandsError } =
     useFetchAllBrandModalQuery(selectedBrandid);
-  // console.log(allbrandsmodal && allbrandsmodal);
   const brandList =
     brands &&
     brands.brands.map((element) => {

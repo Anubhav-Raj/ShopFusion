@@ -2,74 +2,42 @@ import React, { useEffect, useState } from "react";
 import "./seller.css";
 import Location_list from "../../components/Seller/location_list";
 import Dropdown_right from "../../components/Seller/Dropdown_right";
-import Itemcard from "../../components/Landing/Itemcard";
 import Seller_right from "../../components/Seller/seller_right/Seller_right";
 import Card from "../../components/Landing/Card";
-import {
-  usePublicfetchAllCategoriesQuery,
-  usePublicfetchAllDepartmentQuery,
-  usePublicfetchAllSubCategoriesQuery,
-  usePublicfetchProductQuery,
-} from "../../redux/API/publicApi/publicApi";
-import toast from "react-hot-toast";
+import { usePublicfetchAllDepartmentQuery } from "../../redux/API/publicApi/publicApi";
 function Seller_page() {
   const [departments, setDepartments] = useState([]);
-  const { data: departmentData, isLoding } = usePublicfetchAllDepartmentQuery(
-    "65e4bd0e38000742f274da71"
+  const { data: departmentData, isLoading } = usePublicfetchAllDepartmentQuery(
+    "66051c66c5d6688767d349e2"
   );
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-
-  // Update selectedDepartment when departments change
-  useEffect(() => {
-    if (isLoding) {
-      toast.loading("Data  is Loading...");
-    }
-    if (departments.length > 0) {
-      setSelectedDepartment(departments[0]._id);
-    }
-  }, [departments, isLoding]);
-
-  // Update departments when departmentData changes
-  useEffect(() => {
-    if (departmentData && departmentData.Departments) {
-      setDepartments(departmentData.Departments);
-    }
-  }, [departmentData]);
-
-  // Fetch Categories
-  const [catagorie, setCatagories] = useState([]);
-  const { data: catagoriesData } =
-    usePublicfetchAllCategoriesQuery(selectedDepartment);
-  const [seletedCategories, setSelectedCatagories] = useState();
-  useEffect(() => {
-    if (catagorie.length > 0) {
-      setSelectedCatagories(catagorie[0]._id);
-    }
-  }, [catagorie]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    if (catagoriesData && catagoriesData.Categories) {
-      setCatagories(catagoriesData.Categories);
+    if (isLoading) {
+      // Show loading indicator
+      return;
     }
-  }, [catagoriesData, seletedCategories]);
 
-  //Fech SubCategories
-  const { data: subcategoriesData } =
-    usePublicfetchAllSubCategoriesQuery(seletedCategories);
-  const [subcategories, setSubCategories] = useState([]);
-  const [selectedsubcategories, setSelectedsubcategories] = useState(null);
-  useEffect(() => {
-    if (subcategories.length > 0) {
-      setSelectedsubcategories(subcategories[0]._id);
-    }
-  }, [subcategories, seletedCategories]);
-  useEffect(() => {
-    if (subcategoriesData && subcategoriesData.SubCategories) {
-      setSubCategories(subcategoriesData.SubCategories);
-    }
-  }, [subcategoriesData]);
+    if (departmentData && departmentData.departments) {
+      // Set departments
+      setDepartments(departmentData.departments);
 
-  const { data: itemData } = usePublicfetchProductQuery(selectedsubcategories);
+      // Set categories of the first department as default
+      if (departmentData.departments.length > 0) {
+        setSelectedDepartment(departmentData.departments[0]._id);
+        setCategories(departmentData.departments[0].category);
+      }
+    }
+  }, [departmentData, isLoading]);
+  const handleDepartmentChange = (departmentId) => {
+    // Find the selected department
+    const selectedDept = departments.find((dept) => dept._id === departmentId);
+    // Set selected department
+    setSelectedDepartment(selectedDept._id);
+    // Set categories of the selected department
+    setCategories(selectedDept.category);
+  };
   return (
     <>
       <div className="seller_main">
@@ -85,56 +53,24 @@ function Seller_page() {
                   id: department._id,
                 }))}
                 onClick={(departmentid) => {
-                  setSelectedDepartment(departmentid);
-                }}
-              />
-            </div>
-          </div>
-          <div className="sjiiudbs2222">
-            <h3 className="titlesh1"> CATEGORIES</h3>
-            <div className="scroollong">
-              <Card
-                categories={catagorie.map((category) => ({
-                  name: category.name,
-                  image: category.image,
-                  id: category._id,
-                }))}
-                onClick={(catagorieId) => {
-                  setSelectedCatagories(catagorieId);
-                }}
-              />
-            </div>
-          </div>
-          <div className="sjiiudbs2222">
-            <h3 className="titlesh1"> Sub Category</h3>
-            <div className="scroollong">
-              <Card //subcategory list is showed here
-                categories={
-                  subcategories &&
-                  subcategories.map((subcategory) => ({
-                    name: subcategory.name,
-                    image: subcategory.image,
-                    id: subcategory._id,
-                  }))
-                }
-                onClick={(subid) => {
-                  setSelectedsubcategories(subid);
+                  handleDepartmentChange(departmentid);
                 }}
               />
             </div>
           </div>
 
-          <div className="sjiiudbs2222">
-            {/* //item list is showed here */}
-            <h3 className="titlesh1"> Items</h3>
-            <div className="scroollong ">
-              {itemData && itemData.products.length > 0 ? (
-                itemData.products.map((item) => <Itemcard data={item} />)
-              ) : (
-                <div style={{ margin: "20px" }}>Data not found</div>
-              )}
+          {categories.map((cat) => (
+            <div className="sjiiudbs2222" key={cat._id}>
+              <h3 className="titlesh1">{cat.name}</h3>
+              <Card
+                categories={cat.subcategories.map((subcategory) => ({
+                  name: subcategory.name,
+                  image: subcategory.image,
+                  id: subcategory._id,
+                }))}
+              />
             </div>
-          </div>
+          ))}
         </div>
         <div className="rightdiv">
           <Dropdown_right />

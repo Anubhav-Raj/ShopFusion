@@ -99,7 +99,7 @@ function Table_post({ setTableShow, setEditTable, setId }) {
   }
 
   const renderdata = (data) => {
-    console.log(data);
+    // console.log(data);
 
     const createdAtDate = new Date(
       data.status === false ? data.created : data.update

@@ -71,7 +71,9 @@ export const mobileAPI = createApi({
 
     editMobile: builder.mutation({
       query: (mobile) => {
+        console.log(mobile);
         const formData = new FormData();
+        formData.append("id", mobile.id);
         formData.append("sellerType", mobile.sellerType);
         formData.append("sellerName", mobile.sellerName);
         formData.append("gstNumber", mobile.gstNumber);
@@ -97,25 +99,16 @@ export const mobileAPI = createApi({
           "selectedsubcategoriesitem",
           mobile.selectedsubcategoriesitem
         );
-        // formData.append("edituplaodphoto", mobile.uploadeditimage);
-
-        // Log formData entries
-        // console.log("Form Data Entries:");
-        // for (const pair of formData.entries()) {
-        //   console.log(pair[0] + ", " + pair[1]);
-        // }
 
         // Handle uploadPhotos
         mobile.uploadPhotos.forEach((photo, index) => {
           formData.append("uploadPhotos", photo.originFileObj);
         });
-        console.log("Uploaded Photos:", mobile.uploadPhotos);
 
         // Handle uploadEditImage
         mobile.uploadeditimage.forEach((photo, index) => {
           formData.append("edituplaodphoto", photo);
         });
-        console.log("Uploaded Edit Images:", mobile.uploadeditimage);
 
         // Handle uploadVideo
         if (mobile.uploadVideo && mobile.uploadVideo.file) {
@@ -125,6 +118,12 @@ export const mobileAPI = createApi({
         // Handle uploadFile
         if (mobile.uploadFile && mobile.uploadFile.file) {
           formData.append("uploadFile", mobile.uploadFile.file.originFileObj);
+        }
+        if (mobile.uploadVideo) {
+          formData.append("uploadVideo", mobile.uploadVideo);
+        }
+        if (mobile.uploadFile) {
+          formData.append("uploadFile", mobile.uploadFile);
         }
 
         // Return the mutation query

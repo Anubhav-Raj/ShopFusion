@@ -12,8 +12,9 @@ import toast from "react-hot-toast";
 function Department() {
   const [departments, setDepartments] = useState([]);
   const { data: departmentData, isLoding } = usePublicfetchAllDepartmentQuery(
-    "65e4bd0e38000742f274da71"
+    "66051c66c5d6688767d349e2"
   );
+  console.log(departments);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
 
   // Update selectedDepartment when departments change
@@ -28,8 +29,8 @@ function Department() {
 
   // Update departments when departmentData changes
   useEffect(() => {
-    if (departmentData && departmentData.Departments) {
-      setDepartments(departmentData.Departments);
+    if (departmentData && departmentData.departments) {
+      setDepartments(departmentData.departments);
     }
   }, [departmentData]);
 
@@ -135,7 +136,7 @@ function Department() {
 
               <div className="sjiiudbs2222">
                 <h3 className="titlesh1"> Sub Category</h3>
-                <Card //subcategory list is showed here
+                <Card
                   categories={
                     subcategories &&
                     subcategories.map((subcategory) => ({
@@ -150,8 +151,7 @@ function Department() {
                 />
               </div>
 
-              <div className="sjiiudbs22 ccccccc">
-                {/* //item list is showed here */}
+              {/* <div className="sjiiudbs22 ccccccc">
                 <h3 className="titlesh1"> Items</h3>
                 <div className="scroollong ">
                   {itemData && itemData.products.length > 0 ? (
@@ -160,7 +160,7 @@ function Department() {
                     <div style={{ margin: "20px" }}>Data not found</div>
                   )}
                 </div>
-              </div>
+              </div> */}
             </div>
           </fieldset>
           <fieldset className="sjiikdudbs">
@@ -218,9 +218,9 @@ function Department() {
             <Card
               categories={
                 departmentData &&
-                departmentData.Departments &&
-                departmentData.Departments.length > 0
-                  ? departmentData.Departments.map((department) => ({
+                departmentData.departments &&
+                departmentData.departments.length > 0
+                  ? departmentData.departments.map((department) => ({
                       name: department.name,
                       image: department.image,
                       id: department._id,

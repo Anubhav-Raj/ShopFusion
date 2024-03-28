@@ -10,6 +10,12 @@ const cCSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "ChooseDepartment",
     },
+    subcategories: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ChooseSubCategory",
+      },
+    ],
   },
   {
     timestamps: true,

@@ -92,7 +92,7 @@ exports.loginHandler = async (req, res, next) => {
   try {
     // Get the user from the collection
     const user = await findUser({ email: req.body.email });
-    console.log(user);
+    // console.log(user);
     // Check if user exists and password is correct
     if (
       !user ||

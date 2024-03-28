@@ -15,13 +15,12 @@ import TextArea from "antd/es/input/TextArea";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import toast from "react-hot-toast";
 import {
-  useCreateMobileMutation,
   useGetAllBrandMutation,
   useGetAllBrandModalMutation,
   useGetUserProductsQuery,
   useEditMobileMutation,
 } from "../../../redux/API/products/mobile";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   useMobileFormState,
   sellerTypeOptions,
@@ -32,13 +31,15 @@ import {
 } from "./MobileFormState";
 // import useRecaptchaV3 from "../../../Hooks/reCaptchaV3/index.js";
 import { useUserByIDMutation } from "../../../redux/API/user.js";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { DeleteOutlined } from "@ant-design/icons";
 
+import { setUser } from "../../../redux/API/user_slice/user.slice.js";
+import { useAppSelector } from "../../../redux/store.js";
 import {
-  selectUserData,
-  setUser,
-} from "../../../redux/API/user_slice/user.slice.js";
+  useFetchAllBrandModalQuery,
+  useFetchCategoriesBrandQuery,
+} from "../../../redux/API/admin/brand.js";
 const { Option } = AutoComplete;
 
 const getBase64 = (file) =>
@@ -50,7 +51,8 @@ const getBase64 = (file) =>
   });
 
 const EditMobile = ({ id, setEditTable }) => {
-  // const { id } = useParams();
+  const userData = useAppSelector((state) => state.user2.user);
+
   const [listBrends, setListBrends] = useState([]);
   const [listBrendsModal, setListBrendsModal] = useState([]);
   const [mobile, setMobileData] = useState(null);
@@ -59,6 +61,7 @@ const EditMobile = ({ id, setEditTable }) => {
   const [allbrands] = useGetAllBrandMutation();
   const [brandModal] = useGetAllBrandModalMutation();
   const [editMobileMutation] = useEditMobileMutation();
+  const [selectedcategories, setSelectedcategories] = useState("");
   const dispatch = useDispatch();
   const token = localStorage.getItem("ZoneHub");
   const {
@@ -161,7 +164,6 @@ const EditMobile = ({ id, setEditTable }) => {
         // Extract address information
         const { userName, flatHouseNo, areaStreetVillage, _id } =
           mobile.enterAddress;
-
         // Construct the address object
         const address = {
           value: _id,
@@ -171,7 +173,8 @@ const EditMobile = ({ id, setEditTable }) => {
         setMobileData(newObjWithAddress);
 
         // Extract brand information
-        const { _id: brandId, name: brandName } = mobile.selectBrand;
+        const { _id: brandId, brandName } = mobile.selectBrand;
+
         const brand = {
           value: brandId,
           label: brandName,
@@ -190,6 +193,7 @@ const EditMobile = ({ id, setEditTable }) => {
       }
     }
   }, [isLoading, isError, data, id]);
+  // console.log(mobile);
 
   const [uploadeditimage, setuploadeditimage] = useState([]);
   useEffect(() => {
@@ -214,39 +218,17 @@ const EditMobile = ({ id, setEditTable }) => {
       setuploadeditimage(mobile.images);
       setUploadVideo(mobile.video);
       setUploadFile(mobile.file);
+      setSelectedcategories(mobile.category);
     }
   }, [mobile]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!token) {
-          console.error("Token not available");
-          return;
-        }
-        const { data } = await userByID();
-        dispatch(setUser(data.user));
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    fetchData();
-  }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!token) {
-          console.error("Token not available");
-          return;
-        }
-        const { data } = await allbrands();
-        setListBrends(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
 
-    fetchData();
-  }, []);
+  const [selectedBrandid, setSelectBrandid] = useState();
+  const { data: brands, isError: brandError } =
+    useFetchCategoriesBrandQuery(selectedcategories);
+
+  const { data: allbrandsmodal, isError: allbrandsError } =
+    useFetchAllBrandModalQuery(selectedBrandid);
+  // console.log(selectBrand);
 
   const handlebrandModal = async (brandId) => {
     try {
@@ -265,18 +247,18 @@ const EditMobile = ({ id, setEditTable }) => {
   };
 
   const brandList =
-    listBrends &&
-    listBrends.map((element) => {
+    brands &&
+    brands.brands.map((element) => {
       const newPropsObj = {
         value: element._id,
-        label: element.name,
+        label: element.brandName,
       };
 
       return { ...element, ...newPropsObj };
     });
   const brandmodalList =
-    listBrendsModal &&
-    listBrendsModal.map((element) => {
+    allbrandsmodal &&
+    allbrandsmodal.models.map((element) => {
       const newPropsObj = {
         value: element._id,
         label: element.name,
@@ -284,10 +266,6 @@ const EditMobile = ({ id, setEditTable }) => {
 
       return { ...element, ...newPropsObj };
     });
-
-  // const executeRecaptcha = useRecaptchaV3(
-  //   "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
-  // );
 
   const handleCancel = () => setPreviewOpen(false);
 
@@ -409,8 +387,7 @@ const EditMobile = ({ id, setEditTable }) => {
 
     return isValid;
   };
-  // console.log(uploadPhotos);
-  console.log(enterAddress);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const recaptchaToken = await executeRecaptcha("addmobile");
@@ -523,9 +500,9 @@ const EditMobile = ({ id, setEditTable }) => {
 
       // Validation for uploadPhotos
       if (
-        !uploadPhotos ||
-        uploadPhotos.length === 0 ||
-        !uploadeditimage ||
+        !uploadPhotos &&
+        uploadPhotos.length === 0 &&
+        !uploadeditimage &&
         uploadeditimage.length === 0
       ) {
         setUploadPhotosError("Upload at least one photo");
@@ -566,19 +543,23 @@ const EditMobile = ({ id, setEditTable }) => {
         uploadeditimage,
         uploadVideo,
         uploadFile,
+        id,
       };
-      console.log(selectBrand);
+      // console.log(selectBrand);
 
       // Object.entries(formData).forEach(([key, value]) => {
       //   console.log(`${key}: ${value}`);
       // });
-      // return;
+      //return;
       // Trigger the createMobile mutation
       const result = await editMobileMutation(formData);
-      console.log(result);
+      console.log("Result", result);
       // Handle the success response
-
-      message.success("Mobile created successfully");
+      if (result.error) {
+        message.error(result.error.data.message);
+      } else {
+        message.success(result.data.message);
+      }
 
       // Reset the form after successful submission
       resetForm();
@@ -700,7 +681,7 @@ const EditMobile = ({ id, setEditTable }) => {
                 style={{ width: 300, height: 50 }}
                 placeholder="Enter Brand"
                 options={brandList}
-                value={selectBrand.name}
+                value={selectBrand.brandName}
                 filterOption={true}
                 onSelect={async (val) => {
                   const selectedBrand = await brandList.find(
@@ -710,11 +691,12 @@ const EditMobile = ({ id, setEditTable }) => {
                   const t = selectedBrand ? selectedBrand.label : val;
 
                   const f = {
-                    name: t,
+                    brandName: t,
                     _id: val,
                   };
                   setSelectBrand(f);
-                  handlebrandModal(val);
+                  //   handlebrandModal(val);
+                  setSelectBrandid(val);
                 }}
                 onSearch={(val) => {
                   setSelectBrand(val);

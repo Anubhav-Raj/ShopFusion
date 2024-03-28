@@ -45,18 +45,39 @@ exports.createDepartment = async (req, res, next) => {
 exports.createCategory = async (req, res, next) => {
   try {
     // Handle category creation logic here
-
     const cc = new ChooseCategory({
       name: req.body.categoryName,
       desc: req.body.categoryDescription,
       image: req.file.path,
       choose_department: req.body.choose_department_id,
     });
-    await cc.save();
+
+    // Save the category to the database
+    await cc
+      .save()
+      .then((savedCategory) => {
+        console.log("Category saved successfully:", savedCategory);
+      })
+      .catch((error) => {
+        console.error("Error saving category:", error);
+      });
+
+    // Once the category is saved, update the corresponding department document
+    await ChooseDepartment.findByIdAndUpdate(
+      req.body.choose_department_id,
+      { $push: { category: cc._id } },
+      { new: true }
+    )
+      .then((updatedDepartment) => {
+        console.log("Department updated successfully:", updatedDepartment);
+      })
+      .catch((error) => {
+        console.error("Error updating department:", error);
+      });
+
     res
       .status(200)
       .json({ message: "Category created successfully", data: cc });
-    // console.log(req.body);
   } catch (error) {
     next(error);
   }
@@ -65,21 +86,27 @@ exports.createCategory = async (req, res, next) => {
 // Controller function to create a new subcategory
 exports.createSubCategory = async (req, res, next) => {
   try {
-    //console.log(req.file.path);
-
-    // Handle subcategory creation logic here
     const csc = new ChooseSubCategory({
       name: req.body.subcategoryName,
       desc: req.body.subCategoryDescription,
       image: req.file.path,
       choose_category: req.body.choose_category_id,
     });
+
     await csc.save();
-    // console.log(req.body);
+
+    // Assuming 'choose_department' should be 'choose_category'
+    await ChooseCategory.findByIdAndUpdate(
+      req.body.choose_category_id, // Typo: should be req.body.choose_department_id
+      { $push: { subcategories: csc._id } },
+      { new: true }
+    );
+
     res
       .status(200)
       .json({ message: "Subcategory created successfully", data: csc });
   } catch (error) {
+    console.error("Error creating subcategory:", error);
     next(error);
   }
 };
@@ -114,23 +141,23 @@ exports.fetchAllSallerTypes = async (req, res) => {
     res.status(500).json({ message: "Saller types fetched Faild" });
   }
 };
-
-// Controller function to fetch all departments
 exports.fetchAllDepartments = async (req, res) => {
   try {
-    // console.log(req.body);
-    // Handle fetching all departments logic here
+    const { choose_type_id } = req.body;
 
-    const Departments = await ChooseDepartment.find({
-      choose_type: req.body.choose_type_id,
+    // Fetch all departments matching the choose_type_id and populate the category and subcategory fields
+    const departments = await ChooseDepartment.find({
+      choose_type: choose_type_id,
+    }).populate({
+      path: "category",
+      populate: { path: "subcategories" },
     });
 
     res
       .status(200)
-      .json({ message: "Departments fetched successfully", Departments });
+      .json({ message: "Departments fetched successfully", departments });
   } catch (error) {
-    // next(error);
-    res.status(500).json({ message: "Departments fetched Faild" });
+    res.status(500).json({ message: "Failed to fetch departments", error });
   }
 };
 
@@ -142,7 +169,7 @@ exports.fetchAllCategories = async (req, res) => {
     const Categories = await ChooseCategory.find({
       choose_department: req.body.choose_department_id,
     });
-    // console.log(Categories);
+    //console.log(Categories);
     res
       .status(200)
       .json({ message: "Categories fetched successfully", Categories });
@@ -152,9 +179,49 @@ exports.fetchAllCategories = async (req, res) => {
 };
 
 // Controller function to fetch all subcategories
+// exports.fetchAllSubCategories = async (req, res) => {
+//   try {
+//     const { choose_category_id } = req.body; // Assuming categoryIds is an array of category IDs
+
+//     // Create an empty object to store subcategories for each category
+//     const subCategoriesMap = {};
+
+//     // Fetch category names
+//     const categories = await ChooseCategory.find({
+//       _id: { $in: choose_category_id },
+//     });
+//     const categoryNames = categories.reduce((acc, category) => {
+//       acc[category._id] = category.name;
+//       return acc;
+//     }, {});
+
+//     // Fetch subcategories for each category
+//     await Promise.all(
+//       choose_category_id.map(async (categoryId) => {
+//         const subCategories = await ChooseSubCategory.find({
+//           choose_category: categoryId,
+//         });
+//         subCategoriesMap[categoryNames[categoryId]] = subCategories.map(
+//           (subcategory) => ({
+//             name: subcategory.name,
+//             image: subcategory.image,
+//             id: subcategory._id,
+//           })
+//         );
+//       })
+//     );
+
+//     // console.log(subCategoriesMap);
+//     res.status(200).json({
+//       message: "Subcategories fetched successfully",
+//       subCategoriesMap,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Failed to fetch subcategories", error });
+//   }
+// };
 exports.fetchAllSubCategories = async (req, res) => {
   try {
-    // Handle fetching all subcategories logic here
     const SubCategories = await ChooseSubCategory.find({
       choose_category: req.body.choose_category_id,
     });

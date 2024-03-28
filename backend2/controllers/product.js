@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const Product = require("../models/product");
 const User = require("../models/user");
 const mongoose = require("mongoose");
@@ -219,6 +221,8 @@ exports.createProduct = async (req, res) => {
 };
 exports.editmobile = async (req, res) => {
   try {
+    console.log(req.body);
+    console.log(req.files);
     // Input validation
     const requiredFields = [
       "id",
@@ -239,9 +243,6 @@ exports.editmobile = async (req, res) => {
       "enterAddress",
       "googleDriveLink",
       "mobileDescription",
-      "uploadPhotos",
-      "uploadFile",
-      "uploadVideo",
     ];
     for (const field of requiredFields) {
       if (!req.body[field]) {
@@ -257,28 +258,24 @@ exports.editmobile = async (req, res) => {
         .status(404)
         .json({ message: "Product not found", isError: true });
     }
-    if (product.user.toString() !== req.user._id.toString()) {
+    if (product.user.toString() !== res.locals.user._id.toString()) {
       return res.status(401).json({ message: "Not authorized", isError: true });
     }
 
     // Process brand and model
-    const brand = req.body.selectBrand.toLowerCase().trim();
-    const model = req.body.selectModel.toLowerCase().trim();
+    const brand = req.body.selectBrand;
+    const model = req.body.selectModel;
 
-    // Check if brand exists, if not, create it
-    let brandExsist = await Brand.findOne({ name: brand });
-    if (!brandExsist) {
-      brandExsist = new Brand({ name: brand });
-      await brandExsist.save();
+    let brandExsist = await Brand.findOne({ _id: brand });
+    let modelExsist = await ModelBrand.findOne({ _id: model });
+
+    if (!brandExsist || !modelExsist) {
+      return res.status(500).json({
+        error: "Brand or model does not exist.",
+        message: "Failed to create product.",
+        isError: true,
+      });
     }
-
-    // Check if model exists, if not, create it
-    let modelExsist = await ModelBrand.findOne({ name: model });
-    if (!modelExsist) {
-      modelExsist = new ModelBrand({ name: model, brand: brandExsist._id });
-      await modelExsist.save();
-    }
-
     // Update product fields
     product.sellerType = req.body.sellerType;
     product.sellerName = req.body.sellerName;
@@ -297,12 +294,98 @@ exports.editmobile = async (req, res) => {
     product.enterAddress = req.body.enterAddress;
     product.googleDriveLink = req.body.googleDriveLink;
     product.mobileDescription = req.body.mobileDescription;
-
     // Process file uploads
-    product.images = req.files.uploadPhotos.map((photo) => photo.filename);
-    product.file = req.files.uploadFile[0].filename;
-    product.video = req.files.uploadVideo[0].filename;
+    // for (const photo of req.body.edituplaodphoto) {
+    //   if (product.images.includes(photo)) {
+    //     // Photo exists in uploadphotos array, do nothing
+    //   } else {
+    //     // Photo doesn't exist in uploadphotos array, delete the old photo
+    //     const photoPath = path.join(__dirname, "/uploads/images/", photo); // Adjust the path to your photos directory
+    //     if (fs.existsSync(photoPath)) {
+    //       fs.unlinkSync(photoPath); // Delete the old photo
+    //     }
+    //   }
+    // }
 
+    // // Loop through each new photo in the uploadphotos array
+    // for (const photo of uploadphotos) {
+    //   // Check if the new photo exists in the edituploadphoto array
+    //   if (!edituploadphoto.includes(photo)) {
+    //     // New photo doesn't exist in edituploadphoto array, upload the new photo
+    //     // Here you can implement the logic to upload the new photo
+    //   }
+    // }
+
+    // if (req.files.uploadPhotos) {
+    //   product.images = req.files.uploadPhotos.map((photo) => photo.filename);
+    // }
+    // Process file uploads
+    // Clear the product.images array before processing
+    if (req.body.edituplaodphoto.length > 0) {
+      product.images = [];
+      for (const photo of product.images) {
+        if (!req.body.edituplaodphoto.includes(photo)) {
+          const photoPath = path.join(__dirname, "../uploads/images/", photo);
+          if (fs.existsSync(photoPath)) {
+            fs.unlinkSync(photoPath); // Delete the old photo
+          } else {
+            console.log("Photo not found:", photo);
+          }
+        }
+      }
+
+      // After processing, push the new photos to product.images
+      product.images.push(...req.body.edituplaodphoto);
+    }
+    if (req.files.uploadPhotos) {
+      product.images = req.files.uploadPhotos.map((photo) => photo.filename);
+    }
+
+    // Loop through each new photo in the uploadphotos array
+    // if (req.files.uploadPhotos) {
+    //   for (const photo of req.files.uploadPhotos) {
+    //     // Check if the new photo exists in the edituploadphoto array
+    //     if (!req.body.edituplaodphoto.includes(photo.filename)) {
+    //       // New photo doesn't exist in edituploadphoto array, add the new photo to product images
+    //       product.images.push(photo.filename);
+    //     }
+    //   }
+    // }
+    // if (req.files.uploadPhotos) {
+    //   product.images = req.files.uploadPhotos.map((photo) => photo.filename);
+    // }
+
+    // Process file uploads and remove file if uploadFile is empty
+    // if (req.files.uploadFile) {
+    //   product.file = req.files.uploadFile[0].filename;
+    // } else {
+    //   if (!req.body.uploadFile) {
+    //     const filePath = path.join(__dirname, "../uploads/files", product.file);
+    //     if (fs.existsSync(filePath)) {
+    //       fs.unlinkSync(filePath); // Remove the file
+    //     } else {
+    //       console.log("File not found:");
+    //     }
+    //   }
+    //   product.file = req.body.uploadFile;
+    // }
+
+    // Process video uploads and remove video if uploadVideo is empty
+    // if (req.files.uploadVideo) {
+    //   product.video = req.files.uploadVideo[0].filename;
+    // } else {
+    //   if (!req.body.uploadVideo) {
+    //     const videoPath = path.join(
+    //       __dirname,
+    //       "../uploads/videos",
+    //       product.video
+    //     );
+    //     if (fs.existsSync(videoPath)) {
+    //       fs.unlinkSync(videoPath); // Remove the video
+    //     }
+    //   }
+    //   product.video = req.body.uploadVideo;
+    // }
     // Save product changes
     await product.save();
 
@@ -444,7 +527,7 @@ exports.getModels = async (req, res) => {
 };
 exports.userAllProduct = async (req, res) => {
   try {
-    //console.log("userAllProduct");
+    console.log("userAllProduct");
     const user = res.locals.user;
 
     // console.log(user);
