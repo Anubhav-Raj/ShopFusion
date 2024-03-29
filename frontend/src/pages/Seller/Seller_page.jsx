@@ -41,8 +41,8 @@ function Seller_page() {
   return (
     <>
       <div className="seller_main">
-        <div className="box-o3x style-bd5" id="sty-dlo">
-          <Location_list />
+        <div className="box-o3x style-bd5">
+          {/* <Location_list /> */}
           <div className="sjiiudbs2222">
             <h3 className="titlesh1"> DEPARTMENTS</h3>
             <div className="scroollong">
@@ -73,7 +73,7 @@ function Seller_page() {
           ))}
         </div>
         <div className="rightdiv">
-          <Dropdown_right />
+          {/* <Dropdown_right /> */}
           <Seller_right />
         </div>
       </div>

@@ -6,8 +6,21 @@ import "./seller_right.css";
 function Seller_right() {
   return (
     <>
-      <Thumbnailgallary />
-      <Progressbar />
+      <div style={{ marginTop: "10px" }}>
+        <Thumbnailgallary />
+      </div>
+      <div style={{ marginTop: "10px" }}>
+        <Thumbnailgallary />
+      </div>
+      <div style={{ marginTop: "10px" }}>
+        <Thumbnailgallary />
+      </div>
+      <div style={{ marginTop: "10px" }}>
+        <Thumbnailgallary />
+      </div>
+      <button className="load-more-button">Load More</button>
+
+      {/* <Progressbar /> */}
     </>
   );
 }
