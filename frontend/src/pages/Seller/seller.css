@@ -83,18 +83,16 @@ img.departimg {
 }
 
 span.topings {
-    display: flex;
-    background: white;
-    top: -8%;
-    width: auto;
-    font-size: 17px;
-    height: 23px;
-    text-align: center;
-    left: 24%;
-    padding: 0px 13px;
-    position: absolute;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  background: white;
+  top: -8%;
+  width: auto;
+  height: 23px;
+  text-align: center;
+  padding: 0px 5px;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
 }
 
 span.topings1 {
@@ -123,6 +121,7 @@ span.topings1 {
     margin: 0 auto;
     margin-bottom: 5px;
     box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.15);
+    justify-content: center;
 }
 
 .categories .content .icon:hover {
