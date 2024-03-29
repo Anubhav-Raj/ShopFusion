@@ -28,7 +28,7 @@ div#sty-dlo {
   border-radius: 30px;
 }
 
-.sjiiudbs2222 .row {
+.sjiiudbs777 .row {
   display: flex;
   flex-direction: row;
   gap: 3%;
@@ -36,7 +36,8 @@ div#sty-dlo {
   justify-content: flex-start;
 }
 
-.sjiiudbs2222 {
+.sjiiudbs777 {
+  width: 100%;
   display: flex;
   position: relative;
   margin: 13px 11px;
@@ -44,6 +45,15 @@ div#sty-dlo {
   border-radius: 8px;
   /* max-height: 268px; */
   /* overflow: scroll; */
+}
+.sjiiudbs333 {
+  width: 100%;
+  display: flex;
+  position: relative;
+  margin: 13px 11px;
+  border: 3px solid #0d6efd;
+  border-radius: 8px;
+  max-height: 213px;
 }
 
 h3.titlesh11:hover {
@@ -90,7 +100,6 @@ span.topings {
   font-size: 17px;
   height: 23px;
   text-align: center;
-  left: 24%;
   padding: 0px 13px;
   position: absolute;
   align-items: center;
@@ -120,6 +129,7 @@ span.topings1 {
   border-radius: 11px;
   width: 150px;
   height: 150px;
+  justify-content: center;
   margin: 0 auto;
   margin-bottom: 5px;
   box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.15);
@@ -139,8 +149,7 @@ span.topings1 {
 }
 
 .segments {
-  /* padding: 45px 0; */
-  padding-top: 45px;
+  padding-top: 30px;
 }
 
 .container {
@@ -305,4 +314,24 @@ a:focus {
 .scroollong::-webkit-scrollbar-thumb {
   animation: hideScrollbar 2s linear 3s forwards;
   /* Delayed animation */
+}
+
+
+.sjiiudbs333 .row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  /* align-content: center; */
+  justify-content: flex-start;
+}
+.box-o3x.style-bd5 {
+  width: 85%;
+}
+.ploter {
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  right: 0;
+  width: 20%;
+  justify-content: space-around;
 }

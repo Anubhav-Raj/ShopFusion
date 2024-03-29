@@ -85,12 +85,13 @@ ul {
 .sm-desktop-nav>ul {
     display: grid;
     grid-auto-flow: column;
-    justify-content: start;
+    justify-content: space-around;
     grid-gap: 20px;
-    /* max-width: var(--main-width); */
     margin: 0 auto;
     padding: 0 16px;
     height: 40px;
+    justify-items: center;
+    align-items: center;
 }
 
 .sm-desktop-nav>ul>li {

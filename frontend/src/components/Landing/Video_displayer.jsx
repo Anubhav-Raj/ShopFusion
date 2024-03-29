@@ -31,10 +31,10 @@ function Video_displayer({ videoData }) {
 
   return (
     <>
-      <div className="form-data-wrapper1">
+      <div className="form-data-wrapper221">
         <div className="form-data-wrapper">
           {videovisible && (
-            <div className="formbold-form-wrapper">
+            <div className="formbold-form-wrapper1">
               <Select
                 showSearch
                 style={{
@@ -73,7 +73,7 @@ function Video_displayer({ videoData }) {
             )}
           </h3>
 
-          <div className="formbold-form-wrapper">
+          <div className="formbold-form-wrapper1">
             <Select
               showSearch
               style={{
