@@ -11,9 +11,11 @@
 
 .rightdiv {
   width: 40%;
+  padding: 0px 11px 0px;
   display: block;
   border-radius: 10px;
   margin: 10px 13px;
+  overflow-y: scroll;
 }
 
 div#sty-dlo {
@@ -294,15 +296,17 @@ a:focus {
   overflow-y: clip;
   /* background: gainsboro; */
 }
-
-.scroollong::-webkit-scrollbar {
+.scroollong::-webkit-scrollbar,
+.rightdiv::-webkit-scrollbar {
   height: 6px;
+  width: 6px;
   background-color: transparent;
   transition: background-color 1s ease;
   /* Transition for background color */
 }
 
-.scroollong:hover::-webkit-scrollbar-thumb {
+.scroollong:hover::-webkit-scrollbar-thumb,
+.rightdiv:hover::-webkit-scrollbar-thumb {
   opacity: 1;
   /* Make scrollbar visible on hover */
   background-color: rgb(97, 156, 204);
@@ -311,10 +315,12 @@ a:focus {
   /* Smooth transition for background color with a 3-second delay */
 }
 
-.scroollong::-webkit-scrollbar-thumb {
+.scroollong::-webkit-scrollbar-thumb,
+.rightdiv::-webkit-scrollbar-thumb {
   animation: hideScrollbar 2s linear 3s forwards;
   /* Delayed animation */
 }
+
 
 
 .sjiiudbs333 .row {
@@ -325,7 +331,8 @@ a:focus {
   justify-content: flex-start;
 }
 .box-o3x.style-bd5 {
-  width: 85%;
+  width: 89%;
+  padding: 10px;
 }
 .ploter {
   position: absolute;

@@ -13,7 +13,7 @@ function Seller_page() {
   );
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [cardsToShow, setCardsToShow] = useState(5); // State to keep track of the number of cards to show
+  const [cardsToShowMap, setCardsToShowMap] = useState({});
 
   useEffect(() => {
     if (isLoading) {
@@ -33,30 +33,39 @@ function Seller_page() {
     }
   }, [departmentData, isLoading]);
 
+  useEffect(() => {
+    // Update the height of the rightdiv when categories change
+    const heightMesuringDiv = document.getElementById("heightmesuring");
+    const rightDiv = document.querySelector(".rightdiv");
+    const currentHeight = heightMesuringDiv.clientHeight;
+    rightDiv.style.height = `${Math.max(currentHeight,370)}px`;
+  }, [categories]);
+
   const handleDepartmentChange = (departmentId) => {
-    // Find the selected department
     const selectedDept = departments.find((dept) => dept._id === departmentId);
-    // Set selected department
     setSelectedDepartment(selectedDept._id);
-    // Set categories of the selected department
     setCategories(selectedDept.category);
-    // Reset to show only two cards
-    setCardsToShow(5);
+    setCardsToShowMap({});
   };
 
-  const toggleShowMore = () => {
-    setCardsToShow((prevCardsToShow) => prevCardsToShow + 5);
+  const toggleShowMore = (categoryId) => {
+    setCardsToShowMap((prevMap) => ({
+      ...prevMap,
+      [categoryId]: (prevMap[categoryId] || 0) + 10,
+    }));
   };
 
-  const handleLessClick = () => {
-    setCardsToShow(5);
+  const handleLessClick = (categoryId) => {
+    setCardsToShowMap((prevMap) => ({
+      ...prevMap,
+      [categoryId]: 10,
+    }));
   };
 
   return (
-    <>
-      <div className="seller_main">
-        <div className="box-o3x style-bd5">
-          {/* <Location_list /> */}
+    <div className="seller_main">
+      <div className="box-o3x style-bd5">
+        <div id="heightmesuring">
           <div className="sjiiudbs333">
             <h3 className="titlesh1"> DEPARTMENTS</h3>
             <div className="scroollong">
@@ -72,14 +81,13 @@ function Seller_page() {
               />
             </div>
           </div>
-
           {categories.map((cat) => (
             <div className="sjiiudbs777" key={cat._id}>
               <h3 className="titlesh1">{cat.name}</h3>
 
               <Card
                 categories={cat.subcategories
-                  .slice(0, cardsToShow)
+                  .slice(0, cardsToShowMap[cat._id] || 10)
                   .map((subcategory) => ({
                     name: subcategory.name,
                     image: subcategory.image,
@@ -87,23 +95,28 @@ function Seller_page() {
                   }))}
               />
               <div className="ploter">
-                <button className="load-more-button" onClick={handleLessClick}>
+                <button
+                  className="load-more-button"
+                  onClick={() => handleLessClick(cat._id)}
+                >
                   Less
                 </button>
 
-                <button className="load-more-button" onClick={toggleShowMore}>
+                <button
+                  className="load-more-button"
+                  onClick={() => toggleShowMore(cat._id)}
+                >
                   More
                 </button>
               </div>
             </div>
           ))}
         </div>
-        <div className="rightdiv">
-          {/* <Dropdown_right /> */}
-          <Seller_right />
-        </div>
       </div>
-    </>
+      <div className="rightdiv">
+        <Seller_right />
+      </div>
+    </div>
   );
 }
 
