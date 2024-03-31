@@ -5,6 +5,7 @@ import Dropdown_right from "../../components/Seller/Dropdown_right";
 import Seller_right from "../../components/Seller/seller_right/Seller_right";
 import Card from "../../components/Landing/Card";
 import { usePublicfetchAllDepartmentQuery } from "../../redux/API/publicApi/publicApi";
+import { Link } from "react-router-dom";
 
 function Seller_page() {
   const [departments, setDepartments] = useState([]);
@@ -38,7 +39,7 @@ function Seller_page() {
     const heightMesuringDiv = document.getElementById("heightmesuring");
     const rightDiv = document.querySelector(".rightdiv");
     const currentHeight = heightMesuringDiv.clientHeight;
-    rightDiv.style.height = `${Math.max(currentHeight,370)}px`;
+    rightDiv.style.height = `${Math.max(currentHeight, 370)}px`;
   }, [categories]);
 
   const handleDepartmentChange = (departmentId) => {
@@ -95,19 +96,19 @@ function Seller_page() {
                   }))}
               />
               <div className="ploter">
-                <button
+                <Link
                   className="load-more-button"
                   onClick={() => handleLessClick(cat._id)}
                 >
                   Less
-                </button>
+                </Link>
 
-                <button
+                <Link
                   className="load-more-button"
                   onClick={() => toggleShowMore(cat._id)}
                 >
                   More
-                </button>
+                </Link>
               </div>
             </div>
           ))}

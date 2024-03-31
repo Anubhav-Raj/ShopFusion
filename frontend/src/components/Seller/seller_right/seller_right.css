@@ -152,11 +152,12 @@
 }
 
 .load-more-button {
-  width: 48%;
+  width: 30%;
   padding: 3px;
-  background-color: #367bc5;
-  color: white;
+  /* background-color: #367bc5; */
+  /* color: white; */
   border: none;
+  text-align: center;
   border-radius: 5px;
   margin-top: 10px;
   margin-bottom: 2px;
@@ -165,5 +166,5 @@
 }
 
 .load-more-button:hover {
-  background-color: #0056b3;
+  background-color: #c3d1e0;
 }
