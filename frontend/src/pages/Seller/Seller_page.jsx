@@ -40,7 +40,7 @@ function Seller_page() {
     const rightDiv = document.querySelector(".rightdiv");
     const currentHeight = heightMesuringDiv.clientHeight;
     rightDiv.style.height = `${Math.max(currentHeight, 370)}px`;
-  }, [categories]);
+  }, [categories,cardsToShowMap]);
 
   const handleDepartmentChange = (departmentId) => {
     const selectedDept = departments.find((dept) => dept._id === departmentId);
