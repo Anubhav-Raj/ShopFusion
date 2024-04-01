@@ -1,0 +1,56 @@
+.pointer {
+    cursor: pointer;
+  }
+  .user_image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    background: #00000030;
+    border-radius: 50%;
+    padding: 0.2rem;
+  }
+  
+  .review_answer {
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  
+  /* Scrollbar width */
+  .review_answer::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Scrollbar Track */
+  .review_answer::-webkit-scrollbar-track {
+    background: rgb(189, 190, 189);
+    border-radius: 8px;
+  }
+  
+  .review_answer::-webkit-scrollbar-thumb {
+    background-color: green;
+    outline: 1px solid darkgreen;
+    border-radius: 8px;
+  }
+  
+  /* Add Another Button */
+  .list_add-review-cta {
+    display: flex;
+    background-color: #d8d8d8;
+    font-size: 18px;
+    padding: 6px;
+    font-weight: 500;
+    text-align: center;
+    color: black;
+    height: 41px;
+    width: 43%;
+    border: 1px solid grey;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    justify-content: center;
+
+  }
+  
+  .list_add-review-cta:hover {
+    transform: scale(0.95);
+  }
+  

@@ -23,15 +23,15 @@
 
 
 ._13sFCC ._2Plkj9  { 
-    -webkit-flex-basis: 58.33%; 
-    -ms-flex-preferred-size: 58.33%; 
-    flex-basis: 58.33%;
+    -webkit-flex-basis: 68.33%; 
+    -ms-flex-preferred-size: 68.33%; 
+    flex-basis: 68.33%;
 } 
 
 ._13sFCC ._36LmXx  { 
-    -webkit-flex-basis: 25%; 
-    -ms-flex-preferred-size: 25%; 
-    flex-basis: 25%;
+    -webkit-flex-basis: 15%; 
+    -ms-flex-preferred-size: 15%; 
+    flex-basis: 15%;
 } 
 
 li { 
@@ -106,3 +106,6 @@ li {
 .redcol  { 
     background-color: #ff6161;
 } 
+ul._2jr1F_ ,._36LmXx, ._2Plkj9 {
+    padding: 0;
+}

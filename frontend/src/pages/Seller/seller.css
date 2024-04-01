@@ -332,8 +332,10 @@ a:focus {
 }
 .box-o3x.style-bd5 {
   width: 89%;
+  max-width: 70%;
   padding: 10px;
 }
+
 .ploter {
   position: absolute;
   display: flex;
@@ -341,4 +343,19 @@ a:focus {
   right: 0;
   width: 20%;
   justify-content: space-around;
+}
+.flexviewmr {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 13px;
+}
+h5.view_mrbtn {
+  cursor: pointer;
+}
+p.priceviewmr {
+  font-size: 18px;
+  font-weight: 600;
+}
+.sellerreviw {
+  padding: 10px;
 }

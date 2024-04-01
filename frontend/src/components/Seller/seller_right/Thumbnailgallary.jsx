@@ -3,8 +3,13 @@ import callIcon from "./icons8-phone-48.png";
 import saveIcon from "./icons8-save-48.png";
 import shareIcon from "./icons8-share-48.png";
 import whatsappIcon from "./icons8-whatsapp-48.png";
-import { Collapse, Space } from "antd";
+import DynamicReviews from "./Dynamic_review";
+import { FaCaretDown } from "react-icons/fa";
+import Progressbar from "./Progressbar";
+import { Collapse, Rate } from "antd";
 function ThumbnailGallery() {
+  const [showproductdetails, setshowproductdetails] = useState(false);
+  const [showsellerdetails, setshowsellerdetails] = useState(false);
   const initialImages = [
     "https://jooinn.com/images/fruits-62.jpg",
     "https://jooinn.com/images/fruits-62.jpg",
@@ -60,10 +65,60 @@ function ThumbnailGallery() {
           <div className="product-header">
             <div className="product-title ">
               <h2>ProductProductProduct Title</h2>
-              <p>Price: ₹2344</p>
+              <div className="flexviewmr">
+                <p>Price: ₹2344</p>
+                <h5
+                  onClick={() => setshowproductdetails((prev) => !prev)}
+                  className="view_mrbtn"
+                >
+                  view {showproductdetails ? "Less" : "More"} <FaCaretDown />
+                </h5>
+              </div>
             </div>
           </div>
         </div>
+        {showproductdetails && (
+          <div className="sellerreviw">
+            <hr class="horizontal-line" />
+            <div className="flexviewmr">
+              <h3>Seller Details</h3>
+              <h5
+                onClick={() => setshowsellerdetails((prev) => !prev)}
+                className="view_mrbtn"
+              >
+                view {showsellerdetails ? "Less" : "More"} <FaCaretDown />
+              </h5>
+            </div>
+            {showsellerdetails && (
+              <div className="detailsseller">
+                <div className="leftdetailseller">
+                  <p>Seller Name - xyz kasknsksk</p>
+                  <p>Seller Id - 920402002</p>
+                  <p>Total Published Posts - 67</p>
+                </div>
+                <div class="vertical-line"></div>
+                <div className="righdetail">
+                  <p>Mobile No. - 972929729</p>
+                  <p>E-mail - 972929729@ndnd</p>
+                </div>
+              </div>
+            )}
+            <hr class="horizontal-line" />
+            <h3>Product Ratings & Reviews</h3>
+
+            <p style={{ fontSize: "20px" }}>
+              4.1{" "}
+              <Rate
+                disabled
+                allowHalf
+                defaultValue={2.5}
+                style={{ fontSize: "30px" }}
+              />
+            </p>
+            <Progressbar />
+            <DynamicReviews />
+          </div>
+        )}
       </div>
     </>
   );
