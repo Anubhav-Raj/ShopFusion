@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
 import callIcon from "./icons8-phone-48.png";
 import saveIcon from "./icons8-save-48.png";
@@ -7,7 +8,8 @@ import DynamicReviews from "./Dynamic_review";
 import { FaCaretDown } from "react-icons/fa";
 import Progressbar from "./Progressbar";
 import { Collapse, Rate } from "antd";
-function ThumbnailGallery() {
+function ThumbnailGallery({ product }) {
+  console.log(product);
   const [showproductdetails, setshowproductdetails] = useState(false);
   const [showsellerdetails, setshowsellerdetails] = useState(false);
   const initialImages = [
@@ -21,7 +23,7 @@ function ThumbnailGallery() {
     "https://jooinn.com/images/fruits-62.jpg",
   ];
 
-  const [selectedImage, setSelectedImage] = useState(initialImages[0]);
+  const [selectedImage, setSelectedImage] = useState(product.images[0]);
 
   const handleThumbnailClick = (imageSrc) => {
     setSelectedImage(imageSrc);
@@ -39,10 +41,11 @@ function ThumbnailGallery() {
       <div className="cjjjnsjsnjsn">
         <div className="thumbnail-gallery">
           <div className="thumbnail-list">
-            {initialImages.map((image, index) => (
+            {product.images.map((image, index) => (
               <img
                 key={index}
-                src={image}
+                // src={image}
+                src={`${process.env.REACT_APP_API_BASE_URL}uploads/images/${image}`}
                 alt={`Thumbnail ${index + 1}`}
                 onClick={() => handleThumbnailClick(image)}
                 className={selectedImage === image ? "selected-thumbnail" : ""}
@@ -50,7 +53,12 @@ function ThumbnailGallery() {
             ))}
           </div>
           <div className="main-image">
-            {selectedImage && <img src={selectedImage} alt="Main Image" />}
+            {selectedImage && (
+              <img
+                src={`${process.env.REACT_APP_API_BASE_URL}uploads/images/${selectedImage}`}
+                alt="Main Image"
+              />
+            )}
           </div>
         </div>
         <div className="details-list-seller">
@@ -64,9 +72,9 @@ function ThumbnailGallery() {
         <div className="product-container">
           <div className="product-header">
             <div className="product-title ">
-              <h2>ProductProductProduct Title</h2>
+              <h2>{product.mobileName}</h2>
               <div className="flexviewmr">
-                <p>Price: ₹2344</p>
+                <p>Price:{product.price}</p>
                 <h5
                   onClick={() => setshowproductdetails((prev) => !prev)}
                   className="view_mrbtn"
@@ -92,14 +100,24 @@ function ThumbnailGallery() {
             {showsellerdetails && (
               <div className="detailsseller">
                 <div className="leftdetailseller">
-                  <p>Seller Name - xyz kasknsksk</p>
-                  <p>Seller Id - 920402002</p>
-                  <p>Total Published Posts - 67</p>
+                  <p>Seller Name - {product.sellerName}</p>
+                  <p>Seller Id - {product.user}</p>
+                  <p>Total Published Posts -1</p>
                 </div>
                 <div class="vertical-line"></div>
                 <div className="righdetail">
-                  <p>Mobile No. - 972929729</p>
-                  <p>E-mail - 972929729@ndnd</p>
+                  <p>
+                    Mobile No. -{" "}
+                    {product.enterAddress.phoneNumber.show
+                      ? product.enterAddress.phoneNumber.phoneNumber
+                      : null}
+                  </p>
+                  <p>
+                    E-mail -{" "}
+                    {product.enterAddress.email.show
+                      ? product.enterAddress.email.email
+                      : null}
+                  </p>
                 </div>
               </div>
             )}

@@ -321,8 +321,6 @@ a:focus {
   /* Delayed animation */
 }
 
-
-
 .sjiiudbs333 .row {
   display: flex;
   flex-direction: row;
@@ -342,7 +340,8 @@ a:focus {
   bottom: 0;
   right: 0;
   width: 20%;
-  justify-content: space-around;
+  justify-content: end;
+  /* justify-content: space-around; */
 }
 .flexviewmr {
   display: flex;

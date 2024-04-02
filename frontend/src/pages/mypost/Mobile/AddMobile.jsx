@@ -13,12 +13,7 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
-import {
-  useCreateMobileMutation,
-  useGetAllBrandMutation,
-  useGetAllBrandModalMutation,
-  useGetUserProductsMutation,
-} from "../../../redux/API/products/mobile";
+import { useCreateMobileMutation } from "../../../redux/API/products/mobile";
 import {
   useMobileFormState,
   sellerTypeOptions,
@@ -462,7 +457,7 @@ const AddMobile = ({
 
       // Handle the success response
       console.log("Mobile created successfully:", result);
-      message.success(result.message);
+      message.success(result.data.message);
       // Reset the form after successful submission
       resetForm();
       setTableShow(false);

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./seller.css";
-import Location_list from "../../components/Seller/location_list";
-import Dropdown_right from "../../components/Seller/Dropdown_right";
-import Seller_right from "../../components/Seller/seller_right/Seller_right";
+import LocationList from "../../components/Seller/location_list";
+import DropdownRight from "../../components/Seller/Dropdown_right";
+import SellerRight from "../../components/Seller/seller_right/Seller_right";
 import Card from "../../components/Landing/Card";
 import { usePublicfetchAllDepartmentQuery } from "../../redux/API/publicApi/publicApi";
 import { Link } from "react-router-dom";
 
-function Seller_page() {
+function SellerPage() {
   const [departments, setDepartments] = useState([]);
   const { data: departmentData, isLoading } = usePublicfetchAllDepartmentQuery(
     "66051c66c5d6688767d349e2"
@@ -15,38 +15,39 @@ function Seller_page() {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [categories, setCategories] = useState([]);
   const [cardsToShowMap, setCardsToShowMap] = useState({});
+  const [rightDivHeight, setRightDivHeight] = useState(370); // Default height of right div
 
   useEffect(() => {
-    if (isLoading) {
-      // Show loading indicator
-      return;
-    }
-
-    if (departmentData && departmentData.departments) {
-      // Set departments
+    if (!isLoading && departmentData && departmentData.departments) {
       setDepartments(departmentData.departments);
-
-      // Set categories of the first department as default
       if (departmentData.departments.length > 0) {
-        setSelectedDepartment(departmentData.departments[0]._id);
-        setCategories(departmentData.departments[0].category);
+        const firstDepartment = departmentData.departments[0];
+        setSelectedDepartment(firstDepartment._id);
+        setCategories(firstDepartment.category);
       }
     }
   }, [departmentData, isLoading]);
 
   useEffect(() => {
-    // Update the height of the rightdiv when categories change
+    // Calculate and update the height of the right div when categories change
     const heightMesuringDiv = document.getElementById("heightmesuring");
-    const rightDiv = document.querySelector(".rightdiv");
     const currentHeight = heightMesuringDiv.clientHeight;
-    rightDiv.style.height = `${Math.max(currentHeight, 370)}px`;
-  }, [categories,cardsToShowMap]);
+    setRightDivHeight(Math.max(currentHeight, 370)); // Set minimum height
+  }, [categories, cardsToShowMap]);
 
   const handleDepartmentChange = (departmentId) => {
+    // console.log(departmentId);
     const selectedDept = departments.find((dept) => dept._id === departmentId);
+    console.log(selectedDept);
     setSelectedDepartment(selectedDept._id);
     setCategories(selectedDept.category);
     setCardsToShowMap({});
+  };
+  const [selectedsubcategories, setSelectedsubcategories] = useState("");
+
+  const handleSubcategoryChange = (subcategoryId, subcategoryName) => {
+    console.log(subcategoryName, subcategoryId);
+    setSelectedsubcategories(subcategoryName);
   };
 
   const toggleShowMore = (categoryId) => {
@@ -68,7 +69,7 @@ function Seller_page() {
       <div className="box-o3x style-bd5">
         <div id="heightmesuring">
           <div className="sjiiudbs333">
-            <h3 className="titlesh1"> DEPARTMENTS</h3>
+            <h3 className="titlesh1">DEPARTMENTS</h3>
             <div className="scroollong">
               <Card
                 categories={departments.map((department) => ({
@@ -76,16 +77,15 @@ function Seller_page() {
                   image: department.image,
                   id: department._id,
                 }))}
-                onClick={(departmentid) => {
-                  handleDepartmentChange(departmentid);
-                }}
+                onClick={(departmentid, departmentname) =>
+                  handleDepartmentChange(departmentid, departmentname)
+                }
               />
             </div>
           </div>
           {categories.map((cat) => (
             <div className="sjiiudbs777" key={cat._id}>
               <h3 className="titlesh1">{cat.name}</h3>
-
               <Card
                 categories={cat.subcategories
                   .slice(0, cardsToShowMap[cat._id] || 10)
@@ -94,31 +94,39 @@ function Seller_page() {
                     image: subcategory.image,
                     id: subcategory._id,
                   }))}
+                onClick={(subcategoryName) =>
+                  handleSubcategoryChange(subcategoryName)
+                }
               />
               <div className="ploter">
-                <Link
-                  className="load-more-button"
-                  onClick={() => handleLessClick(cat._id)}
-                >
-                  Less
-                </Link>
-
-                <Link
-                  className="load-more-button"
-                  onClick={() => toggleShowMore(cat._id)}
-                >
-                  More
-                </Link>
+                {/* Show "More" button if there are more subcategories to show */}
+                {cat.subcategories.length > (cardsToShowMap[cat._id] || 10) && (
+                  <Link
+                    className="load-more-button"
+                    onClick={() => toggleShowMore(cat._id)}
+                  >
+                    More
+                  </Link>
+                )}
+                {/* Show "Less" button only when more than initial number of products are shown */}
+                {cardsToShowMap[cat._id] && cardsToShowMap[cat._id] > 10 && (
+                  <Link
+                    className="load-more-button"
+                    onClick={() => handleLessClick(cat._id)}
+                  >
+                    Less
+                  </Link>
+                )}
               </div>
             </div>
           ))}
         </div>
       </div>
-      <div className="rightdiv">
-        <Seller_right />
+      <div className="rightdiv" style={{ height: `${rightDivHeight}px` }}>
+        <SellerRight subcategory_id={selectedsubcategories} />
       </div>
     </div>
   );
 }
 
-export default Seller_page;
+export default SellerPage;

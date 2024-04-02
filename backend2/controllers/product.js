@@ -106,7 +106,6 @@ exports.createMobile = async (req, res) => {
       "selecteddepartment",
       "selectedcategories",
       "selectedsubcategories",
-      "selectedsubcategoriesitem",
     ];
     for (const field of requiredFields) {
       if (!req.body[field]) {
@@ -135,13 +134,14 @@ exports.createMobile = async (req, res) => {
     // }
 
     const brand = req.body.selectBrand.toLowerCase().trim();
-    const model = req.body.selectModel.toLowerCase().trim();
+    const model = req.body.selectModel.trim();
     // Find or create brand
-    let brandExsist = await Brand.findOne({ name: brand });
+    let brandExsist = await Brand.findOne({ brandName: brand });
     // Find or create model
     let modelExsist = await ModelBrand.findOne({ name: model });
     // Upload files
-
+    // console.log(brandExsist);
+    // console.log(model);
     if (!brandExsist || !modelExsist) {
       return res.status(500).json({
         error: "Brand or model does not exist.",
@@ -165,7 +165,7 @@ exports.createMobile = async (req, res) => {
       type: type,
       category: categories,
       subCategory: subCategory,
-      item: item,
+      // item: item,
       department: department,
       user: createdBy,
       sellerType: req.body.sellerType,
@@ -192,6 +192,7 @@ exports.createMobile = async (req, res) => {
 
     const newProduct = new Product(productData);
     const createdProduct = await newProduct.save();
+    // console.log(createdProduct);
     const user = await User.findByIdAndUpdate(
       createdBy,
       { $push: { products: createdProduct._id } },
@@ -542,6 +543,22 @@ exports.userAllProduct = async (req, res) => {
     res.status(500).json({ message: error.message, isError: true });
   }
 };
+
+//  feth prodct based on sub category
+exports.productsbasedonSubCategory = async (req, res) => {
+  try {
+    const { subcategoryName } = req.query;
+    // console.log(subcategoryName);
+    const products = await Product.find({ subcategory_id: subcategoryName })
+      .populate("selectBrand")
+      .populate("selectModel")
+      .populate("enterAddress");
+    res.json({ products: products, isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
+};
+
 //razorpay payment
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,

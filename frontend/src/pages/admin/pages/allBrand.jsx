@@ -123,7 +123,7 @@ const BrandList = () => {
 
   useEffect(() => {
     if (departmentData) {
-      const modifiedArray = departmentData.Departments.map((item) => ({
+      const modifiedArray = departmentData.departments.map((item) => ({
         ...item,
         newobj: {
           label: item.name,
@@ -203,7 +203,7 @@ const BrandList = () => {
     // console.log(id);
     setbrandID(id);
   };
-  console.log(brandID);
+  // console.log(brandID);
   const showModal3 = () => {
     setIsModalVisible3(true);
   };

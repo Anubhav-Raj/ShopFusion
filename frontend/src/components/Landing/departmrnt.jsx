@@ -14,7 +14,6 @@ function Department() {
   const { data: departmentData, isLoding } = usePublicfetchAllDepartmentQuery(
     "66051c66c5d6688767d349e2"
   );
-  console.log(departments);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
 
   // Update selectedDepartment when departments change
@@ -23,7 +22,7 @@ function Department() {
       toast.loading("Data  is Loading...");
     }
     if (departments.length > 0) {
-      setSelectedDepartment(departments[0]._id);
+      setSelectedDepartment(departments[0]);
     }
   }, [departments, isLoding]);
 
@@ -48,6 +47,7 @@ function Department() {
   useEffect(() => {
     if (catagoriesData && catagoriesData.Categories) {
       setCatagories(catagoriesData.Categories);
+      setTrendingCategoriesData(catagoriesData.Categories);
     }
   }, [catagoriesData, seletedCategories]);
 
@@ -71,14 +71,17 @@ function Department() {
 
   const [isInitialCardVisible, setIsInitialCardVisible] = useState(true);
 
-  const handleDepartmentClick = (departmentName) => {
-    setSelectedDepartment(departmentName);
-    if (isInitialCardVisible === false) {
-      setIsInitialCardVisible(true);
-    } else {
-      setIsInitialCardVisible(false);
-    }
+  const handleDepartmentClick = (departmentId) => {
+    const selectedDepartment = departments.find((d) => d._id === departmentId);
+    setSelectedDepartment(selectedDepartment);
+    setIsInitialCardVisible(!isInitialCardVisible);
   };
+
+  const [trendingCategoriesData, setTrendingCategoriesData] = useState([]);
+  const [topCategoriesData, setTopCategoriesData] = useState([]);
+  const [relatedPostsData, setRelatedPostsData] = useState([]);
+  const [recentlyViewedData, setRecentlyViewedData] = useState([]);
+  const [savedPostsData, setSavedPostsData] = useState([]);
 
   return (
     <>
@@ -90,8 +93,48 @@ function Department() {
               <div className="topdivsellerscroll">
                 <div className="sjiiudbs223">
                   <h3 className="titlesh1"> Department</h3>
+                  {selectedDepartment ? (
+                    <Card
+                      categories={[
+                        {
+                          id: selectedDepartment._id,
+                          name: selectedDepartment.name,
+                          image: selectedDepartment.image,
+                          type: "department",
+                        },
+                      ]}
+                      onClick={() => handleDepartmentClick(selectedDepartment)}
+                    />
+                  ) : (
+                    <Card
+                      categories={[
+                        {
+                          id:
+                            departments && departments.length > 0
+                              ? departments[0]._id
+                              : null,
+                          name:
+                            departments && departments.length > 0
+                              ? departments[0].name
+                              : null,
+                          image:
+                            departments && departments.length > 0
+                              ? departments[0]?.image
+                              : null,
+                          type: "department",
+                        },
+                      ]}
+                      onClick={() =>
+                        handleDepartmentClick(
+                          departments && departments.length > 0
+                            ? departments[0]._id
+                            : null
+                        )
+                      }
+                    />
+                  )}
 
-                  <Card
+                  {/* <Card
                     categories={[
                       {
                         id:
@@ -116,7 +159,7 @@ function Department() {
                           : departments[0]?._id
                       )
                     }
-                  />
+                  /> */}
                 </div>
 
                 <div className="sjiiudbs22">
@@ -151,7 +194,7 @@ function Department() {
                 />
               </div>
 
-              {/* <div className="sjiiudbs22 ccccccc">
+              <div className="sjiiudbs22 ccccccc">
                 <h3 className="titlesh1"> Items</h3>
                 <div className="scroollong ">
                   {itemData && itemData.products.length > 0 ? (
@@ -160,7 +203,7 @@ function Department() {
                     <div style={{ margin: "20px" }}>Data not found</div>
                   )}
                 </div>
-              </div> */}
+              </div>
             </div>
           </fieldset>
           <fieldset className="sjiikdudbs">
@@ -169,31 +212,71 @@ function Department() {
               <div className="sjiiudbs22 ccccccc">
                 <h3 className="titlesh1"> Trending Category</h3>
                 <div className="scroollong ">
-                  <Itemcard />
+                  {trendingCategoriesData.length > 0 ? (
+                    <Card
+                      categories={
+                        trendingCategoriesData &&
+                        trendingCategoriesData.map((category) => ({
+                          name: category.name,
+                          image: category.image,
+                          id: category._id,
+                        }))
+                      }
+                      onClick={(subid) => {
+                        setSelectedsubcategories(subid);
+                      }}
+                    />
+                  ) : (
+                    <div style={{ margin: "20px" }}>Data not found</div>
+                  )}
                 </div>
               </div>
               <div className="sjiiudbs22 ccccccc">
                 <h3 className="titlesh1"> Top Category</h3>
                 <div className="scroollong ">
-                  <Itemcard />
+                  {topCategoriesData.length > 0 ? (
+                    topCategoriesData.map((category) => (
+                      <Itemcard key={category.id} data={category} />
+                    ))
+                  ) : (
+                    <div style={{ margin: "20px" }}>Data not found</div>
+                  )}
                 </div>
               </div>
               <div className="sjiiudbs22 ccccccc">
                 <h3 className="titlesh1"> Related Post </h3>
                 <div className="scroollong ">
-                  <Itemcard />
+                  {relatedPostsData.length > 0 ? (
+                    relatedPostsData.map((post) => (
+                      <Itemcard key={post.id} data={post} />
+                    ))
+                  ) : (
+                    <div style={{ margin: "20px" }}>Data not found</div>
+                  )}
                 </div>
               </div>
               <div className="sjiiudbs22 ccccccc">
                 <h3 className="titlesh1"> Recently Viewed</h3>
                 <div className="scroollong ">
-                  <Itemcard />
+                  {recentlyViewedData.length > 0 ? (
+                    recentlyViewedData.map((item) => (
+                      <Itemcard key={item.id} data={item} />
+                    ))
+                  ) : (
+                    <div style={{ margin: "20px" }}>Data not found</div>
+                  )}
                 </div>
               </div>
               <div className="sjiiudbs22 ccccccc">
                 <h3 className="titlesh1"> Saved Post</h3>
                 <div className="scroollong ">
-                  <Itemcard />
+                  {savedPostsData.length > 0 ? (
+                    savedPostsData.map((post) => (
+                      <Itemcard key={post.id} data={post} />
+                    ))
+                  ) : (
+                    <div style={{ margin: "20px" }}>Data not found</div>
+                  )}
                 </div>
               </div>
             </div>

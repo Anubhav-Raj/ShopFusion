@@ -9,7 +9,7 @@ export const mobileAPI = createApi({
   endpoints: (builder) => ({
     createMobile: builder.mutation({
       query: (mobile) => {
-        // console.log(mobile);
+        console.log(mobile);
         const formData = new FormData();
         formData.append("sellerType", mobile.sellerType);
         formData.append("sellerName", mobile.sellerName);
@@ -71,7 +71,7 @@ export const mobileAPI = createApi({
 
     editMobile: builder.mutation({
       query: (mobile) => {
-        console.log(mobile);
+        // console.log(mobile);
         const formData = new FormData();
         formData.append("id", mobile.id);
         formData.append("sellerType", mobile.sellerType);
@@ -172,9 +172,22 @@ export const mobileAPI = createApi({
 
     getUserProducts: builder.query({
       query: () => {
-        console.log("Productfetxhing");
         return {
           url: "product/userallproduct",
+          method: "GET",
+          credentials: "include",
+        };
+      },
+      providesTags: ["mobilepost"],
+    }),
+
+    getproductbasedonSubCategory: builder.query({
+      query: (subCategoryName) => {
+        console.log(subCategoryName);
+        return {
+          url: `product/productsbasedonSubCategory?subCategoryName=${encodeURIComponent(
+            subCategoryName
+          )}`, // Pass subCategoryName as a query parameter
           method: "GET",
           credentials: "include",
         };
@@ -211,4 +224,5 @@ export const {
   useDeleteMobileMutation,
   useFetchPaymentMutation,
   useVerifyPaymentMutation,
+  useGetproductbasedonSubCategoryQuery,
 } = mobileAPI;

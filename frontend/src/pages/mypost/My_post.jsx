@@ -67,7 +67,7 @@ const My_post = () => {
   const [department, setDepartment] = useState([]);
   useEffect(() => {
     if (departmentData) {
-      const modifiedArray = departmentData.Departments.map((item) => ({
+      const modifiedArray = departmentData.departments.map((item) => ({
         ...item,
         newobj: {
           label: item.name,
@@ -75,9 +75,11 @@ const My_post = () => {
         },
       }));
       const newobjArray = modifiedArray.map((item) => item.newobj);
+      // console.log("newobjArray", newobjArray);
       setDepartment(newobjArray);
     }
   }, [departmentLoading, selectedType, departmentData]);
+  console.log("departmentData", department);
 
   //Categories Fetch
   const { data: categoriesData, isLoading: categoriesLoading } =

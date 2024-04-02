@@ -41,6 +41,10 @@ router.post("/deletemobile", deserializeUser, productCon.deletemobile);
 router.get("/allbrands", deserializeUser, productCon.getAllBrands);
 router.post("/allmodelsonmodel", deserializeUser, productCon.getModels);
 router.get("/userallproduct", deserializeUser, productCon.userAllProduct);
+router.get(
+  "/productsbasedonSubCategory",
+  productCon.productsbasedonSubCategory
+);
 
 router.post(
   "/createbrand",

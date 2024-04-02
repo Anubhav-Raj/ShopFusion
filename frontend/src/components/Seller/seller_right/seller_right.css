@@ -29,6 +29,7 @@
 .thumbnail-list::-webkit-scrollbar {
   width: 5px; /* Set the width of the scrollbar */
   color: white;
+  object-fit: contain;
 }
 
 .thumbnail-list img {
@@ -56,7 +57,7 @@
   width: 100%;
   height: 200px;
   max-height: 400px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .details-list-seller {
