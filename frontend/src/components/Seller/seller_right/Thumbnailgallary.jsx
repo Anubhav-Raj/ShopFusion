@@ -1,40 +1,90 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
 import callIcon from "./icons8-phone-48.png";
 import saveIcon from "./icons8-save-48.png";
 import shareIcon from "./icons8-share-48.png";
 import whatsappIcon from "./icons8-whatsapp-48.png";
-import DynamicReviews from "./Dynamic_review";
 import { FaCaretDown } from "react-icons/fa";
 import Progressbar from "./Progressbar";
 import { Collapse, Rate } from "antd";
+import DynamicReviews from "./Dynamic_review";
+
+// Define WhatsappButton component outside ThumbnailGallery
+function WhatsappButton({ phoneNumber }) {
+  const handleOpenWhatsapp = () => {
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
+  return (
+    <div className="detail-item" onClick={handleOpenWhatsapp}>
+      <img src={whatsappIcon} alt="WhatsApp" style={{ cursor: "pointer" }} />
+      <span>WhatsApp</span>
+    </div>
+  );
+}
+
 function ThumbnailGallery({ product }) {
-  console.log(product);
   const [showproductdetails, setshowproductdetails] = useState(false);
   const [showsellerdetails, setshowsellerdetails] = useState(false);
-  const initialImages = [
-    "https://jooinn.com/images/fruits-62.jpg",
-    "https://jooinn.com/images/fruits-62.jpg",
-    "https://jooinn.com/images/fruits-62.jpg",
-    "https://jooinn.com/images/fruits-62.jpg",
-    "https://jooinn.com/images/fruits-62.jpg",
-    "https://jooinn.com/images/fruits-62.jpg",
-    "https://jooinn.com/images/fruits-62.jpg",
-    "https://jooinn.com/images/fruits-62.jpg",
-  ];
-
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
 
   const handleThumbnailClick = (imageSrc) => {
     setSelectedImage(imageSrc);
   };
 
-  const detailsList = [
-    { icon: callIcon, name: "Call" },
-    { icon: whatsappIcon, name: "WhatsApp" },
-    { icon: saveIcon, name: "Save" },
-    { icon: shareIcon, name: "Share" },
-  ];
+  const handleSave = () => {
+    try {
+      // Fetch existing saved products array from local storage
+      const existingSavedProducts =
+        JSON.parse(localStorage.getItem("savedProducts")) || [];
+
+      // Check if the product to be saved already exists in the array
+      const isProductSaved = existingSavedProducts.some(
+        (savedProduct) => savedProduct.id === product.id
+      );
+
+      // If the product doesn't exist, add it to the array
+      if (!isProductSaved) {
+        const updatedSavedProducts = [...existingSavedProducts, product];
+
+        // Update local storage with the updated array
+        localStorage.setItem(
+          "savedProducts",
+          JSON.stringify(updatedSavedProducts)
+        );
+
+        alert("Product saved successfully!");
+      } else {
+        alert("Product already saved!");
+      }
+    } catch (error) {
+      console.error("Error saving product:", error);
+      alert("Error saving product. Please try again later.");
+    }
+  };
+
+  const handleShare = () => {
+    try {
+      // Share logic here
+      if (navigator.share) {
+        navigator.share({
+          title: product.mobileName,
+          text: "Check out this product!",
+          url: window.location.href,
+        });
+      } else {
+        console.log("Sharing not supported on this browser");
+        alert("Sharing not supported on this browser");
+      }
+    } catch (error) {
+      console.error("Error sharing product:", error);
+      alert("Error sharing product. Please try again later.");
+    }
+  };
+  const handleCallSeller = (phoneNumber) => {
+    const phoneUrl = `tel:${phoneNumber}`;
+    window.open(phoneUrl);
+  };
 
   return (
     <>
@@ -44,7 +94,6 @@ function ThumbnailGallery({ product }) {
             {product.images.map((image, index) => (
               <img
                 key={index}
-                // src={image}
                 src={`${process.env.REACT_APP_API_BASE_URL}uploads/images/${image}`}
                 alt={`Thumbnail ${index + 1}`}
                 onClick={() => handleThumbnailClick(image)}
@@ -62,12 +111,26 @@ function ThumbnailGallery({ product }) {
           </div>
         </div>
         <div className="details-list-seller">
-          {detailsList.map((detail, index) => (
-            <div key={index} className="detail-item">
-              <img src={detail.icon} alt={detail.name} />
-              <span>{detail.name}</span>
-            </div>
-          ))}
+          <div
+            className="detail-item"
+            onClick={() =>
+              handleCallSeller(product.enterAddress.phoneNumber.phoneNumber)
+            }
+          >
+            <img src={callIcon} alt="Call" style={{ cursor: "pointer" }} />
+            <span>Call</span>
+          </div>
+          <div className="detail-item" onClick={handleSave}>
+            <img src={saveIcon} alt="Save" style={{ cursor: "pointer" }} />
+            <span>Save</span>
+          </div>
+          <WhatsappButton
+            phoneNumber={product.enterAddress.phoneNumber.phoneNumber}
+          />
+          <div className="detail-item" onClick={handleShare}>
+            <img src={shareIcon} alt="Share" style={{ cursor: "pointer" }} />
+            <span>Share</span>
+          </div>
         </div>
         <div className="product-container">
           <div className="product-header">
@@ -87,7 +150,7 @@ function ThumbnailGallery({ product }) {
         </div>
         {showproductdetails && (
           <div className="sellerreviw">
-            <hr class="horizontal-line" />
+            <hr className="horizontal-line" />
             <div className="flexviewmr">
               <h3>Seller Details</h3>
               <h5
@@ -104,7 +167,7 @@ function ThumbnailGallery({ product }) {
                   <p>Seller Id - {product.user}</p>
                   <p>Total Published Posts -1</p>
                 </div>
-                <div class="vertical-line"></div>
+                <div className="vertical-line"></div>
                 <div className="righdetail">
                   <p>
                     Mobile No. -{" "}
@@ -121,9 +184,8 @@ function ThumbnailGallery({ product }) {
                 </div>
               </div>
             )}
-            <hr class="horizontal-line" />
+            <hr className="horizontal-line" />
             <h3>Product Ratings & Reviews</h3>
-
             <p style={{ fontSize: "20px" }}>
               4.1{" "}
               <Rate

@@ -83,6 +83,17 @@ function Department() {
   const [recentlyViewedData, setRecentlyViewedData] = useState([]);
   const [savedPostsData, setSavedPostsData] = useState([]);
 
+  const fetchSavedPostsFromLocalStorage = () => {
+    const savedPosts = JSON.parse(localStorage.getItem("savedProducts")) || [];
+    setSavedPostsData(savedPosts);
+  };
+  console.log(savedPostsData);
+
+  useEffect(() => {
+    // Fetch saved posts from local storage when component mounts
+    fetchSavedPostsFromLocalStorage();
+  }, []);
+
   return (
     <>
       {isInitialCardVisible ? (
