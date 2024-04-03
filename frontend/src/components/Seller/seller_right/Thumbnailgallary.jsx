@@ -1,11 +1,11 @@
 import React, { useState } from "react";
+import { Button, Drawer, Rate } from "antd";
 import callIcon from "./icons8-phone-48.png";
 import saveIcon from "./icons8-save-48.png";
 import shareIcon from "./icons8-share-48.png";
 import whatsappIcon from "./icons8-whatsapp-48.png";
 import { FaCaretDown } from "react-icons/fa";
 import Progressbar from "./Progressbar";
-import { Collapse, Rate } from "antd";
 import DynamicReviews from "./Dynamic_review";
 
 // Define WhatsappButton component outside ThumbnailGallery
@@ -27,6 +27,13 @@ function ThumbnailGallery({ product }) {
   const [showproductdetails, setshowproductdetails] = useState(false);
   const [showsellerdetails, setshowsellerdetails] = useState(false);
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
 
   const handleThumbnailClick = (imageSrc) => {
     setSelectedImage(imageSrc);
@@ -185,7 +192,7 @@ function ThumbnailGallery({ product }) {
               </div>
             )}
             <hr className="horizontal-line" />
-            <h3>Product Ratings & Reviews</h3>
+            <h3>Coustomer Ratings & Reviews</h3>
             <p style={{ fontSize: "20px" }}>
               4.1{" "}
               <Rate
@@ -196,6 +203,24 @@ function ThumbnailGallery({ product }) {
               />
             </p>
             <Progressbar />
+            <Button  className="list_add-review-cta rounded pointer" onClick={showDrawer} block>
+              Product Reviews
+            </Button>
+
+            <Drawer width={450} closable={false} onClose={onClose} open={open}>
+              <h3>Product Ratings & Reviews</h3>
+              <p style={{ fontSize: "20px" }}>
+                4.1{" "}
+                <Rate
+                  disabled
+                  allowHalf
+                  defaultValue={2.5}
+                  style={{ fontSize: "30px" }}
+                />
+              </p>
+              <Progressbar />
+              <DynamicReviews />
+            </Drawer>
             <DynamicReviews />
           </div>
         )}

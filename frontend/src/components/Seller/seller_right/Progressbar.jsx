@@ -5,6 +5,7 @@ const Progressbar = () => {
   // Sample data
   const data = {
     ratings: [5, 4, 3, 2, 1],
+    type: ["Excellent","Very Good","Good","Average","Poor"],
     counts: ["51", "9", "31", "7", "2"],
   };
 
@@ -43,6 +44,13 @@ const Progressbar = () => {
                   <span className="_26f_zl">{rating}</span>
                   <span className="_2xBWPJ">★</span>
                 </div>
+              </li>
+            ))}
+          </ul>
+          <ul className="_36LmXx">
+            {data.type.map((count, index) => (
+              <li key={index} className="_28Xb_u">
+                <div className="_144uJVNT">{count}</div>
               </li>
             ))}
           </ul>

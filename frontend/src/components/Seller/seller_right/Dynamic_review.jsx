@@ -22,10 +22,10 @@ function DynamicReview() {
         <div className="container">
           <div className="listing__faq">
             <div className="faq_inner-listing">
-              <h2 className="secondary-color py-2 f-24">Add Your Review</h2>
+              <h2 className="secondary-color py-2 f-24">Seller Review</h2>
               <div className="faq_box-wrapper">
                 <div className="faq_form-box-inner border border-1 border-secondary rounded p-3">
-                  <input
+                  {/* <input
                     type="text"
                     name="username"
                     id="review-username"
@@ -34,7 +34,7 @@ function DynamicReview() {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
-                  />
+                  /> */}
                   <div className="input-group">
                     <textarea
                       aria-label="With textarea"
@@ -51,14 +51,14 @@ function DynamicReview() {
                   </div>
                   <div className="list_add-faq pt-4">
                     <div className="input-group align-items-center">
-                      <input
+                      {/* <input
                         type="file"
                         name="userimage"
                         id="review-userimage"
                         placeholder="Name"
                         className="py-2 rounded-0"
                         required
-                      />
+                      /> */}
                       <div
                         className="list_add-review-cta rounded pointer"
                         onClick={handleAddReview}

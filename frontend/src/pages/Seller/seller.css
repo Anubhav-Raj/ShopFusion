@@ -216,7 +216,7 @@ a:focus {
 
 .minihight {
   min-width: 18%;
-  border: 2px solid #bfbfbf;
+  border: 2px solid #eeeeee;
   padding: 10px;
   margin: 17px;
   display: flex;
@@ -225,7 +225,7 @@ a:focus {
   box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.15);
   justify-content: center;
   align-items: center;
-  background: white;
+  background: rgb(143, 103, 103)71, 144, 144);
 }
 .minihight:hover {
   border: 3px solid #0d6efd;
@@ -357,4 +357,7 @@ p.priceviewmr {
 }
 .sellerreviw {
   padding: 10px;
+}
+.categories.segments.snipcss-jPyl7 {
+  width: 100%;
 }
