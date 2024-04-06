@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./dynamicreview.css";
+
 function DynamicReview() {
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
@@ -10,7 +11,7 @@ function DynamicReview() {
       username: username,
       message: message,
     };
-    setReviews([newReview,...reviews]);
+    setReviews([newReview, ...reviews]);
     setUsername("");
     setMessage("");
   };
@@ -22,6 +23,7 @@ function DynamicReview() {
         <div className="container">
           <div className="listing__faq">
             <div className="faq_inner-listing">
+              <hr className="horizontal-line" />
               <h2 className="secondary-color py-2 f-24">Seller Review</h2>
               <div className="faq_box-wrapper">
                 <div className="faq_form-box-inner border border-1 border-secondary rounded p-3">
