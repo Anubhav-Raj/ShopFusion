@@ -103,6 +103,13 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Payment",
     },
+
+    otherFeatures: [
+      {
+        key: String,
+        value: String,
+      },
+    ],
   },
   {
     timestamps: true,

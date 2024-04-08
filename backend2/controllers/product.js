@@ -132,11 +132,17 @@ exports.createMobile = async (req, res) => {
 };
 exports.createProduct = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     // console.log(req.files);
+
+    // string to json
+    let otherFeature = [];
+    if (!req.body.otherFeature) {
+      otherFeature = JSON.parse(req.body.otherFeature);
+    }
+    // console.log(selectedcategories);
     const requiredFields = [
       "selectBrand",
-      "selectModel",
       "productName",
       "selectedType",
       "selecteddepartment",
@@ -158,7 +164,7 @@ exports.createProduct = async (req, res) => {
     let brandExsist = await Brand.findOne({ brandName: brand });
     // Find or create model
     let modelExsist; // Declare modelExsist outside the if block
-    if (model) {
+    if (model !== "") {
       modelExsist = await ModelBrand.findOne({ name: model });
     }
     //Upload files
@@ -181,6 +187,11 @@ exports.createProduct = async (req, res) => {
     const department = req.body.selecteddepartment;
     const item = req.body.selectedsubcategoriesitem;
     const createdBy = req.body.user;
+    // upload photos exist
+    let productImages = [];
+    if (req.files.uploadPhotos) {
+      productImages = req.files.uploadPhotos.map((photo) => photo.filename);
+    }
     const productData = {
       type: type,
       category: categories,
@@ -205,19 +216,19 @@ exports.createProduct = async (req, res) => {
       enterAddress: req.body.enterAddress,
       googleDriveLink: req.body.googleDriveLink,
       mobileDescription: req.body.mobileDescription,
-      otherFeature: req.body.otherFeature,
-      images: req.files.uploadPhotos.map((photo) => photo.filename),
+      otherFeature: otherFeature,
+      images: productImages,
       file: file,
       video: video,
     };
 
-    const newProduct = new OtherProduct(productData);
-    const createdProduct = await newProduct.save();
-    const user = await User.findByIdAndUpdate(
-      createdBy,
-      { $push: { products: createdProduct._id } },
-      { new: true }
-    ).select("-password");
+    const newProduct = new Product(productData);
+
+    // return console.log(res.locals.user._id);
+
+    await newProduct.save();
+    const user = await User.findById(res.locals.user._id);
+    user.products.push(newProduct._id);
 
     res.json({
       message: " Other Product Created",
