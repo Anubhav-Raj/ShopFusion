@@ -6,6 +6,7 @@ const chooseTypeSchema = new mongoose.Schema(
     name: String,
     desc: String,
   },
+
   {
     timestamps: true,
   }

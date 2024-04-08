@@ -10,6 +10,12 @@ const cSCSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "ChooseCategory",
     },
+    products: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ChooseProduct",
+      },
+    ],
   },
   {
     timestamps: true,

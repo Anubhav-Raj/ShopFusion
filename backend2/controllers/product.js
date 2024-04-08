@@ -229,6 +229,21 @@ exports.createProduct = async (req, res) => {
     await newProduct.save();
     const user = await User.findById(res.locals.user._id);
     user.products.push(newProduct._id);
+    await user.save();
+    const department_val = await ChooseDepartment.findById(
+      req.body.selecteddepartment
+    );
+    department_val.products.push(newProduct._id);
+    await department_val.save();
+    const category_val = await ChooseCategory.findById;
+    req.body.selectedcategories();
+    category_val.products.push(newProduct._id);
+    await category_val.save();
+    const subcategory_val = await ChooseSubCategory.findById(
+      req.body.selectedsubcategories
+    )();
+    subcategory_val.products.push(newProduct._id);
+    await subcategory_val.save();
 
     res.json({
       message: " Other Product Created",

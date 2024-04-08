@@ -16,6 +16,12 @@ const departmentSchema = new mongoose.Schema(
         ref: "ChooseCategory",
       },
     ],
+    products: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ChooseProduct",
+      },
+    ],
   },
   {
     timestamps: true,
