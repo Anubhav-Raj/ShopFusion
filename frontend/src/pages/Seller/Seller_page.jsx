@@ -38,16 +38,15 @@ function SellerPage() {
   const handleDepartmentChange = (departmentId) => {
     // console.log(departmentId);
     const selectedDept = departments.find((dept) => dept._id === departmentId);
-    console.log(selectedDept);
     setSelectedDepartment(selectedDept._id);
     setCategories(selectedDept.category);
+    setSelectedID(selectedDept._id);
     setCardsToShowMap({});
   };
-  const [selectedsubcategories, setSelectedsubcategories] = useState("");
+  const [selectedid, setSelectedID] = useState("");
 
   const handleSubcategoryChange = (subcategoryId, subcategoryName) => {
-    console.log(subcategoryName, subcategoryId);
-    setSelectedsubcategories(subcategoryName);
+    setSelectedID(subcategoryId);
   };
 
   const toggleShowMore = (categoryId) => {
@@ -94,10 +93,11 @@ function SellerPage() {
                     image: subcategory.image,
                     id: subcategory._id,
                   }))}
-                onClick={(subcategoryName) =>
-                  handleSubcategoryChange(subcategoryName)
-                }
+                onClick={(subcategoryID, subcategoryName) => {
+                  handleSubcategoryChange(subcategoryID, subcategoryName); // Call handleSubcategoryChange with subcategoryID and subcategoryName
+                }}
               />
+
               <div className="ploter">
                 {/* Show "More" button if there are more subcategories to show */}
                 {cat.subcategories.length > (cardsToShowMap[cat._id] || 10) && (
@@ -123,7 +123,7 @@ function SellerPage() {
         </div>
       </div>
       <div className="rightdiv" style={{ height: `${rightDivHeight}px` }}>
-        <SellerRight subcategory_id={selectedsubcategories} />
+        <SellerRight id={selectedid} />
       </div>
     </div>
   );

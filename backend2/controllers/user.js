@@ -351,6 +351,7 @@ exports.signup = async (req, res) => {
     const token = jwt.sign({ id: newUser._id }, process.env.SECRET, {
       expiresIn: "1d",
     });
+    console.log("token", token);
 
     res.json({
       savedUser,

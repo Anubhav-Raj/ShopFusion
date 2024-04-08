@@ -1,33 +1,43 @@
-/* eslint-disable jsx-a11y/alt-text */
 import React from "react";
 import { CaretDownOutlined } from "@ant-design/icons";
+import { useGetproductbasedonSubCategoryQuery } from "../../redux/API/products/mobile";
 
 function Category({ category, onClick }) {
-  // console.log(category);
+  const { id, name, image, type } = category;
+  const handleClick = () => {
+    // console.log("Clicked ID:", id);
+    // console.log("Clicked Name:", name);
+    // Call the onClick prop with id and name
+    onClick(id, name);
+  };
   return (
     <div className="col-20">
       <div
         style={{ marginBottom: "0px" }}
         className="content"
-        onClick={() => onClick(category.id, category.name)}
+        onClick={handleClick}
       >
         <div className="icon">
-          {category.image && (
+          {image && (
             <img
               className="departimg"
-              src={`http://localhost:5000/${category.image}`}
-              alt={category.name}
+              src={`http://localhost:5000/${image}`}
+              alt={name}
             />
           )}
           <span className="topings" style={{ fontSize: "1vw" }}>
-            {category.name}
+            {name}
           </span>
           <span className="topings1" style={{ fontSize: "0.8vw" }}>
             0
           </span>
         </div>
       </div>
-      <label>{category.type && <CaretDownOutlined />}</label>
+      {type && (
+        <label>
+          <CaretDownOutlined />
+        </label>
+      )}
     </div>
   );
 }
@@ -38,8 +48,12 @@ function Card({ categories, onClick }) {
       <div className="container">
         <div className="row">
           {categories && categories.length > 0 ? (
-            categories.map((category, index) => (
-              <Category key={index} category={category} onClick={onClick} />
+            categories.map((category) => (
+              <Category
+                key={category.id}
+                category={category}
+                onClick={onClick}
+              />
             ))
           ) : (
             <div>No data found</div>

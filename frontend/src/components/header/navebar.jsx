@@ -21,7 +21,6 @@ function Navbar() {
   const [logoutUser, { isLoading, isSuccess, error, isError }] =
     useLogoutUserMutation();
 
-  console.log(user);
   useEffect(() => {
     toast.success("Login Sucessfully !! ");
   }, []);

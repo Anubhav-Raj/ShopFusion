@@ -5,7 +5,7 @@ import { customFetchBase } from "../coustomFetchBase";
 export const mobileAPI = createApi({
   reducerPath: "mobileAPI",
   baseQuery: customFetchBase,
-  tagTypes: ["mobilepost"],
+  tagTypes: ["mobilepost", "productpost"],
   endpoints: (builder) => ({
     createMobile: builder.mutation({
       query: (mobile) => {
@@ -68,7 +68,6 @@ export const mobileAPI = createApi({
 
       invalidatesTags: ["mobilepost"],
     }),
-
     editMobile: builder.mutation({
       query: (mobile) => {
         // console.log(mobile);
@@ -136,7 +135,6 @@ export const mobileAPI = createApi({
       },
       invalidatesTags: ["mobilepost"],
     }),
-
     deleteMobile: builder.mutation({
       query: (productId) => {
         return {
@@ -148,7 +146,6 @@ export const mobileAPI = createApi({
       },
       invalidatesTags: ["mobilepost"],
     }),
-
     getAllBrand: builder.mutation({
       query: () => {
         return {
@@ -158,7 +155,6 @@ export const mobileAPI = createApi({
         };
       },
     }),
-
     getAllBrandModal: builder.mutation({
       query: (brandId) => {
         return {
@@ -169,7 +165,6 @@ export const mobileAPI = createApi({
         };
       },
     }),
-
     getUserProducts: builder.query({
       query: () => {
         return {
@@ -180,21 +175,16 @@ export const mobileAPI = createApi({
       },
       providesTags: ["mobilepost"],
     }),
-
-    getproductbasedonSubCategory: builder.query({
-      query: (subCategoryName) => {
-        console.log(subCategoryName);
+    getAllproduct: builder.query({
+      query: () => {
         return {
-          url: `product/productsbasedonSubCategory?subCategoryName=${encodeURIComponent(
-            subCategoryName
-          )}`, // Pass subCategoryName as a query parameter
+          url: `product/getallproduct`,
           method: "GET",
           credentials: "include",
         };
       },
       providesTags: ["mobilepost"],
     }),
-
     fetchPayment: builder.mutation({
       query: (formData) => ({
         url: "payment/productpayment",
@@ -212,6 +202,95 @@ export const mobileAPI = createApi({
       }),
       invalidatesTags: ["mobilepost"],
     }),
+    // Review  the   product
+    reviewProduct: builder.mutation({
+      query: (productId) => {
+        return {
+          url: "product/reviewproduct",
+          method: "POST",
+          body: productId,
+          credentials: "include",
+        };
+      },
+      invalidatesTags: ["mobilepost"],
+    }),
+    reviewSaller: builder.mutation({
+      query: (data) => {
+        console.log(data);
+        return {
+          url: "product/sallerReviews",
+          method: "POST",
+          body: data,
+          credentials: "include",
+        };
+      },
+      invalidatesTags: ["mobilepost"],
+    }),
+
+    //CREATE OTHER PRODUCT
+    createProduct: builder.mutation({
+      query: (product) => {
+        console.log(product);
+        const formData = new FormData();
+        formData.append("sellerType", product.sellerType);
+        formData.append("sellerName", product.sellerName);
+        formData.append("gstNumber", product.gstNumber);
+        formData.append("selectBrand", product.selectBrand);
+        formData.append("selectModel", product.selectModel);
+        formData.append("productName", product.productName);
+        formData.append("condition", product.condition);
+        formData.append("yearOfPurchase", product.yearOfPurchase);
+        formData.append("availableQuantity", product.availableQuantity);
+        formData.append("minimumOrder", product.minimumOrder);
+        formData.append("price", product.price);
+        formData.append("paymentMode", product.paymentMode);
+        formData.append("serviceMode", product.serviceMode);
+        formData.append("enterAddress", product.enterAddress);
+        formData.append("googleDriveLink", product.googleDriveLink);
+        formData.append("productDescription", product.mobileDescription);
+        formData.append("selectedType", product.selectedType);
+        formData.append("selecteddepartment", product.selecteddepartment);
+        formData.append("selectedcategories", product.selectedcategories);
+        formData.append("selectedsubcategories", product.selectedsubcategories);
+        formData.append(
+          "selectedsubcategoriesitem",
+          product.selectedsubcategoriesitem
+        );
+        const otherFeatureArray = product.values.otherfeature;
+        const otherFeatureString = JSON.stringify(otherFeatureArray);
+
+        formData.append("otherFeature", otherFeatureString);
+
+        // Handle uploadPhotos
+        product.uploadPhotos.forEach((photo, index) => {
+          formData.append("uploadPhotos", photo.originFileObj);
+        });
+
+        // Handle uploadVideo
+        if (product.uploadVideo && product.uploadVideo.file) {
+          formData.append(
+            "uploadVideo",
+            product.uploadVideo.file.originFileObj
+          );
+        }
+
+        // Handle uploadFile
+        if (product.uploadFile && product.uploadFile.file) {
+          formData.append("uploadFile", product.uploadFile.file.originFileObj);
+        }
+
+        // Append other product-specific fileds or data to FormData
+
+        return {
+          url: "product/createProduct", // Adjust URL according to your backend endpoint for creating other products
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        };
+      },
+
+      invalidatesTags: ["productpost"], // Adjust invalidation tag if needed
+    }),
   }),
 });
 
@@ -224,5 +303,8 @@ export const {
   useDeleteMobileMutation,
   useFetchPaymentMutation,
   useVerifyPaymentMutation,
-  useGetproductbasedonSubCategoryQuery,
+  useGetAllproductQuery,
+  useCreateProductMutation,
+  useReviewProductMutation,
+  useReviewSallerMutation,
 } = mobileAPI;

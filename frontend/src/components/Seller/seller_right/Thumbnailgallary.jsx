@@ -203,7 +203,11 @@ function ThumbnailGallery({ product }) {
               />
             </p>
             <Progressbar />
-            <Button  className="list_add-review-cta rounded pointer" onClick={showDrawer} block>
+            <Button
+              className="list_add-review-cta rounded pointer"
+              onClick={showDrawer}
+              block
+            >
               Product Reviews
             </Button>
 
@@ -214,14 +218,14 @@ function ThumbnailGallery({ product }) {
                 <Rate
                   disabled
                   allowHalf
-                  defaultValue={2.5}
+                  defaultValue={2.5} // Remove the empty expression here
                   style={{ fontSize: "30px" }}
                 />
               </p>
               <Progressbar />
               <DynamicReviews />
             </Drawer>
-            <DynamicReviews />
+            <DynamicReviews productid={product._id} />
           </div>
         )}
       </div>

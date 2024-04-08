@@ -36,6 +36,12 @@ import {
   selectUserData,
   setUser,
 } from "../../../redux/API/user_slice/user.slice.js";
+import {
+  useFetchCategoriesBrandQuery,
+  useFetchAllBrandModalQuery,
+} from "../../../redux/API/admin/brand.js";
+import { useCreateProductMutation } from "../../../redux/API/products/mobile";
+
 const { Option } = AutoComplete;
 
 const getBase64 = (file) =>
@@ -60,76 +66,69 @@ const AddProduct = ({
   const [allbrands] = useGetAllBrandMutation();
   const [brandModal] = useGetAllBrandModalMutation();
   const [createOtherProductMutation] = useCreateOtherProductMutation();
+  const [CreateProductMutation] = useCreateProductMutation();
 
   const dispatch = useDispatch();
 
   const token = localStorage.getItem("ZoneHub");
   const userData = useSelector(selectUserData);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!token) {
-          console.error("Token not available");
-          return;
-        }
-        const { data } = await userByID();
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (!token) {
+  //         console.error("Token not available");
+  //         return;
+  //       }
+  //       const { data } = await userByID();
 
-        dispatch(setUser(data.user));
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
+  //       dispatch(setUser(data.user));
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!token) {
-          console.error("Token not available");
-          return;
-        }
-        const { data } = await allbrands();
-        setListBrends(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
+  //   fetchData();
+  // }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (!token) {
+  //         console.error("Token not available");
+  //         return;
+  //       }
+  //       const { data } = await allbrands();
+  //       setListBrends(data);
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  const handlebrandModal = async (brandId) => {
-    try {
-      if (!token) {
-        console.error("Token not available");
-        return;
-      }
-      const formdata = {
-        brandId: brandId,
-      };
-      const { data } = await brandModal(formdata);
-      setListBrendsModal(data);
-      //console.log(data);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
+  // console.log(selectedcategories);
 
+  const [selectedBrandid, setSelectBrandid] = useState();
+  const { data: brands, isError: brandError } =
+    useFetchCategoriesBrandQuery(selectedcategories);
+  // console.log(brands);
+
+  const { data: allbrandsmodal, isError: allbrandsError } =
+    useFetchAllBrandModalQuery(selectedBrandid);
   const brandList =
-    listBrends &&
-    listBrends.map((element) => {
+    brands &&
+    brands.brands.map((element) => {
       const newPropsObj = {
         value: element._id,
-        label: element.name,
+        label: element.brandName,
       };
 
       return { ...element, ...newPropsObj };
     });
   const brandmodalList =
-    listBrendsModal &&
-    listBrendsModal.map((element) => {
+    allbrandsmodal &&
+    allbrandsmodal.models.map((element) => {
       const newPropsObj = {
         value: element._id,
         label: element.name,
@@ -137,7 +136,6 @@ const AddProduct = ({
 
       return { ...element, ...newPropsObj };
     });
-
   //  have to push into env file
   //   const executeRecaptcha = useRecaptchaV3(
   //     "6LfplmApAAAAAHnl1aBSiQytt43VT1-SkzeNK1Hc"
@@ -517,16 +515,16 @@ const AddProduct = ({
         selectedsubcategoriesitem,
       };
 
-      // Object.entries(formData).forEach(([key, value]) => {
-      //   console.log(`${key}: ${value}`);
-      // });
+      Object.entries(formData).forEach(([key, value]) => {
+        console.log(`${key}: ${value}`);
+      });
 
       // Trigger the createMobile mutation
-      const result = await createOtherProductMutation(formData);
+      const result = await CreateProductMutation(formData);
 
       // Handle the success response
-      console.log("Mobile created successfully:", result);
-      message.success("Mobile created successfully");
+      console.log("Product created successfully:", result);
+      message.success("Product created successfully");
 
       // Reset the form after successful submission
       // resetForm();
@@ -614,7 +612,7 @@ const AddProduct = ({
                 Enter Item Name
               </label>
               <AutoComplete
-                placeholder="Enter Mobile Name"
+                placeholder="Enter Item Name"
                 style={{
                   height: 50,
                   width: "100%",
@@ -628,7 +626,7 @@ const AddProduct = ({
           </div>
           {/* Second row */}
           <div className="formbold-input-flex">
-            {/* <div>
+            <div>
               <label htmlFor="SellerName" className="formbold-form-label">
                 Select Brand
               </label>
@@ -644,7 +642,7 @@ const AddProduct = ({
                   );
                   const t = selectedBrand ? selectedBrand.label : val;
                   setSelectBrand(t);
-                  handlebrandModal(val);
+                  setSelectBrandid(val);
                 }}
                 onSearch={(val) => {
                   setSelectBrand(val);
@@ -680,7 +678,7 @@ const AddProduct = ({
               {selectModelError && (
                 <div className="error-message">{selectModelError}</div>
               )}
-            </div> */}
+            </div>
             <div>
               <label
                 htmlFor="Enter Address "
@@ -702,7 +700,6 @@ const AddProduct = ({
                 <div className="error-message">{enterAddressError}</div>
               )}
             </div>
-
             <div>
               <label
                 htmlFor="mobilename"
@@ -723,43 +720,6 @@ const AddProduct = ({
               {conditionError && (
                 <div className="error-message">{conditionError}</div>
               )}
-            </div>
-            <div>
-              <label
-                htmlFor="Available Quanitity"
-                className="formbold-form-label"
-                style={{ marginBottom: "10px" }}
-              >
-                Available Quanitity
-              </label>
-              <Input
-                style={{
-                  height: 50,
-                }}
-                placeholder="Available Quantity"
-                onChange={(e) => setAvailableQuantity(e.target.value)}
-              />
-              {availableQuantityError && (
-                <div className="error-message">{availableQuantityError}</div>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="Minimum Order"
-                className="formbold-form-label"
-                style={{ marginBottom: "10px" }}
-              >
-                Minimum Order
-              </label>
-              <Input
-                style={{
-                  height: 50,
-                }}
-                placeholder="Minimum Order"
-                type="Number"
-                onChange={(e) => setMinimumOrder(e.target.value)}
-              />
             </div>
           </div>
           {/* third Row  */}
@@ -845,6 +805,44 @@ const AddProduct = ({
           </div>
           <div className="formbold-input-flex">
             <div>
+              <label
+                htmlFor="Available Quanitity"
+                className="formbold-form-label"
+                style={{ marginBottom: "10px" }}
+              >
+                Available Quanitity
+              </label>
+              <Input
+                style={{
+                  height: 50,
+                }}
+                placeholder="Available Quantity"
+                onChange={(e) => setAvailableQuantity(e.target.value)}
+              />
+              {availableQuantityError && (
+                <div className="error-message">{availableQuantityError}</div>
+              )}
+            </div>
+            <div>
+              <label
+                htmlFor="Minimum Order"
+                className="formbold-form-label"
+                style={{ marginBottom: "10px" }}
+              >
+                Minimum Order
+              </label>
+              <Input
+                style={{
+                  height: 50,
+                }}
+                placeholder="Minimum Order"
+                type="Number"
+                onChange={(e) => setMinimumOrder(e.target.value)}
+              />
+            </div>
+          </div>
+          {/* <div className="formbold-input-flex">
+            <div>
               <label htmlFor="Select Brand" className="formbold-form-label">
                 Select Brand
               </label>
@@ -855,12 +853,26 @@ const AddProduct = ({
                   height: 50,
                   width: "100%",
                 }}
-                onChange={(e) => setListBrends(e.target.value)}
-              >
-                <Option>Brand1</Option>
-                <Option>Brand1</Option>
-                <Option>Brand1</Option>
-              </Select>
+                value={selectBrand}
+                filterOption={(inputValue, option) =>
+                  option.label
+                    .toLowerCase()
+                    .indexOf(inputValue.toLowerCase()) !== -1
+                }
+                onSelect={async (val) => {
+                  const selectedBrand = await brandList.find(
+                    (item) => item.value === val
+                  );
+                  const t = selectedBrand ? selectedBrand.label : val;
+                  setSelectBrand(t);
+                  setSelectBrandid(val);
+                }}
+                onSearch={(val) => {
+                  setSelectBrand(val);
+                }}
+                options={brandList}
+              />
+
               {yearOfPurchaseError && (
                 <div className="error-message">{yearOfPurchaseError}</div>
               )}
@@ -877,16 +889,14 @@ const AddProduct = ({
                   width: "100%",
                 }}
                 onChange={(e) => setListBrends(e.target.value)}
-              >
-                <Option>Brand Moadl 1</Option>
-                <Option>Brand Modal 1</Option>
-                <Option>Brand Modal 1</Option>
-              </Select>
+                options={brandmodalList}
+              />
+
               {yearOfPurchaseError && (
                 <div className="error-message">{yearOfPurchaseError}</div>
               )}
             </div>
-          </div>
+          </div> */}
 
           {/*Fifth Row */}
           <div className="formbold-input-flex">

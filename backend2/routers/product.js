@@ -41,10 +41,7 @@ router.post("/deletemobile", deserializeUser, productCon.deletemobile);
 router.get("/allbrands", deserializeUser, productCon.getAllBrands);
 router.post("/allmodelsonmodel", deserializeUser, productCon.getModels);
 router.get("/userallproduct", deserializeUser, productCon.userAllProduct);
-router.get(
-  "/productsbasedonSubCategory",
-  productCon.productsbasedonSubCategory
-);
+router.get("/getallproduct", productCon.getAllProduct);
 
 router.post(
   "/createbrand",
@@ -60,5 +57,7 @@ router.post(
 );
 router.post("/fetchallbrandmodal", deserializeUser, productCon.getModels);
 router.post("/subcategoriesProducts", productCon.fetchAllSubCategoriesproduct);
+router.post("/sallerReviews", deserializeUser, productCon.sallerReview);
+router.post("/productReviews", deserializeUser, productCon.productReview);
 
 module.exports = router;

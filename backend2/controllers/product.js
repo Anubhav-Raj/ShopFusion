@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const Product = require("../models/product");
 const User = require("../models/user");
+const OtherProduct = require("../models/otherProduct");
 const mongoose = require("mongoose");
 const axios = require("axios");
 const Brand = require("../models/brand");
@@ -12,89 +13,6 @@ const Payment = require("../models/payment");
 const { v4: uuidv4 } = require("uuid");
 const BrandModal = require("../models/model_brand");
 
-// exports.createMobile = async (req, res) => {
-//   try {
-//     console.log(req.body);
-//     console.log(req.files);
-//     // return;
-//     const { recaptchaToken } = req.body;
-//     let success = true;
-//     const SECRET_KEY_v3 = process.env.RECAPTCHA_SECRET_KEY_v3;
-//     const recaptchaResponse = await axios.post(
-//       `https://www.google.com/recaptcha/api/siteverify?secret=${SECRET_KEY_v3}&response=${recaptchaToken}`
-//     );
-
-//     if (
-//       !recaptchaResponse.data.success ||
-//       recaptchaResponse.data.score < 0.5 ||
-//       recaptchaResponse.data.action !== "login"
-//     ) {
-//       success = false;
-//     }
-//     const brand = req.body.selectBrand.toLowerCase().trim();
-//     const model = req.body.selectModel.toLowerCase().trim();
-//     // if brand exsist then create model
-//     const brandExsist = await Brand.findOne({ name: brand });
-
-//     const modelExsist = await ModelBrand.findOne({ name: model });
-
-//     var file = req.files.uploadFile ? req.files.uploadFile[0].filename : "";
-//     var video = req.files.uploadVideo ? req.files.uploadVideo[0].filename : "";
-
-//     const p = new Product({
-//       type: req.body.selectedType,
-//       department: req.body.selecteddepartment,
-//       category: req.body.selectedcategories,
-//       subCategory: req.body.selectedsubcategories,
-//       item: req.body.selectedsubcategoriesitem,
-//       user: req.user._id,
-//       sellerType: req.body.sellerType,
-//       sellerName: req.body.sellerName,
-//       gstNumber: req.body.gstNumber,
-//       color: req.body.color,
-//       selectBrand: brandExsist._id,
-//       selectModel: modelExsist._id,
-//       mobileName: req.body.mobileName,
-//       condition: req.body.condition,
-//       yearOfPurchase: req.body.yearOfPurchase,
-//       availableQuantity: req.body.availableQuantity,
-//       minimumOrder: req.body.minimumOrder,
-//       price: req.body.price,
-//       paymentMode: req.body.paymentMode,
-//       serviceMode: req.body.serviceMode,
-//       enterAddress: req.body.enterAddress,
-//       googleDriveLink: req.body.googleDriveLink,
-//       mobileDescription: req.body.mobileDescription,
-//       images: req.files.uploadPhotos.map((photo) => photo.filename),
-//       file: file,
-//       video: video,
-//     });
-//     await p.save();
-//     const user = await User.findById(req.user._id)
-//       .select("-password")
-//       .populate("products")
-//       .populate("addresses");
-//     user.products.push(p._id);
-//     await user.save();
-//     res.json({
-//       message: "Product Created",
-//       success,
-//       isError: false,
-//       user: user,
-//     });
-
-//     return {
-//       valid: success,
-//     };
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       error: error.message,
-//       message: "Verify Faild",
-//       isError: true,
-//     });
-//   }
-// };
 exports.createMobile = async (req, res) => {
   try {
     // Validate incoming request
@@ -140,8 +58,7 @@ exports.createMobile = async (req, res) => {
     // Find or create model
     let modelExsist = await ModelBrand.findOne({ name: model });
     // Upload files
-    // console.log(brandExsist);
-    // console.log(model);
+
     if (!brandExsist || !modelExsist) {
       return res.status(500).json({
         error: "Brand or model does not exist.",
@@ -192,7 +109,6 @@ exports.createMobile = async (req, res) => {
 
     const newProduct = new Product(productData);
     const createdProduct = await newProduct.save();
-    // console.log(createdProduct);
     const user = await User.findByIdAndUpdate(
       createdBy,
       { $push: { products: createdProduct._id } },
@@ -216,10 +132,109 @@ exports.createMobile = async (req, res) => {
 };
 exports.createProduct = async (req, res) => {
   try {
-    // console.log(req.body);
-    res.json({ products: "Creted Product", isError: false });
-  } catch (error) {}
+    console.log(req.body);
+    // console.log(req.files);
+    const requiredFields = [
+      "selectBrand",
+      "selectModel",
+      "productName",
+      "selectedType",
+      "selecteddepartment",
+      "selectedcategories",
+      "selectedsubcategories",
+    ];
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        return res.status(400).json({
+          message: `${field} is required.`,
+          isError: true,
+        });
+      }
+    }
+
+    const brand = req.body.selectBrand.toLowerCase().trim();
+    const model = req.body.selectModel.trim();
+    // Find or create brand
+    let brandExsist = await Brand.findOne({ brandName: brand });
+    // Find or create model
+    let modelExsist; // Declare modelExsist outside the if block
+    if (model) {
+      modelExsist = await ModelBrand.findOne({ name: model });
+    }
+    //Upload files
+    if (!brandExsist) {
+      return res.status(500).json({
+        error: "Brand or model does not exist.",
+        message: "Failed to create product.",
+        isError: true,
+      });
+    }
+
+    const file = req.files.uploadFile ? req.files.uploadFile[0].filename : "";
+    const video = req.files.uploadVideo
+      ? req.files.uploadVideo[0].filename
+      : "";
+
+    const type = req.body.selectedType;
+    const categories = req.body.selectedcategories;
+    const subCategory = req.body.selectedsubcategories;
+    const department = req.body.selecteddepartment;
+    const item = req.body.selectedsubcategoriesitem;
+    const createdBy = req.body.user;
+    const productData = {
+      type: type,
+      category: categories,
+      subCategory: subCategory,
+      // item: item,
+      department: department,
+      user: createdBy,
+      sellerType: req.body.sellerType,
+      sellerName: req.body.sellerName,
+      gstNumber: req.body.gstNumber,
+      color: req.body.color,
+      selectBrand: brandExsist._id,
+      selectModel: modelExsist ? modelExsist._id : null, // Check if modelExsist is defined
+      mobileName: req.body.mobileName,
+      condition: req.body.condition,
+      yearOfPurchase: req.body.yearOfPurchase,
+      availableQuantity: req.body.availableQuantity,
+      minimumOrder: req.body.minimumOrder,
+      price: req.body.price,
+      paymentMode: req.body.paymentMode,
+      serviceMode: req.body.serviceMode,
+      enterAddress: req.body.enterAddress,
+      googleDriveLink: req.body.googleDriveLink,
+      mobileDescription: req.body.mobileDescription,
+      otherFeature: req.body.otherFeature,
+      images: req.files.uploadPhotos.map((photo) => photo.filename),
+      file: file,
+      video: video,
+    };
+
+    const newProduct = new OtherProduct(productData);
+    const createdProduct = await newProduct.save();
+    const user = await User.findByIdAndUpdate(
+      createdBy,
+      { $push: { products: createdProduct._id } },
+      { new: true }
+    ).select("-password");
+
+    res.json({
+      message: " Other Product Created",
+      success: true,
+      isError: false,
+      user: user,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: error.message,
+      message: "Failed to create product.",
+      isError: true,
+    });
+  }
 };
+
 exports.editmobile = async (req, res) => {
   try {
     console.log(req.body);
@@ -545,11 +560,9 @@ exports.userAllProduct = async (req, res) => {
 };
 
 //  feth prodct based on sub category
-exports.productsbasedonSubCategory = async (req, res) => {
+exports.getAllProduct = async (req, res) => {
   try {
-    const { subcategoryName } = req.query;
-    // console.log(subcategoryName);
-    const products = await Product.find({ subcategory_id: subcategoryName })
+    const products = await Product.find()
       .populate("selectBrand")
       .populate("selectModel")
       .populate("enterAddress");
@@ -655,4 +668,38 @@ exports.fetchAllSubCategoriesproduct = async (req, res) => {
     // console.log(products);
     res.json({ products: products, isError: false });
   } catch (error) {}
+};
+
+// review And Rating
+exports.sallerReview = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { sellerId, rating, review } = req.body;
+    const reviewData = {
+      sellerId,
+      rating,
+      review,
+    };
+    const newReview = new SellerReview(reviewData);
+    await newReview.save();
+    res.status(200).json({ message: "Review added", isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
+};
+
+exports.productReview = async (req, res) => {
+  try {
+    const { productId, rating, review } = req.body;
+    const reviewData = {
+      productId,
+      rating,
+      review,
+    };
+    const newReview = new ProductReview(reviewData);
+    await newReview.save();
+    res.status(200).json({ message: "Review added", isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
 };

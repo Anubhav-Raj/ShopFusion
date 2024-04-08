@@ -28,15 +28,24 @@ const My_post = () => {
   const [selecteddepartment, setSelectedDepartment] = useState();
   const [selectedcategories, setSelectedcategories] = useState();
   const [selectedsubcategories, setSelectedsubcategories] = useState();
+  const [checkSubCategory, setCheckSubCategory] = useState("");
   const handleSelectedDepartment = (value) => {
+    console.log(value);
     setSelectedDepartment(value);
   };
   const handleSelectedcategories = (value) => {
     setCategories(value);
   };
   const handleSelectedSubcategories = (value) => {
+    const selectedSubcategory = allsubcategories.find(
+      (item) => item.value === value
+    );
+    if (selectedSubcategory) {
+      setCheckSubCategory(selectedSubcategory.label);
+    }
     setSubCategories(value);
   };
+
   const handleSelectedSubcategoriesitem = (value) => {
     setItem(value);
   };
@@ -79,7 +88,7 @@ const My_post = () => {
       setDepartment(newobjArray);
     }
   }, [departmentLoading, selectedType, departmentData]);
-  console.log("departmentData", department);
+  // console.log("departmentData", department);
 
   //Categories Fetch
   const { data: categoriesData, isLoading: categoriesLoading } =
@@ -135,7 +144,11 @@ const My_post = () => {
       setAllSelectedsubcategoriesitem(newobjArray);
     }
   }, [itemLoading, selectedsubcategories, itemData]);
-
+  console.log(allsubcategories);
+  // console.log("selectedType", selectedType);
+  // console.log("selecteddepartment", selecteddepartment);
+  // console.log("selectedcategories", categories);
+  // console.log("selectedsubcategories", subcategories);
   return (
     <>
       <div className="formbold-main-wrapper" style={{ paddingBottom: "0px" }}>
@@ -250,8 +263,32 @@ const My_post = () => {
         </div>
       </div>
 
-      {tableShow && (
-        <AddMobile
+      {edittableshow && <EditMobile id={id} setEditTable={setEditTable} />}
+
+      {tableShow &&
+      selectedType &&
+      selecteddepartment &&
+      categories &&
+      checkSubCategory === "Mobile Phones" ? (
+        <>
+          <AddMobile
+            selectedType={selectedType}
+            selecteddepartment={selecteddepartment}
+            selectedcategories={categories}
+            selectedsubcategories={subcategories}
+            selectedsubcategoriesitem={item}
+            setTableShow={setTableShow}
+          />
+        </>
+      ) : null}
+
+      {tableShow &&
+      selectedType &&
+      selecteddepartment &&
+      categories &&
+      checkSubCategory &&
+      checkSubCategory !== "Mobile Phones" ? (
+        <AddProduct
           selectedType={selectedType}
           selecteddepartment={selecteddepartment}
           selectedcategories={categories}
@@ -259,24 +296,8 @@ const My_post = () => {
           selectedsubcategoriesitem={item}
           setTableShow={setTableShow}
         />
-      )}
-      {edittableshow && <EditMobile id={id} setEditTable={setEditTable} />}
-
-      {selectedType === "Seller" &&
-      selecteddepartment === "Electronics & Electrical Supplies" &&
-      categories === "Mobile Phones, Accessories & Parts" &&
-      subcategories === "Mobile Phones" &&
-      item === "Android Mobile Phones" ? (
-        <></>
       ) : null}
-      {/* <AddProduct
-        selectedType={selectedType}
-        selecteddepartment={selecteddepartment}
-        selectedcategories={categories}
-        selectedsubcategories={subcategories}
-        selectedsubcategoriesitem={item}
-        setTableShow={setTableShow}
-      /> */}
+
       <Table_post
         setTableShow={setTableShow}
         setEditTable={setEditTable}

@@ -1,24 +1,56 @@
 import React, { useState } from "react";
 import "./dynamicreview.css";
+import { Rate } from "antd";
+import { useReviewSallerMutation } from "../../../redux/API/products/mobile";
+import toast from "react-hot-toast";
+import { useAppSelector } from "../../../redux/store";
 
-function DynamicReview() {
-  const [username, setUsername] = useState("");
+function DynamicReview({ productid }) {
+  const user = useAppSelector((state) => state.user2.user);
+
   const [message, setMessage] = useState("");
   const [reviews, setReviews] = useState([]);
-
-  const handleAddReview = () => {
+  const [value, setValue] = useState(null); // State for rating value
+  const desc = ["terrible", "bad", "normal", "good", "wonderful"];
+  const [ReviewSaller, { loading, error }] = useReviewSallerMutation();
+  const handleAddReview = async () => {
+    let newMessage = message; // Use the provided message by default
+    // If no message is provided but there's a rating, set the description as the message
+    if (!message && value !== null) {
+      newMessage = desc[Math.floor(value) - 1]; // Index starts from 0, so subtract 1
+    }
     const newReview = {
-      username: username,
-      message: message,
+      message: newMessage, // Use the new message
+      rating: value, // Include rating in the new review object
     };
+    try {
+      const response = await ReviewSaller({
+        productid,
+        message: newMessage,
+        rating: value,
+      });
+      console.log(response);
+      if (response && response.data && response.data.reviewSaller) {
+        // Handle successful response
+        toast.success("Review submitted successfully");
+      } else {
+        // Handle unsuccessful response
+
+        toast.error("Failed to submit review");
+      }
+    } catch (err) {
+      console.error("Error adding review:", err);
+      toast.error("An error occurred while submitting review");
+    }
+
     setReviews([newReview, ...reviews]);
-    setUsername("");
     setMessage("");
+    setValue(null); // Reset rating value after adding review
+    // ReviewSaller({ productid, message: newMessage, rating: value }); // Use the new message for the API call
   };
 
   return (
     <>
-      {/* Dynamic Reviews Section */}
       <section className="faq_dynamic-main">
         <div className="container">
           <div className="listing__faq">
@@ -27,16 +59,12 @@ function DynamicReview() {
               <h2 className="secondary-color py-2 f-24">Seller Review</h2>
               <div className="faq_box-wrapper">
                 <div className="faq_form-box-inner border border-1 border-secondary rounded p-3">
-                  {/* <input
-                    type="text"
-                    name="username"
-                    id="review-username"
-                    placeholder="Name"
-                    className="w-100 py-2 form-control rounded-0"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                  /> */}
+                  <Rate
+                    tooltips={desc}
+                    allowHalf
+                    value={value}
+                    onChange={(newValue) => setValue(newValue)}
+                  />
                   <div className="input-group">
                     <textarea
                       aria-label="With textarea"
@@ -53,20 +81,16 @@ function DynamicReview() {
                   </div>
                   <div className="list_add-faq pt-4">
                     <div className="input-group align-items-center">
-                      {/* <input
-                        type="file"
-                        name="userimage"
-                        id="review-userimage"
-                        placeholder="Name"
-                        className="py-2 rounded-0"
-                        required
-                      /> */}
-                      <div
-                        className="list_add-review-cta rounded pointer"
-                        onClick={handleAddReview}
-                      >
-                        Add Review
-                      </div>
+                      {user ? (
+                        <div
+                          className="list_add-review-cta rounded pointer"
+                          onClick={handleAddReview}
+                        >
+                          Add Review
+                        </div>
+                      ) : (
+                        <label>Login To Give Review</label>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -76,7 +100,6 @@ function DynamicReview() {
         </div>
       </section>
 
-      {/* Content Wrapper FAQ */}
       <section className="content-wrapper-faq py-2">
         <div className="container">
           {reviews.length > 0 ? (
@@ -97,6 +120,9 @@ function DynamicReview() {
                     </h3>
                   </div>
                   <p className="review_answer">{review.message}</p>
+                  <p className="review_rating">
+                    Rating: {review.rating ? review.rating : "No rating"}
+                  </p>
                 </div>
               ))}
             </div>
