@@ -229,21 +229,21 @@ exports.createProduct = async (req, res) => {
     const user = await User.findById(res.locals.user._id);
     user.products.push(newProduct._id);
     await user.save();
-    const department_val = await ChooseDepartment.findById(
-      req.body.selecteddepartment
-    );
-    department_val.products.push(newProduct._id);
-    await department_val.save();
-    const category_val = await ChooseCategory.findById(
-      req.body.selectedcategories
-    );
-    category_val.products.push(newProduct._id);
-    await category_val.save();
-    const subcategory_val = await ChooseSubCategory.findById(
-      req.body.selectedsubcategories
-    );
-    subcategory_val.products.push(newProduct._id);
-    await subcategory_val.save();
+    // const department_val = await ChooseDepartment.findById(
+    //   req.body.selecteddepartment
+    // );
+    // department_val.products.push(newProduct._id);
+    // await department_val.save();
+    // const category_val = await ChooseCategory.findById(
+    //   req.body.selectedcategories
+    // );
+    // category_val.products.push(newProduct._id);
+    // await category_val.save();
+    // const subcategory_val = await ChooseSubCategory.findById(
+    //   req.body.selectedsubcategories
+    // );
+    // subcategory_val.products.push(newProduct._id);
+    // await subcategory_val.save();
 
     res.json({
       message: " Other Product Created",
@@ -748,6 +748,45 @@ exports.productReview = async (req, res) => {
     const newReview = new ProductReview(reviewData);
     await newReview.save();
     res.status(200).json({ message: "Review added", isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
+};
+
+//fetching products based on
+
+exports.getAllProductsInCategory = async (req, res) => {
+  try {
+    const category = req.params.id;
+    const products = await Product.find({ category })
+      .populate("selectBrand")
+      .populate("selectModel")
+      .populate("enterAddress");
+    res.json({ products: products, isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
+};
+exports.getAllProductsInDepartment = async (req, res) => {
+  try {
+    const department = req.params.id;
+    const products = await Product.find({ department })
+      .populate("selectBrand")
+      .populate("selectModel")
+      .populate("enterAddress");
+    res.json({ products: products, isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
+};
+exports.getAllProductsInSubCategory = async (req, res) => {
+  try {
+    const subCategory = req.params.id;
+    const products = await Product.find({ subCategory })
+      .populate("selectBrand")
+      .populate("selectModel")
+      .populate("enterAddress");
+    res.json({ products: products, isError: false });
   } catch (error) {
     res.status(500).json({ message: error.message, isError: true });
   }

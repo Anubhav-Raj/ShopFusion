@@ -64,4 +64,18 @@ router.post("/sallerReviews", deserializeUser, productCon.sallerReview);
 router.get("/getsallerReviews/:id", productCon.getsellerReview);
 router.post("/productReviews", deserializeUser, productCon.productReview);
 
+// get products based on category
+router.get("/getProductsByCategory/:id", productCon.getAllProductsInCategory);
+
+// get products based on subcategory
+router.get(
+  "/getProductsBySubCategory/:id",
+  productCon.getAllProductsInSubCategory
+);
+
+// get products based on department
+router.get(
+  "/getProductsByDepartment/:id",
+  productCon.getAllProductsInDepartment
+);
 module.exports = router;
