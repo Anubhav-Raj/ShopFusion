@@ -196,7 +196,16 @@ export const mobileAPI = createApi({
       },
       providesTags: ["mobilepost"],
     }),
-
+    getDepartmentsProduct: builder.query({
+      query: (id) => {
+        return {
+          url: `product/getProductsByDepartment/${id}`,
+          method: "GET",
+          credentials: "include",
+        };
+      },
+      providesTags: ["mobilepost"],
+    }),
     fetchPayment: builder.mutation({
       query: (formData) => ({
         url: "payment/productpayment",
@@ -327,6 +336,7 @@ export const {
   useFetchPaymentMutation,
   useVerifyPaymentMutation,
   useGetAllproductQuery,
+  useGetDepartmentsProductQuery,
   useGetSubCategoryproductQuery,
   useCreateProductMutation,
   useReviewProductMutation,

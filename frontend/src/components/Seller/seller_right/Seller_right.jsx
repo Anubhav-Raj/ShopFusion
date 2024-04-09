@@ -2,56 +2,48 @@ import React, { useEffect } from "react";
 import Thumbnailgallary from "./Thumbnailgallary";
 import Progressbar from "./Progressbar";
 import "./seller_right.css";
-import { useGetAllproductQuery } from "../../../redux/API/products/mobile";
 import { useGetSubCategoryproductQuery } from "../../../redux/API/products/mobile";
+import { useGetDepartmentsProductQuery } from "../../../redux/API/products/mobile";
+import { useGetAllproductQuery } from "../../../redux/API/products/mobile";
+import { Spin } from "antd";
 
-function SubcategoryDataFetcher({ id }) {
-  // Fetch data for a specific subcategory
-  const {
-    data: subcategoryData,
-    isLoading: subcategoryLoading,
-    isError: subcategoryError,
-  } = useGetSubCategoryproductQuery(id);
+function SubcategoryDataFetcher({ data }) {
+  const { id, type } = data;
 
-  useEffect(() => {
-    console.log("ID:", id);
-  }, [id]);
+  // Determine which hook to use based on the type
+  const fetchHook =
+    type === "subcategory"
+      ? useGetSubCategoryproductQuery
+      : type === "dept"
+      ? useGetDepartmentsProductQuery
+      : useGetAllproductQuery;
 
-  if (subcategoryLoading) {
-    return <Progressbar />;
+  const { data: fetchedData, isLoading, isError } = fetchHook(id);
+
+  useEffect(() => {}, [id, type]);
+
+  if (isLoading) {
+    return <Spin tip="Loading" size="large"></Spin>;
   }
 
-  if (subcategoryError) {
-    return <div>No Subcategory Data</div>;
+  if (isError) {
+    return (
+      <div>{`No ${
+        type === "subcategory"
+          ? "Subcategory"
+          : type === "dept"
+          ? "Department"
+          : "All"
+      } Data`}</div>
+    );
   }
 
-  return <SellerRightWithData data={subcategoryData} />;
+  return <SellerRightWithData data={fetchedData} />;
 }
 
 function SellerRightWithData({ data }) {
-  const {
-    data: allProductData,
-    isLoading: allProductLoading,
-    isError: allProductError,
-  } = useGetAllproductQuery();
-
-  if (allProductLoading) {
-    return <Progressbar />;
-  }
-
-  if (allProductError) {
-    return <div>No All Product Data</div>;
-  }
-
-  // Determine which data to render based on availability
   const productsToRender =
-    data && data.products && data.products.length > 0
-      ? data.products
-      : allProductData &&
-        allProductData.products &&
-        allProductData.products.length > 0
-      ? allProductData.products
-      : [];
+    data && data.products && data.products.length > 0 ? data.products : [];
 
   return (
     <>
@@ -62,22 +54,16 @@ function SellerRightWithData({ data }) {
           </div>
         ))
       ) : (
-        <div>No products found</div>
+        <div style={{ margin: "10rem" }}>No products found</div>
       )}
     </>
   );
 }
 
-function Seller_right({ id }) {
-  console.log(id);
-
+function Seller_right({ data }) {
   return (
     <>
-      {id ? (
-        <SubcategoryDataFetcher id={id} />
-      ) : (
-        <SellerRightWithData data={null} />
-      )}
+      <SubcategoryDataFetcher data={data} />
     </>
   );
 }

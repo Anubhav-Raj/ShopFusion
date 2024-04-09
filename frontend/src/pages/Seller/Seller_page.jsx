@@ -40,13 +40,13 @@ function SellerPage() {
     const selectedDept = departments.find((dept) => dept._id === departmentId);
     setSelectedDepartment(selectedDept._id);
     setCategories(selectedDept.category);
-    setSelectedID(selectedDept._id);
+    setSelectedID({ id: selectedDept._id, type: "dept" });
     setCardsToShowMap({});
   };
-  const [selectedid, setSelectedID] = useState("");
+  const [selectedid, setSelectedID] = useState({});
 
   const handleSubcategoryChange = (subcategoryId, subcategoryName) => {
-    setSelectedID(subcategoryId);
+    setSelectedID({ id: subcategoryId, type: "subcategory" });
   };
 
   const toggleShowMore = (categoryId) => {
@@ -66,6 +66,7 @@ function SellerPage() {
   return (
     <div className="seller_main">
       <div className="box-o3x style-bd5">
+        <LocationList />
         <div id="heightmesuring">
           <div className="sjiiudbs333">
             <h3 className="titlesh1">DEPARTMENTS</h3>
@@ -127,7 +128,9 @@ function SellerPage() {
         </div>
       </div>
       <div className="rightdiv" style={{ height: `${rightDivHeight}px` }}>
-        <SellerRight id={selectedid} />
+        <DropdownRight />
+
+        <SellerRight data={selectedid} />
       </div>
     </div>
   );

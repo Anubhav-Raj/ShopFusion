@@ -120,16 +120,17 @@ ul.dropdown-r42 {
   position: absolute;
   padding: 10px 0px;
   width: 200%;
-  left: -70px;
+  /* left: -70px; */
   border-radius: 4px;
   filter: drop-shadow(2px 4px 6px black);
 }
 
 ul.dropdown-r42 > li {
-  background-color: #91b9b9;
+  background-color: #ffff;
+  padding: 0px 5px 0px 0px;
 }
 ul.dropdown-r42 > li > h4 {
-  background: cadetblue;
+  background: #ffff;
   display: flex;
   padding: 2px 9px;
   justify-content: flex-start;
@@ -141,7 +142,7 @@ ul.dropdown-r42 > li > h4 {
 
 #selectAllContainer {
   display: flex;
-  background: #5e9c9c;
+  background: #ffff;
   align-items: center;
   padding: 3px;
   color: black;
