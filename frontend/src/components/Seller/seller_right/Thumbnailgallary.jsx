@@ -7,6 +7,7 @@ import whatsappIcon from "./icons8-whatsapp-48.png";
 import { FaCaretDown } from "react-icons/fa";
 import Progressbar from "./Progressbar";
 import DynamicReviews from "./Dynamic_review";
+import { useGetreviewSallerQuery } from "../../../redux/API/products/mobile";
 
 // Define WhatsappButton component outside ThumbnailGallery
 function WhatsappButton({ phoneNumber }) {
@@ -178,7 +179,7 @@ function ThumbnailGallery({ product }) {
                 <div className="righdetail">
                   <p>
                     Mobile No. -{" "}
-                    {product.enterAddress.phoneNumber.show
+                    {product.enterAddress.phoneNumber.show === true
                       ? product.enterAddress.phoneNumber.phoneNumber
                       : null}
                   </p>
@@ -223,9 +224,9 @@ function ThumbnailGallery({ product }) {
                 />
               </p>
               <Progressbar />
-              <DynamicReviews />
+              <DynamicReviews productid={product._id} Sellerid={product.user} />
             </Drawer>
-            <DynamicReviews productid={product._id} />
+            <DynamicReviews productid={product._id} Sellerid={product.user} />
           </div>
         )}
       </div>

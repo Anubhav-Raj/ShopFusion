@@ -10,14 +10,13 @@ export const OtherProductAPI = createApi({
   endpoints: (builder) => ({
     createOtherProduct: builder.mutation({
       query: (product) => {
-        console.log(product);
         const formData = new FormData();
         formData.append("sellerType", product.sellerType);
         formData.append("sellerName", product.sellerName);
         formData.append("gstNumber", product.gstNumber);
         // formData.append("color", product.color);
-        // formData.append("selectBrand", product.selectBrand);
-        // formData.append("selectModel", product.selectModel);
+        formData.append("selectBrand", product.selectBrand);
+        //formData.append("selectModel", product.selectModel);
         formData.append("productName", product.productName);
         formData.append("condition", product.condition);
         // formData.append("yearOfPurchase", product.yearOfPurchase);

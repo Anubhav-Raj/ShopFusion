@@ -185,6 +185,18 @@ export const mobileAPI = createApi({
       },
       providesTags: ["mobilepost"],
     }),
+    getSubCategoryproduct: builder.query({
+      query: (id) => {
+        console.log("Entering", id);
+        return {
+          url: `product/subcategoriesProducts/${id}`,
+          method: "GET",
+          credentials: "include",
+        };
+      },
+      providesTags: ["mobilepost"],
+    }),
+
     fetchPayment: builder.mutation({
       query: (formData) => ({
         url: "payment/productpayment",
@@ -213,6 +225,17 @@ export const mobileAPI = createApi({
         };
       },
       invalidatesTags: ["mobilepost"],
+    }),
+    getreviewSaller: builder.query({
+      query: (id) => {
+        console.log("Entering", id);
+        return {
+          url: `product/getsallerReviews/${id}`,
+          method: "GET",
+          credentials: "include",
+        };
+      },
+      providesTags: ["mobilepost"],
     }),
     reviewSaller: builder.mutation({
       query: (data) => {
@@ -304,7 +327,9 @@ export const {
   useFetchPaymentMutation,
   useVerifyPaymentMutation,
   useGetAllproductQuery,
+  useGetSubCategoryproductQuery,
   useCreateProductMutation,
   useReviewProductMutation,
   useReviewSallerMutation,
+  useGetreviewSallerQuery,
 } = mobileAPI;

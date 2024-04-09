@@ -64,8 +64,8 @@ const productSchema = new mongoose.Schema(
     },
     minimumOrder: {
       type: Number,
-      default: 1,
-      min: 1,
+      // default: 1,
+      // min: 1,
     },
     paymentMode: String,
     serviceMode: String,

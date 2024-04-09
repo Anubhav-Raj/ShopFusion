@@ -8,13 +8,16 @@ import {
   usePublicfetchProductQuery,
 } from "../../redux/API/publicApi/publicApi";
 import toast from "react-hot-toast";
+import { useGetSubCategoryproductQuery } from "../../redux/API/products/mobile";
 
 function Department() {
   const [departments, setDepartments] = useState([]);
   const { data: departmentData, isLoding } = usePublicfetchAllDepartmentQuery(
     "66051c66c5d6688767d349e2"
   );
+
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  // console.log("selectedDepartment", selectedDepartment);
 
   // Update selectedDepartment when departments change
   useEffect(() => {
@@ -43,6 +46,7 @@ function Department() {
       setSelectedCatagories(catagorie[0]._id);
     }
   }, [catagorie]);
+  console.log("catagorie", catagorie);
 
   useEffect(() => {
     if (catagoriesData && catagoriesData.Categories) {
@@ -67,7 +71,9 @@ function Department() {
     }
   }, [subcategoriesData]);
 
-  const { data: itemData } = usePublicfetchProductQuery(selectedsubcategories);
+  const { data: itemData } = useGetSubCategoryproductQuery(
+    selectedsubcategories
+  );
 
   const [isInitialCardVisible, setIsInitialCardVisible] = useState(true);
 
@@ -87,7 +93,7 @@ function Department() {
     const savedPosts = JSON.parse(localStorage.getItem("savedProducts")) || [];
     setSavedPostsData(savedPosts);
   };
-  console.log(savedPostsData);
+  // console.log(savedPostsData);
 
   useEffect(() => {
     // Fetch saved posts from local storage when component mounts
@@ -111,6 +117,7 @@ function Department() {
                           id: selectedDepartment._id,
                           name: selectedDepartment.name,
                           image: selectedDepartment.image,
+                          count: selectedDepartment.products.length,
                           type: "department",
                         },
                       ]}
@@ -180,6 +187,7 @@ function Department() {
                       name: category.name,
                       image: category.image,
                       id: category._id,
+                      count: category.products ? category.products.length : 0,
                     }))}
                     onClick={(catagorieId) => {
                       setSelectedCatagories(catagorieId);
@@ -197,6 +205,10 @@ function Department() {
                       name: subcategory.name,
                       image: subcategory.image,
                       id: subcategory._id,
+                      //count: subcategory.products.length,
+                      count: subcategory.products
+                        ? subcategory.products.length
+                        : 0,
                     }))
                   }
                   onClick={(subid) => {
@@ -318,6 +330,9 @@ function Department() {
                       name: department.name,
                       image: department.image,
                       id: department._id,
+                      count: department.products
+                        ? department.products.length
+                        : 0,
                     }))
                   : []
               }

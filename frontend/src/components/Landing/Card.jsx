@@ -3,11 +3,8 @@ import { CaretDownOutlined } from "@ant-design/icons";
 import { useGetproductbasedonSubCategoryQuery } from "../../redux/API/products/mobile";
 
 function Category({ category, onClick }) {
-  const { id, name, image, type } = category;
+  const { id, name, image, type, count } = category;
   const handleClick = () => {
-    // console.log("Clicked ID:", id);
-    // console.log("Clicked Name:", name);
-    // Call the onClick prop with id and name
     onClick(id, name);
   };
   return (
@@ -29,7 +26,7 @@ function Category({ category, onClick }) {
             {name}
           </span>
           <span className="topings1" style={{ fontSize: "0.8vw" }}>
-            0
+            {count}
           </span>
         </div>
       </div>

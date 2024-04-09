@@ -12,6 +12,10 @@ const crypto = require("crypto");
 const Payment = require("../models/payment");
 const { v4: uuidv4 } = require("uuid");
 const BrandModal = require("../models/model_brand");
+const ChooseDepartment = require("../models/choose_department");
+const ChooseCategory = require("../models/choose_category");
+const ChooseSubCategory = require("../models/choose_subcat");
+const SellerReview = require("../models/sallerRatingReview");
 
 exports.createMobile = async (req, res) => {
   try {
@@ -132,9 +136,6 @@ exports.createMobile = async (req, res) => {
 };
 exports.createProduct = async (req, res) => {
   try {
-    // console.log(req.body);
-    // console.log(req.files);
-
     // string to json
     let otherFeature = [];
     if (!req.body.otherFeature) {
@@ -185,8 +186,7 @@ exports.createProduct = async (req, res) => {
     const categories = req.body.selectedcategories;
     const subCategory = req.body.selectedsubcategories;
     const department = req.body.selecteddepartment;
-    const item = req.body.selectedsubcategoriesitem;
-    const createdBy = req.body.user;
+
     // upload photos exist
     let productImages = [];
     if (req.files.uploadPhotos) {
@@ -196,9 +196,8 @@ exports.createProduct = async (req, res) => {
       type: type,
       category: categories,
       subCategory: subCategory,
-      // item: item,
       department: department,
-      user: createdBy,
+      user: res.locals.user._id,
       sellerType: req.body.sellerType,
       sellerName: req.body.sellerName,
       gstNumber: req.body.gstNumber,
@@ -235,13 +234,14 @@ exports.createProduct = async (req, res) => {
     );
     department_val.products.push(newProduct._id);
     await department_val.save();
-    const category_val = await ChooseCategory.findById;
-    req.body.selectedcategories();
+    const category_val = await ChooseCategory.findById(
+      req.body.selectedcategories
+    );
     category_val.products.push(newProduct._id);
     await category_val.save();
     const subcategory_val = await ChooseSubCategory.findById(
       req.body.selectedsubcategories
-    )();
+    );
     subcategory_val.products.push(newProduct._id);
     await subcategory_val.save();
 
@@ -571,27 +571,11 @@ exports.userAllProduct = async (req, res) => {
   try {
     console.log("userAllProduct");
     const user = res.locals.user;
-
-    // console.log(user);
     const products = await Product.find({ user: user._id })
       .populate("selectBrand")
       .populate("selectModel")
       .populate("enterAddress");
-    //console.log(products);
 
-    res.json({ products: products, isError: false });
-  } catch (error) {
-    res.status(500).json({ message: error.message, isError: true });
-  }
-};
-
-//  feth prodct based on sub category
-exports.getAllProduct = async (req, res) => {
-  try {
-    const products = await Product.find()
-      .populate("selectBrand")
-      .populate("selectModel")
-      .populate("enterAddress");
     res.json({ products: products, isError: false });
   } catch (error) {
     res.status(500).json({ message: error.message, isError: true });
@@ -688,32 +672,71 @@ exports.paymentVerification = async (req, res) => {
 //  fetch product information
 exports.fetchAllSubCategoriesproduct = async (req, res) => {
   try {
-    // console.log(req.body);
-    const SubCategories_id = req.body.SubCategories_id;
-    const products = await Product.find({ subCategory: SubCategories_id });
-    // console.log(products);
+    const SubCategories_id = req.params.id;
+    const products = await Product.find({ subCategory: SubCategories_id })
+      .populate("selectBrand")
+      .populate("selectModel")
+      .populate("enterAddress");
     res.json({ products: products, isError: false });
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({
+      message: "An error occurred while fetching products",
+      isError: true,
+    });
+  }
+};
+
+//  feth prodct based on sub category
+exports.getAllProduct = async (req, res) => {
+  try {
+    const products = await Product.find()
+      .populate("selectBrand")
+      .populate("selectModel")
+      .populate("enterAddress");
+    res.json({ products: products, isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
 };
 
 // review And Rating
 exports.sallerReview = async (req, res) => {
   try {
-    console.log(req.body);
-    const { sellerId, rating, review } = req.body;
+    // console.log(req.body);
+    const { productid, rating, message } = req.body;
+    const product = await Product.findById(productid);
+
     const reviewData = {
-      sellerId,
+      sellerId: product.user,
+      userId: res.locals.user._id,
       rating,
-      review,
+      review: message,
     };
     const newReview = new SellerReview(reviewData);
+    console.log(newReview);
     await newReview.save();
     res.status(200).json({ message: "Review added", isError: false });
   } catch (error) {
     res.status(500).json({ message: error.message, isError: true });
   }
 };
+// fech all saller review base on sellerid
 
+exports.getsellerReview = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const { id } = req.params.id;
+
+    const reviews = await SellerReview.find({
+      sellerId: req.params.id,
+    }).populate("userId");
+    // console.log(reviews);
+    res.json({ reviews: reviews, isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
+};
 exports.productReview = async (req, res) => {
   try {
     const { productId, rating, review } = req.body;

@@ -1,18 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./dynamicreview.css";
 import { Rate } from "antd";
 import { useReviewSallerMutation } from "../../../redux/API/products/mobile";
 import toast from "react-hot-toast";
+import { useGetreviewSallerQuery } from "../../../redux/API/products/mobile";
 import { useAppSelector } from "../../../redux/store";
-
-function DynamicReview({ productid }) {
+function DynamicReview({ productid, Sellerid }) {
   const user = useAppSelector((state) => state.user2.user);
-
+  // console.log(Sellerid);
   const [message, setMessage] = useState("");
   const [reviews, setReviews] = useState([]);
   const [value, setValue] = useState(null); // State for rating value
   const desc = ["terrible", "bad", "normal", "good", "wonderful"];
   const [ReviewSaller, { loading, error }] = useReviewSallerMutation();
+  const { data: reviewData, isLoading } = useGetreviewSallerQuery(Sellerid);
+  // set review data in  reviews
+  useEffect(() => {
+    setReviews(reviewData?.reviews);
+  }, [isLoading, reviewData]);
+
+  console.log(reviewData);
   const handleAddReview = async () => {
     let newMessage = message; // Use the provided message by default
     // If no message is provided but there's a rating, set the description as the message
@@ -102,7 +109,7 @@ function DynamicReview({ productid }) {
 
       <section className="content-wrapper-faq py-2">
         <div className="container">
-          {reviews.length > 0 ? (
+          {reviews && reviews.length > 0 ? (
             <div className="main_reviews-container">
               {reviews.map((review, index) => (
                 <div
@@ -111,18 +118,22 @@ function DynamicReview({ productid }) {
                 >
                   <div className="accordian-link d-flex align-items-center pointer py-2">
                     <img
-                      src="https://source.unsplash.com/random/2200x1200/?person"
+                      src={review.userId.photo}
+                      className="user_image"
                       alt="user"
-                      className="img-fluid user_image"
                     />
-                    <h3 className="reveiew_user_name ps-3">
-                      {review.username}
-                    </h3>
+                    <h5 className="reveiew_user_name ps-3">
+                      {review.userId.name}
+                    </h5>
                   </div>
-                  <p className="review_answer">{review.message}</p>
                   <p className="review_rating">
-                    Rating: {review.rating ? review.rating : "No rating"}
+                    <Rate
+                      tooltips={desc}
+                      allowHalf
+                      value={review.rating ? review.rating : 0}
+                    />
                   </p>
+                  <p className="review_answer">{review.review}</p>
                 </div>
               ))}
             </div>

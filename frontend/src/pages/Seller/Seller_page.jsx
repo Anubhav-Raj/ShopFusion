@@ -75,6 +75,7 @@ function SellerPage() {
                   name: department.name,
                   image: department.image,
                   id: department._id,
+                  count: department.products ? department.products.length : 0,
                 }))}
                 onClick={(departmentid, departmentname) =>
                   handleDepartmentChange(departmentid, departmentname)
@@ -92,6 +93,9 @@ function SellerPage() {
                     name: subcategory.name,
                     image: subcategory.image,
                     id: subcategory._id,
+                    count: subcategory.products
+                      ? subcategory.products.length
+                      : 0,
                   }))}
                 onClick={(subcategoryID, subcategoryName) => {
                   handleSubcategoryChange(subcategoryID, subcategoryName); // Call handleSubcategoryChange with subcategoryID and subcategoryName
