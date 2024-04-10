@@ -1,119 +1,80 @@
 import React from "react";
 import "./location_list.css";
+import { Button, Dropdown, message, Space, Tooltip } from "antd";
+import { DownOutlined, UserOutlined } from "@ant-design/icons";
 
 function LocationList() {
+  const handleButtonClick = (e) => {
+    message.info("Click on left button.");
+    console.log("click left button", e);
+  };
+  const handleMenuClick = (e) => {
+    message.info("Click on menu item.");
+    console.log("click", e);
+  };
+  const items = [
+    {
+      label: "1st menu item",
+      key: "1",
+      icon: <UserOutlined />,
+    },
+    {
+      label: "2nd menu item",
+      key: "2",
+      icon: <UserOutlined />,
+    },
+    {
+      label: "3rd menu item",
+      key: "3",
+      icon: <UserOutlined />,
+      danger: true,
+    },
+    {
+      label: "4rd menu item",
+      key: "4",
+      icon: <UserOutlined />,
+      danger: true,
+      disabled: true,
+    },
+  ];
+  const menuProps = {
+    items,
+    onClick: handleMenuClick,
+  };
   return (
     <div className="location-list">
-      <li>
-        <div className="dropdown-container">
-          <button className="filter-pill">
-            <div className="filter-label">All Countries</div>
-            <div className="arrow-icon">
-              <svg
-                viewBox="0 0 14 14"
-                width="12px"
-                height="12px"
-                aria-hidden="true"
-              >
-                <g>
-                  <path d="M5,5l4,4,4-4H5Z"></path>
-                </g>
-              </svg>
-            </div>
-          </button>
-          {/* <ul class="dropdown-r42">
-            <li class="dropdown-t4l">
-              <a
-                class="dropdown-tcn"
-                href="/jobs?q=javascript+developer&amp;l=Patna%2C+Bihar&amp;radius=0&amp;fromage=1&amp;lang=en"
-              >
-                Last 24 hours
-              </a>
-            </li>
-            <li class="dropdown-t4l">
-              <a
-                class="dropdown-tcn"
-                href="/jobs?q=javascript+developer&amp;l=Patna%2C+Bihar&amp;radius=0&amp;fromage=3&amp;lang=en"
-              >
-                Last 3 days
-              </a>
-            </li>
-            <li class="dropdown-t4l">
-              <a
-                class="dropdown-tcn"
-                href="/jobs?q=javascript+developer&amp;l=Patna%2C+Bihar&amp;radius=0&amp;fromage=7&amp;lang=en"
-              >
-                Last 7 days
-              </a>
-            </li>
-            <li class="dropdown-t4l">
-              <a
-                class="dropdown-tcn"
-                href="/jobs?q=javascript+developer&amp;l=Patna%2C+Bihar&amp;radius=0&amp;fromage=14&amp;lang=en"
-              >
-                Last 14 days
-              </a>
-            </li>
-          </ul> */}
-        </div>
-      </li>
-      <li>
-        <div className="dropdown-container">
-          <button className="filter-pill">
-            <div className="filter-label">All States</div>
-            <div className="arrow-icon">
-              <svg
-                viewBox="0 0 14 14"
-                width="12px"
-                height="12px"
-                aria-hidden="true"
-              >
-                <g>
-                  <path d="M5,5l4,4,4-4H5Z"></path>
-                </g>
-              </svg>
-            </div>
-          </button>
-        </div>
-      </li>
-      <li>
-        <div className="dropdown-container">
-          <button className="filter-pill">
-            <div className="filter-label">All Districts</div>
-            <div className="arrow-icon">
-              <svg
-                viewBox="0 0 14 14"
-                width="12px"
-                height="12px"
-                aria-hidden="true"
-              >
-                <g>
-                  <path d="M5,5l4,4,4-4H5Z"></path>
-                </g>
-              </svg>
-            </div>
-          </button>
-        </div>
-      </li>
-      <li>
-        <div className="dropdown-container">
-          <button className="filter-pill">
-            <div className="filter-label">All Sub Districts / Blocks</div>
-            <div className="arrow-icon">
-              <svg
-                viewBox="0 0 14 14"
-                width="12px"
-                height="12px"
-                aria-hidden="true"
-              >
-                <g>
-                  <path d="M5,5l4,4,4-4H5Z"></path>
-                </g>
-              </svg>
-            </div>
-          </button>
-        </div>
-      </li>
+      <Dropdown menu={menuProps}>
+        <Button>
+          <Space>
+            All Country
+            <DownOutlined />
+          </Space>
+        </Button>
+      </Dropdown>
+      <Dropdown menu={menuProps}>
+        <Button>
+          <Space>
+            All States
+            <DownOutlined />
+          </Space>
+        </Button>
+      </Dropdown>
+      <Dropdown menu={menuProps}>
+        <Button>
+          <Space>
+            All Districts
+            <DownOutlined />
+          </Space>
+        </Button>
+      </Dropdown>
+      <Dropdown menu={menuProps}>
+        <Button>
+          <Space>
+            All Sub Districts / Blocks
+            <DownOutlined />
+          </Space>
+        </Button>
+      </Dropdown>
     </div>
   );
 }

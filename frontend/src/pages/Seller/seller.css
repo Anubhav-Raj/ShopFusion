@@ -15,9 +15,11 @@
   display: block;
   border-radius: 10px;
   margin: 10px 13px;
-  overflow-y: scroll;
+ 
 }
-
+.rightdivscrol{
+   overflow-y: scroll;
+}
 div#sty-dlo {
   width: 60%;
   margin: 10px;
@@ -297,7 +299,7 @@ a:focus {
   /* background: gainsboro; */
 }
 .scroollong::-webkit-scrollbar,
-.rightdiv::-webkit-scrollbar {
+.rightdivscrol::-webkit-scrollbar {
   height: 6px;
   width: 6px;
   background-color: transparent;
@@ -306,7 +308,7 @@ a:focus {
 }
 
 .scroollong:hover::-webkit-scrollbar-thumb,
-.rightdiv:hover::-webkit-scrollbar-thumb {
+.rightdivscrol:hover::-webkit-scrollbar-thumb {
   opacity: 1;
   /* Make scrollbar visible on hover */
   background-color: rgb(97, 156, 204);
@@ -316,7 +318,7 @@ a:focus {
 }
 
 .scroollong::-webkit-scrollbar-thumb,
-.rightdiv::-webkit-scrollbar-thumb {
+.rightdivscrol::-webkit-scrollbar-thumb {
   animation: hideScrollbar 2s linear 3s forwards;
   /* Delayed animation */
 }

@@ -1,109 +1,7 @@
-@import url("https://fonts.googleapis.com/css?family=Rubik:300,400,500,600,700,800,900,300i,400i,500i,600i,700i,800i,900i&display=swap");
-
-.input-a1b {
-  width: 100%;
-  max-width: 600px;
-}
-
-#sty-6pe.style-eqi {
-  margin: 3px 0px 3px 12px;
-  border-radius: 7px;
-  overflow: hidden;
-  width: 178px;
-}
-
-.input-a1b > .select-kld {
-  position: relative;
-}
-
-.input-a1b > .select-kld::after {
-  content: "";
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23363636"><path d="M7,10L12,15L17,10H7Z"/></svg>');
-  background-size: contain;
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  top: 0;
-  right: 8px;
-  bottom: 0;
-  margin: auto 0;
-  pointer-events: none;
-}
-
-select {
-  transition: all 0.3s ease-out 0s;
-}
-
-select {
-  margin: 0;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-}
-
-select {
-  text-transform: none;
-}
-
-select {
-  word-wrap: normal;
-}
-
-select {
-  font-family: inherit;
-}
-
-select {
-  margin: 0;
-  font-size: 100%;
-  vertical-align: middle;
-}
-
-select {
-  transition: all 0.1s linear;
-  line-height: 19px;
-  /* color: rgb(15, 17, 17); */
-}
-
-.input-a1b select {
-  display: block;
-  padding: 7px 10px;
-  border: 1px solid rgb(210, 210, 210);
-  border-top-color: rgb(192, 192, 192);
-  background: rgb(240, 255, 240);
-  /* color: rgb(0, 0, 0);  */
-  width: 100%;
-  font-size: 14px;
-  line-height: 21px;
-  max-height: 300px;
-  box-shadow: inset 0 0 6px rgb(221, 221, 221);
-  border-radius: 7px;
-  font-family: inherit;
-}
-
-.input-a1b select {
-  appearance: none;
-  background: #e4e2e0;
-  box-shadow: none;
-}
-
-@media (min-width: 750px) {
-  .input-a1b select {
-    font-size: 15px;
-    line-height: 23px;
-    padding: 8px 12px;
-  }
-}
-
-.input-a1b select.emp-g1j {
-  color: rgb(40, 39, 39);
-}
-
 .sort-4wg {
-  /* background: #91b9b9; */
   display: flex;
   border-radius: 20px;
-  padding: 10px;
+  padding: 10px 10px 0px 0px;
   justify-content: space-around;
   flex-direction: row-reverse;
 }
@@ -120,16 +18,17 @@ ul.dropdown-r42 {
   position: absolute;
   padding: 10px 0px;
   width: 200%;
-  /* left: -70px; */
+  z-index: 1;
   border-radius: 4px;
   filter: drop-shadow(2px 4px 6px black);
 }
 
-ul.dropdown-r42 > li {
+ul.dropdown-r42>li {
   background-color: #ffff;
   padding: 0px 5px 0px 0px;
 }
-ul.dropdown-r42 > li > h4 {
+
+ul.dropdown-r42>li>h4 {
   background: #ffff;
   display: flex;
   padding: 2px 9px;
@@ -152,19 +51,25 @@ ul.dropdown-r42 > li > h4 {
 }
 
 #selectAllCheckbox {
-  margin-right: 5px; /* Add some spacing between the checkbox and text */
+  margin-right: 5px;
+  /* Add some spacing between the checkbox and text */
 }
 
 #clearAllButton {
-  margin-left: 10px; /* Add spacing to the left of the "Clear All" button */
-  padding: 5px 10px; /* Add padding to the button for better appearance */
+  margin-left: 10px;
+  /* Add spacing to the left of the "Clear All" button */
+  padding: 5px 10px;
+  /* Add padding to the button for better appearance */
   cursor: pointer;
-  background-color: #f44336; /* Red color for the button background */
-  color: #fff; /* White color for the button text */
+  background-color: #f44336;
+  /* Red color for the button background */
+  color: #fff;
+  /* White color for the button text */
   border: none;
   border-radius: 3px;
 }
 
 #clearAllButton:hover {
-  background-color: #d32f2f; /* Darker red on hover */
+  background-color: #d32f2f;
+  /* Darker red on hover */
 }

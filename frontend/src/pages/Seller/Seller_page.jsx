@@ -127,10 +127,11 @@ function SellerPage() {
           ))}
         </div>
       </div>
-      <div className="rightdiv" style={{ height: `${rightDivHeight}px` }}>
+      <div className="rightdiv">
         <DropdownRight />
-
-        <SellerRight data={selectedid} />
+        <div className="rightdivscrol" style={{ height: `${rightDivHeight}px` }}>
+          <SellerRight data={selectedid} />
+        </div>
       </div>
     </div>
   );

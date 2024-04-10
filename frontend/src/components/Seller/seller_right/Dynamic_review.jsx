@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./dynamicreview.css";
-import { Rate } from "antd";
+import { Rate, Select } from "antd";
+import {
+  SortAscendingOutlined,
+  DownOutlined,
+  FilterOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { useReviewSallerMutation } from "../../../redux/API/products/mobile";
 import toast from "react-hot-toast";
 import { useGetreviewSallerQuery } from "../../../redux/API/products/mobile";
@@ -63,7 +69,7 @@ function DynamicReview({ productid, Sellerid }) {
           <div className="listing__faq">
             <div className="faq_inner-listing">
               <hr className="horizontal-line" />
-              <h2 className="secondary-color py-2 f-24">Seller Review</h2>
+              {/* <h2 className="secondary-color py-2 f-24">Seller Review</h2> */}
               <div className="faq_box-wrapper">
                 <div className="faq_form-box-inner border border-1 border-secondary rounded p-3">
                   <Rate
@@ -107,14 +113,44 @@ function DynamicReview({ productid, Sellerid }) {
         </div>
       </section>
 
-      <section className="content-wrapper-faq py-2">
+      <section className="content-wrapper-faq py-1">
+        <Select
+          suffixIcon={<SortAscendingOutlined style={{ color: "black" }} />}
+          labelInValue
+          defaultValue={{
+            value: "",
+            label: "Sort By",
+          }}
+          style={{
+            width: 160,
+            paddingLeft:10,
+          }}
+          options={[
+            {
+              value: "newest",
+              label: "Newest First",
+            },
+            {
+              value: "oldest",
+              label: "Oldest First",
+            },
+            {
+              value: "Negative",
+              label: "Negative review",
+            },
+            {
+              value: "Positive",
+              label: "Positive review",
+            },
+          ]}
+        />
         <div className="container">
           {reviews && reviews.length > 0 ? (
             <div className="main_reviews-container">
               {reviews.map((review, index) => (
                 <div
                   key={index}
-                  className="border py-3 my-2 border-dark rounded faq_inner container"
+                  className="border py-1 my-2 border-dark rounded faq_inner container"
                 >
                   <div className="accordian-link d-flex align-items-center pointer py-2">
                     <img
@@ -124,15 +160,19 @@ function DynamicReview({ productid, Sellerid }) {
                     />
                     <h5 className="reveiew_user_name ps-3">
                       {review.userId.name}
+                      <p className="review_rating">
+                        <Rate
+                          tooltips={desc}
+                          disabled
+                          allowHalf
+                          style={{ fontSize: "15px" }}
+                          value={review.rating ? review.rating : 0}
+                        />{" "}
+                        <span style={{ fontSize: "10px" }}>10 days ago</span>
+                      </p>
                     </h5>
                   </div>
-                  <p className="review_rating">
-                    <Rate
-                      tooltips={desc}
-                      allowHalf
-                      value={review.rating ? review.rating : 0}
-                    />
-                  </p>
+
                   <p className="review_answer">{review.review}</p>
                 </div>
               ))}

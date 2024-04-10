@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Drawer, Rate } from "antd";
+import { Button, Modal, Rate } from "antd";
 import callIcon from "./icons8-phone-48.png";
 import saveIcon from "./icons8-save-48.png";
 import shareIcon from "./icons8-share-48.png";
@@ -28,14 +28,26 @@ function ThumbnailGallery({ product }) {
   const [showproductdetails, setshowproductdetails] = useState(false);
   const [showsellerdetails, setshowsellerdetails] = useState(false);
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
-  const [open, setOpen] = useState(false);
-  const showDrawer = () => {
-    setOpen(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
   };
-  const onClose = () => {
-    setOpen(false);
+  const handleOk = () => {
+    setIsModalOpen(false);
   };
-
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const showModal1 = () => {
+    setIsModalOpen1(true);
+  };
+  const handleOk1 = () => {
+    setIsModalOpen1(false);
+  };
+  const handleCancel1 = () => {
+    setIsModalOpen1(false);
+  };
   const handleThumbnailClick = (imageSrc) => {
     setSelectedImage(imageSrc);
   };
@@ -190,6 +202,13 @@ function ThumbnailGallery({ product }) {
                       : null}
                   </p>
                 </div>
+                <Button
+                  className="list_add-review-cta rounded pointer"
+                  onClick={showModal1}
+                  block
+                >
+                  Seller Reviews
+                </Button>
               </div>
             )}
             <hr className="horizontal-line" />
@@ -200,33 +219,44 @@ function ThumbnailGallery({ product }) {
                 disabled
                 allowHalf
                 defaultValue={2.5}
-                style={{ fontSize: "30px" }}
+                style={{ fontSize: "20px" }}
               />
             </p>
             <Progressbar />
             <Button
               className="list_add-review-cta rounded pointer"
-              onClick={showDrawer}
+              onClick={showModal}
               block
             >
               Product Reviews
             </Button>
 
-            <Drawer width={450} closable={false} onClose={onClose} open={open}>
-              <h3>Product Ratings & Reviews</h3>
-              <p style={{ fontSize: "20px" }}>
-                4.1{" "}
-                <Rate
-                  disabled
-                  allowHalf
-                  defaultValue={2.5} // Remove the empty expression here
-                  style={{ fontSize: "30px" }}
-                />
-              </p>
+            <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+              <div style={{ marginLeft: "10px" }}>
+                {" "}
+                <h3>Product Ratings & Reviews</h3>
+                <p style={{ fontSize: "20px" }}>
+                  4.1{" "}
+                  <Rate
+                    disabled
+                    allowHalf
+                    defaultValue={2.5} // Remove the empty expression here
+                    style={{ fontSize: "30px" }}
+                  />
+                </p>
+              </div>
               <Progressbar />
               <DynamicReviews productid={product._id} Sellerid={product.user} />
-            </Drawer>
-            <DynamicReviews productid={product._id} Sellerid={product.user} />
+            </Modal>
+            <Modal
+              style={{ width: "50%" }}
+              open={isModalOpen1}
+              onOk={handleOk1}
+              onCancel={handleCancel1}
+            >
+              <h3>Seller Ratings & Reviews</h3>
+              <DynamicReviews productid={product._id} Sellerid={product.user} />
+            </Modal>
           </div>
         )}
       </div>
