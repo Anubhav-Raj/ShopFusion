@@ -225,26 +225,16 @@ export const mobileAPI = createApi({
     }),
     // Review  the   product
     reviewProduct: builder.mutation({
-      query: (productId) => {
+      query: (data) => {
+        // console.log(data);
         return {
-          url: "product/reviewproduct",
+          url: "product/productReviews",
           method: "POST",
-          body: productId,
+          body: data,
           credentials: "include",
         };
       },
       invalidatesTags: ["mobilepost"],
-    }),
-    getreviewSaller: builder.query({
-      query: (id) => {
-        console.log("Entering", id);
-        return {
-          url: `product/getsallerReviews/${id}`,
-          method: "GET",
-          credentials: "include",
-        };
-      },
-      providesTags: ["mobilepost"],
     }),
     reviewSaller: builder.mutation({
       query: (data) => {
@@ -257,6 +247,28 @@ export const mobileAPI = createApi({
         };
       },
       invalidatesTags: ["mobilepost"],
+    }),
+    getreviewSaller: builder.query({
+      query: (id) => {
+        // console.log("Entering", id);
+        return {
+          url: `product/getsallerReviews/${id}`,
+          method: "GET",
+          credentials: "include",
+        };
+      },
+      providesTags: ["mobilepost"],
+    }),
+    getproductReviews: builder.query({
+      query: (id) => {
+        console.log("Entering", id);
+        return {
+          url: `product/getproductReviews/${id}`,
+          method: "GET",
+          credentials: "include",
+        };
+      },
+      providesTags: ["mobilepost"],
     }),
 
     //CREATE OTHER PRODUCT
@@ -342,4 +354,5 @@ export const {
   useReviewProductMutation,
   useReviewSallerMutation,
   useGetreviewSallerQuery,
+  useGetproductReviewsQuery,
 } = mobileAPI;

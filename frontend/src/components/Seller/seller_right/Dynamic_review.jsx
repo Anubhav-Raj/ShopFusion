@@ -11,21 +11,43 @@ import { useReviewSallerMutation } from "../../../redux/API/products/mobile";
 import toast from "react-hot-toast";
 import { useGetreviewSallerQuery } from "../../../redux/API/products/mobile";
 import { useAppSelector } from "../../../redux/store";
-function DynamicReview({ productid, Sellerid }) {
+import { useReviewProductMutation } from "../../../redux/API/products/mobile";
+import { useGetproductReviewsQuery } from "../../../redux/API/products/mobile";
+function DynamicReview({ productid, Sellerid, type }) {
   const user = useAppSelector((state) => state.user2.user);
-  // console.log(Sellerid);
+
   const [message, setMessage] = useState("");
   const [reviews, setReviews] = useState([]);
-  const [value, setValue] = useState(null); // State for rating value
+  const [value, setValue] = useState(null);
   const desc = ["terrible", "bad", "normal", "good", "wonderful"];
+
   const [ReviewSaller, { loading, error }] = useReviewSallerMutation();
-  const { data: reviewData, isLoading } = useGetreviewSallerQuery(Sellerid);
+  const [ReviewProduct, { loading: prodctloding, error: productre }] =
+    useReviewProductMutation();
+
+  let fetchHook;
+  if (type === "seller") {
+    fetchHook = useGetreviewSallerQuery;
+  } else if (type === "product") {
+    fetchHook = useGetproductReviewsQuery;
+  } else {
+    fetchHook = null;
+  }
+
+  const {
+    data: reviewData,
+    isLoading,
+    isError,
+  } = fetchHook
+    ? fetchHook(type === "seller" ? Sellerid : productid)
+    : { data: null, isLoading: false, isError: true };
+
+  console.log(reviewData);
   // set review data in  reviews
   useEffect(() => {
     setReviews(reviewData?.reviews);
   }, [isLoading, reviewData]);
 
-  console.log(reviewData);
   const handleAddReview = async () => {
     let newMessage = message; // Use the provided message by default
     // If no message is provided but there's a rating, set the description as the message
@@ -37,18 +59,28 @@ function DynamicReview({ productid, Sellerid }) {
       rating: value, // Include rating in the new review object
     };
     try {
-      const response = await ReviewSaller({
-        productid,
-        message: newMessage,
-        rating: value,
-      });
+      let response;
+      console.log(type);
+      if (type === "seller") {
+        response = await ReviewSaller({
+          productid,
+          message: newMessage,
+          rating: value,
+        });
+      } else if (type === "product") {
+        // console.log("sdf");
+        response = await ReviewProduct({
+          productid,
+          message: newMessage,
+          rating: value,
+        });
+      }
       console.log(response);
       if (response && response.data && response.data.reviewSaller) {
         // Handle successful response
         toast.success("Review submitted successfully");
       } else {
         // Handle unsuccessful response
-
         toast.error("Failed to submit review");
       }
     } catch (err) {
@@ -56,10 +88,11 @@ function DynamicReview({ productid, Sellerid }) {
       toast.error("An error occurred while submitting review");
     }
 
-    setReviews([newReview, ...reviews]);
+    // setReviews([newReview, ...reviews]);
+    setReviews(Array.isArray(reviews) ? [newReview, ...reviews] : [newReview]);
+
     setMessage("");
-    setValue(null); // Reset rating value after adding review
-    // ReviewSaller({ productid, message: newMessage, rating: value }); // Use the new message for the API call
+    setValue(null);
   };
 
   return (
@@ -123,7 +156,7 @@ function DynamicReview({ productid, Sellerid }) {
           }}
           style={{
             width: 160,
-            paddingLeft:10,
+            paddingLeft: 10,
           }}
           options={[
             {

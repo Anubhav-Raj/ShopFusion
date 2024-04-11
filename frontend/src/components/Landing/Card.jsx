@@ -32,7 +32,7 @@ function Category({ category, onClick }) {
       </div>
       {type && (
         <label>
-          <CaretDownOutlined />
+          <CaretDownOutlined /> More
         </label>
       )}
     </div>

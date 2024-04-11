@@ -62,6 +62,7 @@ router.get(
 );
 router.post("/sallerReviews", deserializeUser, productCon.sallerReview);
 router.get("/getsallerReviews/:id", productCon.getsellerReview);
+router.get("/getproductReviews/:id", productCon.getproductReview);
 router.post("/productReviews", deserializeUser, productCon.productReview);
 
 // get products based on category

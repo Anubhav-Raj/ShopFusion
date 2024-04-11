@@ -1,10 +1,11 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
 import { Button, Modal, Rate } from "antd";
 import callIcon from "./icons8-phone-48.png";
 import saveIcon from "./icons8-save-48.png";
 import shareIcon from "./icons8-share-48.png";
 import whatsappIcon from "./icons8-whatsapp-48.png";
-import { FaCaretDown } from "react-icons/fa";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import Progressbar from "./Progressbar";
 import DynamicReviews from "./Dynamic_review";
 import { useGetreviewSallerQuery } from "../../../redux/API/products/mobile";
@@ -105,6 +106,7 @@ function ThumbnailGallery({ product }) {
     const phoneUrl = `tel:${phoneNumber}`;
     window.open(phoneUrl);
   };
+  console.log(product);
 
   return (
     <>
@@ -112,13 +114,21 @@ function ThumbnailGallery({ product }) {
         <div className="thumbnail-gallery">
           <div className="thumbnail-list">
             {product.images.map((image, index) => (
-              <img
-                key={index}
-                src={`${process.env.REACT_APP_API_BASE_URL}uploads/images/${image}`}
-                alt={`Thumbnail ${index + 1}`}
-                onClick={() => handleThumbnailClick(image)}
-                className={selectedImage === image ? "selected-thumbnail" : ""}
-              />
+              <>
+                <img
+                  key={index}
+                  src={`${process.env.REACT_APP_API_BASE_URL}uploads/images/${image}`}
+                  alt={`Thumbnail ${index + 1}`}
+                  onClick={() => handleThumbnailClick(image)}
+                  className={
+                    selectedImage === image ? "selected-thumbnail" : ""
+                  }
+                />
+                <hr
+                  className="horizontal-line"
+                  style={{ margin: "0px", opacity: "0.50" }}
+                />
+              </>
             ))}
           </div>
           <div className="main-image">
@@ -158,27 +168,73 @@ function ThumbnailGallery({ product }) {
               <h2>{product.mobileName}</h2>
               <div className="flexviewmr">
                 <p>Price:{product.price}</p>
-                <h5
+                <h6
                   onClick={() => setshowproductdetails((prev) => !prev)}
                   className="view_mrbtn"
                 >
-                  view {showproductdetails ? "Less" : "More"} <FaCaretDown />
-                </h5>
+                  {showproductdetails ? <FaCaretDown /> : <FaCaretUp />}
+                </h6>
               </div>
             </div>
           </div>
         </div>
+        <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+          <div style={{ marginLeft: "10px" }}>
+            {" "}
+            <h3>Product Ratings & Reviews</h3>
+            <p style={{ fontSize: "20px" }}>
+              4.1{" "}
+              <Rate
+                disabled
+                allowHalf
+                defaultValue={2.5} // Remove the empty expression here
+                style={{ fontSize: "30px" }}
+              />
+              <p style={{ color: "#5086fa" }}> 1 Ratings & 1 Reviewers</p>
+            </p>
+          </div>
+          <Progressbar />
+          <DynamicReviews
+            productid={product._id}
+            Sellerid={product.user}
+            type="product"
+          />
+        </Modal>
+        <Modal
+          style={{ width: "50%" }}
+          open={isModalOpen1}
+          onOk={handleOk1}
+          onCancel={handleCancel1}
+        >
+          <h3>Seller Ratings & Reviews</h3>
+          <p style={{ fontSize: "20px" }}>
+            4.1{" "}
+            <Rate
+              disabled
+              allowHalf
+              defaultValue={2.5}
+              style={{ fontSize: "20px" }}
+            />
+            <p style={{ color: "#5086fa" }}> 1 Ratings & 1 Reviewers</p>
+          </p>
+          <Progressbar />
+          <DynamicReviews
+            productid={product._id}
+            Sellerid={product.user}
+            type="seller"
+          />
+        </Modal>
         {showproductdetails && (
           <div className="sellerreviw">
             <hr className="horizontal-line" />
             <div className="flexviewmr">
               <h3>Seller Details</h3>
-              <h5
+              <h6
                 onClick={() => setshowsellerdetails((prev) => !prev)}
                 className="view_mrbtn"
               >
-                view {showsellerdetails ? "Less" : "More"} <FaCaretDown />
-              </h5>
+                {showsellerdetails ? <FaCaretDown /> : <FaCaretUp />}
+              </h6>
             </div>
             {showsellerdetails && (
               <div className="detailsseller">
@@ -212,53 +268,15 @@ function ThumbnailGallery({ product }) {
               </div>
             )}
             <hr className="horizontal-line" />
-            <h3>Coustomer Ratings & Reviews</h3>
-            <p style={{ fontSize: "20px" }}>
-              4.1{" "}
-              <Rate
-                disabled
-                allowHalf
-                defaultValue={2.5}
-                style={{ fontSize: "20px" }}
-              />
-            </p>
-            <Progressbar />
-            <Button
-              className="list_add-review-cta rounded pointer"
-              onClick={showModal}
-              block
-            >
-              Product Reviews
-            </Button>
-
-            <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-              <div style={{ marginLeft: "10px" }}>
-                {" "}
-                <h3>Product Ratings & Reviews</h3>
-                <p style={{ fontSize: "20px" }}>
-                  4.1{" "}
-                  <Rate
-                    disabled
-                    allowHalf
-                    defaultValue={2.5} // Remove the empty expression here
-                    style={{ fontSize: "30px" }}
-                  />
-                </p>
-              </div>
-              <Progressbar />
-              <DynamicReviews productid={product._id} Sellerid={product.user} />
-            </Modal>
-            <Modal
-              style={{ width: "50%" }}
-              open={isModalOpen1}
-              onOk={handleOk1}
-              onCancel={handleCancel1}
-            >
-              <h3>Seller Ratings & Reviews</h3>
-              <DynamicReviews productid={product._id} Sellerid={product.user} />
-            </Modal>
           </div>
         )}
+        <Button
+          className="list_add-review-cta rounded pointer"
+          onClick={showModal}
+          block
+        >
+          Product Reviews
+        </Button>
       </div>
     </>
   );

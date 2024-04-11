@@ -16,6 +16,8 @@ const ChooseDepartment = require("../models/choose_department");
 const ChooseCategory = require("../models/choose_category");
 const ChooseSubCategory = require("../models/choose_subcat");
 const SellerReview = require("../models/sallerRatingReview");
+const ProductReview = require("../models/productReviewAndRating");
+const product = require("../models/product");
 
 exports.createMobile = async (req, res) => {
   try {
@@ -95,7 +97,7 @@ exports.createMobile = async (req, res) => {
       color: req.body.color,
       selectBrand: brandExsist._id,
       selectModel: modelExsist._id,
-      mobileName: req.body.mobileName,
+      productName: req.body.mobileName,
       condition: req.body.condition,
       yearOfPurchase: req.body.yearOfPurchase,
       availableQuantity: req.body.availableQuantity,
@@ -198,6 +200,7 @@ exports.createProduct = async (req, res) => {
       subCategory: subCategory,
       department: department,
       user: res.locals.user._id,
+      productName: req.body.productName,
       sellerType: req.body.sellerType,
       sellerName: req.body.sellerName,
       gstNumber: req.body.gstNumber,
@@ -714,7 +717,7 @@ exports.sallerReview = async (req, res) => {
       review: message,
     };
     const newReview = new SellerReview(reviewData);
-    console.log(newReview);
+    // console.log(newReview);
     await newReview.save();
     res.status(200).json({ message: "Review added", isError: false });
   } catch (error) {
@@ -725,8 +728,8 @@ exports.sallerReview = async (req, res) => {
 
 exports.getsellerReview = async (req, res) => {
   try {
-    console.log(req.params.id);
-    const { id } = req.params.id;
+    // console.log(req.params.id);
+    // const { id } = req.params.id;
 
     const reviews = await SellerReview.find({
       sellerId: req.params.id,
@@ -739,15 +742,31 @@ exports.getsellerReview = async (req, res) => {
 };
 exports.productReview = async (req, res) => {
   try {
-    const { productId, rating, review } = req.body;
+    const { productid, rating, message } = req.body;
+    console.log(req.body);
+    // const product = await Product.findById(productid);
+    // console.log(product);
     const reviewData = {
-      productId,
+      productId: productid,
+      userId: res.locals.user._id,
       rating,
-      review,
+      review: message,
     };
     const newReview = new ProductReview(reviewData);
     await newReview.save();
+    console.log(newReview);
     res.status(200).json({ message: "Review added", isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
+};
+exports.getproductReview = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const reviews = await ProductReview.find({
+      productId: req.params.id,
+    }).populate("userId");
+    res.json({ reviews: reviews, isError: false });
   } catch (error) {
     res.status(500).json({ message: error.message, isError: true });
   }

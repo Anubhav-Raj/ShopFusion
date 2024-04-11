@@ -5,7 +5,7 @@ const Progressbar = () => {
   // Sample data
   const data = {
     ratings: [5, 4, 3, 2, 1],
-    type: ["Excellent","Very Good","Good","Average","Poor"],
+    type: ["Excellent", "Very Good", "Good", "Average", "Poor"],
     counts: ["51", "9", "31", "7", "2"],
   };
 
@@ -60,8 +60,12 @@ const Progressbar = () => {
                 <div>
                   <div className="_3UaKsS">
                     <span
-                      className={`EkB-Xt ${getColorClass(calculateProgressWidth(count, totalSum))}`}
-                      style={{ width: `${calculateProgressWidth(count, totalSum)}%` }}
+                      className={`EkB-Xt ${getColorClass(
+                        calculateProgressWidth(count, totalSum)
+                      )}`}
+                      style={{
+                        width: `${calculateProgressWidth(count, totalSum)}%`,
+                      }}
                     ></span>
                   </div>
                 </div>

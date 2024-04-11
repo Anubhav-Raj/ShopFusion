@@ -110,13 +110,14 @@ exports.registerHandler = async (req, res, next) => {
     hashedPass = await bcrypt.hash(password, 12);
 
     token1 = uuidv4();
-
+    console.log(token1);
     const newUser = new User({
       name: name,
       email: email,
       password: hashedPass,
       isVerified: false,
       provider: "mail",
+      token: token1,
       photo:
         "https://images.generated.photos/fy2Uo9U5gRzrs8gikNUxmi0A31SU47CRIL7AxpFhmnQ/rs:fit:256:256/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/MTMxMjYyLmpwZw.jpg",
     });
@@ -325,7 +326,7 @@ exports.signup = async (req, res) => {
       token: token1,
     });
     // await newUser.save();
-    // console.log(newUser);
+    console.log(newUser);
     const savedUser = await newUser.save();
     const uri = `${process.env.BACKEND_URL}/api/user/verifyUser/${newUser._id}/${token1}`;
 
@@ -346,6 +347,7 @@ exports.signup = async (req, res) => {
       "Verify your email",
       bodypart
     );
+    console.log(callFun);
 
     // Generate JWT token for the new user
     const token = jwt.sign({ id: newUser._id }, process.env.SECRET, {
@@ -408,10 +410,13 @@ exports.login = async (req, res) => {
     });
   }
 };
+
 exports.verifyUser = async (req, res) => {
   try {
     const { token, id } = req.params;
+    console.log(token, id);
     const user = await User.findById(id);
+    console.log(user);
     if (!user) {
       return res.status(404).send({
         token: "Something went wrong!",
@@ -426,11 +431,11 @@ exports.verifyUser = async (req, res) => {
     user.isVerified = true;
     await user.save();
 
-    res.json({
-      savedUser,
-      message: "Verified Sucessfully",
-      token, // Include the generated token in the response
-    });
+    // res.json({
+    //   message: "Verified Sucessfully",
+    //   token, // Include the generated token in the response
+    // });
+    res.redirect("/login");
   } catch (error) {
     res.status(500).json({
       error: error.message,
