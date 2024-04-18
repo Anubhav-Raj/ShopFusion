@@ -203,7 +203,6 @@ function Department() {
                       name: subcategory.name,
                       image: subcategory.image,
                       id: subcategory._id,
-                      //count: subcategory.products.length,
                       count: subcategory.products
                         ? subcategory.products.length
                         : 0,

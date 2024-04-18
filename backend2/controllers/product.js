@@ -573,7 +573,6 @@ exports.getModels = async (req, res) => {
 };
 exports.userAllProduct = async (req, res) => {
   try {
-    console.log("userAllProduct");
     const user = res.locals.user;
     const products = await Product.find({ user: user._id })
       .populate("selectBrand")
@@ -673,55 +672,6 @@ exports.paymentVerification = async (req, res) => {
   }
 };
 
-//  fetch product information
-exports.fetchAllSubCategoriesproduct = async (req, res) => {
-  try {
-    const SubCategories_id = req.params.id;
-
-    // Validate SubCategories_id as a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(SubCategories_id)) {
-      return res.status(400).json({
-        message: "Invalid subcategory ID",
-        isError: true,
-      });
-    }
-
-    const products = await Product.find({ subCategory: SubCategories_id })
-      .populate("selectBrand")
-      .populate("selectModel")
-      .populate("enterAddress");
-
-    // Check if products exist
-    if (!products || products.length === 0) {
-      return res.status(404).json({
-        message: "No products found for the given subcategory",
-        isError: true,
-      });
-    }
-
-    res.json({ products: products, isError: false });
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    res.status(500).json({
-      message: "An error occurred while fetching products",
-      isError: true,
-    });
-  }
-};
-
-//  feth prodct based on sub category
-exports.getAllProduct = async (req, res) => {
-  try {
-    const products = await Product.find()
-      .populate("selectBrand")
-      .populate("selectModel")
-      .populate("enterAddress");
-    res.json({ products: products, isError: false });
-  } catch (error) {
-    res.status(500).json({ message: error.message, isError: true });
-  }
-};
-
 // review And Rating
 exports.sallerReview = async (req, res) => {
   try {
@@ -744,7 +694,6 @@ exports.sallerReview = async (req, res) => {
   }
 };
 // fech all saller review base on sellerid
-
 exports.getsellerReview = async (req, res) => {
   try {
     // console.log(req.params.id);
@@ -795,7 +744,7 @@ exports.getproductReview = async (req, res) => {
 exports.getAllProductsInCategory = async (req, res) => {
   try {
     const category = req.params.id;
-    const products = await Product.find({ category })
+    const products = await Product.find({ category, status: true })
       .populate("selectBrand")
       .populate("selectModel")
       .populate("enterAddress");
@@ -807,7 +756,7 @@ exports.getAllProductsInCategory = async (req, res) => {
 exports.getAllProductsInDepartment = async (req, res) => {
   try {
     const department = req.params.id;
-    const products = await Product.find({ department })
+    const products = await Product.find({ department, status: true })
       .populate("selectBrand")
       .populate("selectModel")
       .populate("enterAddress");
@@ -819,7 +768,59 @@ exports.getAllProductsInDepartment = async (req, res) => {
 exports.getAllProductsInSubCategory = async (req, res) => {
   try {
     const subCategory = req.params.id;
-    const products = await Product.find({ subCategory })
+    const products = await Product.find({ subCategory, status: true })
+      .populate("selectBrand")
+      .populate("selectModel")
+      .populate("enterAddress");
+    res.json({ products: products, isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
+};
+
+//  fetch product information
+exports.fetchAllSubCategoriesproduct = async (req, res) => {
+  try {
+    const SubCategories_id = req.params.id;
+
+    // Validate SubCategories_id as a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(SubCategories_id)) {
+      return res.status(400).json({
+        message: "Invalid subcategory ID",
+        isError: true,
+      });
+    }
+
+    const products = await Product.find({
+      subCategory: SubCategories_id,
+      status: true,
+    })
+      .populate("selectBrand")
+      .populate("selectModel")
+      .populate("enterAddress");
+
+    // Check if products exist
+    if (!products || products.length === 0) {
+      return res.status(404).json({
+        message: "No products found for the given subcategory",
+        isError: true,
+      });
+    }
+
+    res.json({ products: products, isError: false });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({
+      message: "An error occurred while fetching products",
+      isError: true,
+    });
+  }
+};
+
+//  feth prodct based on sub category
+exports.getAllProduct = async (req, res) => {
+  try {
+    const products = await Product.find({ status: true })
       .populate("selectBrand")
       .populate("selectModel")
       .populate("enterAddress");
