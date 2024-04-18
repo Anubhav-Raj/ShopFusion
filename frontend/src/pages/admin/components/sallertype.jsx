@@ -10,13 +10,10 @@ const SallerType = ({ onFinish, onFinishFailed }) => {
       const trimmedValues = Object.fromEntries(
         Object.entries(values).map(([key, value]) => [key, value.trim()])
       );
-
       await onFinish(trimmedValues);
       form.resetFields();
-      // Optionally, display a success message
       message.success("Saller created successfully");
     } catch (error) {
-      // Handle submission error
       console.error("Error submitting form:", error);
     }
   };
@@ -33,15 +30,12 @@ const SallerType = ({ onFinish, onFinishFailed }) => {
           span: 16,
         }}
         style={{
-          maxWidth: "50%",
           alignItems: "center",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
           padding: "20px",
           borderRadius: "8px",
-          width: "45%",
         }}
         initialValues={{
           remember: true,
@@ -50,7 +44,6 @@ const SallerType = ({ onFinish, onFinishFailed }) => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <h3>Create Saller</h3>
         <div className="flex row">
           <Form.Item
             label="Saller Name"

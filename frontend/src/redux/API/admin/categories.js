@@ -48,8 +48,21 @@ export const CategoryApi = createApi({
       },
       invalidatesTags: ["category"],
     }),
+    fetchAllCategoryforadmin: builder.query({
+      query: () => {
+        return {
+          url: "admin/fetchallcategoryforadmin",
+          method: "GET",
+          credentials: "include",
+        };
+      },
+      invalidatesTags: ["department"],
+    }),
   }),
 });
 
-export const { useCreateCategoryMutation, useFetchAllCategoryQuery } =
-  CategoryApi;
+export const {
+  useCreateCategoryMutation,
+  useFetchAllCategoryQuery,
+  useFetchAllCategoryforadminQuery,
+} = CategoryApi;

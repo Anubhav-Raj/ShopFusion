@@ -5,7 +5,6 @@ import {
   usePublicfetchAllCategoriesQuery,
   usePublicfetchAllDepartmentQuery,
   usePublicfetchAllSubCategoriesQuery,
-  usePublicfetchProductQuery,
 } from "../../redux/API/publicApi/publicApi";
 import toast from "react-hot-toast";
 import { useGetSubCategoryproductQuery } from "../../redux/API/products/mobile";
@@ -13,11 +12,10 @@ import { useGetSubCategoryproductQuery } from "../../redux/API/products/mobile";
 function Department() {
   const [departments, setDepartments] = useState([]);
   const { data: departmentData, isLoding } = usePublicfetchAllDepartmentQuery(
-    "66051c66c5d6688767d349e2"
+    "66193c6f49560202a88750e8"
   );
 
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  // console.log("selectedDepartment", selectedDepartment);
 
   // Update selectedDepartment when departments change
   useEffect(() => {

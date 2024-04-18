@@ -10,16 +10,18 @@ const AdminDashboard = () => {
   } = theme.useToken();
 
   return (
-    <Layout>
-      <Adminsidebar />
+    <>
       <Layout>
-        <Adminheader />
-        <Content style={{ margin: "24px 16px 0" }}>
-          <h1> Welcome To ZoneHub </h1>
-        </Content>
-        <AdminFooter />
+        <Adminsidebar />
+        <Layout>
+          <Adminheader />
+          <Content style={{ margin: "24px 16px 0" }}>
+            <h1> Welcome To ZoneHub </h1>
+          </Content>
+          <AdminFooter />
+        </Layout>
       </Layout>
-    </Layout>
+    </>
   );
 };
 

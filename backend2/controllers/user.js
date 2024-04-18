@@ -431,11 +431,11 @@ exports.verifyUser = async (req, res) => {
     user.isVerified = true;
     await user.save();
 
-    // res.json({
-    //   message: "Verified Sucessfully",
-    //   token, // Include the generated token in the response
-    // });
-    res.redirect("/login");
+    res.json({
+      message: "Verified Sucessfully",
+      token, // Include the generated token in the response
+    });
+    // res.redirect("/login");
   } catch (error) {
     res.status(500).json({
       error: error.message,

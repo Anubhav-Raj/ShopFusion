@@ -17,16 +17,7 @@ export const sallerTypeApi = createApi({
           body: sallerType,
         };
       },
-      invalidatesTags: ["sallerType"],
-      // Add a tag for this endpoint
-      // onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-      //   dispatch(
-      //     queryFulfilled({
-      //       endpointName: "createSallerType",
-      //       response: {},
-      //     })
-      //   );
-      // },
+      invalidatesTags: ["sallerType"], // Specify the tag to invalidate
     }),
 
     fetchAllSallerType: builder.query({

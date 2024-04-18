@@ -24,14 +24,6 @@ export const DepartmentApi = createApi({
         };
       },
       invalidatesTags: ["department"],
-      // onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-      //   dispatch(
-      //     queryFulfilled({
-      //       endpointName: "createDepartment",
-      //       response: {},
-      //     })
-      //   );
-      // },
     }),
 
     fetchAllDepartment: builder.query({
@@ -48,17 +40,22 @@ export const DepartmentApi = createApi({
         };
       },
       invalidatesTags: ["department"],
-      // onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-      //   dispatch(
-      //     queryFulfilled({
-      //       endpointName: "fetchAllDepartment",
-      //       response: {},
-      //     })
-      //   );
-      // },
+    }),
+    fetchAllDepartmentsforadmin: builder.query({
+      query: () => {
+        return {
+          url: "admin/fetchalldepartmentsforadmin",
+          method: "GET",
+          credentials: "include",
+        };
+      },
+      invalidatesTags: ["department"],
     }),
   }),
 });
 
-export const { useCreateDepartmentMutation, useFetchAllDepartmentQuery } =
-  DepartmentApi;
+export const {
+  useCreateDepartmentMutation,
+  useFetchAllDepartmentQuery,
+  useFetchAllDepartmentsforadminQuery,
+} = DepartmentApi;

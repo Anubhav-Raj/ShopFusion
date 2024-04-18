@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 function SellerPage() {
   const [departments, setDepartments] = useState([]);
   const { data: departmentData, isLoading } = usePublicfetchAllDepartmentQuery(
-    "66051c66c5d6688767d349e2"
+    "66193c6f49560202a88750e8"
   );
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -129,7 +129,10 @@ function SellerPage() {
       </div>
       <div className="rightdiv">
         <DropdownRight />
-        <div className="rightdivscrol" style={{ height: `${rightDivHeight}px` }}>
+        <div
+          className="rightdivscrol"
+          style={{ height: `${rightDivHeight}px` }}
+        >
           <SellerRight data={selectedid} />
         </div>
       </div>

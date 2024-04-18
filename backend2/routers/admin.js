@@ -41,15 +41,32 @@ router.post(
   deserializeUser,
   adminCon.fetchAllDepartments
 );
+router.get(
+  "/fetchalldepartmentsforadmin",
+  deserializeUser,
+  adminCon.fetchAllDepartmentsforadmin
+);
 router.post(
   "/fetchallcategories",
   deserializeUser,
   adminCon.fetchAllCategories
 );
+
+router.get(
+  "/fetchallcategoryforadmin",
+  deserializeUser,
+  adminCon.fetchAllCategoriesforadmin
+);
+
 router.post(
   "/fetchallsubcategories",
   deserializeUser,
   adminCon.fetchAllSubCategories
+);
+router.get(
+  "/fetchallsubcategoryforadmin",
+  deserializeUser,
+  adminCon.fetchAllSubCategoriesforadmin
 );
 
 router.post("/fetchallitems", deserializeUser, adminCon.fetchAllItems);

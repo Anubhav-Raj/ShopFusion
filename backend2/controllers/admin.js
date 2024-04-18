@@ -161,6 +161,46 @@ exports.fetchAllDepartments = async (req, res) => {
   }
 };
 
+exports.fetchAllDepartmentsforadmin = async (req, res) => {
+  try {
+    // Fetch all departments matching the choose_type_id and populate the category and subcategory fields
+    const departments = await ChooseDepartment.find()
+      .populate({
+        path: "category",
+        populate: { path: "subcategories" },
+      })
+      .exec(); // Make sure to execute the query
+
+    console.log(departments);
+
+    res
+      .status(200)
+      .json({ message: "Departments fetched successfully", departments });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch departments", error });
+  }
+};
+
+// fect all categories for admin
+
+exports.fetchAllCategoriesforadmin = async (req, res) => {
+  try {
+    // Fetch all categories matching the choose_type_id and populate the category and subcategory fields
+    const categories = await ChooseCategory.find()
+      .populate({
+        path: "subcategories",
+      })
+      .exec(); // Make sure to execute the query
+
+    console.log(categories);
+
+    res
+      .status(200)
+      .json({ message: "Categories fetched successfully", categories });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch categories", error });
+  }
+};
 // Controller function to fetch all categories
 exports.fetchAllCategories = async (req, res) => {
   try {
@@ -220,6 +260,7 @@ exports.fetchAllCategories = async (req, res) => {
 //     res.status(500).json({ message: "Failed to fetch subcategories", error });
 //   }
 // };
+
 exports.fetchAllSubCategories = async (req, res) => {
   try {
     const SubCategories = await ChooseSubCategory.find({
@@ -233,10 +274,23 @@ exports.fetchAllSubCategories = async (req, res) => {
   }
 };
 
+// fetch all subCategory  for admin
+
+exports.fetchAllSubCategoriesforadmin = async (req, res) => {
+  try {
+    const SubCategories = await ChooseSubCategory.find().exec();
+
+    res
+      .status(200)
+      .json({ message: "Subcategories fetched successfully", SubCategories });
+  } catch (error) {
+    res.status(500).json({ message: "Subcategories fetched Faild" });
+  }
+};
 // Controller function to fetch all items
 exports.fetchAllItems = async (req, res) => {
   try {
-    if (req.body.choose_subcategory_id === " ") {
+    if (req.body.choose_subcategory_id === "") {
       res.status(500).json({ message: "Items fetched Faild" });
     }
     // Handle fetching all items logic here

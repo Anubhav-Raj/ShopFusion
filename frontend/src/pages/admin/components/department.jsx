@@ -47,15 +47,15 @@ const Department = ({ onFinish, onFinishFailed, data }) => {
           span: 16,
         }}
         style={{
-          maxWidth: "50%",
+          // maxWidth: "50%",
           alignItems: "center",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+          // boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
           padding: "20px",
           borderRadius: "8px",
-          width: "45%",
+          // width: "45%",
         }}
         initialValues={{
           remember: true,
@@ -64,7 +64,6 @@ const Department = ({ onFinish, onFinishFailed, data }) => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <h3>Create Department</h3>
         <div className="flex row">
           <Form.Item
             label="Choose Seller Type"

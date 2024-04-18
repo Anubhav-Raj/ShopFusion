@@ -676,10 +676,28 @@ exports.paymentVerification = async (req, res) => {
 exports.fetchAllSubCategoriesproduct = async (req, res) => {
   try {
     const SubCategories_id = req.params.id;
+
+    // Validate SubCategories_id as a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(SubCategories_id)) {
+      return res.status(400).json({
+        message: "Invalid subcategory ID",
+        isError: true,
+      });
+    }
+
     const products = await Product.find({ subCategory: SubCategories_id })
       .populate("selectBrand")
       .populate("selectModel")
       .populate("enterAddress");
+
+    // Check if products exist
+    if (!products || products.length === 0) {
+      return res.status(404).json({
+        message: "No products found for the given subcategory",
+        isError: true,
+      });
+    }
+
     res.json({ products: products, isError: false });
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -762,7 +780,7 @@ exports.productReview = async (req, res) => {
 };
 exports.getproductReview = async (req, res) => {
   try {
-    console.log(req.params.id);
+    // console.log(req.params.id);
     const reviews = await ProductReview.find({
       productId: req.params.id,
     }).populate("userId");
@@ -773,7 +791,6 @@ exports.getproductReview = async (req, res) => {
 };
 
 //fetching products based on
-
 exports.getAllProductsInCategory = async (req, res) => {
   try {
     const category = req.params.id;

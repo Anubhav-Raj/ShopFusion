@@ -45,7 +45,21 @@ export const SubCategoriesApi = createApi({
       },
       invalidatesTags: ["subCategories"],
     }),
+
+    fetchAllSubcategoryforadmin: builder.query({
+      query: () => {
+        return {
+          url: "admin/fetchallsubcategoryforadmin",
+          method: "GET",
+          credentials: "include",
+        };
+      },
+      invalidatesTags: ["subCategories"],
+    }),
   }),
 });
-export const { useCreateSubCategoriesMutation, useFetchAllSubCategoriesQuery } =
-  SubCategoriesApi;
+export const {
+  useCreateSubCategoriesMutation,
+  useFetchAllSubCategoriesQuery,
+  useFetchAllSubcategoryforadminQuery,
+} = SubCategoriesApi;

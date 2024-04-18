@@ -30,7 +30,6 @@ const My_post = () => {
   const [selectedsubcategories, setSelectedsubcategories] = useState();
   const [checkSubCategory, setCheckSubCategory] = useState("");
   const handleSelectedDepartment = (value) => {
-    console.log(value);
     setSelectedDepartment(value);
   };
   const handleSelectedcategories = (value) => {
@@ -144,7 +143,7 @@ const My_post = () => {
       setAllSelectedsubcategoriesitem(newobjArray);
     }
   }, [itemLoading, selectedsubcategories, itemData]);
-  console.log(allsubcategories);
+  // console.log(allsubcategories);
   // console.log("selectedType", selectedType);
   // console.log("selecteddepartment", selecteddepartment);
   // console.log("selectedcategories", categories);
