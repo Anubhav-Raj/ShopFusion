@@ -11,10 +11,7 @@ import {
   useFetchAllSallerTypeQuery,
 } from "../../../redux/API/admin/saller";
 import { useCreateCategoryMutation } from "../../../redux/API/admin/categories";
-import {
-  seCreateDepartmentMutation,
-  useCreateDepartmentMutation,
-} from "../../../redux/API/admin/department";
+import { useCreateDepartmentMutation } from "../../../redux/API/admin/department";
 import { useCreateSubCategoriesMutation } from "../../../redux/API/admin/subcategories";
 import { useCreateItemMutation } from "../../../redux/API/admin/item";
 import AdminFooter from "../components/common/footer";

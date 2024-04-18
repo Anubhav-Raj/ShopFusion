@@ -21,7 +21,7 @@ function Itemcard({ data }) {
       <div className="with100">
         <div className="with100">
           <div className="flex flex-col">
-            <h5 className="productnamee">{data.mobileName}</h5>
+            <h5 className="productnamee">{data.productName}</h5>
           </div>
           <span className="pricesh">₹{data.price}</span>
         </div>

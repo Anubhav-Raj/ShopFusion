@@ -238,7 +238,7 @@ const My_post = () => {
             onChange={handleSelectedSubcategories}
           />
         </div>
-
+        {/* 
         <div className="formbold-form-wrapper">
           <h6>Choose Item</h6>
           <Select
@@ -259,7 +259,7 @@ const My_post = () => {
             options={allsubcategoriesitem}
             onChange={handleSelectedSubcategoriesitem}
           />
-        </div>
+        </div> */}
       </div>
 
       {edittableshow && <EditMobile id={id} setEditTable={setEditTable} />}

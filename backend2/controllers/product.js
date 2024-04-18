@@ -88,7 +88,6 @@ exports.createMobile = async (req, res) => {
       type: type,
       category: categories,
       subCategory: subCategory,
-      // item: item,
       department: department,
       user: createdBy,
       sellerType: req.body.sellerType,
@@ -138,12 +137,14 @@ exports.createMobile = async (req, res) => {
 };
 exports.createProduct = async (req, res) => {
   try {
-    // string to json
+    //console.log(req.body);
+    // console.log(req.files);
+
     let otherFeature = [];
     if (!req.body.otherFeature) {
       otherFeature = JSON.parse(req.body.otherFeature);
     }
-    // console.log(selectedcategories);
+    console.log("otherFeature: ", otherFeature);
     const requiredFields = [
       "selectBrand",
       "productName",
@@ -217,8 +218,8 @@ exports.createProduct = async (req, res) => {
       serviceMode: req.body.serviceMode,
       enterAddress: req.body.enterAddress,
       googleDriveLink: req.body.googleDriveLink,
-      mobileDescription: req.body.mobileDescription,
-      otherFeature: otherFeature,
+      productDescription: req.body.productDescription,
+      otherFeatures: JSON.parse(req.body.otherFeature),
       images: productImages,
       file: file,
       video: video,
@@ -226,8 +227,8 @@ exports.createProduct = async (req, res) => {
 
     const newProduct = new Product(productData);
 
-    // return console.log(res.locals.user._id);
-
+    // return console.log(newProduct);
+    // return;
     await newProduct.save();
     const user = await User.findById(res.locals.user._id);
     user.products.push(newProduct._id);

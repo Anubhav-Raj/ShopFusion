@@ -21,10 +21,7 @@ const productSchema = new mongoose.Schema(
       ref: "ChooseSubCategory",
       // required: true,
     },
-    item: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "ChooseItem",
-    },
+
     price: {
       type: Number,
       default: 0,
@@ -54,7 +51,7 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "ModelBrand",
     },
-    mobileName: String,
+    productName: String,
     condition: String,
     yearOfPurchase: String,
     availableQuantity: {
@@ -64,8 +61,6 @@ const productSchema = new mongoose.Schema(
     },
     minimumOrder: {
       type: Number,
-      // default: 1,
-      // min: 1,
     },
     paymentMode: String,
     serviceMode: String,
@@ -74,7 +69,7 @@ const productSchema = new mongoose.Schema(
       ref: "Address",
     },
     googleDriveLink: String,
-    mobileDescription: String,
+    productDescription: String,
     images: {
       type: Array,
       default: [],
@@ -106,8 +101,8 @@ const productSchema = new mongoose.Schema(
 
     otherFeatures: [
       {
-        key: String,
-        value: String,
+        first: String,
+        last: String,
       },
     ],
   },

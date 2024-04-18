@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useEffect, useRef, useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, Modal } from "antd";
@@ -7,7 +8,11 @@ import AdminFooter from "../components/common/footer";
 import Adminsidebar from "../components/common/sidebar";
 import Adminheader from "../components/common/header";
 import SubcategoryForm from "../../admin/components/subcategories"; // Import the SubcategoryForm component
-import { useFetchAllSubcategoryforadminQuery } from "../../../redux/API/admin/subcategories"; // Import the subcategory-related API call
+import {
+  useCreateSubCategoriesMutation,
+  useFetchAllSubcategoryforadminQuery,
+} from "../../../redux/API/admin/subcategories"; // Import the subcategory-related API call
+import { useFetchAllSallerTypeQuery } from "../../../redux/API/admin/saller";
 const { Content } = Layout;
 
 const SubcategoryList = () => {
@@ -19,6 +24,7 @@ const SubcategoryList = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
+  const [createSubCategories] = useCreateSubCategoriesMutation();
 
   const {
     isLoading: subcategoryLoading,
@@ -30,6 +36,15 @@ const SubcategoryList = () => {
     subcategoryRefetch();
   }, []);
 
+  const { isLoading, data, refetch } = useFetchAllSallerTypeQuery();
+
+  const [sallerType, setSallerType] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setSallerType(data && data.SellerTypes);
+    }
+  }, [isLoading, data]);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -137,6 +152,14 @@ const SubcategoryList = () => {
       ...getColumnSearchProps("name"),
     },
     {
+      title: "Category Name",
+      dataIndex: ["choose_category", "name"], // Access nested field
+      key: "categoryName", // Key for the column
+      width: "15%",
+      ...getColumnSearchProps(["choose_category", "name"]), // Pass nested field to getColumnSearchProps
+    },
+
+    {
       title: "No of Product",
       dataIndex: "products",
       key: "noofproduct",
@@ -177,6 +200,39 @@ const SubcategoryList = () => {
     setIsAddModalVisible(true);
   };
 
+  const handleSubCategoriedFinish = async (values) => {
+    try {
+      console.log("values", values);
+      // Validate values before making the API call
+      if (
+        !values.sellerType ||
+        !values.subcategoryDescription ||
+        !values.subcategoryName
+      ) {
+        throw new Error("SubcategoryName and description are required.");
+      }
+
+      // Make the API call to create saller type
+      const response = await createSubCategories(values);
+      console.log("response", response);
+      // Check if the API call was successful
+      if (response.error) {
+        throw new Error(response.error.message); // Handle specific API errors
+      }
+
+      // Log the successful response
+      console.log("Catregory type created successfully:", response.data);
+      setIsAddModalVisible(false);
+      subcategoryRefetch();
+    } catch (error) {
+      // Log and handle errors
+      console.error("Error creating saller type:", error.message);
+    }
+  };
+
+  const handleFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
   return (
     <Layout>
       <Adminsidebar />
@@ -233,11 +289,9 @@ const SubcategoryList = () => {
             footer={null}
           >
             <SubcategoryForm
-              onCancel={() => setIsAddModalVisible(false)}
-              onSuccess={() => {
-                setIsAddModalVisible(false);
-                subcategoryRefetch();
-              }}
+              onFinish={handleSubCategoriedFinish}
+              onFinishFailed={handleFinishFailed}
+              data={sallerType && sallerType}
             />
           </Modal>
         </Content>

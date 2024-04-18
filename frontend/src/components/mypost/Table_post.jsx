@@ -293,8 +293,8 @@ function Table_post({ setTableShow, setEditTable, setId }) {
     },
     {
       title: "Title",
-      dataIndex: "mobileName",
-      key: "mobileName",
+      dataIndex: "productName",
+      key: "productName",
     },
     {
       title: "Description",

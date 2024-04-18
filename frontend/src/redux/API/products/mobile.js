@@ -17,7 +17,7 @@ export const mobileAPI = createApi({
         formData.append("color", mobile.color);
         formData.append("selectBrand", mobile.selectBrand);
         formData.append("selectModel", mobile.selectModel);
-        formData.append("mobileName", mobile.mobileName);
+        formData.append("productName", mobile.mobileName);
         formData.append("condition", mobile.condition);
         formData.append("user", mobile.user);
         formData.append("yearOfPurchase", mobile.yearOfPurchase);
@@ -28,7 +28,7 @@ export const mobileAPI = createApi({
         formData.append("serviceMode", mobile.serviceMode);
         formData.append("enterAddress", mobile.enterAddress);
         formData.append("googleDriveLink", mobile.googleDriveLink);
-        formData.append("mobileDescription", mobile.mobileDescription);
+        formData.append("productDescription", mobile.mobileDescription);
         formData.append("selectedType", mobile.selectedType);
         formData.append("selecteddepartment", mobile.selecteddepartment);
         formData.append("selectedcategories", mobile.selectedcategories);
@@ -281,7 +281,7 @@ export const mobileAPI = createApi({
         formData.append("gstNumber", product.gstNumber);
         formData.append("selectBrand", product.selectBrand);
         formData.append("selectModel", product.selectModel);
-        formData.append("productName", product.productName);
+        formData.append("productName", product.mobileName);
         formData.append("condition", product.condition);
         formData.append("yearOfPurchase", product.yearOfPurchase);
         formData.append("availableQuantity", product.availableQuantity);

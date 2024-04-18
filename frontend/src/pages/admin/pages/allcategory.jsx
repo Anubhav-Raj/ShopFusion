@@ -7,8 +7,11 @@ import { Layout } from "antd";
 import AdminFooter from "../components/common/footer";
 import Adminsidebar from "../components/common/sidebar";
 import Adminheader from "../components/common/header";
-import CategoryForm from "../../admin/components/categories"; // Import the CategoryForm component
+import Categories from "../components/categories";
+// import CategoryForm from "../../admin/components/categories"; // Import the CategoryForm component
 import { useFetchAllCategoryforadminQuery } from "../../../redux/API/admin/categories"; // Import the category-related API call
+import { useFetchAllSallerTypeQuery } from "../../../redux/API/admin/saller";
+import { useCreateCategoryMutation } from "../../../redux/API/admin/categories"; // Import the department-related API call
 const { Content } = Layout;
 
 const CategoryList = () => {
@@ -19,6 +22,8 @@ const CategoryList = () => {
   const [deleteRecord, setDeleteRecord] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [createCategory] = useCreateCategoryMutation();
+
   const searchInput = useRef(null);
 
   const {
@@ -26,7 +31,15 @@ const CategoryList = () => {
     data: catagorieData,
     refetch: catagorierefetch,
   } = useFetchAllCategoryforadminQuery();
-  console.log(catagorieData);
+  const { isLoading, data, refetch } = useFetchAllSallerTypeQuery();
+
+  const [sallerType, setSallerType] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setSallerType(data && data.SellerTypes);
+    }
+  }, [isLoading, data]);
   useEffect(() => {
     catagorierefetch();
   }, []);
@@ -191,7 +204,39 @@ const CategoryList = () => {
   const handleAdd = () => {
     setIsAddModalVisible(true);
   };
+  const handleCategoriedFinish = async (values) => {
+    try {
+      console.log("values", values);
+      // Validate values before making the API call
+      if (
+        !values.sellerType ||
+        !values.categoryDescription ||
+        !values.categoryName
+      ) {
+        throw new Error("categoryName and description are required.");
+      }
 
+      // Make the API call to create saller type
+      const response = await createCategory(values);
+      console.log("response", response);
+      // Check if the API call was successful
+      if (response.error) {
+        throw new Error(response.error.message); // Handle specific API errors
+      }
+
+      // Log the successful response
+      console.log("Catregory type created successfully:", response.data);
+      setIsAddModalVisible(false);
+      catagorierefetch();
+    } catch (error) {
+      // Log and handle errors
+      console.error("Error creating saller type:", error.message);
+    }
+  };
+
+  const handleFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
   return (
     <Layout>
       <Adminsidebar />
@@ -213,7 +258,7 @@ const CategoryList = () => {
             footer={null}
           >
             {editRecord && (
-              <CategoryForm
+              <Categories
                 initialValues={editRecord}
                 onCancel={() => setIsEditModalVisible(false)}
                 onSuccess={() => {
@@ -247,12 +292,10 @@ const CategoryList = () => {
             onCancel={() => setIsAddModalVisible(false)}
             footer={null}
           >
-            <CategoryForm
-              onCancel={() => setIsAddModalVisible(false)}
-              onSuccess={() => {
-                setIsAddModalVisible(false);
-                catagorierefetch();
-              }}
+            <Categories
+              onFinish={handleCategoriedFinish}
+              onFinishFailed={handleFinishFailed}
+              data={sallerType && sallerType}
             />
           </Modal>
         </Content>

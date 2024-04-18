@@ -192,8 +192,6 @@ exports.fetchAllCategoriesforadmin = async (req, res) => {
       })
       .exec(); // Make sure to execute the query
 
-    console.log(categories);
-
     res
       .status(200)
       .json({ message: "Categories fetched successfully", categories });
@@ -278,28 +276,41 @@ exports.fetchAllSubCategories = async (req, res) => {
 
 exports.fetchAllSubCategoriesforadmin = async (req, res) => {
   try {
-    const SubCategories = await ChooseSubCategory.find().exec();
+    const SubCategories = await ChooseSubCategory.find()
+      .populate("choose_category") // Assuming the field name referencing categories is choose_category
+      .exec();
 
     res
       .status(200)
       .json({ message: "Subcategories fetched successfully", SubCategories });
   } catch (error) {
-    res.status(500).json({ message: "Subcategories fetched Faild" });
+    res.status(500).json({ message: "Subcategories fetched failed", error });
   }
 };
+
 // Controller function to fetch all items
 exports.fetchAllItems = async (req, res) => {
   try {
-    if (req.body.choose_subcategory_id === "") {
-      res.status(500).json({ message: "Items fetched Faild" });
+    // Validate if choose_subcategory_id is provided
+    if (!req.body.choose_subcategory_id) {
+      return res
+        .status(400)
+        .json({ message: "choose_subcategory_id is required" });
     }
-    // Handle fetching all items logic here
+
+    // Validate if choose_subcategory_id is a valid ObjectId (assuming you're using MongoDB)
+    if (!mongoose.Types.ObjectId.isValid(req.body.choose_subcategory_id)) {
+      return res.status(400).json({ message: "Invalid choose_subcategory_id" });
+    }
+
+    // Fetch items only if choose_subcategory_id is provided and valid
     const Items = await ChooseItem.find({
       choose_subcategory_id: req.body.choose_subcategory_id,
     });
+
     res.status(200).json({ message: "Items fetched successfully", Items });
-    // console.log(req.body);
   } catch (error) {
-    res.status(500).json({ message: "Items fetched Faild" });
+    console.error("Error fetching items:", error);
+    res.status(500).json({ message: "Items fetched failed" });
   }
 };

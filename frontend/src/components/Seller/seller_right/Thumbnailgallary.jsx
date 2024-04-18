@@ -165,7 +165,7 @@ function ThumbnailGallery({ product }) {
         <div className="product-container">
           <div className="product-header">
             <div className="product-title ">
-              <h2>{product.mobileName}</h2>
+              <h2>{product.productName}</h2>
               <div className="flexviewmr">
                 <p>Price:{product.price}</p>
                 <h6

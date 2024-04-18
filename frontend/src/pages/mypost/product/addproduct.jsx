@@ -515,20 +515,17 @@ const AddProduct = ({
         selectedsubcategoriesitem,
       };
 
-      Object.entries(formData).forEach(([key, value]) => {
-        console.log(`${key}: ${value}`);
-      });
-
+      // Object.entries(formData).forEach(([key, value]) => {
+      //   console.log(`${key}: ${value}`);
+      // });
       // Trigger the createMobile mutation
       const result = await CreateProductMutation(formData);
-
       // Handle the success response
       console.log("Product created successfully:", result);
       message.success("Product created successfully");
-
       // Reset the form after successful submission
-      // resetForm();
-      //setTableShow(false);
+      resetForm();
+      setTableShow(false);
     } catch (error) {
       // Handle the error
       console.error("Error creating mobile:", error);
