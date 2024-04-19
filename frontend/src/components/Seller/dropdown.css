@@ -6,21 +6,22 @@
   flex-direction: row-reverse;
 }
 
-ul.dropdown-r42 {
+/* ul.dropdown-r42 {
   display: none;
-}
+} */
 
-.dropdown-container:hover .dropdown-r42 {
+/* .dropdown-container:hover .dropdown-r42 {
   display: block;
-}
+} */
 
 ul.dropdown-r42 {
+  width: 100%;
   position: absolute;
-  padding: 10px 0px;
-  width: 200%;
+  background: white;
+  padding: 0px 0px;
   z-index: 1;
-  border-radius: 4px;
-  filter: drop-shadow(2px 4px 6px black);
+
+  /* filter: drop-shadow(2px 4px 6px black); */
 }
 
 ul.dropdown-r42>li {
@@ -52,24 +53,28 @@ ul.dropdown-r42>li>h4 {
 
 #selectAllCheckbox {
   margin-right: 5px;
-  /* Add some spacing between the checkbox and text */
 }
 
 #clearAllButton {
   margin-left: 10px;
-  /* Add spacing to the left of the "Clear All" button */
   padding: 5px 10px;
-  /* Add padding to the button for better appearance */
   cursor: pointer;
   background-color: #f44336;
-  /* Red color for the button background */
   color: #fff;
-  /* White color for the button text */
   border: none;
   border-radius: 3px;
 }
 
 #clearAllButton:hover {
   background-color: #d32f2f;
-  /* Darker red on hover */
+}
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-drawer .ant-drawer-body {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  padding: 0px;
+  overflow: auto;
+}
+ul.ant-menu.ant-menu-root.ant-menu-inline.ant-menu-light.css-dev-only-do-not-override-1qhpsh8 {
+  width: 100% !important;
 }
