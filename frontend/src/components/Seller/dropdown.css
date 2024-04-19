@@ -1,18 +1,10 @@
 .sort-4wg {
   display: flex;
   border-radius: 20px;
-  padding: 10px 10px 0px 0px;
+  padding: 10px 10px 10px 0px;
   justify-content: space-around;
   flex-direction: row-reverse;
 }
-
-/* ul.dropdown-r42 {
-  display: none;
-} */
-
-/* .dropdown-container:hover .dropdown-r42 {
-  display: block;
-} */
 
 ul.dropdown-r42 {
   width: 100%;
@@ -21,7 +13,6 @@ ul.dropdown-r42 {
   padding: 0px 0px;
   z-index: 1;
 
-  /* filter: drop-shadow(2px 4px 6px black); */
 }
 
 ul.dropdown-r42>li {

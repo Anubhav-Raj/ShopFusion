@@ -226,6 +226,20 @@ function ThumbnailGallery({ product }) {
         </Modal>
         {showproductdetails && (
           <div className="sellerreviw">
+            <div >
+              {" "}
+              <h5>Product Ratings & Reviews</h5>
+              <p style={{ fontSize: "20px" }} onClick={showModal}>
+                4.1{" "}
+                <Rate
+                  disabled
+                  allowHalf
+                  defaultValue={2.5} // Remove the empty expression here
+                  style={{ fontSize: "20px" }}
+                />
+                <p style={{ color: "#5086fa" }}> 1 Ratings & 1 Reviewers</p>
+              </p>
+            </div>
             <hr className="horizontal-line" />
             <div className="flexviewmr">
               <h3>Seller Details</h3>
@@ -270,13 +284,13 @@ function ThumbnailGallery({ product }) {
             <hr className="horizontal-line" />
           </div>
         )}
-        <Button
+        {/* <Button
           className="list_add-review-cta rounded pointer"
           onClick={showModal}
           block
         >
           Product Reviews
-        </Button>
+        </Button> */}
       </div>
     </>
   );
