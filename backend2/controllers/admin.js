@@ -259,16 +259,36 @@ exports.fetchAllCategories = async (req, res) => {
 //   }
 // };
 
+// exports.fetchAllSubCategories = async (req, res) => {
+//   try {
+//      console.log("req.body", req.body);
+//       return
+//     const SubCategories = await ChooseSubCategory.find({
+//       choose_category: req.body.choose_category_id,
+//     });
+//     res
+//       .status(200)
+//       .json({ message: "Subcategories fetched successfully", SubCategories });
+//   } catch (error) {
+//     res.status(500).json({ message: "Subcategories fetched Faild" });
+//   }
+// };
+
 exports.fetchAllSubCategories = async (req, res) => {
   try {
+    console.log("req.body", req.body);
+    const { choose_category_id } = req.body;
+
     const SubCategories = await ChooseSubCategory.find({
-      choose_category: req.body.choose_category_id,
+      choose_category: { $in: choose_category_id }, // Find subcategories where choose_category matches any of the provided IDs
     });
+
     res
       .status(200)
       .json({ message: "Subcategories fetched successfully", SubCategories });
   } catch (error) {
-    res.status(500).json({ message: "Subcategories fetched Faild" });
+    console.error("Error fetching subcategories:", error);
+    res.status(500).json({ message: "Subcategories fetched failed" });
   }
 };
 

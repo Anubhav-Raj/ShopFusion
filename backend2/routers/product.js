@@ -79,4 +79,16 @@ router.get(
   "/getProductsByDepartment/:id",
   productCon.getAllProductsInDepartment
 );
+
+router.get(
+  "/getAlldepartmentBrands/:dept_id",
+  productCon.getAlldepartmentBrands
+);
+
+router.get(
+  "/getAllSubCategoryModels/:subCategory_id",
+  productCon.getAllBrandBasedSubCategory
+);
+router.post("/filterproduct", productCon.filterproduct);
+
 module.exports = router;

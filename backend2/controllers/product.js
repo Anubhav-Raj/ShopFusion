@@ -264,7 +264,6 @@ exports.createProduct = async (req, res) => {
     });
   }
 };
-
 exports.editmobile = async (req, res) => {
   try {
     console.log(req.body);
@@ -470,6 +469,8 @@ exports.deletemobile = async (req, res) => {
     res.status(500).json({ message: "Internal server error", isError: true });
   }
 };
+
+// Brand & Modal Create
 exports.createBrand = async (req, res) => {
   try {
     // Input validation
@@ -490,8 +491,11 @@ exports.createBrand = async (req, res) => {
     const brandName = req.body.brandName.toLowerCase().trim();
     const brandNamesArray = brandName.split(",");
 
+    const department_id = req.body.department_id;
     const categories_id = req.body.category_id;
-    const departments_id_array = categories_id.split(",");
+    const categories_id_array = categories_id.split(",");
+    const subCategories_id = req.body.subCategories_id;
+    const subCategory_id_array = subCategories_id.split(",");
 
     for (let i = 0; i < brandNamesArray.length; i++) {
       const brandExist = await Brand.findOne({ brandName: brandNamesArray[i] });
@@ -503,10 +507,13 @@ exports.createBrand = async (req, res) => {
       } else {
         const brand = new Brand({
           brandName: brandNamesArray[i],
-          category_ID: departments_id_array,
+          category_ID: categories_id_array,
           image: req.files[i].path,
+          department_ID: department_id,
+          subCategory_ID: subCategory_id_array,
           key: uuidv4(),
         });
+
         await brand.save();
       }
     }
@@ -533,6 +540,8 @@ exports.createBrandmodal = async (req, res) => {
     res.status(500).json({ message: "Faild to create", isError: true });
   }
 };
+
+//Brand & modal Fetch
 exports.getAllBrands = async (req, res) => {
   try {
     const brands = await Brand.find().populate("category_ID");
@@ -560,7 +569,45 @@ exports.getcategoriesBrand = async (req, res) => {
     res.status(500).json({ message: error.message, isError: true });
   }
 };
-//get model based on brand
+exports.getAlldepartmentBrands = async (req, res) => {
+  try {
+    const dept_id = req.params.dept_id;
+    if (!dept_id) {
+      return res
+        .status(400)
+        .json({ message: "Invalid categories ID", isError: true });
+    }
+    // console.log(categories_id);
+    const brands = await Brand.find({
+      department_ID: { $in: dept_id },
+    });
+    // console.log(brands);
+
+    res.status(200).json({ brands, message: "Categories", isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
+};
+
+exports.getAllBrandBasedSubCategory = async (req, res) => {
+  try {
+    const subCategory_id = req.params.subCategory_id;
+    if (!subCategory_id) {
+      return res
+        .status(400)
+        .json({ message: "Invalid categories ID", isError: true });
+    }
+    // console.log(categories_id);
+    const brands = await Brand.find({
+      subCategory_ID: { $in: subCategory_id },
+    });
+    // console.log(brands);
+    res.status(200).json({ brands, message: "Categories", isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
+};
+
 exports.getModels = async (req, res) => {
   try {
     const models = await ModelBrand.find({ brand: req.body.id });
@@ -571,6 +618,8 @@ exports.getModels = async (req, res) => {
     res.status(500).json({ message: error.message, isError: true });
   }
 };
+
+//Product Fatching
 exports.userAllProduct = async (req, res) => {
   try {
     const user = res.locals.user;
@@ -582,6 +631,22 @@ exports.userAllProduct = async (req, res) => {
     res.json({ products: products, isError: false });
   } catch (error) {
     res.status(500).json({ message: error.message, isError: true });
+  }
+};
+
+exports.filterproduct = async (req, res) => {
+  console.log(req.body);
+
+  try {
+    res
+      .status(200)
+      .json({ data: req.body, message: "Products filtered successfully" });
+  } catch (error) {
+    // If there's an error during filtering or database query, send an error response
+    console.error("Error filtering products:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while filtering products" });
   }
 };
 
@@ -825,6 +890,15 @@ exports.getAllProduct = async (req, res) => {
       .populate("selectModel")
       .populate("enterAddress");
     res.json({ products: products, isError: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message, isError: true });
+  }
+};
+
+exports.getAllBrandBasedCategory = async (req, res) => {
+  try {
+    const brands = await Brand.find({ category_ID: req.params.category_id });
+    res.json({ brands: brands, isError: false });
   } catch (error) {
     res.status(500).json({ message: error.message, isError: true });
   }

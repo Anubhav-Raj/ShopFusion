@@ -106,7 +106,7 @@ function ThumbnailGallery({ product }) {
     const phoneUrl = `tel:${phoneNumber}`;
     window.open(phoneUrl);
   };
-  console.log(product);
+  // console.log(product);
 
   return (
     <>
@@ -226,7 +226,7 @@ function ThumbnailGallery({ product }) {
         </Modal>
         {showproductdetails && (
           <div className="sellerreviw">
-            <div >
+            <div>
               {" "}
               <h5>Product Ratings & Reviews</h5>
               <p style={{ fontSize: "20px" }} onClick={showModal}>

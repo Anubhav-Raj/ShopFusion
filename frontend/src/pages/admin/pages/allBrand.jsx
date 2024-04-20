@@ -26,6 +26,7 @@ import {
   useCreateBrandMutation,
   useCreateBrandModalMutation,
 } from "../../../redux/API/admin/brand";
+import { useFetchAllSubCategoriesQuery } from "../../../redux/API/admin/subcategories";
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -157,25 +158,28 @@ const BrandList = () => {
   // console.log("selectedcategories", selectedcategories);
 
   // //SubCategories Fetch
-  // const [allsubcategories, setAllSelectedsubcategories] = useState([]);
-  // const { data: subcategoriesData, isLoading: subcategoriesLoading } =
-  //   useFetchAllSubCategoriesQuery(selectedcategories || "");
-  // useEffect(() => {
-  //   if (subcategoriesData) {
-  //     const modifiedArray = subcategoriesData.SubCategories.map((item) => ({
-  //       ...item,
-  //       newobj: {
-  //         label: item.name,
-  //         value: item._id,
-  //       },
-  //     }));
-  //     const newobjArray = modifiedArray.map((item) => item.newobj);
-  //     setAllSelectedsubcategories(newobjArray);
-  //   }
-  // }, [subcategoriesLoading, selectedcategories, subcategoriesData]);
+  // console.log("selectedcategories", selectedcategories);
+  const [allsubcategories, setAllSelectedsubcategories] = useState([]);
+
+  const { data: subcategoriesData, isLoading: subcategoriesLoading } =
+    useFetchAllSubCategoriesQuery(selectedcategories || "");
+  // console.log("subcategoriesData", subcategoriesData);
+  useEffect(() => {
+    if (subcategoriesData) {
+      const modifiedArray = subcategoriesData.SubCategories.map((item) => ({
+        ...item,
+        newobj: {
+          label: item.name,
+          value: item._id,
+        },
+      }));
+      const newobjArray = modifiedArray.map((item) => item.newobj);
+      setAllSelectedsubcategories(newobjArray);
+    }
+  }, [subcategoriesLoading, selectedcategories, subcategoriesData]);
 
   // // Item Fetch
-  // const [selectedsubcategories, setSelectedsubcategories] = useState();
+  const [selectedsubcategories, setSelectedsubcategories] = useState();
   // const [allsubcategoriesitem, setAllSelectedsubcategoriesitem] = useState([]);
 
   // const { data: itemData, isLoading: itemLoading } = useFetchAllItemQuery(
@@ -203,7 +207,6 @@ const BrandList = () => {
     // console.log(id);
     setbrandID(id);
   };
-  // console.log(brandID);
   const showModal3 = () => {
     setIsModalVisible3(true);
   };
@@ -436,11 +439,12 @@ const BrandList = () => {
   const [CreateBrandMutation] = useCreateBrandMutation();
 
   const onFinish = async (values) => {
-    // console.log("Received values of form:", values);
+    console.log("Received values of form:", values);
     const form = {
       brandFields: brandFields,
       department: values.Department,
       categories: values.categories,
+      subCategory: values.subcategories,
       type: values.type,
     };
     try {
@@ -458,7 +462,7 @@ const BrandList = () => {
       toast.error("Error creating Brand:", error.message);
     }
 
-    // form.resetFields();
+    form.resetFields();
     setIsModalVisible(false);
   };
   const onFinishFailed = (errorInfo) => {
@@ -605,6 +609,31 @@ const BrandList = () => {
                         .indexOf(input.toLowerCase()) >= 0
                     }
                     options={allcategories && allcategories}
+                  />
+                </Form.Item>
+                {/* Sub Category */}
+                <Form.Item
+                  name="subcategories"
+                  label="Sub Categories"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Missing Sub Category",
+                    },
+                  ]}
+                >
+                  <Select
+                    mode="multiple"
+                    showSearch
+                    placeholder="Select  Sub categories"
+                    optionFilterProp="children"
+                    onChange={(value) => setSelectedsubcategories(value)}
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                    options={allsubcategories && allsubcategories}
                   />
                 </Form.Item>
 

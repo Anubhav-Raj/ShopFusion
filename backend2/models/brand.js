@@ -11,6 +11,16 @@ const brandSchema = new mongoose.Schema(
         ref: "ChooseCategory",
       },
     ],
+    department_ID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ChooseDepartment",
+    },
+    subCategory_ID: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ChooseSubCategory",
+      },
+    ],
     image: {
       type: String,
       required: true,

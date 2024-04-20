@@ -128,7 +128,10 @@ function SellerPage() {
         </div>
       </div>
       <div className="rightdiv">
-        <DropdownRight />
+        <DropdownRight
+          selectedDepartment={selectedDepartment}
+          selectedSub={categories}
+        />
         <div
           className="rightdivscrol"
           style={{ height: `${rightDivHeight}px` }}

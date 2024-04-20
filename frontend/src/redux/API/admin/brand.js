@@ -13,6 +13,8 @@ export const brandApi = createApi({
         fromData.append("sellerType", barnd.type);
         fromData.append("category_id", barnd.categories);
         fromData.append("department_id", barnd.department);
+        fromData.append("subCategories_id", barnd.subCategory);
+
         const brandNames = [];
         const brandImages = [];
 
@@ -44,7 +46,6 @@ export const brandApi = createApi({
       },
       providesTags: ["brand"],
     }),
-
     fetchCategoriesBrand: builder.query({
       query: (id) => {
         const fromData = {
@@ -59,7 +60,6 @@ export const brandApi = createApi({
       },
       providesTags: ["brand"],
     }),
-
     createBrandModal: builder.mutation({
       query: (modal) => {
         return {
@@ -71,7 +71,6 @@ export const brandApi = createApi({
       },
       invalidatesTags: ["brand"],
     }),
-
     fetchAllBrandModal: builder.query({
       query: (id) => {
         const form = {
@@ -86,6 +85,24 @@ export const brandApi = createApi({
       },
       providesTags: ["brand"],
     }),
+    fetchAllBrandbasedONDepartment: builder.query({
+      query: (id) => {
+        return {
+          url: `product/getAlldepartmentBrands/${id}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["brand"],
+    }),
+    fetchAllBrandbasedONSubCategory: builder.query({
+      query: (id) => {
+        return {
+          url: `product/getAllSubCategoryModels/${id}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["brand"],
+    }),
   }),
 });
 
@@ -95,4 +112,6 @@ export const {
   useCreateBrandModalMutation,
   useFetchAllBrandModalQuery,
   useAllbrandQuery,
+  useFetchAllBrandbasedONDepartmentQuery,
+  useFetchAllBrandbasedONSubCategoryQuery,
 } = brandApi;
