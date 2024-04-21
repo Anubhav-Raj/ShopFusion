@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
-import { Button, Modal, Rate } from "antd";
+import { Button, Modal, Rate, Table,  } from "antd";
 import callIcon from "./icons8-phone-48.png";
 import saveIcon from "./icons8-save-48.png";
 import shareIcon from "./icons8-share-48.png";
@@ -9,6 +9,75 @@ import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import Progressbar from "./Progressbar";
 import DynamicReviews from "./Dynamic_review";
 import { useGetreviewSallerQuery } from "../../../redux/API/products/mobile";
+
+const columns = [
+  {
+    title: "Name",
+    dataIndex: "name",
+  
+  },
+  {
+    title: "Specification",
+    dataIndex: "specification",
+  },
+];
+const data = [
+  {
+    key: "1",
+    name: "Brand",
+    specification: "Samsung",
+  },
+  {
+    key: "2",
+    name: "Model",
+    specification: "Galaxy S20",
+  },
+  {
+    key: "3",
+    name: "Color",
+    specification: "Black",
+  },
+  {
+    key: "4",
+    name: "Storage Capacity",
+    specification: "128 GB",
+  },
+  {
+    key: "5",
+    name: "RAM",
+    specification: "8 GB",
+  },
+  {
+    key: "6",
+    name: "Display Size",
+    specification: "6.2 inches",
+  },
+  {
+    key: "7",
+    name: "Resolution",
+    specification: "1440 x 3200 pixels",
+  },
+  {
+    key: "8",
+    name: "Processor",
+    specification: "Qualcomm Snapdragon 865",
+  },
+  {
+    key: "9",
+    name: "Operating System",
+    specification: "Android 10, One UI 2.5",
+  },
+  {
+    key: "10",
+    name: "Camera",
+    specification: "Quad - 64MP + 12MP + 12MP + 0.3MP",
+  },
+  {
+    key: "11",
+    name: "Battery",
+    specification: "4000 mAh",
+  },
+];
 
 // Define WhatsappButton component outside ThumbnailGallery
 function WhatsappButton({ phoneNumber }) {
@@ -165,9 +234,12 @@ function ThumbnailGallery({ product }) {
         <div className="product-container">
           <div className="product-header">
             <div className="product-title ">
-              <h2>{product.productName}</h2>
+              <h3>{product.productName}</h3>
               <div className="flexviewmr">
-                <p>Price:{product.price}</p>
+                <p class="new-price">
+                  Price: <span>₹{product.price}</span>
+                </p>
+
                 <h6
                   onClick={() => setshowproductdetails((prev) => !prev)}
                   className="view_mrbtn"
@@ -226,6 +298,23 @@ function ThumbnailGallery({ product }) {
         </Modal>
         {showproductdetails && (
           <div className="sellerreviw">
+            <div className="product-detail">
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo
+                eveniet veniam tempora fuga tenetur placeat sapiente architecto
+                illum soluta consequuntur, ask me
+              </p>
+            </div>
+
+            <Table
+              columns={columns}
+              dataSource={data}
+              showHeader={false}
+              pagination={false}
+              rowHoverable={false}
+              
+            />
+
             <div>
               {" "}
               <h5>Product Ratings & Reviews</h5>

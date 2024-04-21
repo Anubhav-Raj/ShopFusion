@@ -27,7 +27,8 @@
 
 /* Customize the scrollbar */
 .thumbnail-list::-webkit-scrollbar {
-  width: 5px; /* Set the width of the scrollbar */
+  width: 5px;
+  /* Set the width of the scrollbar */
   color: white;
   object-fit: contain;
 }
@@ -76,16 +77,20 @@
   flex-direction: row;
   align-items: center;
 }
+
 .detail-item span {
   margin-left: 4px;
   margin-bottom: 5px;
 }
 
 .detail-item img {
-  width: 30px; /* Adjust as needed */
-  height: 30px; /* Adjust as needed */
+  width: 30px;
+  /* Adjust as needed */
+  height: 30px;
+  /* Adjust as needed */
   margin-bottom: 5px;
 }
+
 .product-container {
   /* display: flex; */
 
@@ -102,13 +107,14 @@
 }
 
 .product-title {
-  font-size: 1.5rem; /* Larger font size for the title */
+  font-size: 1.5rem;
+  /* Larger font size for the title */
   margin-bottom: 5px;
 }
 
 .product-title p {
-  font-size: 1rem; /* Font size for the price */
-  color: #555; /* Darker text color for the price */
+  font-size: 1.2rem;
+  color: #555;
 }
 
 .seller-details {
@@ -117,14 +123,19 @@
   padding: 15px;
   display: flex;
   width: 50%;
-  flex-direction: column; /* Adjust for better alignment */
-  background-color: #fff; /* White background */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  flex-direction: column;
+  /* Adjust for better alignment */
+  background-color: #fff;
+  /* White background */
+  border-radius: 8px;
+  /* Rounded corners */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  /* Shadow for depth */
 }
 
 .seller-details h2 {
-  font-size: 1.2rem; /* Larger font size for the seller details title */
+  font-size: 1.2rem;
+  /* Larger font size for the seller details title */
   margin-bottom: 10px;
 }
 
@@ -137,20 +148,25 @@
   /* height: 80%; */
   overflow-y: scroll;
   scrollbar-width: none;
-  scrollbar-color: #888 transparent; /* width, color */
+  scrollbar-color: #888 transparent;
+  /* width, color */
 }
 
 .scroll-container::-webkit-scrollbar {
-  width: 2px; /* width of the scrollbar */
+  width: 2px;
+  /* width of the scrollbar */
 }
 
 .scroll-container::-webkit-scrollbar-track {
-  background: transparent; /* color of the track */
+  background: transparent;
+  /* color of the track */
 }
 
 .scroll-container::-webkit-scrollbar-thumb {
-  background-color: #888; /* color of the thumb */
-  border-radius: 4px; /* roundness of the thumb */
+  background-color: #888;
+  /* color of the thumb */
+  border-radius: 4px;
+  /* roundness of the thumb */
 }
 
 .load-more-button {
@@ -169,4 +185,21 @@
 
 .load-more-button:hover {
   background-color: #c3d1e0;
+}
+
+.product-detail p {
+  font-size: 15px;
+  margin: 2px;
+
+}
+
+.new-price span {
+  color: #256eff;
+}
+
+
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper .ant-table-tbody>tr>td{
+  position: relative;
+  padding: 6px 10px 0px 0px;
+  overflow-wrap: break-word;
 }
