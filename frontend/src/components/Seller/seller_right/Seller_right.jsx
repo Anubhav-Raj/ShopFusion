@@ -23,7 +23,20 @@ function SubcategoryDataFetcher({ data }) {
   useEffect(() => {}, [id, type]);
 
   if (isLoading) {
-    return <Spin tip="Loading" size="large"></Spin>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+        }}
+      >
+        <Spin tip="Loading" size="large">
+          <div className="content" />
+        </Spin>
+      </div>
+    );
   }
 
   if (isError) {

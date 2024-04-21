@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./dropdown.css";
-import { Button, Select, Space, Menu, Checkbox, Drawer, Rate } from "antd";
+import {
+  Slider,
+  Button,
+  Select,
+  Space,
+  Menu,
+  Checkbox,
+  Drawer,
+  Rate,
+} from "antd";
 import {
   SortAscendingOutlined,
   FilterOutlined,
@@ -14,8 +23,8 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
   const [brands, setBrands] = useState([]);
   const { data, isLoading } =
     useFetchAllBrandbasedONDepartmentQuery(selectedDepartment);
-  const { data: brandData, isLoading: isBrandLoading } =
-    useFetchAllBrandbasedONSubCategoryQuery(selectedSub);
+  // const { data: brandData, isLoading: isBrandLoading } =
+  //   useFetchAllBrandbasedONSubCategoryQuery(selectedSub);
   // console.log(selectedSub);
 
   useEffect(() => {
@@ -29,7 +38,6 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
   }, [isLoading, data]);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [stateOpenKeys, setStateOpenKeys] = useState(["1"]);
-  // console.log(brands);
   function getItem(
     label,
     key,
@@ -229,6 +237,12 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
       getItem("Online", "61", null, null, null, true, null, "serviceMode"),
       getItem("Offline", "62", null, null, null, true, null, "serviceMode"),
     ]),
+    getItem("Price Range", "7", <UnorderedListOutlined />, [
+      getItem("Under ₹50", "71", null, null, null, true, null, "priceRange"),
+      getItem("₹100 - ₹500", "72", null, null, null, true, null, "priceRange"),
+      getItem("₹500 - ₹1000", "73", null, null, null, true, null, "priceRange"),
+      getItem("Over ₹1000", "74", null, null, null, true, null, "priceRange"),
+    ]),
   ];
 
   const getLevelKeys = (items1) => {
@@ -278,7 +292,10 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
         key={item.key}
         style={{ backgroundColor: isSelected ? "#e6f4ff" : "rgb(250 250 250)" }}
       >
-        <Checkbox onChange={(event) => handleCheckboxChange(event, item)}>
+        <Checkbox
+          style={{}}
+          onChange={(event) => handleCheckboxChange(event, item)}
+        >
           {item.label}
         </Checkbox>
       </Menu.Item>
@@ -305,7 +322,7 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
     }
   };
   const { data: filteddata } = usePublicFilterproductQuery(selectedOptions);
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
     console.log(selectedOptions);
@@ -341,9 +358,6 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
         }}
       >
         {items.map((item) => {
-          {
-            /* console.log(item); */
-          }
           return item.children ? renderSubMenu(item) : renderMenuItem(item);
         })}
       </Menu>
@@ -380,7 +394,9 @@ function FilterButton({
             <span id="selectAll">
               <Checkbox>Select All</Checkbox>
             </span>
-            <button id="clearAllButton">Clear All</button>
+            <button onClick={() => setSelectedCount(0)} id="clearAllButton">
+              Clear All
+            </button>
           </div>
         }
         onClose={onClose}
@@ -398,9 +414,6 @@ function FilterButton({
 
 function DropdownRight({ selectedSub, selectedDepartment }) {
   const [selectedCount, setSelectedCount] = useState(0);
-  const handleChange = (value) => {
-    console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
-  };
 
   return (
     <div className="sort-4wg">
@@ -414,7 +427,7 @@ function DropdownRight({ selectedSub, selectedDepartment }) {
         style={{
           width: 160,
         }}
-        onChange={handleChange}
+        // onChange={handleChange}
         options={[
           {
             value: "newest",

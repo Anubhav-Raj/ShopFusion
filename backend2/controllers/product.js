@@ -635,8 +635,6 @@ exports.userAllProduct = async (req, res) => {
 };
 
 exports.filterproduct = async (req, res) => {
-  console.log(req.body);
-
   try {
     res
       .status(200)
