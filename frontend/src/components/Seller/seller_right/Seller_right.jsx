@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Thumbnailgallary from "./Thumbnailgallary";
-// import Progressbar from "./Progressbar";
 import "./seller_right.css";
 import { useGetSubCategoryproductQuery } from "../../../redux/API/products/mobile";
 import { useGetDepartmentsProductQuery } from "../../../redux/API/products/mobile";
@@ -82,7 +81,7 @@ function SellerRightWithData({ data }) {
   };
 
   const sortedProducts = sortProducts(productsToRender, sortType);
-  console.log(sortedProducts);
+
   return (
     <>
       {sortedProducts.length > 0 ? (

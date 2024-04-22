@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, Rate, Table } from "antd";
 import callIcon from "./icons8-phone-48.png";
 import saveIcon from "./icons8-save-48.png";
@@ -8,7 +8,10 @@ import whatsappIcon from "./icons8-whatsapp-48.png";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import Progressbar from "./Progressbar";
 import DynamicReviews from "./Dynamic_review";
-import { useGetreviewSallerQuery } from "../../../redux/API/products/mobile";
+import {
+  useGetproductReviewsQuery,
+  useGetreviewSallerQuery,
+} from "../../../redux/API/products/mobile";
 
 const columns = [
   {
@@ -177,6 +180,21 @@ function ThumbnailGallery({ product }) {
     },
   ];
 
+  // fetcha  review
+  const [reviews, setReviews] = useState([]);
+
+  const { data: reviewData, isLoading } = useGetproductReviewsQuery(
+    product._id
+  );
+
+  useEffect(() => {
+    setReviews(reviewData?.reviews);
+  }, [isLoading, reviewData]);
+  const totalCount = reviews && reviews.length;
+  const averageRating =
+    reviews &&
+    reviews.reduce((total, review) => total + review.rating, 0) / totalCount;
+
   return (
     <>
       <div className="cjjjnsjsnjsn">
@@ -251,25 +269,11 @@ function ThumbnailGallery({ product }) {
           </div>
         </div>
         <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-          <div style={{ marginLeft: "10px" }}>
-            {" "}
-            <h3>Product Ratings & Reviews</h3>
-            <p style={{ fontSize: "20px" }}>
-              4.1{" "}
-              <Rate
-                disabled
-                allowHalf
-                defaultValue={2.5} // Remove the empty expression here
-                style={{ fontSize: "30px" }}
-              />
-              <p style={{ color: "#5086fa" }}> 1 Ratings & 1 Reviewers</p>
-            </p>
-          </div>
-          <Progressbar />
           <DynamicReviews
             productid={product._id}
             Sellerid={product.user}
             type="product"
+            data={reviewData}
           />
         </Modal>
         <Modal
@@ -284,10 +288,14 @@ function ThumbnailGallery({ product }) {
             <Rate
               disabled
               allowHalf
-              defaultValue={2.5}
+              defaultValue={averageRating}
               style={{ fontSize: "20px" }}
             />
-            <p style={{ color: "#5086fa" }}> 1 Ratings & 1 Reviewers</p>
+            <p style={{ color: "#5086fa" }}>
+              {totalCount
+                ? `${totalCount} Ratings & ${totalCount} Reviews`
+                : "No reviews yet"}
+            </p>
           </p>
           <Progressbar />
           <DynamicReviews
@@ -311,19 +319,23 @@ function ThumbnailGallery({ product }) {
             />
 
             <div>
-              {" "}
               <h5>Product Ratings & Reviews</h5>
               <p style={{ fontSize: "20px" }} onClick={showModal}>
-                4.1{" "}
+                <span>{averageRating.toFixed(1)}</span>
                 <Rate
                   disabled
                   allowHalf
-                  defaultValue={2.5} // Remove the empty expression here
+                  defaultValue={averageRating || 0} // Remove the empty expression here
                   style={{ fontSize: "20px" }}
                 />
-                <p style={{ color: "#5086fa" }}> 1 Ratings & 1 Reviewers</p>
+                <p style={{ color: "#5086fa" }}>
+                  {totalCount
+                    ? `${totalCount} Ratings & ${totalCount} Reviews`
+                    : "No reviews yet"}
+                </p>
               </p>
             </div>
+
             <hr className="horizontal-line" />
             <div className="flexviewmr">
               <h3>Seller Details</h3>

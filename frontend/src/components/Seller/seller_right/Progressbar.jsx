@@ -1,26 +1,36 @@
 import React from "react";
 import "./progressbar.css";
 
-const Progressbar = () => {
-  // Sample data
-  const data = {
-    ratings: [5, 4, 3, 2, 1],
-    type: ["Excellent", "Very Good", "Good", "Average", "Poor"],
-    counts: ["51", "9", "31", "7", "2"],
+const Progressbar = ({ reviews }) => {
+  // Function to calculate the count for each rating category
+  const calculateRatingCounts = (reviews) => {
+    const ratingCounts = {
+      ratings: [5, 4, 3, 2, 1],
+      type: ["Excellent", "Very Good", "Good", "Average", "Poor"],
+      counts: [0, 0, 0, 0, 0],
+    };
+
+    // Iterate through reviews and update counts
+    reviews.forEach((review) => {
+      const index = ratingCounts.ratings.indexOf(review.rating);
+      if (index !== -1) {
+        ratingCounts.counts[index]++;
+      }
+    });
+
+    return ratingCounts;
   };
 
-  // Function to calculate progress value based on counts
-  const calculateProgressWidth = (count, totalSum) => {
-    const countValue = parseFloat(count.replace(",", ""));
-    const progressWidth = (countValue / totalSum) * 100;
-    return progressWidth;
-  };
+  // Calculate rating counts based on reviews
+  const ratingCounts = calculateRatingCounts(reviews);
 
   // Calculate the total sum of counts
-  const totalSum = data.counts.reduce((sum, count) => {
-    const countValue = parseFloat(count.replace(",", ""));
-    return sum + countValue;
-  }, 0);
+  const totalSum = ratingCounts.counts.reduce((sum, count) => sum + count, 0);
+
+  // Function to calculate progress value based on counts
+  const calculateProgressWidth = (count) => {
+    return (count / totalSum) * 100;
+  };
 
   // Function to determine color class based on progress width
   const getColorClass = (width) => {
@@ -38,7 +48,7 @@ const Progressbar = () => {
       <div className="col-8-12 _3qpj74 _31DkEZ snipcss-paalR">
         <div className="_13sFCC miQW6D ">
           <ul className="_2jr1F_">
-            {data.ratings.map((rating, index) => (
+            {ratingCounts.ratings.map((rating, index) => (
               <li key={index} className="_28Xb_u">
                 <div className="omG9iE">
                   <span className="_26f_zl">{rating}</span>
@@ -48,24 +58,22 @@ const Progressbar = () => {
             ))}
           </ul>
           <ul className="_36LmXx">
-            {data.type.map((count, index) => (
+            {ratingCounts.type.map((type, index) => (
               <li key={index} className="_28Xb_u">
-                <div className="_144uJVNT">{count}</div>
+                <div className="_144uJVNT">{type}</div>
               </li>
             ))}
           </ul>
           <ul className="_2Plkj9">
-            {data.counts.map((count, index) => (
+            {ratingCounts.counts.map((count, index) => (
               <li key={index} className="_28Xb_u">
                 <div>
                   <div className="_3UaKsS">
                     <span
                       className={`EkB-Xt ${getColorClass(
-                        calculateProgressWidth(count, totalSum)
+                        calculateProgressWidth(count)
                       )}`}
-                      style={{
-                        width: `${calculateProgressWidth(count, totalSum)}%`,
-                      }}
+                      style={{ width: `${calculateProgressWidth(count)}%` }}
                     ></span>
                   </div>
                 </div>
@@ -73,7 +81,7 @@ const Progressbar = () => {
             ))}
           </ul>
           <ul className="_36LmXx">
-            {data.counts.map((count, index) => (
+            {ratingCounts.counts.map((count, index) => (
               <li key={index} className="_28Xb_u">
                 <div className="_1uJVNT">{count}</div>
               </li>

@@ -13,40 +13,19 @@ import { useGetreviewSallerQuery } from "../../../redux/API/products/mobile";
 import { useAppSelector } from "../../../redux/store";
 import { useReviewProductMutation } from "../../../redux/API/products/mobile";
 import { useGetproductReviewsQuery } from "../../../redux/API/products/mobile";
-function DynamicReview({ productid, Sellerid, type }) {
+import Progressbar from "./Progressbar";
+import { addReview, selectReviews } from "../../../redux/review.slice.js";
+import { useDispatch, useSelector } from "react-redux";
+function DynamicReview({ productid, Sellerid, type, data }) {
   const user = useAppSelector((state) => state.user2.user);
-
   const [message, setMessage] = useState("");
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState(data.reviews);
   const [value, setValue] = useState(null);
   const desc = ["terrible", "bad", "normal", "good", "wonderful"];
 
   const [ReviewSaller, { loading, error }] = useReviewSallerMutation();
   const [ReviewProduct, { loading: prodctloding, error: productre }] =
     useReviewProductMutation();
-
-  let fetchHook;
-  if (type === "seller") {
-    fetchHook = useGetreviewSallerQuery;
-  } else if (type === "product") {
-    fetchHook = useGetproductReviewsQuery;
-  } else {
-    fetchHook = null;
-  }
-
-  const {
-    data: reviewData,
-    isLoading,
-    isError,
-  } = fetchHook
-    ? fetchHook(type === "seller" ? Sellerid : productid)
-    : { data: null, isLoading: false, isError: true };
-
-  // console.log(reviewData);
-  // set review data in  reviews
-  useEffect(() => {
-    setReviews(reviewData?.reviews);
-  }, [isLoading, reviewData]);
 
   const handleAddReview = async () => {
     let newMessage = message; // Use the provided message by default
@@ -101,7 +80,6 @@ function DynamicReview({ productid, Sellerid, type }) {
     const daysDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
     return daysDifference;
   };
-  // console.log(reviews);
   const [sortType, setSortType] = useState("newest");
 
   // Function to sort reviews based on sortType
@@ -120,23 +98,46 @@ function DynamicReview({ productid, Sellerid, type }) {
     } else if (sortType === "Positive") {
       sortedReviews.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     }
-    // console.log(sortedReviews);
     return sortedReviews;
   };
   useEffect(() => {
     const sortedReviews = sortReviews(reviews, sortType);
     setReviews(sortedReviews);
   }, [sortType]);
+  const totalCount = reviews.length;
+
+  // Calculate average rating score
+  const averageRating =
+    reviews.reduce((total, review) => total + review.rating, 0) / totalCount;
+
   return (
     <>
+      <div style={{ marginLeft: "10px" }}>
+        <h3>Product Ratings & Reviews</h3>
+        <p style={{ fontSize: "20px" }}>
+          {averageRating.toFixed(1)}{" "}
+          <Rate
+            disabled
+            allowHalf
+            defaultValue={averageRating || 1}
+            style={{ fontSize: "30px" }}
+          />
+          <p style={{ color: "#5086fa" }}>
+            {totalCount} Ratings & {totalCount} Reviews
+          </p>
+        </p>
+      </div>
+      <Progressbar reviews={reviews} />
+
       <section className="faq_dynamic-main">
         <div className="container">
           <div className="listing__faq">
             <div className="faq_inner-listing">
               <hr className="horizontal-line" />
-              {/* <h2 className="secondary-color py-2 f-24">Seller Review</h2> */}
               <div className="faq_box-wrapper">
                 <div className="faq_form-box-inner border border-1 border-secondary rounded p-3">
+                  <h6>Write Your Review</h6>
+                  Rating:{" "}
                   <Rate
                     tooltips={desc}
                     allowHalf
