@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
-import { Button, Modal, Rate, Table,  } from "antd";
+import { Button, Modal, Rate, Table } from "antd";
 import callIcon from "./icons8-phone-48.png";
 import saveIcon from "./icons8-save-48.png";
 import shareIcon from "./icons8-share-48.png";
@@ -14,7 +14,6 @@ const columns = [
   {
     title: "Name",
     dataIndex: "name",
-  
   },
   {
     title: "Specification",
@@ -312,7 +311,6 @@ function ThumbnailGallery({ product }) {
               showHeader={false}
               pagination={false}
               rowHoverable={false}
-              
             />
 
             <div>
@@ -361,13 +359,27 @@ function ThumbnailGallery({ product }) {
                       : null}
                   </p>
                 </div>
-                <Button
+                <div>
+                  {" "}
+                  <h5>Product Ratings & Reviews</h5>
+                  <p style={{ fontSize: "20px" }} onClick={showModal1}>
+                    4.1{" "}
+                    <Rate
+                      disabled
+                      allowHalf
+                      defaultValue={2.5} // Remove the empty expression here
+                      style={{ fontSize: "20px" }}
+                    />
+                    <p style={{ color: "#5086fa" }}> 1 Ratings & 1 Reviewers</p>
+                  </p>
+                </div>
+                {/* <Button
                   className="list_add-review-cta rounded pointer"
                   onClick={showModal1}
                   block
                 >
                   Seller Reviews
-                </Button>
+                </Button> */}
               </div>
             )}
             <hr className="horizontal-line" />
