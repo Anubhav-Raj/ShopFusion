@@ -153,7 +153,7 @@ a:focus {
 
 .categories .content .icon {
   display: flex;
-  border: solid #e2e2e2;
+  border: solid #4b4b4b1f;
   background: #fff;
   border-radius: 11px;
   width: 150px;
@@ -161,7 +161,7 @@ a:focus {
   justify-content: center;
   margin: 0 auto;
   margin-bottom: 5px;
-  box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.15);
+  /* box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.15); */
 }
 
 .categories .content .icon:hover {
@@ -202,6 +202,7 @@ img.departimg {
 span.topings {
   display: flex;
   background: white;
+  color: black;
   top: -8%;
   text-align: center;
   padding: 0px 4px;
@@ -767,4 +768,13 @@ h3.watchmorevide {
 
 .col-20 {
   margin-bottom: 22px;
+}
+
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-modal .ant-modal-title{
+  text-align: center;
+}
+.ant-modal-body {
+  overflow-y: scroll;
+  max-height: 550px;
+  scrollbar-width: none;
 }

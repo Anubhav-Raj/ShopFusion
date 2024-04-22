@@ -1,6 +1,7 @@
 import React from "react";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { useGetproductbasedonSubCategoryQuery } from "../../redux/API/products/mobile";
+import TruncateString from "../Truncatestring";
 
 function Category({ category, onClick }) {
   const { id, name, image, type, count } = category;
@@ -23,7 +24,7 @@ function Category({ category, onClick }) {
             />
           )}
           <span className="topings" style={{ fontSize: "1vw" }}>
-            {name}
+            <TruncateString text={name} maxLength={13} />
           </span>
           <span className="topings1" style={{ fontSize: "0.8vw" }}>
             {count}

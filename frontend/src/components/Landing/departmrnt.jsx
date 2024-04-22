@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
+import { Button, Modal } from 'antd';
 import Itemcard from "./Itemcard";
 import {
   usePublicfetchAllCategoriesQuery,
@@ -293,21 +294,15 @@ function Department() {
           </fieldset>
         </>
       ) : (
-        <div className="alignmentflx">
-          <div className="page">
-            <div className="navbar navbar-page">
-              <div className="navbar-inner sliding">
-                <div className="left">
-                  <span
-                    className="crosstoclose"
-                    onClick={() => setIsInitialCardVisible(true)}
-                  >
-                    x
-                  </span>
-                </div>
-                <div className="title">Select a Department</div>
-              </div>
-            </div>
+        <Modal
+        title="Choose Department"
+        open={true}
+        width={'62%'}
+        footer={null} 
+        style={{
+          top: '60px',
+        }}
+      >
             <Card
               categories={
                 departmentData &&
@@ -324,12 +319,10 @@ function Department() {
                   : []
               }
               onClick={(departmentID) => {
-                // console.log(departmentID);
                 return handleDepartmentClick(departmentID);
               }}
             />
-          </div>
-        </div>
+      </Modal>
       )}
     </>
   );
