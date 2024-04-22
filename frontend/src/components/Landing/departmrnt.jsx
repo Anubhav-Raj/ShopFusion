@@ -5,13 +5,14 @@ import {
   usePublicfetchAllCategoriesQuery,
   usePublicfetchAllDepartmentQuery,
   usePublicfetchAllSubCategoriesQuery,
+  usePublicfetchSavedPostQuery, // Import the hook
 } from "../../redux/API/publicApi/publicApi";
 import toast from "react-hot-toast";
 import { useGetSubCategoryproductQuery } from "../../redux/API/products/mobile";
 
 function Department() {
   const [departments, setDepartments] = useState([]);
-  const { data: departmentData, isLoding } = usePublicfetchAllDepartmentQuery(
+  const { data: departmentData, isLoading } = usePublicfetchAllDepartmentQuery(
     "66193c6f49560202a88750e8"
   );
 
@@ -19,13 +20,13 @@ function Department() {
 
   // Update selectedDepartment when departments change
   useEffect(() => {
-    if (isLoding) {
-      toast.loading("Data  is Loading...");
+    if (isLoading) {
+      //toast.loading("Data is Loading...");
     }
     if (departments.length > 0) {
       setSelectedDepartment(departments[0]);
     }
-  }, [departments, isLoding]);
+  }, [departments, isLoading]);
 
   // Update departments when departmentData changes
   useEffect(() => {
@@ -44,16 +45,14 @@ function Department() {
       setSelectedCatagories(catagorie[0]._id);
     }
   }, [catagorie]);
-  console.log("catagorie", catagorie);
 
   useEffect(() => {
     if (catagoriesData && catagoriesData.Categories) {
       setCatagories(catagoriesData.Categories);
-      setTrendingCategoriesData(catagoriesData.Categories);
     }
   }, [catagoriesData, seletedCategories]);
 
-  //Fech SubCategories
+  // Fetch SubCategories
   const { data: subcategoriesData } =
     usePublicfetchAllSubCategoriesQuery(seletedCategories);
   const [subcategories, setSubCategories] = useState([]);
@@ -85,18 +84,37 @@ function Department() {
   const [topCategoriesData, setTopCategoriesData] = useState([]);
   const [relatedPostsData, setRelatedPostsData] = useState([]);
   const [recentlyViewedData, setRecentlyViewedData] = useState([]);
-  const [savedPostsData, setSavedPostsData] = useState([]);
+  const savedPosts = JSON.parse(localStorage.getItem("savedProducts")) || [];
+  const [savedPostsData, setsavedPostsData] = useState([]);
+  const BASE_URL = process.env.LIVE_BACKENDAPI || "http://localhost:5000";
 
-  const fetchSavedPostsFromLocalStorage = () => {
-    const savedPosts = JSON.parse(localStorage.getItem("savedProducts")) || [];
-    setSavedPostsData(savedPosts);
-  };
-  // console.log(savedPostsData);
-
+  // Now you can use BASE_URL wherever needed, such as in your fetch call
+  const url = `${BASE_URL}/api/product/productbasedonid`;
   useEffect(() => {
-    // Fetch saved posts from local storage when component mounts
-    fetchSavedPostsFromLocalStorage();
-  }, []);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url, {
+          method: "POST", // Change method to POST
+          headers: {
+            "Content-Type": "application/json", // Specify content type as JSON
+          },
+          body: JSON.stringify(savedPosts), // Send savedPosts array in the request body
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const jsonData = await response.json();
+        console.log(jsonData);
+        setsavedPostsData(jsonData.products);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // Include savedPosts in the dependency array to trigger the effect when it changes
 
   return (
     <>
@@ -149,35 +167,7 @@ function Department() {
                       }
                     />
                   )}
-
-                  {/* <Card
-                    categories={[
-                      {
-                        id:
-                          departments && departments.length > 0
-                            ? departments[0]._id
-                            : null,
-                        name:
-                          departments && departments.length > 0
-                            ? departments[0].name
-                            : null,
-                        image:
-                          departments && departments.length > 0
-                            ? departments[0]?.image
-                            : null,
-                        type: "department",
-                      },
-                    ]}
-                    onClick={() =>
-                      handleDepartmentClick(
-                        selectedDepartment
-                          ? selectedDepartment
-                          : departments[0]?._id
-                      )
-                    }
-                  /> */}
                 </div>
-
                 <div className="sjiiudbs22">
                   <h3 className="titlesh1">Category</h3>
                   <Card

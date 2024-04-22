@@ -14,6 +14,7 @@ import loginReducer from "./API/user_slice/login.slice";
 import { CheckUniqueAPI } from "./API/uniqueIdentification";
 import { mobileproduct } from "./API/products/mobile.reducer.js";
 import { rating_and_review } from "./API/products/rating_and_review.js";
+import sortReducer from "./sort.slice";
 //Admin
 import { sallerTypeApi } from "./API/admin/saller.js";
 import { CategoryApi } from "./API/admin/categories.js";
@@ -51,6 +52,7 @@ const store = configureStore({
     products: productReducer,
     userInfo: userinfo,
     login: loginReducer,
+    sort: sortReducer,
     [PublicApi.reducerPath]: PublicApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

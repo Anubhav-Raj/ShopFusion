@@ -59,6 +59,15 @@ export const PublicApi = createApi({
       }),
       invalidatesTags: ["department"],
     }),
+    // for saved post
+    publicfetchSavedPost: builder.query({
+      query: (ids) => ({
+        url: "product/productbasedonid",
+        method: "GET",
+        body: ids,
+      }),
+      invalidatesTags: ["department"],
+    }),
   }),
 });
 
@@ -69,4 +78,5 @@ export const {
   usePublicfetchProductQuery,
   usePublicfetchAllBrandBasedCategoryQuery,
   usePublicFilterproductQuery,
+  usePublicfetchSavedPostQuery,
 } = PublicApi;

@@ -35,7 +35,6 @@ router.post(
   ]),
   productCon.editmobile
 );
-//router.post("/createbrand", productCon.createBrand);
 
 router.post("/deletemobile", deserializeUser, productCon.deletemobile);
 router.get("/allbrands", deserializeUser, productCon.getAllBrands);
@@ -90,5 +89,5 @@ router.get(
   productCon.getAllBrandBasedSubCategory
 );
 router.post("/filterproduct", productCon.filterproduct);
-
+router.post("/productbasedonid", productCon.productbasedonid);
 module.exports = router;

@@ -3,7 +3,7 @@ import { Card } from "antd";
 const { Meta } = Card;
 
 function Itemcard({ data }) {
-  console.log(data);
+  // console.log(data);
   if (!data) {
     return null;
   }

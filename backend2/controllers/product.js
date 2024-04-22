@@ -114,11 +114,30 @@ exports.createMobile = async (req, res) => {
 
     const newProduct = new Product(productData);
     const createdProduct = await newProduct.save();
-    const user = await User.findByIdAndUpdate(
-      createdBy,
-      { $push: { products: createdProduct._id } },
-      { new: true }
-    ).select("-password");
+    await newProduct.save();
+    const user = await User.findById(res.locals.user._id);
+    user.products.push(newProduct._id);
+    await user.save();
+    const department_val = await ChooseDepartment.findById(
+      req.body.selecteddepartment
+    );
+    department_val.products.push(newProduct._id);
+    await department_val.save();
+    const category_val = await ChooseCategory.findById(
+      req.body.selectedcategories
+    );
+    category_val.products.push(newProduct._id);
+    await category_val.save();
+    const subcategory_val = await ChooseSubCategory.findById(
+      req.body.selectedsubcategories
+    );
+    subcategory_val.products.push(newProduct._id);
+    await subcategory_val.save();
+    // const user = await User.findByIdAndUpdate(
+    //   createdBy,
+    //   { $push: { products: createdProduct._id } },
+    //   { new: true }
+    // ).select("-password");
 
     res.json({
       message: "Product Created",
@@ -144,7 +163,7 @@ exports.createProduct = async (req, res) => {
     if (!req.body.otherFeature) {
       otherFeature = JSON.parse(req.body.otherFeature);
     }
-    console.log("otherFeature: ", otherFeature);
+    // console.log("otherFeature: ", otherFeature);
     const requiredFields = [
       "selectBrand",
       "productName",
@@ -227,27 +246,25 @@ exports.createProduct = async (req, res) => {
 
     const newProduct = new Product(productData);
 
-    // return console.log(newProduct);
-    // return;
     await newProduct.save();
     const user = await User.findById(res.locals.user._id);
     user.products.push(newProduct._id);
     await user.save();
-    // const department_val = await ChooseDepartment.findById(
-    //   req.body.selecteddepartment
-    // );
-    // department_val.products.push(newProduct._id);
-    // await department_val.save();
-    // const category_val = await ChooseCategory.findById(
-    //   req.body.selectedcategories
-    // );
-    // category_val.products.push(newProduct._id);
-    // await category_val.save();
-    // const subcategory_val = await ChooseSubCategory.findById(
-    //   req.body.selectedsubcategories
-    // );
-    // subcategory_val.products.push(newProduct._id);
-    // await subcategory_val.save();
+    const department_val = await ChooseDepartment.findById(
+      req.body.selecteddepartment
+    );
+    department_val.products.push(newProduct._id);
+    await department_val.save();
+    const category_val = await ChooseCategory.findById(
+      req.body.selectedcategories
+    );
+    category_val.products.push(newProduct._id);
+    await category_val.save();
+    const subcategory_val = await ChooseSubCategory.findById(
+      req.body.selectedsubcategories
+    );
+    subcategory_val.products.push(newProduct._id);
+    await subcategory_val.save();
 
     res.json({
       message: " Other Product Created",
@@ -631,6 +648,18 @@ exports.userAllProduct = async (req, res) => {
     res.json({ products: products, isError: false });
   } catch (error) {
     res.status(500).json({ message: error.message, isError: true });
+  }
+};
+exports.productbasedonid = async (req, res) => {
+  try {
+    const { body } = req; // Extract the request body
+    const ids = body.map((item) => item.id); // Extract 'id' from each item in the body
+    // Fetch products from MongoDB based on the provided IDs
+    const products = await Product.find({ _id: { $in: ids } });
+    res.json({ products: products, isError: false });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ message: "Internal server error", isError: true });
   }
 };
 

@@ -42,7 +42,7 @@ function DynamicReview({ productid, Sellerid, type }) {
     ? fetchHook(type === "seller" ? Sellerid : productid)
     : { data: null, isLoading: false, isError: true };
 
-  console.log(reviewData);
+  // console.log(reviewData);
   // set review data in  reviews
   useEffect(() => {
     setReviews(reviewData?.reviews);
@@ -60,7 +60,6 @@ function DynamicReview({ productid, Sellerid, type }) {
     };
     try {
       let response;
-      console.log(type);
       if (type === "seller") {
         response = await ReviewSaller({
           productid,
@@ -75,7 +74,7 @@ function DynamicReview({ productid, Sellerid, type }) {
           rating: value,
         });
       }
-      console.log(response);
+      // console.log(response);
       if (response && response.data && response.data.reviewSaller) {
         // Handle successful response
         toast.success("Review submitted successfully");
@@ -95,6 +94,39 @@ function DynamicReview({ productid, Sellerid, type }) {
     setValue(null);
   };
 
+  const calculateDaysAgo = (createdAt) => {
+    const currentDate = new Date();
+    const reviewDate = new Date(createdAt);
+    const timeDifference = currentDate.getTime() - reviewDate.getTime();
+    const daysDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
+    return daysDifference;
+  };
+  // console.log(reviews);
+  const [sortType, setSortType] = useState("newest");
+
+  // Function to sort reviews based on sortType
+  const sortReviews = (reviews, sortType) => {
+    const sortedReviews = [...reviews];
+    if (sortType === "newest") {
+      sortedReviews.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+    } else if (sortType === "oldest") {
+      sortedReviews.sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+      );
+    } else if (sortType === "Negative") {
+      sortedReviews.sort((a, b) => (a.rating || 0) - (b.rating || 0));
+    } else if (sortType === "Positive") {
+      sortedReviews.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    }
+    // console.log(sortedReviews);
+    return sortedReviews;
+  };
+  useEffect(() => {
+    const sortedReviews = sortReviews(reviews, sortType);
+    setReviews(sortedReviews);
+  }, [sortType]);
   return (
     <>
       <section className="faq_dynamic-main">
@@ -158,6 +190,7 @@ function DynamicReview({ productid, Sellerid, type }) {
             width: 160,
             paddingLeft: 10,
           }}
+          onChange={(value) => setSortType(value.value)}
           options={[
             {
               value: "newest",
@@ -187,21 +220,23 @@ function DynamicReview({ productid, Sellerid, type }) {
                 >
                   <div className="accordian-link d-flex align-items-center pointer py-2">
                     <img
-                      src={review.userId.photo}
+                      src={review?.userId?.photo}
                       className="user_image"
                       alt="user"
                     />
                     <h5 className="reveiew_user_name ps-3">
-                      {review.userId.name}
+                      {review?.userId?.name}
                       <p className="review_rating">
                         <Rate
                           tooltips={desc}
                           disabled
                           allowHalf
                           style={{ fontSize: "15px" }}
-                          value={review.rating ? review.rating : 0}
+                          value={review.rating || 0}
                         />{" "}
-                        <span style={{ fontSize: "10px" }}>10 days ago</span>
+                        <span style={{ fontSize: "10px" }}>
+                          {calculateDaysAgo(review.createdAt)} days ago
+                        </span>
                       </p>
                     </h5>
                   </div>

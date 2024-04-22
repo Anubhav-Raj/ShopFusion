@@ -6,7 +6,6 @@ import SellerRight from "../../components/Seller/seller_right/Seller_right";
 import Card from "../../components/Landing/Card";
 import { usePublicfetchAllDepartmentQuery } from "../../redux/API/publicApi/publicApi";
 import { Link } from "react-router-dom";
-
 function SellerPage() {
   const [departments, setDepartments] = useState([]);
   const { data: departmentData, isLoading } = usePublicfetchAllDepartmentQuery(

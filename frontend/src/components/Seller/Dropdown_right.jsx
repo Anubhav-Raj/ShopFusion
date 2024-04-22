@@ -19,6 +19,8 @@ import {
 import { useFetchAllBrandbasedONDepartmentQuery } from "../../redux/API/admin/brand";
 import { useFetchAllBrandbasedONSubCategoryQuery } from "../../redux/API/admin/brand";
 import { usePublicFilterproductQuery } from "../../redux/API/publicApi/publicApi";
+import { useDispatch } from "react-redux";
+import { setSortType } from "../../redux/sort.slice";
 function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
   const [brands, setBrands] = useState([]);
   const { data, isLoading } =
@@ -414,7 +416,13 @@ function FilterButton({
 
 function DropdownRight({ selectedSub, selectedDepartment }) {
   const [selectedCount, setSelectedCount] = useState(0);
+  const dispatch = useDispatch();
+  const [sortType, setSortTypeLocal] = useState();
 
+  const handleSortTypeChange = (type) => {
+    setSortTypeLocal(type);
+    dispatch(setSortType(type));
+  };
   return (
     <div className="sort-4wg">
       <Select
@@ -427,23 +435,23 @@ function DropdownRight({ selectedSub, selectedDepartment }) {
         style={{
           width: 160,
         }}
-        // onChange={handleChange}
+        onChange={handleSortTypeChange}
         options={[
           {
-            value: "newest",
-            label: "Newest First (100)",
+            value: "Newest",
+            label: "Newest First ",
           },
           {
-            value: "oldest",
-            label: "Oldest First (101)",
+            value: "Oldest",
+            label: "Oldest First",
           },
           {
-            value: "priceLow",
-            label: "Price Low To High (101)",
+            value: "HightoLow",
+            label: "Price Low To High",
           },
           {
-            value: "priceHigh",
-            label: "Price High To Low (101)",
+            value: "LowtoHigh",
+            label: "Price High To Low",
           },
         ]}
       />

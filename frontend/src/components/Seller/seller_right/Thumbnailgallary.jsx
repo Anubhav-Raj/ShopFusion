@@ -20,63 +20,6 @@ const columns = [
     dataIndex: "specification",
   },
 ];
-const data = [
-  {
-    key: "1",
-    name: "Brand",
-    specification: "Samsung",
-  },
-  {
-    key: "2",
-    name: "Model",
-    specification: "Galaxy S20",
-  },
-  {
-    key: "3",
-    name: "Color",
-    specification: "Black",
-  },
-  {
-    key: "4",
-    name: "Storage Capacity",
-    specification: "128 GB",
-  },
-  {
-    key: "5",
-    name: "RAM",
-    specification: "8 GB",
-  },
-  {
-    key: "6",
-    name: "Display Size",
-    specification: "6.2 inches",
-  },
-  {
-    key: "7",
-    name: "Resolution",
-    specification: "1440 x 3200 pixels",
-  },
-  {
-    key: "8",
-    name: "Processor",
-    specification: "Qualcomm Snapdragon 865",
-  },
-  {
-    key: "9",
-    name: "Operating System",
-    specification: "Android 10, One UI 2.5",
-  },
-  {
-    key: "10",
-    name: "Camera",
-    specification: "Quad - 64MP + 12MP + 12MP + 0.3MP",
-  },
-  {
-    key: "11",
-    name: "Battery",
-    specification: "4000 mAh",
-  },
-];
 
 // Define WhatsappButton component outside ThumbnailGallery
 function WhatsappButton({ phoneNumber }) {
@@ -121,7 +64,7 @@ function ThumbnailGallery({ product }) {
     setSelectedImage(imageSrc);
   };
 
-  const handleSave = () => {
+  const handleSave = (id) => {
     try {
       // Fetch existing saved products array from local storage
       const existingSavedProducts =
@@ -129,12 +72,13 @@ function ThumbnailGallery({ product }) {
 
       // Check if the product to be saved already exists in the array
       const isProductSaved = existingSavedProducts.some(
-        (savedProduct) => savedProduct.id === product.id
+        (savedProduct) => savedProduct.id === id
       );
 
       // If the product doesn't exist, add it to the array
       if (!isProductSaved) {
-        const updatedSavedProducts = [...existingSavedProducts, product];
+        // Here, you would replace `product` with the object you want to save, including its ID
+        const updatedSavedProducts = [...existingSavedProducts, { id }];
 
         // Update local storage with the updated array
         localStorage.setItem(
@@ -175,6 +119,63 @@ function ThumbnailGallery({ product }) {
     window.open(phoneUrl);
   };
   // console.log(product);
+  const data = [
+    {
+      key: "1",
+      name: "Brand",
+      specification: product.selectBrand.brandName,
+    },
+    {
+      key: "2",
+      name: "Model",
+      specification: product.selectModel
+        ? product.selectModel.modelName
+        : "N/A",
+    },
+    {
+      key: "3",
+      name: "Payment Mode",
+      specification: product.paymentMode,
+    },
+    {
+      key: "4",
+      name: "Condition",
+      specification: product.condition,
+    },
+    {
+      key: "5",
+      name: "Year of Purchase",
+      specification: product.yearOfPurchase || "N/A",
+    },
+    {
+      key: "6",
+      name: "Available Quantity",
+      specification: product.availableQuantity.toString(),
+    },
+    {
+      key: "7",
+      name: "Minimum Order",
+      specification: product.minimumOrder.toString(),
+    },
+    {
+      key: "8",
+      name: "Service Mode",
+      specification: product.serviceMode,
+    },
+    {
+      key: "8",
+      name: "Google Drive",
+      specification: (
+        <a
+          href={product.googleDriveLink}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {product.googleDriveLink}
+        </a>
+      ),
+    },
+  ];
 
   return (
     <>
@@ -218,7 +219,7 @@ function ThumbnailGallery({ product }) {
             <img src={callIcon} alt="Call" style={{ cursor: "pointer" }} />
             <span>Call</span>
           </div>
-          <div className="detail-item" onClick={handleSave}>
+          <div className="detail-item" onClick={() => handleSave(product._id)}>
             <img src={saveIcon} alt="Save" style={{ cursor: "pointer" }} />
             <span>Save</span>
           </div>
@@ -298,11 +299,7 @@ function ThumbnailGallery({ product }) {
         {showproductdetails && (
           <div className="sellerreviw">
             <div className="product-detail">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo
-                eveniet veniam tempora fuga tenetur placeat sapiente architecto
-                illum soluta consequuntur, ask me
-              </p>
+              <p>{product.productDescription}</p>
             </div>
 
             <Table
@@ -359,39 +356,18 @@ function ThumbnailGallery({ product }) {
                       : null}
                   </p>
                 </div>
-                <div>
-                  {" "}
-                  <h5>Product Ratings & Reviews</h5>
-                  <p style={{ fontSize: "20px" }} onClick={showModal1}>
-                    4.1{" "}
-                    <Rate
-                      disabled
-                      allowHalf
-                      defaultValue={2.5} // Remove the empty expression here
-                      style={{ fontSize: "20px" }}
-                    />
-                    <p style={{ color: "#5086fa" }}> 1 Ratings & 1 Reviewers</p>
-                  </p>
-                </div>
-                {/* <Button
+                <Button
                   className="list_add-review-cta rounded pointer"
                   onClick={showModal1}
                   block
                 >
                   Seller Reviews
-                </Button> */}
+                </Button>
               </div>
             )}
             <hr className="horizontal-line" />
           </div>
         )}
-        {/* <Button
-          className="list_add-review-cta rounded pointer"
-          onClick={showModal}
-          block
-        >
-          Product Reviews
-        </Button> */}
       </div>
     </>
   );
