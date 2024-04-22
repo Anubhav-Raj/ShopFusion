@@ -11,12 +11,13 @@ const Progressbar = ({ reviews }) => {
     };
 
     // Iterate through reviews and update counts
-    reviews.forEach((review) => {
-      const index = ratingCounts.ratings.indexOf(review.rating);
-      if (index !== -1) {
-        ratingCounts.counts[index]++;
-      }
-    });
+    reviews &&
+      reviews.forEach((review) => {
+        const index = ratingCounts.ratings.indexOf(review.rating);
+        if (index !== -1) {
+          ratingCounts.counts[index]++;
+        }
+      });
 
     return ratingCounts;
   };

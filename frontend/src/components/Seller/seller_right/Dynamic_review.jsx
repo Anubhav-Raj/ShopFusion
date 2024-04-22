@@ -18,8 +18,10 @@ import { addReview, selectReviews } from "../../../redux/review.slice.js";
 import { useDispatch, useSelector } from "react-redux";
 function DynamicReview({ productid, Sellerid, type, data }) {
   const user = useAppSelector((state) => state.user2.user);
+  console.log("reviews", data);
+
   const [message, setMessage] = useState("");
-  const [reviews, setReviews] = useState(data.reviews);
+  const [reviews, setReviews] = useState(data ? data.reviews : []);
   const [value, setValue] = useState(null);
   const desc = ["terrible", "bad", "normal", "good", "wonderful"];
 
@@ -84,6 +86,11 @@ function DynamicReview({ productid, Sellerid, type, data }) {
 
   // Function to sort reviews based on sortType
   const sortReviews = (reviews, sortType) => {
+    if (!Array.isArray(reviews)) {
+      console.error("Reviews is not an array:", reviews);
+      return [];
+    }
+
     const sortedReviews = [...reviews];
     if (sortType === "newest") {
       sortedReviews.sort(
@@ -100,35 +107,15 @@ function DynamicReview({ productid, Sellerid, type, data }) {
     }
     return sortedReviews;
   };
+
   useEffect(() => {
     const sortedReviews = sortReviews(reviews, sortType);
     setReviews(sortedReviews);
   }, [sortType]);
-  const totalCount = reviews.length;
-
-  // Calculate average rating score
-  const averageRating =
-    reviews.reduce((total, review) => total + review.rating, 0) / totalCount;
 
   return (
     <>
-      <div style={{ marginLeft: "10px" }}>
-        <h3>Product Ratings & Reviews</h3>
-        <p style={{ fontSize: "20px" }}>
-          {averageRating.toFixed(1)}{" "}
-          <Rate
-            disabled
-            allowHalf
-            defaultValue={averageRating || 1}
-            style={{ fontSize: "30px" }}
-          />
-          <p style={{ color: "#5086fa" }}>
-            {totalCount} Ratings & {totalCount} Reviews
-          </p>
-        </p>
-      </div>
       <Progressbar reviews={reviews} />
-
       <section className="faq_dynamic-main">
         <div className="container">
           <div className="listing__faq">

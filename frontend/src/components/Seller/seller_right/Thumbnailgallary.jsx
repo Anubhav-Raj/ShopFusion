@@ -182,19 +182,42 @@ function ThumbnailGallery({ product }) {
 
   // fetcha  review
   const [reviews, setReviews] = useState([]);
-
   const { data: reviewData, isLoading } = useGetproductReviewsQuery(
     product._id
   );
 
+  // console.log(product);
+  const [sallerreview, setSellerreview] = useState([]);
+  const { data: sellerreviewData } = useGetreviewSallerQuery(product.user);
+
+  // console.log("sellerreviewData", sellerreviewData);
+  // console.log("reviewData", reviewData);
   useEffect(() => {
-    setReviews(reviewData?.reviews);
-  }, [isLoading, reviewData]);
+    setReviews(reviewData?.reviews || []);
+    setSellerreview(sellerreviewData?.reviews || []);
+  }, [isLoading, reviewData, sellerreviewData]);
+
+  // console.log("setReviews", reviews);
+  // console.log("sallerreview", sallerreview);
+  // useEffect(() => {}, [sallerreview]);
+
   const totalCount = reviews && reviews.length;
+  const sallertotalCount = sallerreview ? sallerreview.length : 0;
+
+  const averageRatingforsaller =
+    sallerreview &&
+    sallerreview.reduce(
+      (total, sallerreview) => total + sallerreview.rating,
+      0
+    ) / totalCount;
+
+  const averageRatingValuesalller = averageRatingforsaller || 0; // Set a default value if averageRating is undefined
+  const formattedAverageRatingsaller = averageRatingValuesalller.toFixed(1);
   const averageRating =
     reviews &&
     reviews.reduce((total, review) => total + review.rating, 0) / totalCount;
-
+  const averageRatingValue = averageRating || 0; // Set a default value if averageRating is undefined
+  const formattedAverageRating = averageRatingValue.toFixed(1);
   return (
     <>
       <div className="cjjjnsjsnjsn">
@@ -269,6 +292,21 @@ function ThumbnailGallery({ product }) {
           </div>
         </div>
         <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+          <div style={{ marginLeft: "10px" }}>
+            <h3>Product Ratings & Reviews</h3>
+            <p style={{ fontSize: "20px" }}>
+              {formattedAverageRating}
+              <Rate
+                disabled
+                allowHalf
+                defaultValue={averageRating || 1}
+                style={{ fontSize: "30px" }}
+              />
+              <p style={{ color: "#5086fa" }}>
+                {totalCount} Ratings & {totalCount} Reviews
+              </p>
+            </p>
+          </div>
           <DynamicReviews
             productid={product._id}
             Sellerid={product.user}
@@ -276,15 +314,16 @@ function ThumbnailGallery({ product }) {
             data={reviewData}
           />
         </Modal>
+
         <Modal
           style={{ width: "50%" }}
           open={isModalOpen1}
           onOk={handleOk1}
           onCancel={handleCancel1}
         >
-          <h3>Seller Ratings & Reviews</h3>
+          <h3>Seller Ratings & Reviews </h3>
           <p style={{ fontSize: "20px" }}>
-            4.1{" "}
+            {formattedAverageRatingsaller}
             <Rate
               disabled
               allowHalf
@@ -292,18 +331,19 @@ function ThumbnailGallery({ product }) {
               style={{ fontSize: "20px" }}
             />
             <p style={{ color: "#5086fa" }}>
-              {totalCount
-                ? `${totalCount} Ratings & ${totalCount} Reviews`
+              {sallertotalCount
+                ? `${sallertotalCount} Ratings & ${sallertotalCount} Reviews`
                 : "No reviews yet"}
             </p>
           </p>
-          <Progressbar />
           <DynamicReviews
             productid={product._id}
             Sellerid={product.user}
             type="seller"
+            data={sellerreviewData}
           />
         </Modal>
+
         {showproductdetails && (
           <div className="sellerreviw">
             <div className="product-detail">
@@ -346,6 +386,7 @@ function ThumbnailGallery({ product }) {
                 {showsellerdetails ? <FaCaretDown /> : <FaCaretUp />}
               </h6>
             </div>
+
             {showsellerdetails && (
               <div className="detailsseller">
                 <div className="leftdetailseller">
@@ -368,13 +409,23 @@ function ThumbnailGallery({ product }) {
                       : null}
                   </p>
                 </div>
-                <Button
-                  className="list_add-review-cta rounded pointer"
-                  onClick={showModal1}
-                  block
-                >
-                  Seller Reviews
-                </Button>
+                <div>
+                  <h5>Seller Ratings & Reviews!! </h5>
+                  <p style={{ fontSize: "20px" }} onClick={showModal1}>
+                    <span>{formattedAverageRatingsaller}</span>
+                    <Rate
+                      disabled
+                      allowHalf
+                      defaultValue={formattedAverageRatingsaller} // Remove the empty expression here
+                      style={{ fontSize: "20px" }}
+                    />
+                    <p style={{ color: "#5086fa" }}>
+                      {sallertotalCount
+                        ? `${sallertotalCount} Ratings & ${sallertotalCount} Reviews`
+                        : "No reviews yet"}
+                    </p>
+                  </p>
+                </div>
               </div>
             )}
             <hr className="horizontal-line" />
