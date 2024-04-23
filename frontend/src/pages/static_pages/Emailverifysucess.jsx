@@ -7,8 +7,6 @@ function VerifyPage() {
 
   return (
     <Verifytemplate
-    //   bgImg={bgImg}
-    //   boxImg={boxImg}
       boxText={boxText}
       routeTo={routeTo}
     />

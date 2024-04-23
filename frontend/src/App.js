@@ -13,8 +13,8 @@ import Navebar from "./components/header/navebar";
 import Navlist from "./components/header/navlist";
 import Footer from "./components/footer/footer";
 import Loader from "./components/loader";
-import PaymentSuccess from "./pages/paymentSucess.jsx";
-import PaymentFail from "./pages/paymentFaill.jsx";
+import PaymentSuccess from "./pages/static_pages/paymentSucess.jsx";
+import PaymentFail from "./pages/static_pages/paymentFaill.jsx";
 import AdminLayout from "./pages/admin/categories from/layout.jsx";
 // import { useLocation } from "react-router-dom";
 
@@ -43,7 +43,15 @@ const SubcategoryList = lazy(() =>
   import("./pages/admin/pages/allsubcategory.jsx")
 );
 const RequireUser = lazy(() => import("./utils/requrieduser.js"));
-const UnauthorizePage = lazy(() => import("./pages/unauthorized.jsx"));
+const UnauthorizePage = lazy(() =>
+  import("./pages/static_pages/unauthorized.jsx")
+);
+const Verify_page = lazy(() =>
+  import("./pages/static_pages/Emailverifysucess.jsx")
+);
+const Verify_failed = lazy(() =>
+  import("./pages/static_pages/Emailfailed.jsx")
+);
 
 // Admin Components
 
@@ -56,6 +64,11 @@ function App() {
     "/admin/departments",
     "/admin/category",
     "/admin/subcategory",
+    "/verify-email",
+    "/paymentfail",
+    "/paymentsuccess",
+    "/verify-failed",
+    "/unauthorized",
   ];
   // const location = useLocation();
   return (
@@ -76,6 +89,8 @@ function App() {
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
           <Route path="/paymentfail" element={<PaymentFail />} />
           <Route path="/unauthorized" element={<UnauthorizePage />} />
+          <Route path="/verify-email" element={<Verify_page />} />
+          <Route path="/verify-failed" element={<Verify_failed />} />
 
           <Route element={<RequireUser allowedRoles={["user"]} />}>
             <Route path="/post" element={<Mypost />} />
