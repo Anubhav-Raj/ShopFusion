@@ -27,7 +27,6 @@ function DynamicReview({ productid, Sellerid, type, data }) {
   const [ReviewSaller, { loading, error }] = useReviewSallerMutation();
   const [ReviewProduct, { loading: prodctloding, error: productre }] =
     useReviewProductMutation();
-
   const handleAddReview = async () => {
     let newMessage = message; // Use the provided message by default
     // If no message is provided but there's a rating, set the description as the message

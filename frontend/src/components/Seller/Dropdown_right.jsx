@@ -447,11 +447,11 @@ function DropdownRight({ selectedSub, selectedDepartment }) {
           },
           {
             value: "HightoLow",
-            label: "Price Low To High",
+            label: "Price Hight To Low",
           },
           {
             value: "LowtoHigh",
-            label: "Price High To Low",
+            label: "Price Low To High",
           },
         ]}
       />
