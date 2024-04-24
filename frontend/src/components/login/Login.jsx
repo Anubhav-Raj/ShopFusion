@@ -110,7 +110,7 @@ function Login({ onClose }) {
               </div>
               <div className="box-ntd">
                 <div className="item-gt5">
-                  <Link>Forgot Password →</Link>
+                  <Link onClick={onClose} to={"/forgot_password"}>Forgot Password →</Link>
                 </div>
               </div>
             </div>

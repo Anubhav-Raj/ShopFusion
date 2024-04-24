@@ -52,6 +52,9 @@ const Verify_page = lazy(() =>
 const Verify_failed = lazy(() =>
   import("./pages/static_pages/Emailfailed.jsx")
 );
+const Forgotpassword = lazy(() =>
+  import("./components/login/Forgotpassword.jsx")
+);
 
 // Admin Components
 
@@ -69,6 +72,7 @@ function App() {
     "/paymentsuccess",
     "/verify-failed",
     "/unauthorized",
+    "/forgot_password",
   ];
   // const location = useLocation();
   return (
@@ -91,6 +95,7 @@ function App() {
           <Route path="/unauthorized" element={<UnauthorizePage />} />
           <Route path="/verify-email" element={<Verify_page />} />
           <Route path="/verify-failed" element={<Verify_failed />} />
+          <Route path="/forgot_password" element={<Forgotpassword />} />
 
           <Route element={<RequireUser allowedRoles={["user"]} />}>
             <Route path="/post" element={<Mypost />} />
