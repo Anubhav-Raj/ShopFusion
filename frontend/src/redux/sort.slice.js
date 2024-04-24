@@ -3,7 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  sortType: null,
+  sortType: "HightoLow",
 };
 
 const sortSlice = createSlice({

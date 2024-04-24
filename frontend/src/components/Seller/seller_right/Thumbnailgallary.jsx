@@ -190,16 +190,10 @@ function ThumbnailGallery({ product }) {
   const [sallerreview, setSellerreview] = useState([]);
   const { data: sellerreviewData } = useGetreviewSallerQuery(product.user);
 
-  // console.log("sellerreviewData", sellerreviewData);
-  // console.log("reviewData", reviewData);
   useEffect(() => {
     setReviews(reviewData?.reviews || []);
     setSellerreview(sellerreviewData?.reviews || []);
   }, [isLoading, reviewData, sellerreviewData]);
-
-  // console.log("setReviews", reviews);
-  // console.log("sallerreview", sallerreview);
-  // useEffect(() => {}, [sallerreview]);
 
   const totalCount = reviews && reviews.length;
   const sallertotalCount = sallerreview ? sallerreview.length : 0;
@@ -291,7 +285,12 @@ function ThumbnailGallery({ product }) {
             </div>
           </div>
         </div>
-        <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <Modal
+          open={isModalOpen}
+          onOk={handleOk}
+          footer={null}
+          onCancel={handleCancel}
+        >
           <div style={{ marginLeft: "10px" }}>
             <h3>Product Ratings & Reviews</h3>
             <p style={{ fontSize: "20px" }}>
@@ -319,6 +318,7 @@ function ThumbnailGallery({ product }) {
           style={{ width: "50%" }}
           open={isModalOpen1}
           onOk={handleOk1}
+          footer={null}
           onCancel={handleCancel1}
         >
           <h3>Seller Ratings & Reviews </h3>
@@ -392,7 +392,7 @@ function ThumbnailGallery({ product }) {
                 <div className="leftdetailseller">
                   <p>Seller Name - {product.sellerName}</p>
                   <p>Seller Id - {product.user}</p>
-                  <p>Total Published Posts -1</p>
+                  {/* <p>Total Published Posts -1</p> */}
                 </div>
                 <div className="vertical-line"></div>
                 <div className="righdetail">

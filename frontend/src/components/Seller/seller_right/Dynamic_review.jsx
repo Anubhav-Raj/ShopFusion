@@ -18,7 +18,6 @@ import { addReview, selectReviews } from "../../../redux/review.slice.js";
 import { useDispatch, useSelector } from "react-redux";
 function DynamicReview({ productid, Sellerid, type, data }) {
   const user = useAppSelector((state) => state.user2.user);
-  console.log("reviews", data);
 
   const [message, setMessage] = useState("");
   const [reviews, setReviews] = useState(data ? data.reviews : []);
@@ -55,10 +54,10 @@ function DynamicReview({ productid, Sellerid, type, data }) {
           rating: value,
         });
       }
-      // console.log(response);
-      if (response && response.data && response.data.reviewSaller) {
+      console.log(response);
+      if (response && response.data) {
         // Handle successful response
-        toast.success("Review submitted successfully");
+        toast.success(response.data.message);
       } else {
         // Handle unsuccessful response
         toast.error("Failed to submit review");

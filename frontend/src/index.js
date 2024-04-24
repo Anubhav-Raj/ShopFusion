@@ -8,16 +8,19 @@ import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
 import AuthMiddleware from "./utils/authMiddleware"; // Assuming AuthMiddleware is exported as a default component
 import { BrowserRouter as Router } from "react-router-dom";
-
+import { QueryClientProvider, QueryClient } from "react-query";
+const queryClient = new QueryClient();
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <CookiesProvider>
-        <AuthMiddleware>
-          <App />
-        </AuthMiddleware>
-      </CookiesProvider>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <CookiesProvider>
+          <AuthMiddleware>
+            <App />
+          </AuthMiddleware>
+        </CookiesProvider>
+      </Provider>
+    </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
