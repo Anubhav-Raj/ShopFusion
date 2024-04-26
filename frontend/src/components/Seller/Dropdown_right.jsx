@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { useState, useEffect } from "react";
 import "./dropdown.css";
 import {
@@ -9,6 +10,7 @@ import {
   Checkbox,
   Drawer,
   Rate,
+  Radio,
 } from "antd";
 import {
   SortAscendingOutlined,
@@ -21,6 +23,10 @@ import { useFetchAllBrandbasedONSubCategoryQuery } from "../../redux/API/admin/b
 import { usePublicFilterproductQuery } from "../../redux/API/publicApi/publicApi";
 import { useDispatch } from "react-redux";
 import { setSortType } from "../../redux/sort.slice";
+import Seller_right from "./seller_right/Seller_right";
+import { addFilterOption, removeFilterOption } from "../../redux/filter.slice";
+import { useFetchAllSallerTypeQuery } from "../../redux/API/admin/saller";
+
 function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
   const [brands, setBrands] = useState([]);
   const { data, isLoading } =
@@ -28,6 +34,7 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
   // const { data: brandData, isLoading: isBrandLoading } =
   //   useFetchAllBrandbasedONSubCategoryQuery(selectedSub);
   // console.log(selectedSub);
+  const { data: sellerData } = useFetchAllSallerTypeQuery();
 
   useEffect(() => {
     if (!isLoading && data && data.brands) {
@@ -48,7 +55,8 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
     type,
     checkbox = false,
     rating = null,
-    parentLabel = null // Add parentLabel as a parameter with a default value of null
+    parentLabel = null,
+    id = null
   ) {
     return {
       key,
@@ -58,74 +66,34 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
       type,
       checkbox,
       rating,
-      parentLabel, // Assign parentLabel to the returned object
+      parentLabel,
+      id,
     };
   }
+  // console.log(sellerData && sellerData.SellerTypes);
 
   const items = [
-    getItem("Types Of Seller", "1", <UnorderedListOutlined />, [
-      getItem(
-        "Consumer",
-        "11",
-        null,
-        null,
-        null,
-        true,
-        null,
-        "Types Of Seller"
-      ),
-      getItem(
-        "Retailer",
-        "12",
-        null,
-        null,
-        null,
-        true,
-        null,
-        "Types Of Seller"
-      ),
-      getItem(
-        "Wholesaler",
-        "13",
-        null,
-        null,
-        null,
-        true,
-        null,
-        "Types Of Seller"
-      ),
-      getItem("Dealer", "14", null, null, null, true, null, "Types Of Seller"),
-      getItem(
-        "Distributor",
-        "15",
-        null,
-        null,
-        null,
-        true,
-        null,
-        "Types Of Seller"
-      ),
-      getItem(
-        "Exporter",
-        "16",
-        null,
-        null,
-        null,
-        true,
-        null,
-        "Types Of Seller"
-      ),
-      getItem(
-        "Manufacturer",
-        "17",
-        null,
-        null,
-        null,
-        true,
-        null,
-        "Types Of Seller"
-      ),
-    ]),
+    getItem(
+      "Types Of Seller",
+      "1",
+      <UnorderedListOutlined />,
+      sellerData && sellerData.SellerTypes.length > 0
+        ? sellerData.SellerTypes.map((data, index) =>
+            getItem(
+              data.name,
+              `2${index}`,
+              null,
+              null,
+              null,
+              true,
+              null,
+              "Types Of Seller",
+              data._id
+            )
+          )
+        : []
+    ),
+
     getItem(
       "Brands",
       "2",
@@ -140,7 +108,8 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
               null,
               true,
               null,
-              "Brand"
+              "Brand",
+              brand._id
             )
           )
         : []
@@ -156,9 +125,9 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
         null,
         null,
         false,
-        1,
         null,
-        "rateing"
+        "Rating",
+        1
       ),
       getItem(
         <span>
@@ -169,10 +138,10 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
         null,
         null,
         false,
-        2,
         null,
-        "rateing"
-      ), // Rating for Option 2 is 4
+        "Rating",
+        2
+      ),
       getItem(
         <span>
           <Rate disabled defaultValue={3} /> &up
@@ -182,10 +151,10 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
         null,
         null,
         false,
-        3,
         null,
-        "rateing"
-      ), // Rating for Option 3 is 2
+        "Rating",
+        3
+      ),
       getItem(
         <span>
           <Rate disabled defaultValue={4} /> &up
@@ -195,9 +164,9 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
         null,
         null,
         false,
-        4,
         null,
-        "rateing"
+        "Rating",
+        4
       ), // Rating for Option 4 is 5
       getItem(
         <span>
@@ -208,21 +177,51 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
         null,
         null,
         false,
-        5,
         null,
-        "rateing"
+        "Rating",
+        5
       ), // Rating for Option 4 is 5
     ]),
 
     //Apply   filter on product based on  used, refabrished, brandnew
     getItem("Condition", "4", <UnorderedListOutlined />, [
-      getItem("Used", "41", null, null, null, true, null, "condition"),
-      getItem("Refurbished", "42", null, null, null, true, null, "condition"),
-      getItem("Brand New", "43", null, null, null, true, null, "condition"),
+      getItem("Used", "41", null, null, null, true, null, "condition", "Used"),
+      getItem(
+        "Refurbished",
+        "42",
+        null,
+        null,
+        null,
+        true,
+        null,
+        "condition",
+        "Refurbished"
+      ),
+      getItem(
+        "Brand New",
+        "43",
+        null,
+        null,
+        null,
+        true,
+        null,
+        "condition",
+        "Brand New"
+      ),
     ]),
     //payment mode
     getItem("Payment Mode", "5", <UnorderedListOutlined />, [
-      getItem("Online", "51", null, null, null, true, null, "paymentMode"),
+      getItem(
+        "Online",
+        "51",
+        null,
+        null,
+        null,
+        true,
+        null,
+        "paymentMode",
+        "Online"
+      ),
       getItem(
         "Cash on Delivery",
         "52",
@@ -231,23 +230,85 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
         null,
         true,
         null,
-        "paymentMode"
+        "paymentMode",
+        "Cash on Delivery"
       ),
     ]),
     //service mode
     getItem("Service Mode", "6", <UnorderedListOutlined />, [
-      getItem("Online", "61", null, null, null, true, null, "serviceMode"),
-      getItem("Offline", "62", null, null, null, true, null, "serviceMode"),
+      getItem(
+        "Online",
+        "61",
+        null,
+        null,
+        null,
+        true,
+        null,
+        "serviceMode",
+        "Online"
+      ),
+      getItem(
+        "Offline",
+        "62",
+        null,
+        null,
+        null,
+        true,
+        null,
+        "serviceMode",
+        "Offline"
+      ),
     ]),
     getItem("Price Range", "7", <UnorderedListOutlined />, [
-      getItem("Under ₹50", "71", null, null, null, true, null, "priceRange"),
-      getItem("₹100 - ₹500", "72", null, null, null, true, null, "priceRange"),
-      getItem("₹500 - ₹1000", "73", null, null, null, true, null, "priceRange"),
-      getItem("Over ₹1000", "74", null, null, null, true, null, "priceRange"),
+      getItem(
+        "Under ₹50",
+        "71",
+        null,
+        null,
+        null,
+        true,
+        null,
+        "priceRange",
+        "under 50"
+      ),
+      getItem(
+        "₹100 - ₹500",
+        "72",
+        null,
+        null,
+        null,
+        true,
+        null,
+        "priceRange",
+        "100 - 500"
+      ),
+      getItem(
+        "₹500 - ₹1000",
+        "73",
+        null,
+        null,
+        null,
+        true,
+        null,
+        "priceRange",
+        "500 - 1000"
+      ),
+      getItem(
+        "Over ₹1000",
+        "74",
+        null,
+        null,
+        null,
+        true,
+        null,
+        "priceRange",
+        "over 1000"
+      ),
     ]),
   ];
 
   const getLevelKeys = (items1) => {
+    // console.log(items1);
     const key = {};
     const func = (items2, level = 1) => {
       if (Array.isArray(items2)) {
@@ -269,27 +330,35 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
   const levelKeys = getLevelKeys(items);
 
   const handleCheckboxChange = (event, item) => {
+    console.log(item);
     const isChecked = event.target.checked;
     setSelectedCount((prevCount) =>
       isChecked ? prevCount + 1 : prevCount - 1
     );
 
     if (isChecked) {
-      setSelectedOptions([
-        ...selectedOptions,
-        { parent: item.parentLabel, value: item.label },
-      ]);
+      // Dispatch action to add filter option
+      dispatch(addFilterOption({ parent: item.parentLabel, value: item.id }));
     } else {
-      setSelectedOptions(
-        selectedOptions.filter((option) => option.value !== item.label)
+      dispatch(
+        removeFilterOption({ parent: item.parentLabel, value: item.id })
       );
     }
   };
+  const [value, setValue] = useState(1);
+  const onChange = (e) => {
+    // console.log("radio checked", e.target.value);
+    dispatch(removeFilterOption({ parent: "price" })); // Remove previous price range filter
+    dispatch(addFilterOption({ parent: "price", value: e.target.value })); // Add the new price range filter
+    setValue(e.target.value);
+    setSelectedCount((prevCount) => prevCount + 1);
+  };
 
   const renderMenuItem = (item) => {
-    // console.log(item);
     const isSelected = selectedOptions.includes(item.label);
-    return (
+    const parentLabel = item.parentLabel;
+
+    return parentLabel !== "priceRange" ? (
       <Menu.Item
         key={item.key}
         style={{ backgroundColor: isSelected ? "#e6f4ff" : "rgb(250 250 250)" }}
@@ -300,6 +369,14 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
         >
           {item.label}
         </Checkbox>
+      </Menu.Item>
+    ) : (
+      <Menu.Item key="7" style={{ backgroundColor: "rgb(250 250 250)" }}>
+        <Radio.Group onChange={onChange} value={value}>
+          <Radio key={item.label} value={item.id}>
+            {item.label}
+          </Radio>
+        </Radio.Group>
       </Menu.Item>
     );
   };
@@ -323,11 +400,11 @@ function Dropdownlist1({ setSelectedCount, selectedDepartment, selectedSub }) {
       return renderMenuItem(item); // Render menu item if there are no children
     }
   };
-  const { data: filteddata } = usePublicFilterproductQuery(selectedOptions);
-  // console.log(data);
-
+  // const { data: filteddata } = usePublicFilterproductQuery(selectedOptions);
+  // console.log(filteddata);
+  const dispatch = useDispatch();
   useEffect(() => {
-    console.log(selectedOptions);
+    <Seller_right filterData={selectedOptions} />;
   }, [selectedOptions]);
 
   const onOpenChange = (openKeys) => {

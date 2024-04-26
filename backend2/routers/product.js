@@ -40,7 +40,7 @@ router.post("/deletemobile", deserializeUser, productCon.deletemobile);
 router.get("/allbrands", deserializeUser, productCon.getAllBrands);
 router.post("/allmodelsonmodel", deserializeUser, productCon.getModels);
 router.get("/userallproduct", deserializeUser, productCon.userAllProduct);
-router.get("/getallproduct", productCon.getAllProduct);
+router.post("/getallproduct", productCon.getAllProduct);
 
 router.post(
   "/createbrand",
@@ -88,6 +88,6 @@ router.get(
   "/getAllSubCategoryModels/:subCategory_id",
   productCon.getAllBrandBasedSubCategory
 );
-router.post("/filterproduct", productCon.filterproduct);
+router.post("/filterproduct/", productCon.filterproduct);
 router.post("/productbasedonid", productCon.productbasedonid);
 module.exports = router;

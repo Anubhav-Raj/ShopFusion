@@ -18,7 +18,9 @@ const ChooseSubCategory = require("../models/choose_subcat");
 const SellerReview = require("../models/sallerRatingReview");
 const ProductReview = require("../models/productReviewAndRating");
 const product = require("../models/product");
+const ChooseType = require("../models/choose_type");
 
+// Controller function to create a new saller type
 exports.createMobile = async (req, res) => {
   try {
     // Validate incoming request
@@ -156,14 +158,10 @@ exports.createMobile = async (req, res) => {
 };
 exports.createProduct = async (req, res) => {
   try {
-    //console.log(req.body);
-    // console.log(req.files);
-
     let otherFeature = [];
     if (!req.body.otherFeature) {
       otherFeature = JSON.parse(req.body.otherFeature);
     }
-    // console.log("otherFeature: ", otherFeature);
     const requiredFields = [
       "selectBrand",
       "productName",
@@ -283,8 +281,6 @@ exports.createProduct = async (req, res) => {
 };
 exports.editmobile = async (req, res) => {
   try {
-    console.log(req.body);
-    console.log(req.files);
     // Input validation
     const requiredFields = [
       "id",
@@ -403,52 +399,6 @@ exports.editmobile = async (req, res) => {
       product.images = req.files.uploadPhotos.map((photo) => photo.filename);
     }
 
-    // Loop through each new photo in the uploadphotos array
-    // if (req.files.uploadPhotos) {
-    //   for (const photo of req.files.uploadPhotos) {
-    //     // Check if the new photo exists in the edituploadphoto array
-    //     if (!req.body.edituplaodphoto.includes(photo.filename)) {
-    //       // New photo doesn't exist in edituploadphoto array, add the new photo to product images
-    //       product.images.push(photo.filename);
-    //     }
-    //   }
-    // }
-    // if (req.files.uploadPhotos) {
-    //   product.images = req.files.uploadPhotos.map((photo) => photo.filename);
-    // }
-
-    // Process file uploads and remove file if uploadFile is empty
-    // if (req.files.uploadFile) {
-    //   product.file = req.files.uploadFile[0].filename;
-    // } else {
-    //   if (!req.body.uploadFile) {
-    //     const filePath = path.join(__dirname, "../uploads/files", product.file);
-    //     if (fs.existsSync(filePath)) {
-    //       fs.unlinkSync(filePath); // Remove the file
-    //     } else {
-    //       console.log("File not found:");
-    //     }
-    //   }
-    //   product.file = req.body.uploadFile;
-    // }
-
-    // Process video uploads and remove video if uploadVideo is empty
-    // if (req.files.uploadVideo) {
-    //   product.video = req.files.uploadVideo[0].filename;
-    // } else {
-    //   if (!req.body.uploadVideo) {
-    //     const videoPath = path.join(
-    //       __dirname,
-    //       "../uploads/videos",
-    //       product.video
-    //     );
-    //     if (fs.existsSync(videoPath)) {
-    //       fs.unlinkSync(videoPath); // Remove the video
-    //     }
-    //   }
-    //   product.video = req.body.uploadVideo;
-    // }
-    // Save product changes
     await product.save();
 
     res.json({ message: "Product updated", isError: false });
@@ -729,11 +679,11 @@ exports.paymentVerification = async (req, res) => {
       .digest("hex");
 
     const isAuthentic = expectedSignature === razorpay_signature;
-    console.log(isAuthentic);
+    // console.log(isAuthentic);
     if (isAuthentic) {
       // Database comes here
       const products = req.body.productID.productsID;
-      console.log(products);
+      // console.log(products);
       const p = new Payment({
         products: products,
         paymentID: razorpay_payment_id,
@@ -803,9 +753,6 @@ exports.getsellerReview = async (req, res) => {
 exports.productReview = async (req, res) => {
   try {
     const { productid, rating, message } = req.body;
-    console.log(req.body);
-    // const product = await Product.findById(productid);
-    // console.log(product);
     const reviewData = {
       productId: productid,
       userId: res.locals.user._id,
@@ -814,7 +761,6 @@ exports.productReview = async (req, res) => {
     };
     const newReview = new ProductReview(reviewData);
     await newReview.save();
-    console.log(newReview);
     res.status(200).json({ message: "Review added", isError: false });
   } catch (error) {
     res.status(500).json({ message: error.message, isError: true });
@@ -909,15 +855,99 @@ exports.fetchAllSubCategoriesproduct = async (req, res) => {
   }
 };
 
+async function getProductAggregation(query) {
+  try {
+    const productAggregation = await Product.aggregate([
+      { $match: query },
+      {
+        $lookup: {
+          from: "productreviews",
+          localField: "_id",
+          foreignField: "productId",
+          as: "reviews",
+        },
+      },
+      {
+        $addFields: {
+          averageRating: { $avg: "$reviews.rating" },
+        },
+      },
+      {
+        $lookup: {
+          from: "brands", // Assuming the collection name for selectBrand is "selectbrands"
+          localField: "selectBrand",
+          foreignField: "_id",
+          as: "selectBrand",
+        },
+      },
+      {
+        $lookup: {
+          from: "addresses", // Assuming the collection name for enterAddress is "addresses"
+          localField: "enterAddress",
+          foreignField: "_id",
+          as: "enterAddress",
+        },
+      },
+      {
+        $unwind: "$selectBrand",
+      },
+      { $unwind: "$enterAddress" },
+    ]);
+    console.log(productAggregation);
+    return productAggregation;
+  } catch (error) {
+    throw new Error("Error performing aggregation: " + error.message);
+  }
+}
+
 //  feth prodct based on sub category
 exports.getAllProduct = async (req, res) => {
   try {
-    const products = await Product.find({ status: true })
+    const filterData = req.body.filterData;
+
+    let query = { status: true };
+    // console.log(req.body.filterData);
+
+    filterData.forEach((filter) => {
+      if (filter.parent === "condition") {
+        query["condition"] = { $in: filter.value };
+      } else if (filter.parent === "paymentMode") {
+        query["paymentMode"] = { $in: filter.value };
+      } else if (filter.parent === "serviceMode") {
+        query["serviceMode"] = { $in: filter.value };
+      } else if (filter.parent === "price") {
+        if (filter.value.includes("under 50")) {
+          query["price"] = { $lt: 50 };
+        } else if (filter.value.includes("100 - 500")) {
+          query["price"] = { $gte: 100, $lte: 500 };
+        } else if (filter.value.includes("500 - 1000")) {
+          query["price"] = { $gte: 500, $lte: 1000 };
+        } else if (filter.value.includes("over 1000")) {
+          query["price"] = { $gt: 1000 };
+        }
+      } else if (filter.parent === "Types Of Seller") {
+        query["type"] = { $in: filter.value };
+      } else if (filter.parent === "Brand") {
+        query["selectBrand"] = { $in: filter.value };
+      } else if (filter.parent === "rating") {
+        query["averageRating"] = { $gt: parseInt(filter.value[0]) };
+      }
+
+      // Add more conditions for other filters as needed
+    });
+
+    // console.log(query);
+    const productAggregation = await getProductAggregation(query);
+
+    const products = await Product.find(query)
       .populate("selectBrand")
       .populate("selectModel")
       .populate("enterAddress");
+
+    // console.log(products);
     res.json({ products: products, isError: false });
   } catch (error) {
+    console.error("Error fetching products:", error);
     res.status(500).json({ message: error.message, isError: true });
   }
 };

@@ -1,28 +1,45 @@
 import React, { useEffect } from "react";
 import Thumbnailgallary from "./Thumbnailgallary";
 import "./seller_right.css";
-import { useGetSubCategoryproductQuery } from "../../../redux/API/products/mobile";
-import { useGetDepartmentsProductQuery } from "../../../redux/API/products/mobile";
-import { useGetAllproductQuery } from "../../../redux/API/products/mobile";
 import { Spin } from "antd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProductData } from "../../../redux/product.slice";
+import { useSortProducts } from "../../../utils/function";
 
-function SubcategoryDataFetcher({ data }) {
+function Seller_right({ data }) {
   const { id, type } = data;
+  const filters = useSelector((state) => state.filter.selectedOptions);
 
-  // Determine which hook to use based on the type
-  const fetchHook =
-    type === "subcategory"
-      ? useGetSubCategoryproductQuery
-      : type === "dept"
-      ? useGetDepartmentsProductQuery
-      : useGetAllproductQuery;
+  const dispatch = useDispatch();
 
-  const { data: fetchedData, isLoading, isError } = fetchHook(id);
+  useEffect(() => {
+    // Define a function to fetch product data and dispatch it
+    const fetchData = () => {
+      const filterData = filters.reduce((acc, filter) => {
+        const existingEntry = acc.find(
+          (entry) => entry.parent === filter.parent
+        );
+        if (existingEntry) {
+          existingEntry.value.push(filter.value);
+        } else {
+          acc.push({ parent: filter.parent, value: [filter.value] });
+        }
+        return acc;
+      }, []);
 
-  useEffect(() => {}, [id, type]);
+      dispatch(fetchProductData({ id, type, filterData }));
+    };
 
-  if (isLoading) {
+    // Call the fetchData function
+    fetchData();
+  }, [dispatch, id, type, filters]);
+
+  const productData = useSelector((state) => state.products.productData);
+  const status = useSelector((state) => state.products.status);
+  const error = useSelector((state) => state.products.error);
+  const sortedProducts = useSortProducts(productData);
+
+  if (status === "loading") {
     return (
       <div
         style={{
@@ -39,48 +56,9 @@ function SubcategoryDataFetcher({ data }) {
     );
   }
 
-  if (isError) {
-    return (
-      <div>{`No ${
-        type === "subcategory"
-          ? "Subcategory"
-          : type === "dept"
-          ? "Department"
-          : "All"
-      } Data`}</div>
-    );
+  if (status === "failed") {
+    return <div>{error}</div>;
   }
-
-  return <SellerRightWithData data={fetchedData} />;
-}
-
-function SellerRightWithData({ data }) {
-  const productsToRender =
-    data && data.products && data.products.length > 0 ? data.products : [];
-  const Type = useSelector((state) => state.sort.sortType);
-  const sortType = Type && Type.value;
-  // console.log(sortType);
-  const sortProducts = (products, sortType) => {
-    let sortedProducts = [...products];
-    if (sortType === "HightoLow") {
-      sortedProducts.sort((a, b) => b.price - a.price);
-    } else if (sortType === "LowtoHigh") {
-      sortedProducts.sort((a, b) => a.price - b.price);
-    } else if (sortType === "Newest") {
-      // Sort by newest first (most recent date)
-      sortedProducts.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
-    } else if (sortType === "Oldest") {
-      // Sort by oldest first (earliest date)
-      sortedProducts.sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-      );
-    }
-    return sortedProducts;
-  };
-
-  const sortedProducts = sortProducts(productsToRender, sortType);
 
   return (
     <>
@@ -93,14 +71,6 @@ function SellerRightWithData({ data }) {
       ) : (
         <div style={{ margin: "10rem" }}>No products found</div>
       )}
-    </>
-  );
-}
-
-function Seller_right({ data }) {
-  return (
-    <>
-      <SubcategoryDataFetcher data={data} />
     </>
   );
 }

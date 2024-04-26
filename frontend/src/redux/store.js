@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import brandReducer from "./brand.slice";
 import productReducer from "./product.slice";
+import filterReducer from "./filter.slice";
 import { userReducer } from "./user.slice";
 import { userAPI } from "./API/user";
 import { PublicApi } from "./API/publicApi/publicApi.js";
@@ -55,6 +56,7 @@ const store = configureStore({
     login: loginReducer,
     sort: sortReducer,
     reviews: reviewsReducer,
+    filter: filterReducer,
     [PublicApi.reducerPath]: PublicApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

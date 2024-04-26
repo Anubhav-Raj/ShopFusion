@@ -1,40 +1,70 @@
-// productSlice.js
-
+// productsSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+const { REACT_APP_API_BASE_URL } = process.env;
 
-const initialState = {
-  products: [],
-  status: "idle",
-  error: null,
-};
+export const fetchProductData = createAsyncThunk(
+  "products/fetchProductData",
+  async ({ id, type, filterData }, { rejectWithValue }) => {
+    try {
+      // console.log(filterData);
 
-export const fetchProducts = createAsyncThunk(
-  "products/fetchProducts",
-  async () => {
-    const response = await axios.get("/api/products"); // Replace with your API endpoint
-    return response.data;
+      // Ensure filterData is an array
+      const parsedFilterData = Array.isArray(filterData) ? filterData : [];
+
+      let endpoint;
+
+      // Depending on the 'type', construct the endpoint URL
+      if (type === "subcategory") {
+        endpoint = `${REACT_APP_API_BASE_URL}api/product/subcategoriesProducts/${id}`;
+      } else if (type === "dept") {
+        endpoint = `${REACT_APP_API_BASE_URL}api/product/getProductsByDepartment/${id}`;
+      } else {
+        endpoint = `${REACT_APP_API_BASE_URL}api/product/getallproduct`;
+      }
+
+      // Make the request with filterData in the request body
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ filterData: parsedFilterData }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
-const productSlice = createSlice({
+const productsSlice = createSlice({
   name: "products",
-  initialState,
+  initialState: {
+    productData: null,
+    status: "idle",
+    error: null,
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProducts.pending, (state) => {
+      .addCase(fetchProductData.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
+      .addCase(fetchProductData.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.products = action.payload;
+        state.productData = action.payload;
       })
-      .addCase(fetchProducts.rejected, (state, action) => {
+      .addCase(fetchProductData.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message;
+        state.error = action.payload;
       });
   },
 });
 
-export default productSlice.reducer;
+export default productsSlice.reducer;

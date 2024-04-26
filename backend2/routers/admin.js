@@ -33,7 +33,7 @@ router.post(
 
 router.get(
   "/fetchallsallertypes",
-  deserializeUser,
+
   adminCon.fetchAllSallerTypes
 );
 router.post(

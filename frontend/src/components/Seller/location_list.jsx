@@ -67,14 +67,14 @@ function LocationList() {
           </Space>
         </Button>
       </Dropdown>
-      <Dropdown menu={menuProps}>
+      {/* <Dropdown menu={menuProps}>
         <Button>
           <Space>
             All Sub Districts / Blocks
             <DownOutlined />
           </Space>
         </Button>
-      </Dropdown>
+      </Dropdown> */}
     </div>
   );
 }
