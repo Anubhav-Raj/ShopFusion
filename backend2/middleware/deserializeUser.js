@@ -10,7 +10,7 @@ exports.deserializeUser = async (req, res, next) => {
   try {
     // Get the
     // console.log(req.cookies);
-    console.log("backend seserialize user");
+    // console.log("backend seserialize user");
     let access_token;
     if (
       req.headers.authorization &&
@@ -51,7 +51,7 @@ exports.deserializeUser = async (req, res, next) => {
 
     res.locals.user = user;
 
-    console.log("backend seserialize user End ");
+    // console.log("backend seserialize user End ");
 
     next();
   } catch (err) {

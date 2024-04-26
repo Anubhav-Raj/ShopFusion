@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const config = require("config");
-const crypto = require("crypto");
 
 exports.signJwt = (payload, key, options = {}) => {
   const privateKey = Buffer.from(config.get(key), "base64").toString("ascii");

@@ -414,9 +414,9 @@ exports.login = async (req, res) => {
 exports.verifyUser = async (req, res) => {
   try {
     const { token, id } = req.params;
-    console.log(token, id);
+    // console.log(token, id);
     const user = await User.findById(id);
-    console.log(user);
+    // console.log(user);
     if (!user) {
       return res.status(404).send({
         token: "Something went wrong!",
