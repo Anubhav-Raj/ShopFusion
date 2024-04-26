@@ -454,7 +454,7 @@ function Table_post({ setTableShow, setEditTable, setId }) {
         <>
           <Link
             target="_blanck"
-            to={`http://localhost:5000/uploads/videos/${id}`}
+            to={`${process.env.REACT_APP_API_BASE_URL}uploads/videos/${id}`}
           >
             View Video
           </Link>
@@ -471,7 +471,7 @@ function Table_post({ setTableShow, setEditTable, setId }) {
           {" "}
           <Link
             target="_blanck"
-            to={`http://localhost:5000/uploads/files/${id}`}
+            to={`${process.env.REACT_APP_API_BASE_URL}uploads/files/${id}`}
           >
             View File{" "}
           </Link>
@@ -511,7 +511,8 @@ function Table_post({ setTableShow, setEditTable, setId }) {
                     width={200}
                     height={200}
                     style={{ objectFit: "contain" }}
-                    src={`http://localhost:5000/uploads/images/${item}`}
+                    //src={`http://localhost:5000/uploads/images/${item}`}
+                    src={`${process.env.REACT_APP_API_BASE_URL}/uploads/images/${item}`}
                     alt=""
                   />
                 </div>

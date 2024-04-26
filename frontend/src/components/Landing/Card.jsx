@@ -19,7 +19,8 @@ function Category({ category, onClick }) {
           {image && (
             <img
               className="departimg"
-              src={`http://localhost:5000/${image}`}
+              // src={`http://localhost:5000/${image}`}
+              src={process.env.REACT_APP_API_BASE_URL + image}
               alt={name}
             />
           )}

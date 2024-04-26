@@ -1033,7 +1033,7 @@ const EditMobile = ({ id, setEditTable }) => {
                       width={100}
                       height={100}
                       style={{ objectFit: "contain" }}
-                      src={`http://localhost:5000/uploads/images/${item}`} // Assuming item is an object with a 'name' property
+                      src={`${process.env.REACT_APP_API_BASE_URL}uploads/images/${item}`} // Assuming item is an object with a 'name' property
                       alt={item.name} // Adding an alt attribute for accessibility
                     />
                     {hoverIndex === index && (
@@ -1076,7 +1076,7 @@ const EditMobile = ({ id, setEditTable }) => {
                 </div>
                 <Link
                   target="_blank"
-                  to={`http://localhost:5000/uploads/videos/${uploadVideo}`}
+                  to={`${process.env.REACT_APP_API_BASE_URL}uploads/videos/${uploadVideo}`}
                 >
                   Download
                 </Link>
@@ -1114,7 +1114,7 @@ const EditMobile = ({ id, setEditTable }) => {
                 </div>
                 <Link
                   target="_blank"
-                  to={`http://localhost:5000/uploads/files/${uploadFile}`}
+                  to={`${process.env.REACT_APP_API_BASE_URL}uploads/files/${uploadFile}`}
                 >
                   Download
                 </Link>

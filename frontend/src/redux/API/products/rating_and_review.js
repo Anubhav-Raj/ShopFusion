@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const baseUrl = "http://localhost:5000/api/product/";
+const baseUrl = `${process.env.REACT_APP_API_BASE_URL}api/product/`;
 const token = localStorage.getItem("ZoneHub");
 
 export const rating_and_review = createApi({

@@ -32,7 +32,7 @@ export const authApi = createApi({
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
-          console.log("Login query started successfully.");
+          // console.log("Login query started successfully.");
           // alert("Login query started successfully.");
           await dispatch(userApi1.endpoints.getMe.initiate(null));
         } catch (error) {

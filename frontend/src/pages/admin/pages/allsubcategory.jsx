@@ -137,7 +137,7 @@ const SubcategoryList = () => {
       width: "10%",
       render: (text, record, index) => (
         <img
-          src={`http://localhost:5000/${record.image}`}
+          src={`${process.env.REACT_APP_API_BASE_URL}${record.image}`}
           alt="image"
           style={{ width: "50px" }}
         />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
-import { Button, Modal } from 'antd';
+import { Button, Modal } from "antd";
 import Itemcard from "./Itemcard";
 import {
   usePublicfetchAllCategoriesQuery,
@@ -87,10 +87,11 @@ function Department() {
   const [recentlyViewedData, setRecentlyViewedData] = useState([]);
   const savedPosts = JSON.parse(localStorage.getItem("savedProducts")) || [];
   const [savedPostsData, setsavedPostsData] = useState([]);
-  const BASE_URL = process.env.LIVE_BACKENDAPI || "http://localhost:5000";
+  const BASE_URL =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/";
 
   // Now you can use BASE_URL wherever needed, such as in your fetch call
-  const url = `${BASE_URL}/api/product/productbasedonid`;
+  const url = `${BASE_URL}api/product/productbasedonid`;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -295,34 +296,32 @@ function Department() {
         </>
       ) : (
         <Modal
-        title="Choose Department"
-        open={true}
-        width={'62%'}
-        footer={null} 
-        style={{
-          top: '60px',
-        }}
-      >
-            <Card
-              categories={
-                departmentData &&
-                departmentData.departments &&
-                departmentData.departments.length > 0
-                  ? departmentData.departments.map((department) => ({
-                      name: department.name,
-                      image: department.image,
-                      id: department._id,
-                      count: department.products
-                        ? department.products.length
-                        : 0,
-                    }))
-                  : []
-              }
-              onClick={(departmentID) => {
-                return handleDepartmentClick(departmentID);
-              }}
-            />
-      </Modal>
+          title="Choose Department"
+          open={true}
+          width={"62%"}
+          footer={null}
+          style={{
+            top: "60px",
+          }}
+        >
+          <Card
+            categories={
+              departmentData &&
+              departmentData.departments &&
+              departmentData.departments.length > 0
+                ? departmentData.departments.map((department) => ({
+                    name: department.name,
+                    image: department.image,
+                    id: department._id,
+                    count: department.products ? department.products.length : 0,
+                  }))
+                : []
+            }
+            onClick={(departmentID) => {
+              return handleDepartmentClick(departmentID);
+            }}
+          />
+        </Modal>
       )}
     </>
   );

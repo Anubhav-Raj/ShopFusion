@@ -5,7 +5,7 @@ import "./mypost.css";
 import Table_post from "../../components/mypost/Table_post";
 import AddMobile from "./Mobile/AddMobile";
 import { Select } from "antd";
-import { department } from "../../utils/data";
+// import { department } from "../../utils/data";
 import EditMobile from "./Mobile/editMobile";
 import AddProduct from "./product/addproduct";
 import { useEffect } from "react";

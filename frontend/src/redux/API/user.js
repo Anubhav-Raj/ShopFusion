@@ -3,7 +3,7 @@ import axios from "axios";
 // require("dotenv").config();
 
 // Get the API base URL from the environment variable
-const baseUrl = "http://localhost:5000/api/user/";
+const baseUrl = `${process.env.REACT_APP_API_BASE_URL}api/user/`;
 const token = localStorage.getItem("ZoneHub");
 
 export const userAPI = createApi({

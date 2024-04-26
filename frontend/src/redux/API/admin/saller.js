@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { customFetchBase } from "../coustomFetchBase";
-const baseUrl = "http://localhost:5000/api/";
+const baseUrl = `${process.env.LIVE_BACKENDAPI}api/`;
 const token = localStorage.getItem("ZoneHub");
 
 export const sallerTypeApi = createApi({

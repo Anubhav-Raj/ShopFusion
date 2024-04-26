@@ -382,7 +382,7 @@ const BrandList = () => {
       key: "Image",
       render: (image) => (
         <img
-          src={`http://localhost:5000/${image}`}
+          src={`${process.env.REACT_APP_API_BASE_URL}${image}`}
           alt="Brand Image"
           style={{ width: 50, height: 50 }}
         />
