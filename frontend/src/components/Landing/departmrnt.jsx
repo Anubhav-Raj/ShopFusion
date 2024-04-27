@@ -72,6 +72,7 @@ function Department() {
   const { data: itemData } = useGetSubCategoryproductQuery(
     selectedsubcategories
   );
+  console.log(itemData);
 
   const [isInitialCardVisible, setIsInitialCardVisible] = useState(true);
 
@@ -108,7 +109,6 @@ function Department() {
         }
 
         const jsonData = await response.json();
-        console.log(jsonData);
         setsavedPostsData(jsonData.products);
       } catch (error) {
         console.error("Error fetching data:", error);

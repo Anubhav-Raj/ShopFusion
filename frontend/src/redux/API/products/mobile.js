@@ -138,7 +138,7 @@ export const mobileAPI = createApi({
     deleteMobile: builder.mutation({
       query: (productId) => {
         return {
-          url: "product/deletemobile",
+          url: "product/deleteproduct",
           method: "POST",
           body: { id: productId },
           credentials: "include",
@@ -189,9 +189,8 @@ export const mobileAPI = createApi({
       query: (id) => {
         console.log("Entering", id);
         return {
-          url: `product/subcategoriesProducts/${id}`,
+          url: `product//getProductsBySubCategory/${id}`,
           method: "GET",
-          credentials: "include",
         };
       },
       providesTags: ["mobilepost"],
@@ -261,7 +260,7 @@ export const mobileAPI = createApi({
     }),
     getproductReviews: builder.query({
       query: (id) => {
-        console.log("Entering", id);
+        // console.log("Entering", id);
         return {
           url: `product/getproductReviews/${id}`,
           method: "GET",

@@ -15,9 +15,10 @@ export const fetchProductData = createAsyncThunk(
 
       // Depending on the 'type', construct the endpoint URL
       if (type === "subcategory") {
-        endpoint = `${REACT_APP_API_BASE_URL}api/product/subcategoriesProducts/${id}`;
+        endpoint = `${REACT_APP_API_BASE_URL}api/product/subcategoriesProducts`;
+        // console.log(endpoint);
       } else if (type === "dept") {
-        endpoint = `${REACT_APP_API_BASE_URL}api/product/getProductsByDepartment/${id}`;
+        endpoint = `${REACT_APP_API_BASE_URL}api/product/getProductsByDepartment`;
       } else {
         endpoint = `${REACT_APP_API_BASE_URL}api/product/getallproduct`;
       }
@@ -28,7 +29,7 @@ export const fetchProductData = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ filterData: parsedFilterData }),
+        body: JSON.stringify({ filterData: parsedFilterData, id: id }),
       });
 
       if (!response.ok) {
